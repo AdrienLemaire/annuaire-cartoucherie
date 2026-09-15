@@ -1,0 +1,313 @@
+<!doctype html>
+<html lang="fr" data-theme="autumn">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Annuaire — La Cartoucherie</title>
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@5/themes.css" rel="stylesheet" type="text/css" />
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,340;0,9..144,560;0,9..144,650;1,9..144,500&display=swap" rel="stylesheet" />
+</head>
+<body class="min-h-screen bg-base-200 text-base-content">
+
+  <!-- ===== Header ===== -->
+  <header class="navbar bg-base-100/90 backdrop-blur-md border-b border-base-300 sticky top-0 z-40 px-4 sm:px-6">
+    <div class="navbar-start">
+      <a href="index.html" class="flex items-baseline gap-2">
+        <span class="font-[family-name:Fraunces] font-semibold text-2xl text-primary">Cartoucherie</span>
+        <span class="hidden sm:inline text-xs uppercase tracking-[0.2em] text-base-content/50">portraits du quartier</span>
+      </a>
+    </div>
+    <div class="navbar-center hidden md:flex">
+      <ul class="menu menu-horizontal gap-1 text-sm">
+        <li><a href="index.html">Accueil</a></li>
+        <li><a href="annuaire.html" class="menu-active">Annuaire</a></li>
+        <li><a href="carte.html">Carte</a></li>
+      </ul>
+    </div>
+    <div class="navbar-end">
+      <button class="btn btn-ghost btn-circle w-11 h-11 min-h-11" onclick="modalRecherche.showModal()" aria-label="Rechercher un commerce">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="w-5 h-5"><circle cx="11" cy="11" r="7"/><path stroke-linecap="round" d="m21 21-4.3-4.3"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- ===== Search dialog (secondary) ===== -->
+  <dialog id="modalRecherche" class="modal modal-top sm:modal-middle">
+    <div class="modal-box">
+      <h3 class="font-[family-name:Fraunces] text-xl">Chercher un portrait</h3>
+      <p class="text-sm text-base-content/60 mt-1">Un métier, un nom, un service…</p>
+      <form class="flex gap-2 mt-3" onsubmit="event.preventDefault(); document.getElementById('recherche').value=this.q.value; document.getElementById('recherche').dispatchEvent(new Event('input')); modalRecherche.close();">
+        <label class="input w-full">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="w-5 h-5 opacity-60"><circle cx="11" cy="11" r="7"/><path stroke-linecap="round" d="m21 21-4.3-4.3"/></svg>
+          <input type="search" name="q" placeholder="ex. électricien, yoga, comptable…" aria-label="Recherche" />
+        </label>
+        <button type="submit" class="btn btn-primary min-h-11">OK</button>
+      </form>
+      <div class="modal-action"><form method="dialog"><button class="btn btn-ghost btn-sm min-h-11">Fermer</button></form></div>
+    </div>
+    <form method="dialog" class="modal-backdrop"><button>fermer</button></form>
+  </dialog>
+
+  <!-- ===== Main ===== -->
+  <main class="max-w-5xl mx-auto px-4 pt-6 pb-28 md:pb-16 space-y-5">
+
+    <section class="space-y-1">
+      <p class="text-xs uppercase tracking-[0.25em] text-primary font-semibold">12 portraits</p>
+      <h1 class="font-[family-name:Fraunces] text-3xl leading-tight">L'annuaire, en un coup d'œil.</h1>
+      <p class="text-base-content/70">Le même flux que l'accueil, en plus dense. Filtrez par métier, ou cherchez un nom.</p>
+    </section>
+
+    <!-- Search-as-lens: slim field, not a hero -->
+    <label class="input w-full max-w-sm">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="w-4 h-4 opacity-50"><circle cx="11" cy="11" r="7"/><path stroke-linecap="round" d="m21 21-4.3-4.3"/></svg>
+      <input id="recherche" type="search" placeholder="Chercher un nom, un métier…" aria-label="Chercher dans l'annuaire" />
+    </label>
+
+    <!-- Category filter — reads as a lens over the feed -->
+    <div class="flex gap-2 overflow-x-auto pb-2 -mx-4 px-4 sm:mx-0 sm:px-0 sm:flex-wrap" role="group" aria-label="Filtrer par catégorie">
+      <button data-filter="all" class="chip-filter btn btn-sm min-h-11 rounded-full btn-primary shrink-0">Tous</button>
+      <button data-filter="sante-bien-etre" class="chip-filter btn btn-sm min-h-11 rounded-full btn-ghost bg-base-100 shrink-0">🌿 Santé &amp; bien-être</button>
+      <button data-filter="beaute-soins" class="chip-filter btn btn-sm min-h-11 rounded-full btn-ghost bg-base-100 shrink-0">✂️ Beauté &amp; soins</button>
+      <button data-filter="artisanat-travaux" class="chip-filter btn btn-sm min-h-11 rounded-full btn-ghost bg-base-100 shrink-0">🔨 Artisanat &amp; travaux</button>
+      <button data-filter="alimentation-traiteur" class="chip-filter btn btn-sm min-h-11 rounded-full btn-ghost bg-base-100 shrink-0">🥖 Alimentation &amp; traiteur</button>
+      <button data-filter="conseil-entreprise" class="chip-filter btn btn-sm min-h-11 rounded-full btn-ghost bg-base-100 shrink-0">📊 Conseil &amp; entreprise</button>
+      <button data-filter="numerique-creation" class="chip-filter btn btn-sm min-h-11 rounded-full btn-ghost bg-base-100 shrink-0">💻 Numérique &amp; création</button>
+      <button data-filter="sport-mouvement" class="chip-filter btn btn-sm min-h-11 rounded-full btn-ghost bg-base-100 shrink-0">🏃 Sport &amp; mouvement</button>
+      <button data-filter="art-culture" class="chip-filter btn btn-sm min-h-11 rounded-full btn-ghost bg-base-100 shrink-0">🎨 Art &amp; culture</button>
+      <button data-filter="services-domicile" class="chip-filter btn btn-sm min-h-11 rounded-full btn-ghost bg-base-100 shrink-0">🏠 Services à domicile</button>
+    </div>
+
+    <p id="etatVide" class="hidden text-center text-base-content/60 py-10">Aucun portrait ne correspond — essayez « Tous » ou un autre mot.</p>
+
+    <!-- Grid — two columns on mobile, denser card variant of the same atom -->
+    <div id="grille" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
+
+      <a href="membre.html" data-member data-categories="art-culture numerique-creation" data-name="karim ziani photographe portrait famille reportage"
+         class="rounded-2xl overflow-hidden border border-base-300/70 bg-base-100 shadow-sm hover:shadow-md transition-shadow">
+        <div class="relative aspect-square">
+          <img src="https://picsum.photos/seed/karim-ziani/600/600" alt="Portrait de Karim Ziani" class="w-full h-full object-cover" />
+          <span class="badge badge-secondary badge-sm absolute top-2 left-2 shadow">Nouveau</span>
+        </div>
+        <div class="p-3">
+          <h2 class="font-[family-name:Fraunces] text-base leading-snug truncate">Karim Ziani</h2>
+          <p class="text-xs text-base-content/70 truncate">Photographe</p>
+          <div class="flex flex-wrap gap-1 mt-1.5"><span class="badge badge-ghost badge-xs">🎨</span><span class="badge badge-ghost badge-xs">💻</span></div>
+        </div>
+      </a>
+
+      <a href="membre.html" data-member data-categories="beaute-soins services-domicile" data-name="amandine rey coiffeuse domicile coupe couleur"
+         class="rounded-2xl overflow-hidden border border-base-300/70 bg-base-100 shadow-sm hover:shadow-md transition-shadow">
+        <div class="relative aspect-square">
+          <img src="https://picsum.photos/seed/amandine-rey/600/600" alt="Portrait d'Amandine Rey" class="w-full h-full object-cover" />
+          <span class="badge badge-secondary badge-sm absolute top-2 left-2 shadow">Nouveau</span>
+        </div>
+        <div class="p-3">
+          <h2 class="font-[family-name:Fraunces] text-base leading-snug truncate">Amandine Rey</h2>
+          <p class="text-xs text-base-content/70 truncate">Coiffeuse à domicile</p>
+          <div class="flex flex-wrap gap-1 mt-1.5"><span class="badge badge-ghost badge-xs">✂️</span><span class="badge badge-ghost badge-xs">🏠</span></div>
+        </div>
+      </a>
+
+      <a href="membre.html" data-member data-categories="conseil-entreprise" data-name="pierre delmas expert comptable association"
+         class="rounded-2xl overflow-hidden border border-base-300/70 bg-base-100 shadow-sm hover:shadow-md transition-shadow">
+        <div class="relative aspect-square">
+          <img src="https://picsum.photos/seed/pierre-delmas/600/600" alt="Portrait de Pierre Delmas" class="w-full h-full object-cover" />
+          <span class="badge badge-secondary badge-sm absolute top-2 left-2 shadow">Nouveau</span>
+        </div>
+        <div class="p-3">
+          <h2 class="font-[family-name:Fraunces] text-base leading-snug truncate">Pierre Delmas</h2>
+          <p class="text-xs text-base-content/70 truncate">Expert-comptable</p>
+          <div class="flex flex-wrap gap-1 mt-1.5"><span class="badge badge-ghost badge-xs">📊</span></div>
+        </div>
+      </a>
+
+      <a href="membre.html" data-member data-categories="sport-mouvement sante-bien-etre" data-name="ines lacombe yoga hatha prenatal halle"
+         class="rounded-2xl overflow-hidden border border-base-300/70 bg-base-100 shadow-sm hover:shadow-md transition-shadow">
+        <div class="relative aspect-square">
+          <img src="https://picsum.photos/seed/ines-lacombe/600/600" alt="Portrait d'Inès Lacombe" class="w-full h-full object-cover" />
+        </div>
+        <div class="p-3">
+          <h2 class="font-[family-name:Fraunces] text-base leading-snug truncate">Inès Lacombe</h2>
+          <p class="text-xs text-base-content/70 truncate">Professeure de yoga</p>
+          <div class="flex flex-wrap gap-1 mt-1.5"><span class="badge badge-ghost badge-xs">🏃</span><span class="badge badge-ghost badge-xs">🌿</span></div>
+        </div>
+      </a>
+
+      <a href="membre.html" data-member data-categories="artisanat-travaux services-domicile" data-name="julien marty electricien depannage borne recharge"
+         class="rounded-2xl overflow-hidden border border-base-300/70 bg-base-100 shadow-sm hover:shadow-md transition-shadow">
+        <div class="relative aspect-square">
+          <img src="https://picsum.photos/seed/julien-marty/600/600" alt="Portrait de Julien Marty" class="w-full h-full object-cover" />
+        </div>
+        <div class="p-3">
+          <h2 class="font-[family-name:Fraunces] text-base leading-snug truncate">Julien Marty</h2>
+          <p class="text-xs text-base-content/70 truncate">Électricien</p>
+          <div class="flex flex-wrap gap-1 mt-1.5"><span class="badge badge-ghost badge-xs">🔨</span><span class="badge badge-ghost badge-xs">🏠</span></div>
+        </div>
+      </a>
+
+      <a href="membre.html" data-member data-categories="sante-bien-etre" data-name="sophie arnaud naturopathe digestion fatigue"
+         class="rounded-2xl overflow-hidden border border-base-300/70 bg-base-100 shadow-sm hover:shadow-md transition-shadow">
+        <div class="relative aspect-square">
+          <img src="https://picsum.photos/seed/sophie-arnaud/600/600" alt="Portrait de Sophie Arnaud" class="w-full h-full object-cover" />
+        </div>
+        <div class="p-3">
+          <h2 class="font-[family-name:Fraunces] text-base leading-snug truncate">Sophie Arnaud</h2>
+          <p class="text-xs text-base-content/70 truncate">Naturopathe</p>
+          <div class="flex flex-wrap gap-1 mt-1.5"><span class="badge badge-ghost badge-xs">🌿</span></div>
+        </div>
+      </a>
+
+      <a href="membre.html" data-member data-categories="sport-mouvement sante-bien-etre" data-name="thomas vidal coach sportif exterieur groupe"
+         class="rounded-2xl overflow-hidden border border-base-300/70 bg-base-100 shadow-sm hover:shadow-md transition-shadow">
+        <div class="relative aspect-square">
+          <img src="https://picsum.photos/seed/thomas-vidal/600/600" alt="Portrait de Thomas Vidal" class="w-full h-full object-cover" />
+        </div>
+        <div class="p-3">
+          <h2 class="font-[family-name:Fraunces] text-base leading-snug truncate">Thomas Vidal</h2>
+          <p class="text-xs text-base-content/70 truncate">Coach sportif</p>
+          <div class="flex flex-wrap gap-1 mt-1.5"><span class="badge badge-ghost badge-xs">🏃</span><span class="badge badge-ghost badge-xs">🌿</span></div>
+        </div>
+      </a>
+
+      <a href="membre.html" data-member data-categories="alimentation-traiteur" data-name="nadia berrada traiteur marocain buffet"
+         class="rounded-2xl overflow-hidden border border-base-300/70 bg-base-100 shadow-sm hover:shadow-md transition-shadow">
+        <div class="relative aspect-square">
+          <img src="https://picsum.photos/seed/nadia-berrada/600/600" alt="Portrait de Nadia Berrada" class="w-full h-full object-cover" />
+        </div>
+        <div class="p-3">
+          <h2 class="font-[family-name:Fraunces] text-base leading-snug truncate">Nadia Berrada</h2>
+          <p class="text-xs text-base-content/70 truncate">Traiteur — cuisine maison</p>
+          <div class="flex flex-wrap gap-1 mt-1.5"><span class="badge badge-ghost badge-xs">🥖</span></div>
+        </div>
+      </a>
+
+      <a href="membre.html" data-member data-categories="artisanat-travaux" data-name="marc ollivier menuisier ebeniste meuble sur mesure"
+         class="rounded-2xl overflow-hidden border border-base-300/70 bg-base-100 shadow-sm hover:shadow-md transition-shadow">
+        <div class="relative aspect-square">
+          <img src="https://picsum.photos/seed/marc-ollivier/600/600" alt="Portrait de Marc Ollivier" class="w-full h-full object-cover" />
+        </div>
+        <div class="p-3">
+          <h2 class="font-[family-name:Fraunces] text-base leading-snug truncate">Marc Ollivier</h2>
+          <p class="text-xs text-base-content/70 truncate">Menuisier-ébéniste</p>
+          <div class="flex flex-wrap gap-1 mt-1.5"><span class="badge badge-ghost badge-xs">🔨</span></div>
+        </div>
+      </a>
+
+      <a href="membre.html" data-member data-categories="numerique-creation art-culture" data-name="lea fontaine graphiste illustratrice logo affiche"
+         class="rounded-2xl overflow-hidden border border-base-300/70 bg-base-100 shadow-sm hover:shadow-md transition-shadow">
+        <div class="relative aspect-square">
+          <img src="https://picsum.photos/seed/lea-fontaine/600/600" alt="Portrait de Léa Fontaine" class="w-full h-full object-cover" />
+        </div>
+        <div class="p-3">
+          <h2 class="font-[family-name:Fraunces] text-base leading-snug truncate">Léa Fontaine</h2>
+          <p class="text-xs text-base-content/70 truncate">Graphiste &amp; illustratrice</p>
+          <div class="flex flex-wrap gap-1 mt-1.5"><span class="badge badge-ghost badge-xs">💻</span><span class="badge badge-ghost badge-xs">🎨</span></div>
+        </div>
+      </a>
+
+      <a href="membre.html" data-member data-categories="numerique-creation conseil-entreprise" data-name="yanis belhadj developpeur web site vitrine boutique"
+         class="rounded-2xl overflow-hidden border border-base-300/70 bg-base-100 shadow-sm hover:shadow-md transition-shadow">
+        <div class="relative aspect-square">
+          <img src="https://picsum.photos/seed/yanis-belhadj/600/600" alt="Portrait de Yanis Belhadj" class="w-full h-full object-cover" />
+        </div>
+        <div class="p-3">
+          <h2 class="font-[family-name:Fraunces] text-base leading-snug truncate">Yanis Belhadj</h2>
+          <p class="text-xs text-base-content/70 truncate">Développeur web indépendant</p>
+          <div class="flex flex-wrap gap-1 mt-1.5"><span class="badge badge-ghost badge-xs">💻</span><span class="badge badge-ghost badge-xs">📊</span></div>
+        </div>
+      </a>
+
+      <a href="membre.html" data-member data-categories="sante-bien-etre" data-name="camille roussel sophrologue stress sommeil examen"
+         class="rounded-2xl overflow-hidden border border-base-300/70 bg-base-100 shadow-sm hover:shadow-md transition-shadow">
+        <div class="relative aspect-square">
+          <img src="https://picsum.photos/seed/camille-roussel/600/600" alt="Portrait de Camille Roussel" class="w-full h-full object-cover" />
+        </div>
+        <div class="p-3">
+          <h2 class="font-[family-name:Fraunces] text-base leading-snug truncate">Camille Roussel</h2>
+          <p class="text-xs text-base-content/70 truncate">Sophrologue</p>
+          <div class="flex flex-wrap gap-1 mt-1.5"><span class="badge badge-ghost badge-xs">🌿</span></div>
+        </div>
+      </a>
+
+    </div>
+  </main>
+
+  <!-- ===== Mobile dock ===== -->
+  <div class="dock md:hidden">
+    <a href="index.html">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M4 11.5 12 4l8 7.5M6 10v9a1 1 0 0 0 1 1h3v-5.5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1V20h3a1 1 0 0 0 1-1v-9"/></svg>
+      <span class="dock-label">Accueil</span>
+    </a>
+    <a href="annuaire.html" class="dock-active">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="w-5 h-5"><rect x="3.5" y="3.5" width="7" height="7" rx="1.3"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.3"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.3"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.3"/></svg>
+      <span class="dock-label">Annuaire</span>
+    </a>
+    <a href="carte.html">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 21s7-6.5 7-12a7 7 0 1 0-14 0c0 5.5 7 12 7 12Z"/><circle cx="12" cy="9" r="2.3"/></svg>
+      <span class="dock-label">Carte</span>
+    </a>
+  </div>
+
+  <!-- ===== Footer ===== -->
+  <footer class="footer sm:footer-horizontal bg-base-200 text-base-content p-10 border-t border-base-300 pb-28 md:pb-10">
+    <nav>
+      <h6 class="footer-title">La Cartoucherie</h6>
+      <a class="link link-hover" href="#">À propos</a>
+      <a class="link link-hover" href="#">Confidentialité</a>
+      <a class="link link-hover" href="#">Mentions légales</a>
+      <a class="link link-hover" href="#">Avis : comment ça marche</a>
+    </nav>
+    <nav>
+      <h6 class="footer-title">Le quartier</h6>
+      <span class="text-sm opacity-70">Toulouse 31300</span>
+      <span class="text-sm opacity-70">Portraits par Sandra Carole</span>
+    </nav>
+  </footer>
+
+  <script>
+    // Category chips act as a lens over the feed; search is a slim secondary field.
+    // Both operate on the same data-member cards — no fetch, no framework.
+    const chips = document.querySelectorAll('.chip-filter');
+    const cards = document.querySelectorAll('[data-member]');
+    const search = document.getElementById('recherche');
+    const empty = document.getElementById('etatVide');
+    let activeCategory = 'all';
+
+    function applyFilters() {
+      const q = (search.value || '').trim().toLowerCase();
+      let visible = 0;
+      cards.forEach(card => {
+        const matchesCategory = activeCategory === 'all' || card.dataset.categories.includes(activeCategory);
+        const matchesQuery = !q || card.dataset.name.includes(q);
+        const show = matchesCategory && matchesQuery;
+        card.classList.toggle('hidden', !show);
+        if (show) visible++;
+      });
+      empty.classList.toggle('hidden', visible !== 0);
+    }
+
+    chips.forEach(chip => {
+      chip.addEventListener('click', () => {
+        activeCategory = chip.dataset.filter;
+        chips.forEach(c => { c.classList.remove('btn-primary'); c.classList.add('btn-ghost', 'bg-base-100'); });
+        chip.classList.remove('btn-ghost', 'bg-base-100');
+        chip.classList.add('btn-primary');
+        applyFilters();
+      });
+    });
+
+    search.addEventListener('input', applyFilters);
+
+    // Pick up ?q= handed off from the search dialog on other pages
+    const params = new URLSearchParams(location.search);
+    if (params.get('q')) {
+      search.value = params.get('q');
+      applyFilters();
+    }
+  </script>
+
+</body>
+</html>

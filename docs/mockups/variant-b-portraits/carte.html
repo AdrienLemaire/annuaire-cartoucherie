@@ -1,0 +1,402 @@
+<!doctype html>
+<html lang="fr" data-theme="autumn">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Carte — La Cartoucherie</title>
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@5/themes.css" rel="stylesheet" type="text/css" />
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,340;0,9..144,560;0,9..144,650;1,9..144,500&display=swap" rel="stylesheet" />
+</head>
+<body class="min-h-screen bg-base-200 text-base-content">
+
+  <!-- ===== Header ===== -->
+  <header class="navbar bg-base-100/90 backdrop-blur-md border-b border-base-300 sticky top-0 z-40 px-4 sm:px-6">
+    <div class="navbar-start">
+      <a href="index.html" class="flex items-baseline gap-2">
+        <span class="font-[family-name:Fraunces] font-semibold text-2xl text-primary">Cartoucherie</span>
+        <span class="hidden sm:inline text-xs uppercase tracking-[0.2em] text-base-content/50">portraits du quartier</span>
+      </a>
+    </div>
+    <div class="navbar-center hidden md:flex">
+      <ul class="menu menu-horizontal gap-1 text-sm">
+        <li><a href="index.html">Accueil</a></li>
+        <li><a href="annuaire.html">Annuaire</a></li>
+        <li><a href="carte.html" class="menu-active">Carte</a></li>
+      </ul>
+    </div>
+    <div class="navbar-end">
+      <button class="btn btn-ghost btn-circle w-11 h-11 min-h-11" onclick="modalRecherche.showModal()" aria-label="Rechercher un commerce">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="w-5 h-5"><circle cx="11" cy="11" r="7"/><path stroke-linecap="round" d="m21 21-4.3-4.3"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <dialog id="modalRecherche" class="modal modal-top sm:modal-middle">
+    <div class="modal-box">
+      <h3 class="font-[family-name:Fraunces] text-xl">Chercher un portrait</h3>
+      <form action="annuaire.html" method="get" class="flex gap-2 mt-3">
+        <label class="input w-full">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="w-5 h-5 opacity-60"><circle cx="11" cy="11" r="7"/><path stroke-linecap="round" d="m21 21-4.3-4.3"/></svg>
+          <input type="search" name="q" placeholder="ex. électricien, yoga, comptable…" aria-label="Recherche" />
+        </label>
+        <button type="submit" class="btn btn-primary min-h-11">OK</button>
+      </form>
+      <div class="modal-action"><form method="dialog"><button class="btn btn-ghost btn-sm min-h-11">Fermer</button></form></div>
+    </div>
+    <form method="dialog" class="modal-backdrop"><button>fermer</button></form>
+  </dialog>
+
+  <main class="max-w-3xl mx-auto px-4 pt-6 pb-28 md:pb-16 space-y-5">
+
+    <section class="space-y-1">
+      <p class="text-xs uppercase tracking-[0.25em] text-primary font-semibold">Le quartier, vu d'en haut</p>
+      <h1 class="font-[family-name:Fraunces] text-3xl leading-tight">9 visages, repérés sur la carte.</h1>
+      <p class="text-base-content/70">Touchez un point pour un aperçu, ou parcourez la liste juste en dessous — plus sûr du pouce que les petits points.</p>
+    </section>
+
+    <!-- ===== Map placeholder — static, styled, no map library ===== -->
+    <div class="relative w-full aspect-[3/4] sm:aspect-[16/10] rounded-3xl border border-base-300 shadow-inner">
+
+      <!-- Background layer, clipped -->
+      <div class="absolute inset-0 rounded-3xl overflow-hidden">
+        <img src="https://picsum.photos/seed/cartoucherie-quartier/1200/1200" alt="" aria-hidden="true" class="w-full h-full object-cover grayscale-[55%] sepia-[35%] contrast-[.92] saturate-[.85]" />
+        <div class="absolute inset-0 bg-primary/15"></div>
+        <div class="absolute inset-0 bg-gradient-to-b from-base-100/30 via-transparent to-base-100/40"></div>
+        <!-- decorative streets -->
+        <div class="absolute top-[38%] left-[-5%] w-[110%] h-[3px] bg-base-100/50 rotate-[-4deg]"></div>
+        <div class="absolute top-0 left-[62%] w-[3px] h-full bg-base-100/40 rotate-[8deg]"></div>
+      </div>
+
+      <!-- Landmark labels (decorative, non-clipped layer) -->
+      <span class="absolute top-[8%] left-[46%] -translate-x-1/2 badge badge-sm bg-base-100/90 border-base-300 shadow">🏛️ La Halle</span>
+      <span class="absolute bottom-[6%] left-[10%] badge badge-sm bg-base-100/90 border-base-300 shadow">Rue Paul Mesplé</span>
+      <span class="absolute top-[10%] right-[4%] badge badge-sm bg-base-100/90 border-base-300 shadow">Av. de Grande-Bretagne</span>
+      <span class="absolute bottom-[10%] right-[6%] badge badge-sm bg-base-100/90 border-base-300 shadow">🚊 Tram T1</span>
+
+      <!-- Pins — the portrait atom, smallest size: a face -->
+
+      <div class="absolute top-[22%] left-[58%] -translate-x-1/2 -translate-y-1/2 z-10">
+        <details name="pin">
+          <summary class="list-none cursor-pointer block w-11 h-11 rounded-full border-2 border-base-100 shadow-lg overflow-hidden" aria-label="Camille Roussel — Sophrologue">
+            <img src="https://picsum.photos/seed/camille-roussel/100/100" alt="" class="w-full h-full object-cover" />
+          </summary>
+          <div class="absolute z-20 w-56 left-1/2 -translate-x-1/2 top-full mt-2 rounded-2xl overflow-hidden border border-base-300 bg-base-100 shadow-xl">
+            <div class="aspect-[4/3]"><img src="https://picsum.photos/seed/camille-roussel/300/220" alt="Portrait de Camille Roussel" class="w-full h-full object-cover" /></div>
+            <div class="p-3">
+              <p class="font-[family-name:Fraunces] font-semibold truncate">Camille Roussel</p>
+              <p class="text-xs text-base-content/60 truncate">Sophrologue · 120 m</p>
+              <div class="flex items-center justify-between mt-2">
+                <a href="tel:0612345678" class="btn btn-ghost btn-xs min-h-11" aria-label="Appeler Camille Roussel">📞</a>
+                <a href="membre.html" class="btn btn-primary btn-xs min-h-11">Voir →</a>
+              </div>
+            </div>
+          </div>
+        </details>
+      </div>
+
+      <div class="absolute top-[46%] left-[44%] -translate-x-1/2 -translate-y-1/2 z-10">
+        <details name="pin">
+          <summary class="list-none cursor-pointer block w-11 h-11 rounded-full border-2 border-base-100 shadow-lg overflow-hidden" aria-label="Yanis Belhadj — Développeur web">
+            <img src="https://picsum.photos/seed/yanis-belhadj/100/100" alt="" class="w-full h-full object-cover" />
+          </summary>
+          <div class="absolute z-20 w-56 left-1/2 -translate-x-1/2 top-full mt-2 rounded-2xl overflow-hidden border border-base-300 bg-base-100 shadow-xl">
+            <div class="aspect-[4/3]"><img src="https://picsum.photos/seed/yanis-belhadj/300/220" alt="Portrait de Yanis Belhadj" class="w-full h-full object-cover" /></div>
+            <div class="p-3">
+              <p class="font-[family-name:Fraunces] font-semibold truncate">Yanis Belhadj</p>
+              <p class="text-xs text-base-content/60 truncate">Développeur web · 60 m</p>
+              <div class="flex items-center justify-between mt-2">
+                <a href="tel:0623456789" class="btn btn-ghost btn-xs min-h-11" aria-label="Appeler Yanis Belhadj">📞</a>
+                <a href="membre.html" class="btn btn-primary btn-xs min-h-11">Voir →</a>
+              </div>
+            </div>
+          </div>
+        </details>
+      </div>
+
+      <div class="absolute top-[66%] left-[72%] -translate-x-1/2 -translate-y-1/2 z-10">
+        <details name="pin">
+          <summary class="list-none cursor-pointer block w-11 h-11 rounded-full border-2 border-base-100 shadow-lg overflow-hidden" aria-label="Léa Fontaine — Graphiste">
+            <img src="https://picsum.photos/seed/lea-fontaine/100/100" alt="" class="w-full h-full object-cover" />
+          </summary>
+          <div class="absolute z-20 w-56 right-0 bottom-full mb-2 rounded-2xl overflow-hidden border border-base-300 bg-base-100 shadow-xl">
+            <div class="aspect-[4/3]"><img src="https://picsum.photos/seed/lea-fontaine/300/220" alt="Portrait de Léa Fontaine" class="w-full h-full object-cover" /></div>
+            <div class="p-3">
+              <p class="font-[family-name:Fraunces] font-semibold truncate">Léa Fontaine</p>
+              <p class="text-xs text-base-content/60 truncate">Graphiste · 340 m</p>
+              <div class="flex items-center justify-between mt-2">
+                <a href="tel:0634567890" class="btn btn-ghost btn-xs min-h-11" aria-label="Appeler Léa Fontaine">📞</a>
+                <a href="membre.html" class="btn btn-primary btn-xs min-h-11">Voir →</a>
+              </div>
+            </div>
+          </div>
+        </details>
+      </div>
+
+      <div class="absolute top-[80%] left-[20%] -translate-x-1/2 -translate-y-1/2 z-10">
+        <details name="pin">
+          <summary class="list-none cursor-pointer block w-11 h-11 rounded-full border-2 border-base-100 shadow-lg overflow-hidden" aria-label="Marc Ollivier — Menuisier-ébéniste">
+            <img src="https://picsum.photos/seed/marc-ollivier/100/100" alt="" class="w-full h-full object-cover" />
+          </summary>
+          <div class="absolute z-20 w-56 left-0 bottom-full mb-2 rounded-2xl overflow-hidden border border-base-300 bg-base-100 shadow-xl">
+            <div class="aspect-[4/3]"><img src="https://picsum.photos/seed/marc-ollivier/300/220" alt="Portrait de Marc Ollivier" class="w-full h-full object-cover" /></div>
+            <div class="p-3">
+              <p class="font-[family-name:Fraunces] font-semibold truncate">Marc Ollivier</p>
+              <p class="text-xs text-base-content/60 truncate">Menuisier-ébéniste · 800 m</p>
+              <div class="flex items-center justify-between mt-2">
+                <a href="tel:0645678901" class="btn btn-ghost btn-xs min-h-11" aria-label="Appeler Marc Ollivier">📞</a>
+                <a href="membre.html" class="btn btn-primary btn-xs min-h-11">Voir →</a>
+              </div>
+            </div>
+          </div>
+        </details>
+      </div>
+
+      <div class="absolute top-[50%] left-[50%] -translate-x-1/2 -translate-y-1/2 z-10">
+        <details name="pin">
+          <summary class="list-none cursor-pointer block w-11 h-11 rounded-full border-2 border-base-100 shadow-lg overflow-hidden" aria-label="Thomas Vidal — Coach sportif">
+            <img src="https://picsum.photos/seed/thomas-vidal/100/100" alt="" class="w-full h-full object-cover" />
+          </summary>
+          <div class="absolute z-20 w-56 left-1/2 -translate-x-1/2 top-full mt-2 rounded-2xl overflow-hidden border border-base-300 bg-base-100 shadow-xl">
+            <div class="aspect-[4/3]"><img src="https://picsum.photos/seed/thomas-vidal/300/220" alt="Portrait de Thomas Vidal" class="w-full h-full object-cover" /></div>
+            <div class="p-3">
+              <p class="font-[family-name:Fraunces] font-semibold truncate">Thomas Vidal</p>
+              <p class="text-xs text-base-content/60 truncate">Coach sportif · 60 m</p>
+              <div class="flex items-center justify-between mt-2">
+                <a href="tel:0667890123" class="btn btn-ghost btn-xs min-h-11" aria-label="Appeler Thomas Vidal">📞</a>
+                <a href="membre.html" class="btn btn-primary btn-xs min-h-11">Voir →</a>
+              </div>
+            </div>
+          </div>
+        </details>
+      </div>
+
+      <div class="absolute top-[28%] left-[82%] -translate-x-1/2 -translate-y-1/2 z-10">
+        <details name="pin">
+          <summary class="list-none cursor-pointer block w-11 h-11 rounded-full border-2 border-base-100 shadow-lg overflow-hidden" aria-label="Sophie Arnaud — Naturopathe">
+            <img src="https://picsum.photos/seed/sophie-arnaud/100/100" alt="" class="w-full h-full object-cover" />
+          </summary>
+          <div class="absolute z-20 w-56 right-0 top-full mt-2 rounded-2xl overflow-hidden border border-base-300 bg-base-100 shadow-xl">
+            <div class="aspect-[4/3]"><img src="https://picsum.photos/seed/sophie-arnaud/300/220" alt="Portrait de Sophie Arnaud" class="w-full h-full object-cover" /></div>
+            <div class="p-3">
+              <p class="font-[family-name:Fraunces] font-semibold truncate">Sophie Arnaud</p>
+              <p class="text-xs text-base-content/60 truncate">Naturopathe · 450 m</p>
+              <div class="flex items-center justify-between mt-2">
+                <a href="tel:0678901234" class="btn btn-ghost btn-xs min-h-11" aria-label="Appeler Sophie Arnaud">📞</a>
+                <a href="membre.html" class="btn btn-primary btn-xs min-h-11">Voir →</a>
+              </div>
+            </div>
+          </div>
+        </details>
+      </div>
+
+      <div class="absolute top-[44%] left-[54%] -translate-x-1/2 -translate-y-1/2 z-10">
+        <details name="pin">
+          <summary class="list-none cursor-pointer block w-11 h-11 rounded-full border-2 border-base-100 shadow-lg overflow-hidden" aria-label="Inès Lacombe — Professeure de yoga">
+            <img src="https://picsum.photos/seed/ines-lacombe/100/100" alt="" class="w-full h-full object-cover" />
+          </summary>
+          <div class="absolute z-20 w-56 left-1/2 -translate-x-1/2 top-full mt-2 rounded-2xl overflow-hidden border border-base-300 bg-base-100 shadow-xl">
+            <div class="aspect-[4/3]"><img src="https://picsum.photos/seed/ines-lacombe/300/220" alt="Portrait d'Inès Lacombe" class="w-full h-full object-cover" /></div>
+            <div class="p-3">
+              <p class="font-[family-name:Fraunces] font-semibold truncate">Inès Lacombe</p>
+              <p class="text-xs text-base-content/60 truncate">Professeure de yoga · 60 m</p>
+              <div class="flex items-center justify-between mt-2">
+                <a href="tel:0690123456" class="btn btn-ghost btn-xs min-h-11" aria-label="Appeler Inès Lacombe">📞</a>
+                <a href="membre.html" class="btn btn-primary btn-xs min-h-11">Voir →</a>
+              </div>
+            </div>
+          </div>
+        </details>
+      </div>
+
+      <div class="absolute top-[24%] left-[30%] -translate-x-1/2 -translate-y-1/2 z-10">
+        <details name="pin">
+          <summary class="list-none cursor-pointer block w-11 h-11 rounded-full border-2 border-base-100 shadow-lg overflow-hidden" aria-label="Pierre Delmas — Expert-comptable">
+            <img src="https://picsum.photos/seed/pierre-delmas/100/100" alt="" class="w-full h-full object-cover" />
+          </summary>
+          <div class="absolute z-20 w-56 left-0 top-full mt-2 rounded-2xl overflow-hidden border border-base-300 bg-base-100 shadow-xl">
+            <div class="aspect-[4/3]"><img src="https://picsum.photos/seed/pierre-delmas/300/220" alt="Portrait de Pierre Delmas" class="w-full h-full object-cover" /></div>
+            <div class="p-3">
+              <p class="font-[family-name:Fraunces] font-semibold truncate">Pierre Delmas</p>
+              <p class="text-xs text-base-content/60 truncate">Expert-comptable · 150 m</p>
+              <div class="flex items-center justify-between mt-2">
+                <a href="tel:0601234567" class="btn btn-ghost btn-xs min-h-11" aria-label="Appeler Pierre Delmas">📞</a>
+                <a href="membre.html" class="btn btn-primary btn-xs min-h-11">Voir →</a>
+              </div>
+            </div>
+          </div>
+        </details>
+      </div>
+
+      <div class="absolute top-[60%] left-[35%] -translate-x-1/2 -translate-y-1/2 z-10">
+        <details name="pin">
+          <summary class="list-none cursor-pointer block w-11 h-11 rounded-full border-2 border-base-100 shadow-lg overflow-hidden" aria-label="Karim Ziani — Photographe">
+            <img src="https://picsum.photos/seed/karim-ziani/100/100" alt="" class="w-full h-full object-cover" />
+          </summary>
+          <div class="absolute z-20 w-56 left-0 bottom-full mb-2 rounded-2xl overflow-hidden border border-base-300 bg-base-100 shadow-xl">
+            <div class="aspect-[4/3]"><img src="https://picsum.photos/seed/karim-ziani/300/220" alt="Portrait de Karim Ziani" class="w-full h-full object-cover" /></div>
+            <div class="p-3">
+              <p class="font-[family-name:Fraunces] font-semibold truncate">Karim Ziani</p>
+              <p class="text-xs text-base-content/60 truncate">Photographe · 380 m</p>
+              <div class="flex items-center justify-between mt-2">
+                <a href="tel:0623904567" class="btn btn-ghost btn-xs min-h-11" aria-label="Appeler Karim Ziani">📞</a>
+                <a href="membre.html" class="btn btn-primary btn-xs min-h-11">Voir →</a>
+              </div>
+            </div>
+          </div>
+        </details>
+      </div>
+
+    </div>
+
+    <p class="text-xs text-base-content/50 text-center">Carte stylisée, à vocation d'orientation — pas un plan précis à l'échelle.</p>
+
+    <div class="divider">Les 9 visages affichés ci-dessus</div>
+
+    <!-- ===== Thumb-safe list — the atom, mini variant, real 44px rows ===== -->
+    <ul class="list bg-base-100 rounded-2xl border border-base-300/70 shadow-sm">
+
+      <li class="list-row items-center relative">
+        <img class="size-12 rounded-full object-cover" src="https://picsum.photos/seed/camille-roussel/100/100" alt="Camille Roussel" />
+        <div class="min-w-0">
+          <a href="membre.html" class="font-medium truncate block after:absolute after:inset-0 after:content-['']">Camille Roussel</a>
+          <div class="text-xs text-base-content/60 truncate">🌿 Sophrologue · 120 m</div>
+        </div>
+        <a href="tel:0612345678" class="btn btn-ghost btn-circle w-11 h-11 min-h-11 relative z-10" aria-label="Appeler Camille Roussel">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M4 5c0-.6.4-1 1-1h2.7c.5 0 .9.3 1 .8l.8 3.3c.1.4 0 .9-.3 1.2L7.9 10.6a12 12 0 0 0 5.5 5.5l1.3-1.3c.3-.3.8-.4 1.2-.3l3.3.8c.5.1.8.5.8 1V19c0 .6-.4 1-1 1h-1C10.5 20 4 13.5 4 6V5Z"/></svg>
+        </a>
+      </li>
+
+      <li class="list-row items-center relative">
+        <img class="size-12 rounded-full object-cover" src="https://picsum.photos/seed/yanis-belhadj/100/100" alt="Yanis Belhadj" />
+        <div class="min-w-0">
+          <a href="membre.html" class="font-medium truncate block after:absolute after:inset-0 after:content-['']">Yanis Belhadj</a>
+          <div class="text-xs text-base-content/60 truncate">💻 Développeur web · 60 m</div>
+        </div>
+        <a href="tel:0623456789" class="btn btn-ghost btn-circle w-11 h-11 min-h-11 relative z-10" aria-label="Appeler Yanis Belhadj">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M4 5c0-.6.4-1 1-1h2.7c.5 0 .9.3 1 .8l.8 3.3c.1.4 0 .9-.3 1.2L7.9 10.6a12 12 0 0 0 5.5 5.5l1.3-1.3c.3-.3.8-.4 1.2-.3l3.3.8c.5.1.8.5.8 1V19c0 .6-.4 1-1 1h-1C10.5 20 4 13.5 4 6V5Z"/></svg>
+        </a>
+      </li>
+
+      <li class="list-row items-center relative">
+        <img class="size-12 rounded-full object-cover" src="https://picsum.photos/seed/lea-fontaine/100/100" alt="Léa Fontaine" />
+        <div class="min-w-0">
+          <a href="membre.html" class="font-medium truncate block after:absolute after:inset-0 after:content-['']">Léa Fontaine</a>
+          <div class="text-xs text-base-content/60 truncate">🎨 Graphiste &amp; illustratrice · 340 m</div>
+        </div>
+        <a href="tel:0634567890" class="btn btn-ghost btn-circle w-11 h-11 min-h-11 relative z-10" aria-label="Appeler Léa Fontaine">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M4 5c0-.6.4-1 1-1h2.7c.5 0 .9.3 1 .8l.8 3.3c.1.4 0 .9-.3 1.2L7.9 10.6a12 12 0 0 0 5.5 5.5l1.3-1.3c.3-.3.8-.4 1.2-.3l3.3.8c.5.1.8.5.8 1V19c0 .6-.4 1-1 1h-1C10.5 20 4 13.5 4 6V5Z"/></svg>
+        </a>
+      </li>
+
+      <li class="list-row items-center relative">
+        <img class="size-12 rounded-full object-cover" src="https://picsum.photos/seed/marc-ollivier/100/100" alt="Marc Ollivier" />
+        <div class="min-w-0">
+          <a href="membre.html" class="font-medium truncate block after:absolute after:inset-0 after:content-['']">Marc Ollivier</a>
+          <div class="text-xs text-base-content/60 truncate">🔨 Menuisier-ébéniste · 800 m</div>
+        </div>
+        <a href="tel:0645678901" class="btn btn-ghost btn-circle w-11 h-11 min-h-11 relative z-10" aria-label="Appeler Marc Ollivier">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M4 5c0-.6.4-1 1-1h2.7c.5 0 .9.3 1 .8l.8 3.3c.1.4 0 .9-.3 1.2L7.9 10.6a12 12 0 0 0 5.5 5.5l1.3-1.3c.3-.3.8-.4 1.2-.3l3.3.8c.5.1.8.5.8 1V19c0 .6-.4 1-1 1h-1C10.5 20 4 13.5 4 6V5Z"/></svg>
+        </a>
+      </li>
+
+      <li class="list-row items-center relative">
+        <img class="size-12 rounded-full object-cover" src="https://picsum.photos/seed/thomas-vidal/100/100" alt="Thomas Vidal" />
+        <div class="min-w-0">
+          <a href="membre.html" class="font-medium truncate block after:absolute after:inset-0 after:content-['']">Thomas Vidal</a>
+          <div class="text-xs text-base-content/60 truncate">🏃 Coach sportif · 60 m</div>
+        </div>
+        <a href="tel:0667890123" class="btn btn-ghost btn-circle w-11 h-11 min-h-11 relative z-10" aria-label="Appeler Thomas Vidal">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M4 5c0-.6.4-1 1-1h2.7c.5 0 .9.3 1 .8l.8 3.3c.1.4 0 .9-.3 1.2L7.9 10.6a12 12 0 0 0 5.5 5.5l1.3-1.3c.3-.3.8-.4 1.2-.3l3.3.8c.5.1.8.5.8 1V19c0 .6-.4 1-1 1h-1C10.5 20 4 13.5 4 6V5Z"/></svg>
+        </a>
+      </li>
+
+      <li class="list-row items-center relative">
+        <img class="size-12 rounded-full object-cover" src="https://picsum.photos/seed/sophie-arnaud/100/100" alt="Sophie Arnaud" />
+        <div class="min-w-0">
+          <a href="membre.html" class="font-medium truncate block after:absolute after:inset-0 after:content-['']">Sophie Arnaud</a>
+          <div class="text-xs text-base-content/60 truncate">🌿 Naturopathe · 450 m</div>
+        </div>
+        <a href="tel:0678901234" class="btn btn-ghost btn-circle w-11 h-11 min-h-11 relative z-10" aria-label="Appeler Sophie Arnaud">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M4 5c0-.6.4-1 1-1h2.7c.5 0 .9.3 1 .8l.8 3.3c.1.4 0 .9-.3 1.2L7.9 10.6a12 12 0 0 0 5.5 5.5l1.3-1.3c.3-.3.8-.4 1.2-.3l3.3.8c.5.1.8.5.8 1V19c0 .6-.4 1-1 1h-1C10.5 20 4 13.5 4 6V5Z"/></svg>
+        </a>
+      </li>
+
+      <li class="list-row items-center relative">
+        <img class="size-12 rounded-full object-cover" src="https://picsum.photos/seed/ines-lacombe/100/100" alt="Inès Lacombe" />
+        <div class="min-w-0">
+          <a href="membre.html" class="font-medium truncate block after:absolute after:inset-0 after:content-['']">Inès Lacombe</a>
+          <div class="text-xs text-base-content/60 truncate">🏃 Professeure de yoga · 60 m</div>
+        </div>
+        <a href="tel:0690123456" class="btn btn-ghost btn-circle w-11 h-11 min-h-11 relative z-10" aria-label="Appeler Inès Lacombe">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M4 5c0-.6.4-1 1-1h2.7c.5 0 .9.3 1 .8l.8 3.3c.1.4 0 .9-.3 1.2L7.9 10.6a12 12 0 0 0 5.5 5.5l1.3-1.3c.3-.3.8-.4 1.2-.3l3.3.8c.5.1.8.5.8 1V19c0 .6-.4 1-1 1h-1C10.5 20 4 13.5 4 6V5Z"/></svg>
+        </a>
+      </li>
+
+      <li class="list-row items-center relative">
+        <img class="size-12 rounded-full object-cover" src="https://picsum.photos/seed/pierre-delmas/100/100" alt="Pierre Delmas" />
+        <div class="min-w-0">
+          <a href="membre.html" class="font-medium truncate block after:absolute after:inset-0 after:content-['']">Pierre Delmas</a>
+          <div class="text-xs text-base-content/60 truncate">📊 Expert-comptable · 150 m</div>
+        </div>
+        <a href="tel:0601234567" class="btn btn-ghost btn-circle w-11 h-11 min-h-11 relative z-10" aria-label="Appeler Pierre Delmas">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M4 5c0-.6.4-1 1-1h2.7c.5 0 .9.3 1 .8l.8 3.3c.1.4 0 .9-.3 1.2L7.9 10.6a12 12 0 0 0 5.5 5.5l1.3-1.3c.3-.3.8-.4 1.2-.3l3.3.8c.5.1.8.5.8 1V19c0 .6-.4 1-1 1h-1C10.5 20 4 13.5 4 6V5Z"/></svg>
+        </a>
+      </li>
+
+      <li class="list-row items-center relative">
+        <img class="size-12 rounded-full object-cover" src="https://picsum.photos/seed/karim-ziani/100/100" alt="Karim Ziani" />
+        <div class="min-w-0">
+          <a href="membre.html" class="font-medium truncate block after:absolute after:inset-0 after:content-['']">Karim Ziani</a>
+          <div class="text-xs text-base-content/60 truncate">🎨 Photographe · 380 m</div>
+        </div>
+        <a href="tel:0623904567" class="btn btn-ghost btn-circle w-11 h-11 min-h-11 relative z-10" aria-label="Appeler Karim Ziani">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M4 5c0-.6.4-1 1-1h2.7c.5 0 .9.3 1 .8l.8 3.3c.1.4 0 .9-.3 1.2L7.9 10.6a12 12 0 0 0 5.5 5.5l1.3-1.3c.3-.3.8-.4 1.2-.3l3.3.8c.5.1.8.5.8 1V19c0 .6-.4 1-1 1h-1C10.5 20 4 13.5 4 6V5Z"/></svg>
+        </a>
+      </li>
+
+    </ul>
+
+    <p class="text-sm text-base-content/60 text-center pt-2">
+      Il manque 3 portraits sur la carte : Nadia Berrada, Julien Marty et Amandine Rey travaillent chez leurs clients, sans adresse fixe à afficher.
+      <a href="annuaire.html" class="link link-primary">Les retrouver dans l'annuaire →</a>
+    </p>
+
+  </main>
+
+  <!-- ===== Mobile dock ===== -->
+  <div class="dock md:hidden">
+    <a href="index.html">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M4 11.5 12 4l8 7.5M6 10v9a1 1 0 0 0 1 1h3v-5.5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1V20h3a1 1 0 0 0 1-1v-9"/></svg>
+      <span class="dock-label">Accueil</span>
+    </a>
+    <a href="annuaire.html">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="w-5 h-5"><rect x="3.5" y="3.5" width="7" height="7" rx="1.3"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.3"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.3"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.3"/></svg>
+      <span class="dock-label">Annuaire</span>
+    </a>
+    <a href="carte.html" class="dock-active">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 21s7-6.5 7-12a7 7 0 1 0-14 0c0 5.5 7 12 7 12Z"/><circle cx="12" cy="9" r="2.3"/></svg>
+      <span class="dock-label">Carte</span>
+    </a>
+  </div>
+
+  <!-- ===== Footer ===== -->
+  <footer class="footer sm:footer-horizontal bg-base-200 text-base-content p-10 border-t border-base-300 pb-28 md:pb-10">
+    <nav>
+      <h6 class="footer-title">La Cartoucherie</h6>
+      <a class="link link-hover" href="#">À propos</a>
+      <a class="link link-hover" href="#">Confidentialité</a>
+      <a class="link link-hover" href="#">Mentions légales</a>
+      <a class="link link-hover" href="#">Avis : comment ça marche</a>
+    </nav>
+    <nav>
+      <h6 class="footer-title">Le quartier</h6>
+      <span class="text-sm opacity-70">Toulouse 31300</span>
+      <span class="text-sm opacity-70">Portraits par Sandra Carole</span>
+    </nav>
+  </footer>
+
+</body>
+</html>

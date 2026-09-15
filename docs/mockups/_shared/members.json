@@ -1,0 +1,410 @@
+{
+  "_note": "Donnees FICTIVES de demonstration pour les maquettes. Noms, adresses, telephones et avis inventes. Les portraits proviennent de randomuser.me (visages generes, libres de droit) : ce sont de vrais portraits cadres en portrait, pas des images d'illustration. Le champ 'genre' sert a accorder les textes en francais (« Ce qu'elle propose »). A remplacer par les portraits reels de Sandra.",
+  "quartier": {
+    "nom": "La Cartoucherie",
+    "ville": "Toulouse",
+    "codePostal": "31300",
+    "reperes": [
+      "La Halle de la Cartoucherie",
+      "Tram T1 — arrêts Cartoucherie, Zénith, Arènes Romaines",
+      "Avenue de Grande-Bretagne",
+      "Rue Paul Mesplé"
+    ]
+  },
+  "categories": [
+    {
+      "slug": "sante-bien-etre",
+      "nom": "Santé & bien-être",
+      "emoji": "🌿"
+    },
+    {
+      "slug": "beaute-soins",
+      "nom": "Beauté & soins",
+      "emoji": "✂️"
+    },
+    {
+      "slug": "artisanat-travaux",
+      "nom": "Artisanat & travaux",
+      "emoji": "🔨"
+    },
+    {
+      "slug": "alimentation-traiteur",
+      "nom": "Alimentation & traiteur",
+      "emoji": "🥖"
+    },
+    {
+      "slug": "conseil-entreprise",
+      "nom": "Conseil & entreprise",
+      "emoji": "📊"
+    },
+    {
+      "slug": "numerique-creation",
+      "nom": "Numérique & création",
+      "emoji": "💻"
+    },
+    {
+      "slug": "enfance-education",
+      "nom": "Enfance & éducation",
+      "emoji": "🎒"
+    },
+    {
+      "slug": "sport-mouvement",
+      "nom": "Sport & mouvement",
+      "emoji": "🏃"
+    },
+    {
+      "slug": "art-culture",
+      "nom": "Art & culture",
+      "emoji": "🎨"
+    },
+    {
+      "slug": "services-domicile",
+      "nom": "Services à domicile",
+      "emoji": "🏠"
+    }
+  ],
+  "membres": [
+    {
+      "slug": "camille-roussel",
+      "nom": "Camille Roussel",
+      "metier": "Sophrologue",
+      "accroche": "Gestion du stress, sommeil et préparation aux examens, en cabinet ou en visio.",
+      "bio": "Installée à la Cartoucherie depuis 2022, j'accompagne adultes et adolescents sur le stress, le sommeil et la confiance en soi. Séances individuelles d'une heure, et un atelier collectif le samedi matin à la Halle.",
+      "categories": [
+        "sante-bien-etre"
+      ],
+      "services": [
+        "Séance individuelle",
+        "Atelier collectif",
+        "Visio"
+      ],
+      "adresse": "14 rue Paul Mesplé, 31300 Toulouse",
+      "distance": "120 m",
+      "tel": "06 12 34 56 78",
+      "email": "camille.roussel@example.fr",
+      "site": "camille-sophrologie.fr",
+      "instagram": "camille_sophro_ctch",
+      "photo": "https://randomuser.me/api/portraits/women/44.jpg",
+      "note": 4.8,
+      "nbAvis": 12,
+      "surCarte": true,
+      "genre": "f"
+    },
+    {
+      "slug": "yanis-belhadj",
+      "nom": "Yanis Belhadj",
+      "metier": "Développeur web indépendant",
+      "accroche": "Sites vitrines et boutiques en ligne pour les commerces et associations du quartier.",
+      "bio": "Je fabrique des sites simples, rapides et faciles à mettre à jour soi-même. Je travaille surtout avec des artisans, des associations et des commerçants qui n'ont ni le temps ni l'envie de gérer de la technique.",
+      "categories": [
+        "numerique-creation",
+        "conseil-entreprise"
+      ],
+      "services": [
+        "Site vitrine",
+        "Boutique en ligne",
+        "Dépannage & maintenance"
+      ],
+      "adresse": "Espace de coworking, La Halle de la Cartoucherie",
+      "distance": "60 m",
+      "tel": "06 23 45 67 89",
+      "email": "yanis@example.fr",
+      "site": "yanisbelhadj.fr",
+      "instagram": null,
+      "photo": "https://randomuser.me/api/portraits/men/32.jpg",
+      "note": 5.0,
+      "nbAvis": 7,
+      "surCarte": true,
+      "genre": "h"
+    },
+    {
+      "slug": "lea-fontaine",
+      "nom": "Léa Fontaine",
+      "metier": "Graphiste & illustratrice",
+      "accroche": "Identité visuelle, affiches et illustrations sur mesure.",
+      "bio": "Graphiste depuis dix ans, je dessine des identités visuelles qui ressemblent vraiment aux gens qui les portent. Beaucoup d'affiches pour les événements du quartier, dont celles de la fête des voisins.",
+      "categories": [
+        "numerique-creation",
+        "art-culture"
+      ],
+      "services": [
+        "Logo & identité",
+        "Affiches",
+        "Illustration"
+      ],
+      "adresse": "Atelier partagé, avenue de Grande-Bretagne, 31300 Toulouse",
+      "distance": "340 m",
+      "tel": "06 34 56 78 90",
+      "email": "lea.fontaine@example.fr",
+      "site": "leafontaine-studio.fr",
+      "instagram": "lea_dessine",
+      "photo": "https://randomuser.me/api/portraits/women/68.jpg",
+      "note": 4.9,
+      "nbAvis": 15,
+      "surCarte": true,
+      "genre": "f"
+    },
+    {
+      "slug": "marc-ollivier",
+      "nom": "Marc Ollivier",
+      "metier": "Menuisier-ébéniste",
+      "accroche": "Meubles sur mesure et agencement pour les petits appartements du quartier.",
+      "bio": "Vingt ans de métier. Je fabrique surtout du sur-mesure pour les logements neufs de la Cartoucherie : bibliothèques, dressings, lits en mezzanine. Devis gratuit après visite.",
+      "categories": [
+        "artisanat-travaux"
+      ],
+      "services": [
+        "Meuble sur mesure",
+        "Agencement",
+        "Réparation"
+      ],
+      "adresse": "Atelier, route de Bayonne, 31300 Toulouse",
+      "distance": "800 m",
+      "tel": "06 45 67 89 01",
+      "email": "atelier.ollivier@example.fr",
+      "site": null,
+      "instagram": "atelier_ollivier",
+      "photo": "https://randomuser.me/api/portraits/men/75.jpg",
+      "note": 4.7,
+      "nbAvis": 9,
+      "surCarte": true,
+      "genre": "h"
+    },
+    {
+      "slug": "nadia-berrada",
+      "nom": "Nadia Berrada",
+      "metier": "Traiteur — cuisine maison",
+      "accroche": "Plats marocains à emporter et buffets pour les fêtes de quartier.",
+      "bio": "Je cuisine chez moi, comme à la maison. Commandes à récupérer le vendredi et le samedi, et buffets pour vos anniversaires, réunions et fêtes d'immeuble.",
+      "categories": [
+        "alimentation-traiteur"
+      ],
+      "services": [
+        "Plats à emporter",
+        "Buffet",
+        "Livraison quartier"
+      ],
+      "adresse": "Résidence Les Cartouches, 31300 Toulouse",
+      "distance": "210 m",
+      "tel": "06 56 78 90 12",
+      "email": "nadia.berrada@example.fr",
+      "site": null,
+      "instagram": "chez_nadia_ctch",
+      "photo": "https://randomuser.me/api/portraits/women/57.jpg",
+      "note": 5.0,
+      "nbAvis": 23,
+      "surCarte": false,
+      "genre": "f"
+    },
+    {
+      "slug": "thomas-vidal",
+      "nom": "Thomas Vidal",
+      "metier": "Coach sportif",
+      "accroche": "Petits groupes en extérieur, tous niveaux, y compris reprise après blessure.",
+      "bio": "Séances en plein air le long du canal et sur les pelouses de la Cartoucherie. Groupes de six maximum pour que chacun soit corrigé. Premier cours d'essai offert.",
+      "categories": [
+        "sport-mouvement",
+        "sante-bien-etre"
+      ],
+      "services": [
+        "Cours collectif",
+        "Coaching individuel",
+        "Reprise du sport"
+      ],
+      "adresse": "Rendez-vous : parvis de la Halle, 31300 Toulouse",
+      "distance": "60 m",
+      "tel": "06 67 89 01 23",
+      "email": "thomas.vidal@example.fr",
+      "site": "vidal-coaching.fr",
+      "instagram": "tvidal_coach",
+      "photo": "https://randomuser.me/api/portraits/men/11.jpg",
+      "note": 4.6,
+      "nbAvis": 18,
+      "surCarte": true,
+      "genre": "h"
+    },
+    {
+      "slug": "sophie-arnaud",
+      "nom": "Sophie Arnaud",
+      "metier": "Naturopathe",
+      "accroche": "Alimentation, digestion et fatigue chronique. Consultations sur rendez-vous.",
+      "bio": "J'accompagne surtout des femmes sur la fatigue, la digestion et les périodes de transition. Bilan complet à la première séance, puis suivi tous les mois.",
+      "categories": [
+        "sante-bien-etre"
+      ],
+      "services": [
+        "Bilan naturopathique",
+        "Suivi mensuel",
+        "Visio"
+      ],
+      "adresse": "8 allée du Bois Vert, 31300 Toulouse",
+      "distance": "450 m",
+      "tel": "06 78 90 12 34",
+      "email": "sophie.arnaud@example.fr",
+      "site": "sophiearnaud-naturo.fr",
+      "instagram": null,
+      "photo": "https://randomuser.me/api/portraits/women/26.jpg",
+      "note": 4.5,
+      "nbAvis": 6,
+      "surCarte": true,
+      "genre": "f"
+    },
+    {
+      "slug": "julien-marty",
+      "nom": "Julien Marty",
+      "metier": "Électricien",
+      "accroche": "Dépannage rapide, mise aux normes et installation de bornes de recharge.",
+      "bio": "Artisan électricien, je travaille dans un rayon de deux kilomètres autour de la Cartoucherie. Dépannage sous 48 h, et beaucoup de bornes de recharge dans les parkings des résidences.",
+      "categories": [
+        "artisanat-travaux",
+        "services-domicile"
+      ],
+      "services": [
+        "Dépannage",
+        "Mise aux normes",
+        "Borne de recharge"
+      ],
+      "adresse": "Interventions dans tout le quartier",
+      "distance": "—",
+      "tel": "06 89 01 23 45",
+      "email": "jmarty.elec@example.fr",
+      "site": null,
+      "instagram": null,
+      "photo": "https://randomuser.me/api/portraits/men/46.jpg",
+      "note": 4.4,
+      "nbAvis": 11,
+      "surCarte": false,
+      "genre": "h"
+    },
+    {
+      "slug": "ines-lacombe",
+      "nom": "Inès Lacombe",
+      "metier": "Professeure de yoga",
+      "accroche": "Hatha et yoga prénatal, à la Halle et en petits groupes chez l'habitant.",
+      "bio": "Cours doux, accessibles aux débutants et aux corps fatigués. Trois créneaux par semaine à la Halle, plus des séances prénatales le mardi.",
+      "categories": [
+        "sport-mouvement",
+        "sante-bien-etre"
+      ],
+      "services": [
+        "Cours collectif",
+        "Yoga prénatal",
+        "Cours privé"
+      ],
+      "adresse": "La Halle de la Cartoucherie, 31300 Toulouse",
+      "distance": "60 m",
+      "tel": "06 90 12 34 56",
+      "email": "ines.lacombe@example.fr",
+      "site": null,
+      "instagram": "ines_yoga_toulouse",
+      "photo": "https://randomuser.me/api/portraits/women/90.jpg",
+      "note": 4.9,
+      "nbAvis": 27,
+      "surCarte": true,
+      "genre": "f"
+    },
+    {
+      "slug": "pierre-delmas",
+      "nom": "Pierre Delmas",
+      "metier": "Expert-comptable",
+      "accroche": "Accompagnement des indépendants et des petites associations du quartier.",
+      "bio": "Je travaille surtout avec des micro-entreprises et des associations. Premier rendez-vous gratuit pour faire le point, souvent autour d'un café à la Halle.",
+      "categories": [
+        "conseil-entreprise"
+      ],
+      "services": [
+        "Comptabilité",
+        "Création d'entreprise",
+        "Conseil associatif"
+      ],
+      "adresse": "Bureau partagé, 3 rue Paul Mesplé, 31300 Toulouse",
+      "distance": "150 m",
+      "tel": "06 01 23 45 67",
+      "email": "p.delmas@example.fr",
+      "site": "delmas-conseil.fr",
+      "instagram": null,
+      "photo": "https://randomuser.me/api/portraits/men/59.jpg",
+      "note": 4.3,
+      "nbAvis": 5,
+      "surCarte": true,
+      "genre": "h"
+    },
+    {
+      "slug": "amandine-rey",
+      "nom": "Amandine Rey",
+      "metier": "Coiffeuse à domicile",
+      "accroche": "Coupe, couleur et soins chez vous, du mardi au samedi.",
+      "bio": "Je me déplace dans tout le quartier avec mon matériel. Beaucoup de familles et de personnes âgées qui préfèrent rester chez elles. Tarifs affichés, sans surprise.",
+      "categories": [
+        "beaute-soins",
+        "services-domicile"
+      ],
+      "services": [
+        "Coupe",
+        "Couleur",
+        "Soin & coiffage"
+      ],
+      "adresse": "À domicile, quartier Cartoucherie",
+      "distance": "—",
+      "tel": "06 12 90 34 56",
+      "email": "amandine.rey@example.fr",
+      "site": null,
+      "instagram": "amandine_coiffure_dom",
+      "photo": "https://randomuser.me/api/portraits/women/12.jpg",
+      "note": 4.8,
+      "nbAvis": 31,
+      "surCarte": false,
+      "genre": "f"
+    },
+    {
+      "slug": "karim-ziani",
+      "nom": "Karim Ziani",
+      "metier": "Photographe",
+      "accroche": "Portraits, familles et reportages d'événements de quartier.",
+      "bio": "Je photographie surtout des familles et des artisans au travail. C'est moi qui réalise une partie des portraits publiés sur le compte Instagram du collectif.",
+      "categories": [
+        "art-culture",
+        "numerique-creation"
+      ],
+      "services": [
+        "Portrait",
+        "Séance famille",
+        "Reportage événement"
+      ],
+      "adresse": "Studio, avenue de Grande-Bretagne, 31300 Toulouse",
+      "distance": "380 m",
+      "tel": "06 23 90 45 67",
+      "email": "karim.ziani@example.fr",
+      "site": "karimziani-photo.fr",
+      "instagram": "karim_ziani_photo",
+      "photo": "https://randomuser.me/api/portraits/men/83.jpg",
+      "note": 4.9,
+      "nbAvis": 14,
+      "surCarte": true,
+      "genre": "h"
+    }
+  ],
+  "avis": [
+    {
+      "membre": "camille-roussel",
+      "auteur": "Hélène M.",
+      "note": 5,
+      "date": "12 août 2026",
+      "texte": "Trois séances et je dors enfin. Camille explique très bien, on n'a jamais l'impression de perdre son temps. Et c'est à deux pas de chez moi."
+    },
+    {
+      "membre": "camille-roussel",
+      "auteur": "Damien L.",
+      "note": 5,
+      "date": "3 juillet 2026",
+      "texte": "J'y suis allé pour le stress au travail. Accueil très simple, aucun jargon. Je recommande sans réserve."
+    },
+    {
+      "membre": "camille-roussel",
+      "auteur": "Fatou D.",
+      "note": 4,
+      "date": "18 juin 2026",
+      "texte": "Très bien pour l'atelier du samedi. Un peu difficile d'obtenir un créneau en semaine, c'est le seul bémol."
+    }
+  ]
+}

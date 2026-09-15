@@ -1,0 +1,501 @@
+<!doctype html>
+<html lang="fr" data-theme="cartoucherie">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Annuaire de la Cartoucherie</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,400..800,0..100,0..1;1,9..144,400..800,0..100,0..1&amp;family=Karla:ital,wght@0,300..800;1,400..600&amp;display=swap" rel="stylesheet" />
+<link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+<style type="text/tailwindcss">
+@theme {
+  --font-display: "Fraunces", "Iowan Old Style", Georgia, serif;
+  --font-sans: "Karla", "Trebuchet MS", sans-serif;
+
+  --color-teal-50:  oklch(98.0% 0.010 198);
+  --color-teal-100: oklch(95.5% 0.022 197);
+  --color-teal-200: oklch(91.0% 0.040 196);
+  --color-teal-300: oklch(84.0% 0.058 195);
+  --color-teal-400: oklch(74.0% 0.080 195);
+  --color-teal-500: oklch(63.0% 0.098 196);
+  --color-teal-600: oklch(53.0% 0.090 196);
+  --color-teal-700: oklch(44.0% 0.074 197);
+  --color-teal-800: oklch(35.0% 0.060 198);
+  --color-teal-900: oklch(27.0% 0.045 199);
+  --color-teal-950: oklch(19.0% 0.030 201);
+
+  --color-orange-50:  oklch(97.8% 0.018 75);
+  --color-orange-100: oklch(95.0% 0.042 72);
+  --color-orange-200: oklch(90.0% 0.078 68);
+  --color-orange-300: oklch(84.0% 0.110 64);
+  --color-orange-400: oklch(78.0% 0.145 60);
+  --color-orange-500: oklch(72.0% 0.170 56);
+  --color-orange-600: oklch(65.0% 0.178 50);
+  --color-orange-700: oklch(56.0% 0.172 44);
+  --color-orange-800: oklch(46.0% 0.140 40);
+  --color-orange-900: oklch(37.0% 0.108 38);
+  --color-orange-950: oklch(27.0% 0.078 36);
+
+  --color-sauge-50:  oklch(97.5% 0.012 170);
+  --color-sauge-100: oklch(94.5% 0.026 170);
+  --color-sauge-200: oklch(89.5% 0.050 170);
+  --color-sauge-300: oklch(82.0% 0.074 168);
+  --color-sauge-400: oklch(73.0% 0.100 164);
+  --color-sauge-500: oklch(64.0% 0.120 160);
+  --color-sauge-600: oklch(54.5% 0.122 156);
+  --color-sauge-700: oklch(45.5% 0.108 152);
+  --color-sauge-800: oklch(37.0% 0.088 150);
+  --color-sauge-900: oklch(29.0% 0.066 152);
+  --color-sauge-950: oklch(20.5% 0.044 156);
+
+  --color-sable-50:  oklch(98.2% 0.010 95);
+  --color-sable-100: oklch(96.0% 0.024 93);
+  --color-sable-200: oklch(92.5% 0.044 91);
+  --color-sable-300: oklch(88.0% 0.064 90);
+  --color-sable-400: oklch(82.0% 0.090 89);
+  --color-sable-500: oklch(76.0% 0.115 88);
+  --color-sable-600: oklch(68.0% 0.118 86);
+  --color-sable-700: oklch(57.5% 0.105 83);
+  --color-sable-800: oklch(47.0% 0.088 80);
+  --color-sable-900: oklch(37.5% 0.068 78);
+  --color-sable-950: oklch(27.0% 0.048 75);
+
+  --color-neutre-50:  oklch(98.6% 0.004 200);
+  --color-neutre-100: oklch(97.2% 0.006 199);
+  --color-neutre-200: oklch(94.4% 0.008 198);
+  --color-neutre-300: oklch(89.8% 0.010 198);
+  --color-neutre-400: oklch(79.5% 0.013 197);
+  --color-neutre-500: oklch(66.5% 0.016 197);
+  --color-neutre-600: oklch(54.5% 0.019 198);
+  --color-neutre-700: oklch(44.0% 0.022 199);
+  --color-neutre-800: oklch(34.0% 0.025 200);
+  --color-neutre-900: oklch(25.5% 0.028 201);
+  --color-neutre-950: oklch(17.5% 0.030 202);
+
+  --color-rouge-50:  oklch(97.6% 0.014 25);
+  --color-rouge-100: oklch(94.6% 0.029 24);
+  --color-rouge-200: oklch(89.0% 0.057 24);
+  --color-rouge-300: oklch(81.0% 0.100 24);
+  --color-rouge-400: oklch(70.0% 0.150 25);
+  --color-rouge-500: oklch(62.0% 0.190 26);
+  --color-rouge-600: oklch(54.0% 0.205 24);
+  --color-rouge-700: oklch(46.0% 0.180 22);
+  --color-rouge-800: oklch(38.0% 0.145 20);
+  --color-rouge-900: oklch(31.0% 0.115 18);
+  --color-rouge-950: oklch(22.0% 0.080 16);
+
+  --shadow-carte:       0 1px 2px oklch(17.5% .03 202/.05), 0 4px 12px -2px oklch(17.5% .03 202/.09);
+  --shadow-carte-hover: 0 2px 4px oklch(17.5% .03 202/.06), 0 14px 32px -8px oklch(17.5% .03 202/.16);
+  --shadow-flottant:    0 4px 8px oklch(17.5% .03 202/.06), 0 28px 64px -20px oklch(17.5% .03 202/.28);
+  --shadow-cta:         0 2px 4px oklch(37% .108 38/.28), 0 10px 24px -8px oklch(37% .108 38/.38);
+  --shadow-cta-press:   0 1px 2px oklch(37% .108 38/.34);
+}
+
+[data-theme="cartoucherie"] {
+  color-scheme: light;
+  --color-base-100:          #ffffff;
+  --color-base-200:          oklch(97.2% 0.006 199);
+  --color-base-300:          oklch(94.4% 0.008 198);
+  --color-base-content:      oklch(25.5% 0.028 201);
+  --color-primary:           oklch(44.0% 0.074 197);
+  --color-primary-content:   #ffffff;
+  --color-secondary:         oklch(94.5% 0.026 170);
+  --color-secondary-content: oklch(19.0% 0.030 201);
+  --color-accent:            oklch(72.0% 0.170 56);
+  --color-accent-content:    oklch(19.0% 0.030 201);
+  --color-neutral:           oklch(25.5% 0.028 201);
+  --color-neutral-content:   oklch(98.6% 0.004 200);
+  --color-info:              oklch(53.0% 0.090 196);
+  --color-info-content:      #ffffff;
+  --color-success:           oklch(45.5% 0.108 152);
+  --color-success-content:   #ffffff;
+  --color-warning:           oklch(76.0% 0.115 88);
+  --color-warning-content:   oklch(19.0% 0.030 201);
+  --color-error:             oklch(54.0% 0.205 24);
+  --color-error-content:     #ffffff;
+  --radius-selector: 2rem;
+  --radius-field:    0.75rem;
+  --radius-box:      1.25rem;
+  --size-selector:   0.28125rem;
+  --size-field:      0.28125rem;
+  --border:          1px;
+  --depth:           1;
+  --noise:           0;
+}
+</style>
+
+<style>
+/* ── Le grain ────────────────────────────────────────────────────────────────
+   Les portraits sources font 128 px. Plutôt que de faire semblant, on les
+   traite comme des images imprimées : un grain fin, posé en soft-light, qui
+   fait lire la douceur comme du papier et non comme un défaut. C'est aussi
+   l'origine du produit — un flyer papier dans une boutique.            */
+.grain { position: relative; isolation: isolate; }
+.grain::after {
+  content: ""; position: absolute; inset: 0; z-index: 2; pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
+  mix-blend-mode: soft-light; opacity: .5;
+}
+.grain > img, .grain > .halo { position: relative; z-index: 0; }
+
+/* ── Le halo ─────────────────────────────────────────────────────────────────
+   Le portrait d'un voisin, agrandi 6× et flouté : il ne reste que sa lumière
+   et ses couleurs. Un fond atmosphérique gratuit, différent pour chaque
+   personne, que ni l'illustration ni la typographie ne peuvent produire.  */
+.halo { position: absolute; background-size: cover; background-position: 50% 35%;
+        filter: blur(44px) saturate(2.1) contrast(1.12); mix-blend-mode: multiply; }
+
+.filet { background-image: linear-gradient(90deg, oklch(53% .09 196), oklch(64% .12 160) 46%, oklch(72% .17 56)); }
+.aube  { background-image: linear-gradient(168deg, oklch(95.5% .022 197) 0%, oklch(99% .006 198) 46%, oklch(95% .042 72) 100%); }
+.colly-fond { background-image: radial-gradient(120% 90% at 30% 15%, oklch(96% .024 93), oklch(94.5% .026 170) 62%, oklch(95.5% .022 197)); }
+
+/* ── Photographies ───────────────────────────────────────────────────────── */
+.ph { object-fit: cover; object-position: 50% 22%; width: 100%; height: 100%;
+      filter: saturate(1.06) contrast(1.03); background-color: oklch(94.4% .008 198); }
+
+/* ── Focus, une seule règle ──────────────────────────────────────────────── */
+:where(a, button, input, summary, [tabindex]):focus-visible {
+  outline: 2px solid oklch(53% .09 196); outline-offset: 2px; border-radius: 10px;
+}
+summary::-webkit-details-marker { display: none; }
+summary { list-style: none; cursor: pointer; }
+
+/* ── Entrée en scène, une seule fois ─────────────────────────────────────── */
+@keyframes monte { from { opacity: 0; transform: translateY(22px) scale(.965); } to { opacity: 1; transform: none; } }
+.monte { animation: monte .8s cubic-bezier(.22,.9,.3,1) both; }
+@media (prefers-reduced-motion: reduce) { .monte { animation: none; } }
+
+.carte-lien { transition: box-shadow .22s ease, transform .22s ease; }
+.carte-lien:hover { transform: translateY(-3px); }
+
+/* ── Filtre « Je cherche… » ──────────────────────────────────────────────── */
+.chip[aria-pressed="true"] {
+  background: oklch(19% .03 201); color: #ffffff; border-color: oklch(19% .03 201);
+}
+.chip[aria-pressed="true"] .chip-n { color: oklch(91% .04 196); }
+[hidden] { display: none !important; }
+</style>
+</head>
+
+<body class="bg-base-100 font-sans text-[17px] leading-relaxed text-neutre-900 antialiased">
+
+<a href="#annuaire" class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-xl focus:bg-teal-900 focus:px-4 focus:py-3 focus:text-white">Aller à l'annuaire</a>
+
+<!-- ══ En-tête ══════════════════════════════════════════════════════════════ -->
+<header class="sticky top-0 z-40 bg-white/95 backdrop-blur">
+  <div class="mx-auto flex max-w-5xl items-center gap-3 px-5 py-3">
+    <!-- La marque : la ventouse de Colly, jamais une munition -->
+    <svg viewBox="0 0 32 32" class="h-9 w-9 shrink-0 text-teal-700" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6">
+      <circle cx="16" cy="16" r="13.2" />
+      <circle cx="16" cy="16" r="8" />
+      <circle cx="16" cy="16" r="2.7" fill="currentColor" stroke="none" />
+      <circle cx="16" cy="6.2" r="1.5" fill="currentColor" stroke="none" />
+      <circle cx="25.8" cy="16" r="1.5" fill="currentColor" stroke="none" />
+      <circle cx="16" cy="25.8" r="1.5" fill="currentColor" stroke="none" />
+      <circle cx="6.2" cy="16" r="1.5" fill="currentColor" stroke="none" />
+    </svg>
+    <div class="min-w-0 leading-none">
+      <div class="font-sans text-[11px] font-bold uppercase tracking-[0.2em] text-teal-700">Annuaire de la</div>
+      <div class="font-display text-[25px] font-semibold tracking-tight text-teal-900" style="font-variation-settings:'opsz' 40,'SOFT' 45,'WONK' 1;">Cartoucherie</div>
+    </div>
+    <span class="ml-auto hidden rounded-full bg-sauge-100 px-3 py-1.5 text-[15px] font-semibold text-sauge-800 sm:inline">Toulouse&nbsp;31300</span>
+  </div>
+  <div class="filet h-[3px] w-full"></div>
+</header>
+
+<!-- ══ Le mur de voisins ════════════════════════════════════════════════════ -->
+<section aria-label="Douze voisins de la Cartoucherie" class="relative overflow-hidden">
+  <!-- Le fond : trois portraits agrandis six fois et floutés. Il ne reste que
+       leur lumière. Aucun asset supplémentaire, une atmosphère par personne. -->
+  <div class="aube absolute inset-0" aria-hidden="true"></div>
+  <div class="grain absolute inset-0" aria-hidden="true">
+    <div class="halo" style="background-image:url('https://randomuser.me/api/portraits/women/57.jpg'); inset:-25% 34% 30% -25%; opacity:.85;"></div>
+    <div class="halo" style="background-image:url('https://randomuser.me/api/portraits/men/83.jpg');   inset:26% -28% -25% 40%; opacity:.8;"></div>
+    <div class="halo" style="background-image:url('https://randomuser.me/api/portraits/women/12.jpg'); inset:-18% -6% 52% 46%; opacity:.7;"></div>
+  </div>
+
+  <!-- Les tuiles : une dominante qui sort du cadre à droite, trois satellites
+       décalés à gauche. Le rythme vient des tailles, pas d'une grille. -->
+  <!-- Les tuiles ne dépassent jamais ~290 px : au-delà, une source de 128 px
+       cesse d'être une photographie et devient un défaut. Sur grand écran on
+       gagne en largeur en ajoutant des visages, pas en agrandissant les mêmes. -->
+  <div class="relative mx-auto flex max-w-5xl items-start justify-center gap-3 pb-16 pt-4 sm:gap-5 sm:px-8 sm:pb-24 sm:pt-10">
+
+    <div class="monte hidden shrink-0 flex-col gap-5 pt-4 sm:flex sm:w-[19%] sm:max-w-[190px]" style="animation-delay:.02s">
+      <figure class="grain overflow-hidden rounded-[1.25rem] shadow-carte ring-1 ring-white/80">
+        <img class="ph aspect-[4/5]" src="https://randomuser.me/api/portraits/men/83.jpg" alt="Karim Ziani, photographe" loading="eager" />
+      </figure>
+      <figure class="grain ml-6 overflow-hidden rounded-[1.25rem] shadow-carte ring-1 ring-white/80">
+        <img class="ph aspect-square" src="https://randomuser.me/api/portraits/women/57.jpg" alt="Nadia Berrada, traiteur" loading="eager" />
+      </figure>
+    </div>
+
+    <div class="monte -ml-7 flex w-[36%] shrink-0 flex-col gap-3 pt-12 sm:ml-0 sm:w-[19%] sm:max-w-[190px] sm:gap-5 sm:pt-28" style="animation-delay:.05s">
+      <figure class="grain mr-3 overflow-hidden rounded-[1.25rem] shadow-carte ring-1 ring-white/80 sm:mr-0">
+        <img class="ph aspect-square" src="https://randomuser.me/api/portraits/men/75.jpg" alt="Marc Ollivier, menuisier-ébéniste" loading="eager" />
+      </figure>
+      <figure class="grain overflow-hidden rounded-[1.25rem] shadow-carte ring-1 ring-white/80">
+        <img class="ph aspect-[4/5]" src="https://randomuser.me/api/portraits/women/26.jpg" alt="Sophie Arnaud, naturopathe" loading="eager" />
+      </figure>
+    </div>
+
+    <!-- La dominante : un tirage encadré, avec son cartel — pas une vignette. -->
+    <figure class="monte -mr-6 w-[64%] shrink-0 overflow-hidden rounded-[1.75rem] bg-white p-1.5 shadow-flottant sm:mr-0 sm:w-[28%] sm:max-w-[290px]" style="animation-delay:.18s">
+      <div class="grain overflow-hidden rounded-[1.4rem]">
+        <img class="ph aspect-[4/5]" src="https://randomuser.me/api/portraits/women/90.jpg" alt="Inès Lacombe, professeure de yoga, à la Halle de la Cartoucherie" loading="eager" />
+      </div>
+      <figcaption class="flex items-start gap-2 px-2.5 pb-2 pt-3 text-[16px] leading-snug">
+        <span class="mt-1.5 h-[3px] w-5 shrink-0 rounded-full bg-teal-700" aria-hidden="true"></span>
+        <span><span class="font-bold text-teal-900">Inès Lacombe</span><span class="block text-neutre-800">professeure de yoga, à la Halle</span></span>
+      </figcaption>
+    </figure>
+
+    <div class="monte hidden shrink-0 flex-col gap-5 pt-16 sm:flex sm:w-[19%] sm:max-w-[190px]" style="animation-delay:.3s">
+      <figure class="grain -ml-4 overflow-hidden rounded-[1.25rem] shadow-carte ring-1 ring-white/80">
+        <img class="ph aspect-square" src="https://randomuser.me/api/portraits/men/32.jpg" alt="Yanis Belhadj, développeur web indépendant" loading="eager" />
+      </figure>
+      <figure class="grain overflow-hidden rounded-[1.25rem] shadow-carte ring-1 ring-white/80">
+        <img class="ph aspect-[4/5]" src="https://randomuser.me/api/portraits/women/12.jpg" alt="Amandine Rey, coiffeuse à domicile" loading="eager" />
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ══ La feuille « Je cherche… » ═══════════════════════════════════════════ -->
+<div class="relative z-20 -mt-10">
+  <div class="mx-auto max-w-5xl px-3 sm:px-6">
+    <div class="relative rounded-t-[2rem] bg-white px-5 pt-8 pb-7 shadow-flottant sm:rounded-[2rem] sm:px-10 sm:pt-11 sm:pb-9">
+
+      <!-- Colly grimpe sur le bord de la feuille — il a des ventouses, c'est son métier -->
+      <img src="../../_shared/colly/colly-couleur.png" alt="Colly, la créature des Halles de la Cartoucherie, agrippée au bord de la page"
+           class="pointer-events-none absolute -top-[72px] left-2 z-30 w-[96px] drop-shadow-[0_10px_18px_oklch(17.5%_.03_202/.3)] sm:-top-24 sm:left-8 sm:w-[132px]" />
+
+      <h1 class="font-display text-[46px] font-semibold leading-[0.95] tracking-[-0.03em] text-teal-900 sm:text-[68px]"
+          style="font-variation-settings:'opsz' 90,'SOFT' 50,'WONK' 1;">
+        Je&nbsp;cherche<span class="text-orange-800">…</span>
+      </h1>
+      <p class="mt-3 max-w-md text-[17px] text-neutre-700">
+        Douze voisines et voisins qui travaillent à leur compte, ici, entre la Halle et la route de Bayonne.
+      </p>
+
+      <form class="mt-6" role="search" onsubmit="return false;">
+        <label for="q" class="mb-2 block text-[16px] font-bold uppercase tracking-[0.14em] text-teal-700">Un métier, un nom, un besoin</label>
+        <div class="flex gap-2">
+          <input id="q" type="search" name="q" autocomplete="off" placeholder="menuisier, yoga, traiteur…"
+                 class="min-h-[56px] w-full rounded-[0.9rem] border border-neutre-500 bg-white px-4 text-[17px] text-neutre-900 placeholder:text-neutre-600 focus:border-teal-600" />
+          <button type="submit" aria-label="Lancer la recherche"
+                  class="inline-flex min-h-[56px] min-w-[56px] shrink-0 items-center justify-center gap-2 rounded-[0.9rem] bg-linear-to-b from-orange-400 via-orange-500 to-orange-600 px-4 font-bold text-teal-950 shadow-cta ring-1 ring-inset ring-orange-700/60 transition hover:from-orange-300 hover:via-orange-400 hover:to-orange-500 active:translate-y-px active:shadow-cta-press">
+            <svg viewBox="0 0 24 24" class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.6-3.6"/></svg>
+          </button>
+        </div>
+      </form>
+
+      <!-- filtres par catégorie -->
+      <div class="mt-5">
+        <h2 class="sr-only">Filtrer par catégorie</h2>
+        <div id="chips" class="flex flex-wrap gap-2">
+          <button type="button" class="chip" data-cat="*" aria-pressed="true">Tout <span class="chip-n">12</span></button>
+          <button type="button" class="chip" data-cat="sante-bien-etre" aria-pressed="false">Santé &amp; bien-être <span class="chip-n">4</span></button>
+          <button type="button" class="chip" data-cat="numerique-creation" aria-pressed="false">Numérique &amp; création <span class="chip-n">3</span></button>
+          <button type="button" class="chip" data-cat="artisanat-travaux" aria-pressed="false">Artisanat &amp; travaux <span class="chip-n">2</span></button>
+          <details class="inline-block">
+            <summary class="chip">Toutes les catégories
+              <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+            </summary>
+            <div class="mt-2 flex flex-wrap gap-2">
+              <button type="button" class="chip" data-cat="sport-mouvement" aria-pressed="false">Sport &amp; mouvement <span class="chip-n">2</span></button>
+              <button type="button" class="chip" data-cat="conseil-entreprise" aria-pressed="false">Conseil &amp; entreprise <span class="chip-n">2</span></button>
+              <button type="button" class="chip" data-cat="art-culture" aria-pressed="false">Art &amp; culture <span class="chip-n">2</span></button>
+              <button type="button" class="chip" data-cat="services-domicile" aria-pressed="false">Services à domicile <span class="chip-n">2</span></button>
+              <button type="button" class="chip" data-cat="alimentation-traiteur" aria-pressed="false">Alimentation &amp; traiteur <span class="chip-n">1</span></button>
+              <button type="button" class="chip" data-cat="beaute-soins" aria-pressed="false">Beauté &amp; soins <span class="chip-n">1</span></button>
+            </div>
+          </details>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ L'annuaire ═══════════════════════════════════════════════════════════ -->
+<main id="annuaire" class="mx-auto max-w-5xl px-5 pt-10 pb-4 sm:px-8">
+  <div class="mb-5 flex items-end justify-between gap-4">
+    <h2 class="font-display text-[30px] font-semibold leading-none tracking-tight text-teal-900" style="font-variation-settings:'opsz' 40,'SOFT' 45,'WONK' 1;">Vos voisins</h2>
+    <p id="compte" class="pb-1 text-[16px] font-semibold text-neutre-700" aria-live="polite">12 fiches</p>
+  </div>
+
+  <ol id="liste" class="grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-5"></ol>
+
+  <!-- État vide -->
+  <div id="vide" hidden class="colly-fond mt-2 rounded-[1.5rem] px-6 py-9 text-center ring-1 ring-teal-200">
+    <!-- Le croquis de Colly encadré comme les portraits : même langage. -->
+    <img src="../../_shared/colly/colly-triste.png" alt="Colly, déçu" class="mx-auto w-[132px] rounded-[1.25rem] bg-white p-2 shadow-carte" />
+    <p class="mt-4 font-display text-[26px] font-semibold leading-tight text-teal-900" style="font-variation-settings:'opsz' 30,'SOFT' 50,'WONK' 1;">Personne pour l'instant</p>
+    <p class="mx-auto mt-2 max-w-sm text-[17px] text-neutre-800">L'annuaire compte douze fiches. Si le métier que vous cherchez n'y est pas, il n'y est vraiment pas — on ne fabrique pas de résultats.</p>
+    <button type="button" id="reset" class="mt-5 inline-flex min-h-[48px] items-center rounded-full bg-teal-800 px-6 font-bold text-white transition hover:bg-teal-700">Revoir les douze</button>
+  </div>
+</main>
+
+<!-- ══ Colly, la carte de quartier ══════════════════════════════════════════ -->
+<section class="mx-auto max-w-5xl px-5 pt-10 pb-14 sm:px-8">
+  <div class="colly-fond relative overflow-hidden rounded-[1.5rem] px-6 py-7 ring-1 ring-teal-200 sm:px-10 sm:py-9">
+    <div class="relative z-10 max-w-lg">
+      <p class="text-[15px] font-bold uppercase tracking-[0.16em] text-teal-700">Colly, des Halles</p>
+      <h2 class="mt-2 font-display text-[30px] font-semibold leading-[1.05] tracking-tight text-teal-950 sm:text-[38px]" style="font-variation-settings:'opsz' 40,'SOFT' 50,'WONK' 1;">
+        Vous travaillez à votre compte&nbsp;? Votre visage manque au mur.
+      </h2>
+      <p class="mt-3 pr-20 text-[17px] text-teal-950/85 sm:pr-0">
+        L'annuaire est tenu par l'association du quartier, gratuitement. Une photo, un métier, un numéro : la fiche est en ligne le soir même.
+      </p>
+      <a href="#" class="mt-5 inline-flex min-h-[52px] items-center gap-2 rounded-full bg-teal-800 px-6 text-[17px] font-bold text-white shadow-carte transition hover:bg-teal-700">
+        <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+        Ajouter ma fiche
+      </a>
+    </div>
+    <img src="../../_shared/colly/colly-couleur.png" alt=""
+         class="pointer-events-none absolute -bottom-6 -right-6 w-[150px] opacity-95 sm:-bottom-8 sm:-right-4 sm:w-[220px]" />
+  </div>
+</section>
+
+<!-- ══ Pied de page ═════════════════════════════════════════════════════════ -->
+<footer class="bg-teal-950 px-5 py-12 text-neutre-50 sm:px-8">
+  <div class="mx-auto max-w-5xl">
+    <p class="font-display text-[28px] font-semibold leading-tight tracking-tight text-white" style="font-variation-settings:'opsz' 40,'SOFT' 50,'WONK' 1;">L'annuaire du quartier,<br />fait par le quartier.</p>
+    <div class="filet mt-6 h-[3px] w-24 rounded-full"></div>
+    <ul class="mt-6 space-y-2 text-[17px] text-teal-100">
+      <li>Douze fiches, douze voisins. Pas une de plus, et on le dit.</li>
+      <li>Portraits recueillis par Sandra Carole, animatrice du quartier.</li>
+      <li>Rien n'est envoyé à un serveur : le calcul reste sur votre téléphone.</li>
+    </ul>
+    <p class="mt-7 text-[16px] text-teal-200">La Halle de la Cartoucherie · Tram T1 · 31300 Toulouse</p>
+  </div>
+</footer>
+
+<script>
+/* ── Les données, telles quelles ─────────────────────────────────────────── */
+const MEMBRES = [
+  {slug:"camille-roussel", nom:"Camille Roussel", metier:"Sophrologue", accroche:"Gestion du stress, sommeil et préparation aux examens, en cabinet ou en visio.", cats:["sante-bien-etre"], services:["Séance individuelle","Atelier collectif","Visio"], photo:"https://randomuser.me/api/portraits/women/44.jpg", note:4.8, nbAvis:12, distance:"120 m", surCarte:true, format:"large"},
+  {slug:"yanis-belhadj", nom:"Yanis Belhadj", metier:"Développeur web indépendant", accroche:"Sites vitrines et boutiques en ligne pour les commerces et associations du quartier.", cats:["numerique-creation","conseil-entreprise"], services:["Site vitrine","Boutique en ligne","Dépannage & maintenance"], photo:"https://randomuser.me/api/portraits/men/32.jpg", note:5.0, nbAvis:7, distance:"60 m", surCarte:true, format:"duo"},
+  {slug:"lea-fontaine", nom:"Léa Fontaine", metier:"Graphiste & illustratrice", accroche:"Identité visuelle, affiches et illustrations sur mesure.", cats:["numerique-creation","art-culture"], services:["Logo & identité","Affiches","Illustration"], photo:"https://randomuser.me/api/portraits/women/68.jpg", note:4.9, nbAvis:15, distance:"340 m", surCarte:true, format:"duo"},
+  {slug:"nadia-berrada", nom:"Nadia Berrada", metier:"Traiteur — cuisine maison", accroche:"Plats marocains à emporter et buffets pour les fêtes de quartier.", cats:["alimentation-traiteur"], services:["Plats à emporter","Buffet","Livraison quartier"], photo:"https://randomuser.me/api/portraits/women/57.jpg", note:5.0, nbAvis:23, distance:"210 m", surCarte:false, format:"large"},
+  {slug:"marc-ollivier", nom:"Marc Ollivier", metier:"Menuisier-ébéniste", accroche:"Meubles sur mesure et agencement pour les petits appartements du quartier.", cats:["artisanat-travaux"], services:["Meuble sur mesure","Agencement","Réparation"], photo:"https://randomuser.me/api/portraits/men/75.jpg", note:4.7, nbAvis:9, distance:"800 m", surCarte:true, format:"duo"},
+  {slug:"thomas-vidal", nom:"Thomas Vidal", metier:"Coach sportif", accroche:"Petits groupes en extérieur, tous niveaux, y compris reprise après blessure.", cats:["sport-mouvement","sante-bien-etre"], services:["Cours collectif","Coaching individuel","Reprise du sport"], photo:"https://randomuser.me/api/portraits/men/11.jpg", note:4.6, nbAvis:18, distance:"60 m", surCarte:true, format:"duo"},
+  {slug:"ines-lacombe", nom:"Inès Lacombe", metier:"Professeure de yoga", accroche:"Hatha et yoga prénatal, à la Halle et en petits groupes chez l'habitant.", cats:["sport-mouvement","sante-bien-etre"], services:["Cours collectif","Yoga prénatal","Cours privé"], photo:"https://randomuser.me/api/portraits/women/90.jpg", note:4.9, nbAvis:27, distance:"60 m", surCarte:true, format:"large-inverse"},
+  {slug:"sophie-arnaud", nom:"Sophie Arnaud", metier:"Naturopathe", accroche:"Alimentation, digestion et fatigue chronique. Consultations sur rendez-vous.", cats:["sante-bien-etre"], services:["Bilan naturopathique","Suivi mensuel","Visio"], photo:"https://randomuser.me/api/portraits/women/26.jpg", note:4.5, nbAvis:6, distance:"450 m", surCarte:true, format:"duo"},
+  {slug:"pierre-delmas", nom:"Pierre Delmas", metier:"Expert-comptable", accroche:"Accompagnement des indépendants et des petites associations du quartier.", cats:["conseil-entreprise"], services:["Comptabilité","Création d'entreprise","Conseil associatif"], photo:"https://randomuser.me/api/portraits/men/59.jpg", note:4.3, nbAvis:5, distance:"150 m", surCarte:true, format:"duo"},
+  {slug:"amandine-rey", nom:"Amandine Rey", metier:"Coiffeuse à domicile", accroche:"Coupe, couleur et soins chez vous, du mardi au samedi.", cats:["beaute-soins","services-domicile"], services:["Coupe","Couleur","Soin & coiffage"], photo:"https://randomuser.me/api/portraits/women/12.jpg", note:4.8, nbAvis:31, distance:null, surCarte:false, format:"chez-vous"},
+  {slug:"julien-marty", nom:"Julien Marty", metier:"Électricien", accroche:"Dépannage rapide, mise aux normes et installation de bornes de recharge.", cats:["artisanat-travaux","services-domicile"], services:["Dépannage","Mise aux normes","Borne de recharge"], photo:"https://randomuser.me/api/portraits/men/46.jpg", note:4.4, nbAvis:11, distance:null, surCarte:false, format:"chez-vous"},
+  {slug:"karim-ziani", nom:"Karim Ziani", metier:"Photographe", accroche:"Portraits, familles et reportages d'événements de quartier.", cats:["art-culture","numerique-creation"], services:["Portrait","Séance famille","Reportage événement"], photo:"https://randomuser.me/api/portraits/men/83.jpg", note:4.9, nbAvis:14, distance:"380 m", surCarte:true, format:"large"}
+];
+
+const CAT_NOM = {"sante-bien-etre":"Santé & bien-être","beaute-soins":"Beauté & soins","artisanat-travaux":"Artisanat & travaux","alimentation-traiteur":"Alimentation & traiteur","conseil-entreprise":"Conseil & entreprise","numerique-creation":"Numérique & création","enfance-education":"Enfance & éducation","sport-mouvement":"Sport & mouvement","art-culture":"Art & culture","services-domicile":"Services à domicile"};
+
+const ICONES = {
+  epingle: '<path d="M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11Z"/><circle cx="12" cy="10" r="2.6"/>',
+  maison:  '<path d="M4 11.2 12 4.5l8 6.7"/><path d="M6.2 10.4V19h11.6v-8.6"/><path d="M10.2 19v-4.6h3.6V19"/>',
+  etoile:  '<path d="m12 4 2.4 4.9 5.4.8-3.9 3.8.9 5.4-4.8-2.6-4.8 2.6.9-5.4L4.2 9.7l5.4-.8Z"/>'
+};
+
+function svg(d, cls) { return '<svg viewBox="0 0 24 24" class="' + cls + '" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + d + '</svg>'; }
+
+function note(m) {
+  return '<span class="inline-flex items-center gap-1 text-[15px] font-semibold text-neutre-800">'
+    + '<svg viewBox="0 0 24 24" class="h-4 w-4 text-sable-500" fill="currentColor" aria-hidden="true"><path d="m12 3.6 2.6 5.3 5.8.9-4.2 4.1 1 5.8-5.2-2.8-5.2 2.8 1-5.8L3.6 9.8l5.8-.9Z"/></svg>'
+    + String(m.note).replace('.', ',') + '<span class="font-normal text-neutre-700"> · ' + m.nbAvis + ' avis</span></span>';
+}
+
+function pastille(slug) {
+  return '<span class="inline-flex items-center rounded-full bg-sauge-100 px-2.5 py-1 text-[15px] font-semibold leading-tight text-sauge-800">' + CAT_NOM[slug] + '</span>';
+}
+
+function lieu(m) {
+  if (m.surCarte) return '<span class="inline-flex items-center gap-1 text-[15px] text-neutre-700">' + svg(ICONES.epingle, 'h-4 w-4 shrink-0 text-teal-600') + 'à ' + m.distance + '</span>';
+  return '<span class="inline-flex items-center gap-1 text-[15px] font-semibold text-teal-800">' + svg(ICONES.maison, 'h-4 w-4 shrink-0 text-teal-600') + 'Vient chez vous</span>';
+}
+
+function carte(m) {
+  const cats = m.cats.map(pastille).join(' ');
+  const base = 'carte-lien group block h-full overflow-hidden rounded-[1.25rem] bg-white shadow-carte ring-1 ring-neutre-950/7 hover:shadow-carte-hover';
+
+  if (m.format === 'large' || m.format === 'large-inverse') {
+    const inv = m.format === 'large-inverse';
+    const photo = '<div class="grain w-[42%] shrink-0 self-stretch' + (inv ? ' order-2' : '') + '">'
+      + '<img class="ph min-h-[190px]" src="' + m.photo + '" alt="Portrait de ' + m.nom + '" loading="lazy" /></div>';
+    const texte = '<div class="flex min-w-0 flex-1 flex-col justify-center gap-2 px-4 py-4' + (inv ? ' order-1' : '') + '">'
+      + '<div class="flex flex-wrap gap-1.5">' + cats + '</div>'
+      + '<h3 class="font-display text-[25px] font-semibold leading-[1.05] tracking-tight text-teal-900" style="font-variation-settings:\'opsz\' 40,\'SOFT\' 45,\'WONK\' 1;">' + m.nom + '</h3>'
+      + '<p class="text-[17px] font-semibold leading-snug text-neutre-900">' + m.metier + '</p>'
+      + '<p class="text-[16px] leading-snug text-neutre-700">' + m.accroche + '</p>'
+      + '<div class="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1">' + note(m) + lieu(m) + '</div></div>';
+    return '<li class="col-span-2"><a href="membre.html" class="' + base + ' flex">' + photo + texte + '</a></li>';
+  }
+
+  if (m.format === 'chez-vous') {
+    return '<li><a href="membre.html" class="' + base + ' colly-fond flex flex-col items-center px-4 py-5 text-center">'
+      + '<div class="grain h-[124px] w-[124px] overflow-hidden rounded-full shadow-carte ring-2 ring-white">'
+      + '<img class="ph" src="' + m.photo + '" alt="Portrait de ' + m.nom + '" loading="lazy" /></div>'
+      + '<h3 class="mt-3 font-display text-[21px] font-semibold leading-tight tracking-tight text-teal-900" style="font-variation-settings:\'opsz\' 30,\'SOFT\' 45,\'WONK\' 1;">' + m.nom + '</h3>'
+      + '<p class="mt-0.5 text-[16px] font-semibold leading-snug text-neutre-900">' + m.metier + '</p>'
+      + '<div class="mt-2">' + lieu(m) + '</div>'
+      + '<div class="mt-2">' + note(m) + '</div></a></li>';
+  }
+
+  return '<li><a href="membre.html" class="' + base + ' flex flex-col">'
+    + '<div class="grain"><img class="ph aspect-[4/5]" src="' + m.photo + '" alt="Portrait de ' + m.nom + '" loading="lazy" /></div>'
+    + '<div class="flex flex-1 flex-col gap-1.5 px-3.5 py-3.5">'
+    + '<h3 class="font-display text-[21px] font-semibold leading-[1.08] tracking-tight text-teal-900" style="font-variation-settings:\'opsz\' 30,\'SOFT\' 45,\'WONK\' 1;">' + m.nom + '</h3>'
+    + '<p class="text-[16px] font-semibold leading-snug text-neutre-900">' + m.metier + '</p>'
+    + '<div class="mt-auto flex flex-col gap-1.5 pt-1.5">' + note(m) + lieu(m) + '</div></div></a></li>';
+}
+
+const liste = document.getElementById('liste');
+const vide = document.getElementById('vide');
+const compte = document.getElementById('compte');
+const q = document.getElementById('q');
+let filtre = '*';
+
+function rendre() {
+  const t = (q.value || '').trim().toLowerCase();
+  const vus = MEMBRES.filter(function (m) {
+    const okCat = filtre === '*' || m.cats.indexOf(filtre) !== -1;
+    const foin = (m.nom + ' ' + m.metier + ' ' + m.accroche + ' ' + m.services.join(' ') + ' ' + m.cats.map(function (c) { return CAT_NOM[c]; }).join(' ')).toLowerCase();
+    return okCat && (!t || foin.indexOf(t) !== -1);
+  });
+  liste.innerHTML = vus.map(carte).join('');
+  liste.hidden = vus.length === 0;
+  vide.hidden = vus.length !== 0;
+  compte.textContent = vus.length === 1 ? '1 fiche' : vus.length + ' fiches';
+}
+
+document.querySelectorAll('.chip[data-cat]').forEach(function (b) {
+  b.addEventListener('click', function () {
+    filtre = (b.getAttribute('aria-pressed') === 'true') ? '*' : b.dataset.cat;
+    document.querySelectorAll('.chip[data-cat]').forEach(function (o) {
+      o.setAttribute('aria-pressed', String(o.dataset.cat === filtre));
+    });
+    rendre();
+  });
+});
+q.addEventListener('input', rendre);
+document.getElementById('reset').addEventListener('click', function () {
+  filtre = '*'; q.value = '';
+  document.querySelectorAll('.chip[data-cat]').forEach(function (o) { o.setAttribute('aria-pressed', String(o.dataset.cat === '*')); });
+  rendre();
+});
+rendre();
+</script>
+
+<style type="text/tailwindcss">
+@layer components {
+  .chip {
+    @apply inline-flex min-h-[44px] items-center gap-1.5 rounded-full border border-neutre-500 bg-white px-4 text-[16px] font-semibold text-neutre-900 transition;
+  }
+  .chip:hover { @apply border-teal-600 bg-teal-50; }
+  .chip-n { @apply text-[15px] font-bold text-teal-700; }
+}
+</style>
+</body>
+</html>

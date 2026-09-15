@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="retro">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Annuaire — La Cartoucherie</title>
+<meta name="description" content="Les 12 membres du quartier de la Cartoucherie, triables par distance." />
+<link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
+<link href="https://cdn.jsdelivr.net/npm/daisyui@5/themes.css" rel="stylesheet" type="text/css" />
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,600;0,700;1,500&family=DM+Mono:wght@500&display=swap" rel="stylesheet" />
+</head>
+<body class="bg-base-100 text-base-content pb-24 md:pb-6">
+
+<div class="navbar bg-base-200 sticky top-0 z-40 px-3 sm:px-4 gap-2 border-b border-base-300">
+  <div class="navbar-start">
+    <a href="index.html" class="btn btn-ghost min-h-11 px-2 text-lg font-[Fraunces] font-bold normal-case gap-1">
+      <span aria-hidden="true">📍</span> Cartoucherie
+    </a>
+  </div>
+  <div class="navbar-end gap-2">
+    <span id="geo-pill" class="badge badge-outline badge-lg hidden sm:inline-flex">point de départ : la Halle</span>
+    <div class="hidden md:flex gap-1">
+      <a href="index.html" class="btn btn-ghost min-h-11">Accueil</a>
+      <a href="annuaire.html" class="btn btn-ghost btn-active min-h-11">Annuaire</a>
+      <a href="carte.html" class="btn btn-ghost min-h-11">Carte</a>
+    </div>
+  </div>
+</div>
+
+<main class="max-w-2xl mx-auto px-4 pt-6">
+
+  <h1 class="font-[Fraunces] text-3xl font-bold">Annuaire du quartier</h1>
+  <p class="text-sm opacity-70 mt-1 mb-4">12 membres. Classés par distance par défaut — c'est votre position qui organise cette liste, pas une catégorie.</p>
+
+  <div id="geo-status" class="empty:hidden mb-3"></div>
+  <div class="flex flex-wrap items-center gap-2 mb-5">
+    <button type="button" onclick="ctchActiverPosition(this)" class="btn btn-primary min-h-11">📍 Activer ma position</button>
+    <span class="text-xs opacity-60">Pour l'instant : distances à vol d'oiseau depuis la Halle.</span>
+  </div>
+
+  <fieldset class="mb-2">
+    <legend class="sr-only">Filtrer par catégorie</legend>
+    <div class="flex flex-wrap gap-2" role="group" aria-label="Filtrer par catégorie">
+      <button type="button" onclick="ctchFiltrerCat('tous', this)" class="btn min-h-11 btn-primary cat-chip" data-cat="tous">Tous</button>
+      <button type="button" onclick="ctchFiltrerCat('sante-bien-etre', this)" class="btn min-h-11 btn-outline cat-chip" data-cat="sante-bien-etre">🌿 Santé &amp; bien-être</button>
+      <button type="button" onclick="ctchFiltrerCat('beaute-soins', this)" class="btn min-h-11 btn-outline cat-chip" data-cat="beaute-soins">✂️ Beauté &amp; soins</button>
+      <button type="button" onclick="ctchFiltrerCat('artisanat-travaux', this)" class="btn min-h-11 btn-outline cat-chip" data-cat="artisanat-travaux">🔨 Artisanat &amp; travaux</button>
+      <button type="button" onclick="ctchFiltrerCat('alimentation-traiteur', this)" class="btn min-h-11 btn-outline cat-chip" data-cat="alimentation-traiteur">🥖 Alimentation &amp; traiteur</button>
+      <button type="button" onclick="ctchFiltrerCat('conseil-entreprise', this)" class="btn min-h-11 btn-outline cat-chip" data-cat="conseil-entreprise">📊 Conseil &amp; entreprise</button>
+      <button type="button" onclick="ctchFiltrerCat('numerique-creation', this)" class="btn min-h-11 btn-outline cat-chip" data-cat="numerique-creation">💻 Numérique &amp; création</button>
+      <button type="button" onclick="ctchFiltrerCat('sport-mouvement', this)" class="btn min-h-11 btn-outline cat-chip" data-cat="sport-mouvement">🏃 Sport &amp; mouvement</button>
+      <button type="button" onclick="ctchFiltrerCat('art-culture', this)" class="btn min-h-11 btn-outline cat-chip" data-cat="art-culture">🎨 Art &amp; culture</button>
+      <button type="button" onclick="ctchFiltrerCat('services-domicile', this)" class="btn min-h-11 btn-outline cat-chip" data-cat="services-domicile">🏠 Services à domicile</button>
+    </div>
+  </fieldset>
+
+  <div role="tablist" class="tabs tabs-lift mt-4">
+
+    <input type="radio" name="sort-tabs" role="tab" class="tab min-h-11" aria-label="📍 Le plus proche" checked="checked" />
+    <div role="tabpanel" class="tab-content bg-base-100 border-base-300 pt-4">
+      <ul class="flex flex-col gap-3">
+
+        <li class="member-card" data-cat="numerique-creation conseil-entreprise">
+          <a href="membre.html" class="flex items-center gap-3 bg-base-200 hover:bg-base-300 rounded-box p-3 border border-base-300 transition">
+            <img src="https://picsum.photos/seed/yanis-belhadj/600/600" alt="Yanis Belhadj" class="w-16 h-16 rounded-box object-cover shrink-0" />
+            <div class="min-w-0 grow">
+              <p class="font-semibold truncate">Yanis Belhadj</p>
+              <p class="text-sm opacity-70 truncate">💻 Développeur web indépendant</p>
+              <p class="text-xs opacity-60 mt-0.5">🏛️ à la Halle · ★ 5,0 (7 avis)</p>
+            </div>
+            <div class="flex flex-col items-end shrink-0 gap-1">
+              <a href="tel:0623456789" onclick="event.stopPropagation()" aria-label="Appeler Yanis Belhadj" class="btn btn-circle btn-primary min-h-11 min-w-11">📞</a>
+              <span class="font-[DM_Mono] text-lg font-bold text-primary leading-none">60 m</span>
+            </div>
+          </a>
+        </li>
+
+        <li class="member-card" data-cat="sport-mouvement sante-bien-etre">
+          <a href="membre.html" class="flex items-center gap-3 bg-base-200 hover:bg-base-300 rounded-box p-3 border border-base-300 transition">
+            <img src="https://picsum.photos/seed/thomas-vidal/600/600" alt="Thomas Vidal" class="w-16 h-16 rounded-box object-cover shrink-0" />
+            <div class="min-w-0 grow">
+              <p class="font-semibold truncate">Thomas Vidal</p>
+              <p class="text-sm opacity-70 truncate">🏃 Coach sportif</p>
+              <p class="text-xs opacity-60 mt-0.5">🏛️ parvis de la Halle · ★ 4,6 (18 avis)</p>
+            </div>
+            <div class="flex flex-col items-end shrink-0 gap-1">
+              <a href="tel:0667890123" onclick="event.stopPropagation()" aria-label="Appeler Thomas Vidal" class="btn btn-circle btn-primary min-h-11 min-w-11">📞</a>
+              <span class="font-[DM_Mono] text-lg font-bold text-primary leading-none">60 m</span>
+            </div>
+          </a>
+        </li>
+
+        <li class="member-card" data-cat="sport-mouvement sante-bien-etre">
+          <a href="membre.html" class="flex items-center gap-3 bg-base-200 hover:bg-base-300 rounded-box p-3 border border-base-300 transition">
+            <img src="https://picsum.photos/seed/ines-lacombe/600/600" alt="Inès Lacombe" class="w-16 h-16 rounded-box object-cover shrink-0" />
+            <div class="min-w-0 grow">
+              <p class="font-semibold truncate">Inès Lacombe</p>
+              <p class="text-sm opacity-70 truncate">🏃 Professeure de yoga</p>
+              <p class="text-xs opacity-60 mt-0.5">🏛️ à la Halle · ★ 4,9 (27 avis)</p>
+            </div>
+            <div class="flex flex-col items-end shrink-0 gap-1">
+              <a href="tel:0690123456" onclick="event.stopPropagation()" aria-label="Appeler Inès Lacombe" class="btn btn-circle btn-primary min-h-11 min-w-11">📞</a>
+              <span class="font-[DM_Mono] text-lg font-bold text-primary leading-none">60 m</span>
+            </div>
+          </a>
+        </li>
+
+        <li class="member-card" data-cat="sante-bien-etre">
+          <a href="membre.html" class="flex items-center gap-3 bg-base-200 hover:bg-base-300 rounded-box p-3 border border-base-300 transition">
+            <img src="https://picsum.photos/seed/camille-roussel/600/600" alt="Camille Roussel" class="w-16 h-16 rounded-box object-cover shrink-0" />
+            <div class="min-w-0 grow">
+              <p class="font-semibold truncate">Camille Roussel</p>
+              <p class="text-sm opacity-70 truncate">🌿 Sophrologue</p>
+              <p class="text-xs opacity-60 mt-0.5">🛣️ rue Paul Mesplé · ★ 4,8 (12 avis)</p>
+            </div>
+            <div class="flex flex-col items-end shrink-0 gap-1">
+              <a href="tel:0612345678" onclick="event.stopPropagation()" aria-label="Appeler Camille Roussel" class="btn btn-circle btn-primary min-h-11 min-w-11">📞</a>
+              <span class="font-[DM_Mono] text-lg font-bold text-primary leading-none">120 m</span>
+            </div>
+          </a>
+        </li>
+
+        <li class="member-card" data-cat="conseil-entreprise">
+          <a href="membre.html" class="flex items-center gap-3 bg-base-200 hover:bg-base-300 rounded-box p-3 border border-base-300 transition">
+            <img src="https://picsum.photos/seed/pierre-delmas/600/600" alt="Pierre Delmas" class="w-16 h-16 rounded-box object-cover shrink-0" />
+            <div class="min-w-0 grow">
+              <p class="font-semibold truncate">Pierre Delmas</p>
+              <p class="text-sm opacity-70 truncate">📊 Expert-comptable</p>
+              <p class="text-xs opacity-60 mt-0.5">🛣️ rue Paul Mesplé · ★ 4,3 (5 avis)</p>
+            </div>
+            <div class="flex flex-col items-end shrink-0 gap-1">
+              <a href="tel:0601234567" onclick="event.stopPropagation()" aria-label="Appeler Pierre Delmas" class="btn btn-circle btn-primary min-h-11 min-w-11">📞</a>
+              <span class="font-[DM_Mono] text-lg font-bold text-primary leading-none">150 m</span>
+            </div>
+          </a>
+        </li>
+
+        <li class="member-card" data-cat="alimentation-traiteur">
+          <a href="membre.html" class="flex items-center gap-3 bg-base-200 hover:bg-base-300 rounded-box p-3 border border-base-300 transition">
+            <img src="https://picsum.photos/seed/nadia-berrada/600/600" alt="Nadia Berrada" class="w-16 h-16 rounded-box object-cover shrink-0" />
+            <div class="min-w-0 grow">
+              <p class="font-semibold truncate">Nadia Berrada</p>
+              <p class="text-sm opacity-70 truncate">🥖 Traiteur — cuisine maison</p>
+              <p class="text-xs opacity-60 mt-0.5">résidence privée, pas de point sur la carte · ★ 5,0 (23 avis)</p>
+            </div>
+            <div class="flex flex-col items-end shrink-0 gap-1">
+              <a href="tel:0656789012" onclick="event.stopPropagation()" aria-label="Appeler Nadia Berrada" class="btn btn-circle btn-primary min-h-11 min-w-11">📞</a>
+              <span class="font-[DM_Mono] text-lg font-bold text-primary leading-none">210 m</span>
+            </div>
+          </a>
+        </li>
+
+        <li class="member-card" data-cat="numerique-creation art-culture">
+          <a href="membre.html" class="flex items-center gap-3 bg-base-200 hover:bg-base-300 rounded-box p-3 border border-base-300 transition">
+            <img src="https://picsum.photos/seed/lea-fontaine/600/600" alt="Léa Fontaine" class="w-16 h-16 rounded-box object-cover shrink-0" />
+            <div class="min-w-0 grow">
+              <p class="font-semibold truncate">Léa Fontaine</p>
+              <p class="text-sm opacity-70 truncate">💻 Graphiste &amp; illustratrice</p>
+              <p class="text-xs opacity-60 mt-0.5">🌳 avenue de Grande-Bretagne · ★ 4,9 (15 avis)</p>
+            </div>
+            <div class="flex flex-col items-end shrink-0 gap-1">
+              <a href="tel:0634567890" onclick="event.stopPropagation()" aria-label="Appeler Léa Fontaine" class="btn btn-circle btn-primary min-h-11 min-w-11">📞</a>
+              <span class="font-[DM_Mono] text-lg font-bold text-primary leading-none">340 m</span>
+            </div>
+          </a>
+        </li>
+
+        <li class="member-card" data-cat="art-culture numerique-creation">
+          <a href="membre.html" class="flex items-center gap-3 bg-base-200 hover:bg-base-300 rounded-box p-3 border border-base-300 transition">
+            <img src="https://picsum.photos/seed/karim-ziani/600/600" alt="Karim Ziani" class="w-16 h-16 rounded-box object-cover shrink-0" />
+            <div class="min-w-0 grow">
+              <p class="font-semibold truncate">Karim Ziani</p>
+              <p class="text-sm opacity-70 truncate">🎨 Photographe</p>
+              <p class="text-xs opacity-60 mt-0.5">🌳 avenue de Grande-Bretagne · ★ 4,9 (14 avis)</p>
+            </div>
+            <div class="flex flex-col items-end shrink-0 gap-1">
+              <a href="tel:0623904567" onclick="event.stopPropagation()" aria-label="Appeler Karim Ziani" class="btn btn-circle btn-primary min-h-11 min-w-11">📞</a>
+              <span class="font-[DM_Mono] text-lg font-bold text-primary leading-none">380 m</span>
+            </div>
+          </a>
+        </li>
+
+        <li class="member-card" data-cat="sante-bien-etre">
+          <a href="membre.html" class="flex items-center gap-3 bg-base-200 hover:bg-base-300 rounded-box p-3 border border-base-300 transition">
+            <img src="https://picsum.photos/seed/sophie-arnaud/600/600" alt="Sophie Arnaud" class="w-16 h-16 rounded-box object-cover shrink-0" />
+            <div class="min-w-0 grow">
+              <p class="font-semibold truncate">Sophie Arnaud</p>
+              <p class="text-sm opacity-70 truncate">🌿 Naturopathe</p>
+              <p class="text-xs opacity-60 mt-0.5">allée du Bois Vert · ★ 4,5 (6 avis)</p>
+            </div>
+            <div class="flex flex-col items-end shrink-0 gap-1">
+              <a href="tel:0678901234" onclick="event.stopPropagation()" aria-label="Appeler Sophie Arnaud" class="btn btn-circle btn-primary min-h-11 min-w-11">📞</a>
+              <span class="font-[DM_Mono] text-lg font-bold text-primary leading-none">450 m</span>
+            </div>
+          </a>
+        </li>
+
+        <li class="member-card" data-cat="artisanat-travaux">
+          <a href="membre.html" class="flex items-center gap-3 bg-base-200 hover:bg-base-300 rounded-box p-3 border border-base-300 transition">
+            <img src="https://picsum.photos/seed/marc-ollivier/600/600" alt="Marc Ollivier" class="w-16 h-16 rounded-box object-cover shrink-0" />
+            <div class="min-w-0 grow">
+              <p class="font-semibold truncate">Marc Ollivier</p>
+              <p class="text-sm opacity-70 truncate">🔨 Menuisier-ébéniste</p>
+              <p class="text-xs opacity-60 mt-0.5">route de Bayonne · ★ 4,7 (9 avis)</p>
+            </div>
+            <div class="flex flex-col items-end shrink-0 gap-1">
+              <a href="tel:0645678901" onclick="event.stopPropagation()" aria-label="Appeler Marc Ollivier" class="btn btn-circle btn-primary min-h-11 min-w-11">📞</a>
+              <span class="font-[DM_Mono] text-lg font-bold text-primary leading-none">800 m</span>
+            </div>
+          </a>
+        </li>
+
+      </ul>
+    </div>
+
+    <input type="radio" name="sort-tabs" role="tab" class="tab min-h-11" aria-label="🔤 A→Z" />
+    <div role="tabpanel" class="tab-content bg-base-100 border-base-300 pt-4">
+      <ul class="flex flex-col gap-3">
+
+        <li class="member-card" data-cat="sante-bien-etre">
+          <a href="membre.html" class="flex items-center gap-3 bg-base-200 hover:bg-base-300 rounded-box p-3 border border-base-300 transition">
+            <img src="https://picsum.photos/seed/camille-roussel/600/600" alt="Camille Roussel" class="w-16 h-16 rounded-box object-cover shrink-0" />
+            <div class="min-w-0 grow">
+              <p class="font-semibold truncate">Camille Roussel</p>
+              <p class="text-sm opacity-70 truncate">🌿 Sophrologue</p>
+            </div>
+            <span class="font-[DM_Mono] text-lg font-bold text-primary shrink-0">120 m</span>
+          </a>
+        </li>
+
+        <li class="member-card" data-cat="sport-mouvement sante-bien-etre">
+          <a href="membre.html" class="flex items-center gap-3 bg-base-200 hover:bg-base-300 rounded-box p-3 border border-base-300 transition">
+            <img src="https://picsum.photos/seed/ines-lacombe/600/600" alt="Inès Lacombe" class="w-16 h-16 rounded-box object-cover shrink-0" />
+            <div class="min-w-0 grow">
+              <p class="font-semibold truncate">Inès Lacombe</p>
+              <p class="text-sm opacity-70 truncate">🏃 Professeure de yoga</p>
+            </div>
+            <span class="font-[DM_Mono] text-lg font-bold text-primary shrink-0">60 m</span>
+          </a>
+        </li>
+
+        <li class="member-card" data-cat="numerique-creation art-culture">
+          <a href="membre.html" class="flex items-center gap-3 bg-base-200 hover:bg-base-300 rounded-box p-3 border border-base-300 transition">
+            <img src="https://picsum.photos/seed/lea-fontaine/600/600" alt="Léa Fontaine" class="w-16 h-16 rounded-box object-cover shrink-0" />
+            <div class="min-w-0 grow">
+              <p class="font-semibold truncate">Léa Fontaine</p>
+              <p class="text-sm opacity-70 truncate">💻 Graphiste &amp; illustratrice</p>
+            </div>
+            <span class="font-[DM_Mono] text-lg font-bold text-primary shrink-0">340 m</span>
+          </a>
+        </li>
+
+        <li class="member-card" data-cat="art-culture numerique-creation">
+          <a href="membre.html" class="flex items-center gap-3 bg-base-200 hover:bg-base-300 rounded-box p-3 border border-base-300 transition">
+            <img src="https://picsum.photos/seed/karim-ziani/600/600" alt="Karim Ziani" class="w-16 h-16 rounded-box object-cover shrink-0" />
+            <div class="min-w-0 grow">
+              <p class="font-semibold truncate">Karim Ziani</p>
+              <p class="text-sm opacity-70 truncate">🎨 Photographe</p>
+            </div>
+            <span class="font-[DM_Mono] text-lg font-bold text-primary shrink-0">380 m</span>
+          </a>
+        </li>
+
+        <li class="member-card" data-cat="numerique-creation conseil-entreprise">
+          <a href="membre.html" class="flex items-center gap-3 bg-base-200 hover:bg-base-300 rounded-box p-3 border border-base-300 transition">
+            <img src="https://picsum.photos/seed/yanis-belhadj/600/600" alt="Yanis Belhadj" class="w-16 h-16 rounded-box object-cover shrink-0" />
+            <div class="min-w-0 grow">
+              <p class="font-semibold truncate">Yanis Belhadj</p>
+              <p class="text-sm opacity-70 truncate">💻 Développeur web indépendant</p>
+            </div>
+            <span class="font-[DM_Mono] text-lg font-bold text-primary shrink-0">60 m</span>
+          </a>
+        </li>
+
+        <li class="member-card" data-cat="artisanat-travaux">
+          <a href="membre.html" class="flex items-center gap-3 bg-base-200 hover:bg-base-300 rounded-box p-3 border border-base-300 transition">
+            <img src="https://picsum.photos/seed/marc-ollivier/600/600" alt="Marc Ollivier" class="w-16 h-16 rounded-box object-cover shrink-0" />
+            <div class="min-w-0 grow">
+              <p class="font-semibold truncate">Marc Ollivier</p>
+              <p class="text-sm opacity-70 truncate">🔨 Menuisier-ébéniste</p>
+            </div>
+            <span class="font-[DM_Mono] text-lg font-bold text-primary shrink-0">800 m</span>
+          </a>
+        </li>
+
+        <li class="member-card" data-cat="alimentation-traiteur">
+          <a href="membre.html" class="flex items-center gap-3 bg-base-200 hover:bg-base-300 rounded-box p-3 border border-base-300 transition">
+            <img src="https://picsum.photos/seed/nadia-berrada/600/600" alt="Nadia Berrada" class="w-16 h-16 rounded-box object-cover shrink-0" />
+            <div class="min-w-0 grow">
+              <p class="font-semibold truncate">Nadia Berrada</p>
+              <p class="text-sm opacity-70 truncate">🥖 Traiteur — cuisine maison</p>
+            </div>
+            <span class="font-[DM_Mono] text-lg font-bold text-primary shrink-0">210 m</span>
+          </a>
+        </li>
+
+        <li class="member-card" data-cat="conseil-entreprise">
+          <a href="membre.html" class="flex items-center gap-3 bg-base-200 hover:bg-base-300 rounded-box p-3 border border-base-300 transition">
+            <img src="https://picsum.photos/seed/pierre-delmas/600/600" alt="Pierre Delmas" class="w-16 h-16 rounded-box object-cover shrink-0" />
+            <div class="min-w-0 grow">
+              <p class="font-semibold truncate">Pierre Delmas</p>
+              <p class="text-sm opacity-70 truncate">📊 Expert-comptable</p>
+            </div>
+            <span class="font-[DM_Mono] text-lg font-bold text-primary shrink-0">150 m</span>
+          </a>
+        </li>
+
+        <li class="member-card" data-cat="sante-bien-etre">
+          <a href="membre.html" class="flex items-center gap-3 bg-base-200 hover:bg-base-300 rounded-box p-3 border border-base-300 transition">
+            <img src="https://picsum.photos/seed/sophie-arnaud/600/600" alt="Sophie Arnaud" class="w-16 h-16 rounded-box object-cover shrink-0" />
+            <div class="min-w-0 grow">
+              <p class="font-semibold truncate">Sophie Arnaud</p>
+              <p class="text-sm opacity-70 truncate">🌿 Naturopathe</p>
+            </div>
+            <span class="font-[DM_Mono] text-lg font-bold text-primary shrink-0">450 m</span>
+          </a>
+        </li>
+
+        <li class="member-card" data-cat="sport-mouvement sante-bien-etre">
+          <a href="membre.html" class="flex items-center gap-3 bg-base-200 hover:bg-base-300 rounded-box p-3 border border-base-300 transition">
+            <img src="https://picsum.photos/seed/thomas-vidal/600/600" alt="Thomas Vidal" class="w-16 h-16 rounded-box object-cover shrink-0" />
+            <div class="min-w-0 grow">
+              <p class="font-semibold truncate">Thomas Vidal</p>
+              <p class="text-sm opacity-70 truncate">🏃 Coach sportif</p>
+            </div>
+            <span class="font-[DM_Mono] text-lg font-bold text-primary shrink-0">60 m</span>
+          </a>
+        </li>
+
+      </ul>
+    </div>
+
+  </div>
+
+  <section class="mt-8 pt-6 border-t border-base-300">
+    <h2 class="font-[Fraunces] text-xl font-bold mb-1">Se déplacent chez vous</h2>
+    <p class="text-sm opacity-70 mb-4">Sans distance fixe — ce sont eux qui viennent, pas l'inverse.</p>
+    <ul class="flex flex-col gap-3">
+
+      <li class="member-card" data-cat="artisanat-travaux services-domicile">
+        <a href="membre.html" class="flex items-center gap-3 bg-base-200 hover:bg-base-300 rounded-box p-3 border border-base-300 transition">
+          <img src="https://picsum.photos/seed/julien-marty/600/600" alt="Julien Marty" class="w-16 h-16 rounded-box object-cover shrink-0" />
+          <div class="min-w-0 grow">
+            <p class="font-semibold truncate">Julien Marty</p>
+            <p class="text-sm opacity-70 truncate">🔨 Électricien — intervient dans tout le quartier</p>
+          </div>
+          <span class="badge badge-secondary badge-lg gap-1 shrink-0 whitespace-nowrap">🚗 chez vous</span>
+        </a>
+      </li>
+
+      <li class="member-card" data-cat="beaute-soins services-domicile">
+        <a href="membre.html" class="flex items-center gap-3 bg-base-200 hover:bg-base-300 rounded-box p-3 border border-base-300 transition">
+          <img src="https://picsum.photos/seed/amandine-rey/600/600" alt="Amandine Rey" class="w-16 h-16 rounded-box object-cover shrink-0" />
+          <div class="min-w-0 grow">
+            <p class="font-semibold truncate">Amandine Rey</p>
+            <p class="text-sm opacity-70 truncate">✂️ Coiffeuse à domicile</p>
+          </div>
+          <span class="badge badge-secondary badge-lg gap-1 shrink-0 whitespace-nowrap">🚗 chez vous</span>
+        </a>
+      </li>
+
+    </ul>
+  </section>
+
+  <p id="cat-empty" hidden class="text-center text-sm opacity-60 py-8">Aucun membre dans cette catégorie pour l'instant.</p>
+
+</main>
+
+<footer class="footer footer-center bg-base-200 text-base-content p-6 border-t border-base-300 mt-8 mb-16 md:mb-0">
+  <nav class="flex flex-wrap justify-center gap-x-4 gap-y-2">
+    <a href="#" class="link link-hover">À propos</a>
+    <a href="#" class="link link-hover">Confidentialité</a>
+    <a href="#" class="link link-hover">Mentions légales</a>
+    <a href="#" class="link link-hover">Avis</a>
+  </nav>
+  <aside>
+    <p class="text-xs opacity-70">La Cartoucherie · 31300 Toulouse — annuaire associatif du quartier</p>
+  </aside>
+</footer>
+
+<div class="dock md:hidden">
+  <a href="index.html" aria-label="Accueil"><span class="text-xl" aria-hidden="true">🏠</span><span class="dock-label">Accueil</span></a>
+  <a href="annuaire.html" class="dock-active" aria-label="Annuaire"><span class="text-xl" aria-hidden="true">📖</span><span class="dock-label">Annuaire</span></a>
+  <a href="carte.html" aria-label="Carte"><span class="text-xl" aria-hidden="true">🗺️</span><span class="dock-label">Carte</span></a>
+</div>
+
+<script>
+  function ctchGeoResult(ok){
+    var pill = document.getElementById('geo-pill');
+    var status = document.getElementById('geo-status');
+    if(ok){
+      if(pill){ pill.textContent = '📍 depuis votre position'; }
+      if(status){ status.innerHTML = '<div role="alert" class="alert alert-success"><span>Position activée — le classement « le plus proche » part maintenant de vous.</span></div>'; }
+      try{ localStorage.setItem('ctch_geo','granted'); }catch(e){}
+    } else {
+      if(pill){ pill.textContent = '📍 point de départ : la Halle'; }
+      if(status){ status.innerHTML = '<div role="alert" class="alert alert-warning"><span>Localisation refusée — on garde le classement à vol d\'oiseau depuis la Halle.</span></div>'; }
+      try{ localStorage.setItem('ctch_geo','denied'); }catch(e){}
+    }
+  }
+  function ctchActiverPosition(btn){
+    btn.disabled = true;
+    btn.textContent = 'Localisation…';
+    if(!navigator.geolocation){ ctchGeoResult(false); return; }
+    navigator.geolocation.getCurrentPosition(
+      function(){ ctchGeoResult(true); btn.disabled = false; btn.textContent = '📍 Activer ma position'; },
+      function(){ ctchGeoResult(false); btn.disabled = false; btn.textContent = '📍 Activer ma position'; },
+      { timeout: 6000 }
+    );
+  }
+  function ctchFiltrerCat(cat, btn){
+    document.querySelectorAll('.cat-chip').forEach(function(el){
+      el.classList.remove('btn-primary');
+      el.classList.add('btn-outline');
+    });
+    btn.classList.remove('btn-outline');
+    btn.classList.add('btn-primary');
+    var visibles = 0;
+    document.querySelectorAll('.member-card').forEach(function(el){
+      var cats = (el.getAttribute('data-cat') || '').split(' ');
+      var show = (cat === 'tous' || cats.indexOf(cat) !== -1);
+      el.hidden = !show;
+      if(show){ visibles++; }
+    });
+    var empty = document.getElementById('cat-empty');
+    if(empty){ empty.hidden = visibles > 0; }
+  }
+  (function(){
+    try{
+      if(localStorage.getItem('ctch_geo') === 'granted'){ ctchGeoResult(true); }
+    }catch(e){}
+  })();
+</script>
+</body>
+</html>

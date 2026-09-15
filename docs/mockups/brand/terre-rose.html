@@ -1,0 +1,538 @@
+<!doctype html>
+<html lang="fr" data-theme="cartoucherie">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Annuaire de la Cartoucherie — Planche « Terre rose »</title>
+<link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
+<style>
+[data-theme="cartoucherie"] {
+  color-scheme: light;
+  --font-display: "Bricolage Grotesque", ui-sans-serif, system-ui, sans-serif;
+  --font-body: "Instrument Sans", ui-sans-serif, system-ui, sans-serif;
+
+  --color-base-100: oklch(97.5% 0.012 85);
+  --color-base-200: oklch(94% 0.016 80);
+  --color-base-300: oklch(88.5% 0.022 75);
+  --color-base-content: oklch(24% 0.025 40);
+
+  --color-primary: oklch(53% 0.145 39);
+  --color-primary-content: oklch(98.5% 0.006 39);
+
+  --color-secondary: oklch(44% 0.052 193);
+  --color-secondary-content: oklch(98% 0.006 193);
+
+  --color-accent: oklch(52% 0.095 65);
+  --color-accent-content: oklch(98% 0.008 65);
+
+  --color-neutral: oklch(28% 0.02 45);
+  --color-neutral-content: oklch(96.5% 0.01 85);
+
+  --color-info: oklch(49% 0.10 235);
+  --color-info-content: oklch(98% 0.01 235);
+
+  --color-success: oklch(50% 0.125 145);
+  --color-success-content: oklch(98% 0.01 145);
+
+  --color-warning: oklch(78% 0.14 80);
+  --color-warning-content: oklch(24% 0.04 80);
+
+  --color-error: oklch(51% 0.205 21);
+  --color-error-content: oklch(98.5% 0.006 21);
+
+  --radius-selector: 1rem;
+  --radius-field: 0.75rem;
+  --radius-box: 1.25rem;
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+  --border: 1px;
+  --depth: 0;
+  --noise: 0;
+}
+</style>
+</head>
+<body class="bg-base-200 [font-family:var(--font-body)] text-base-content">
+
+<!-- Icon + mark definitions, reused everywhere via <use> -->
+<svg width="0" height="0" class="absolute" aria-hidden="true">
+  <defs>
+    <symbol id="mark-arches" viewBox="0 0 64 40">
+      <path d="M4 36 L4 18 A6 6 0 0 1 16 18 L16 36" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M24 36 L24 14 A8 8 0 0 1 40 14 L40 36" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M48 36 L48 18 A6 6 0 0 1 60 18 L60 36" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+    </symbol>
+    <symbol id="icon-phone" viewBox="0 0 24 24">
+      <path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h1.5a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 0 1-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 0 0-1.091-.852H4.5A2.25 2.25 0 0 0 2.25 4.5v2.25Z"/>
+    </symbol>
+    <symbol id="icon-globe" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="8.25" fill="none" stroke="currentColor" stroke-width="1.5"/>
+      <path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" d="M3.75 12h16.5"/>
+      <path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" d="M12 3.75c2.6 2.3 2.6 14.15 0 16.5"/>
+      <path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" d="M12 3.75c-2.6 2.3-2.6 14.15 0 16.5"/>
+    </symbol>
+    <symbol id="icon-arrow-right" viewBox="0 0 24 24">
+      <path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" d="M4 12h16M13 5l7 7-7 7"/>
+    </symbol>
+    <symbol id="icon-star" viewBox="0 0 24 24">
+      <path fill="currentColor" d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.9-5.2-2.8-5.2 2.8 1-5.9-4.3-4.1 5.9-.9L12 3.5Z"/>
+    </symbol>
+    <symbol id="icon-heart" viewBox="0 0 24 24">
+      <path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" d="M12 20s-7-4.3-9.5-8.7C1 8.3 2.6 5 6 5c2 0 3.3 1 4 2.2C10.7 6 12 5 14 5c3.4 0 5 3.3 3.5 6.3C19 15.7 12 20 12 20Z"/>
+    </symbol>
+    <symbol id="icon-users" viewBox="0 0 24 24">
+      <circle cx="8.5" cy="9" r="2.5" fill="none" stroke="currentColor" stroke-width="1.5"/>
+      <circle cx="16.25" cy="10" r="2" fill="none" stroke="currentColor" stroke-width="1.5"/>
+      <path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" d="M3 19c0-3 2.5-5 5.5-5s5.5 2 5.5 5"/>
+      <path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" d="M14.25 14.6c2.4.35 4.25 1.9 4.25 4.4"/>
+    </symbol>
+    <symbol id="icon-clock" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="1.5"/>
+      <path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" d="M12 7.5V12l3 2"/>
+    </symbol>
+    <symbol id="icon-search" viewBox="0 0 24 24">
+      <circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="1.5"/>
+      <path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" d="M20 20l-4.8-4.8"/>
+    </symbol>
+  </defs>
+</svg>
+
+<div class="max-w-5xl mx-auto px-6 py-12 md:px-10 md:py-16 space-y-20">
+
+  <!-- ============ INTRO ============ -->
+  <header class="space-y-2">
+    <p class="badge badge-secondary badge-outline text-xs tracking-wide uppercase">Planche de marque · Direction 2</p>
+    <h1 class="text-3xl md:text-4xl font-semibold [font-family:var(--font-display)]">Terre rose</h1>
+    <p class="text-base max-w-2xl text-base-content/70">Annuaire de la Cartoucherie — la brique terracotta comme couleur d'identité, calmée par un vert-bleu sourd, sur un fond papier chaud. Toulouse, pas « votre quartier ».</p>
+  </header>
+
+  <!-- ============ 1. WORDMARK ============ -->
+  <section class="space-y-6">
+    <h2 class="text-xs font-semibold tracking-widest uppercase text-base-content/50">1 · Wordmark</h2>
+
+    <div class="bg-base-100 border border-base-300 rounded-box p-8 md:p-12 space-y-8">
+      <!-- Large lockup -->
+      <div class="flex items-center gap-5">
+        <span class="inline-flex items-center justify-center w-16 h-16 md:w-20 md:h-20 rounded-2xl bg-primary text-primary-content shrink-0">
+          <svg class="w-10 h-10 md:w-12 md:h-12" viewBox="0 0 64 40"><use href="#mark-arches"/></svg>
+        </span>
+        <div>
+          <p class="text-3xl md:text-5xl leading-none font-bold [font-family:var(--font-display)] text-base-content">Annuaire de la Cartoucherie</p>
+          <p class="mt-2 text-base md:text-lg text-base-content/70 [font-family:var(--font-display)] font-medium">La Cartoucherie</p>
+        </div>
+      </div>
+
+      <div class="divider my-0"></div>
+
+      <!-- 24px proof -->
+      <div class="flex flex-wrap items-center gap-8">
+        <div>
+          <p class="text-xs text-base-content/50 mb-2">Mark seul, rendu à 24&nbsp;px (taille favicon)</p>
+          <div class="flex items-center gap-4">
+            <span class="inline-flex items-center justify-center w-6 h-6 rounded-md bg-primary text-primary-content">
+              <svg class="w-4 h-4" viewBox="0 0 64 40"><use href="#mark-arches"/></svg>
+            </span>
+            <!-- simulated browser tab -->
+            <span class="inline-flex items-center gap-1.5 bg-base-200 border border-base-300 rounded-t-md px-3 py-1.5">
+              <span class="inline-flex items-center justify-center w-6 h-6 rounded-md bg-primary text-primary-content shrink-0">
+                <svg class="w-4 h-4" viewBox="0 0 64 40"><use href="#mark-arches"/></svg>
+              </span>
+              <span class="text-[13px] text-base-content/70 [font-family:var(--font-display)]">La Cartoucherie</span>
+            </span>
+          </div>
+        </div>
+        <div>
+          <p class="text-xs text-base-content/50 mb-2">Forme courte, en contexte de navigation</p>
+          <span class="text-xl font-semibold [font-family:var(--font-display)]">La Cartoucherie</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 2. PALETTE ============ -->
+  <section class="space-y-6">
+    <h2 class="text-xs font-semibold tracking-widest uppercase text-base-content/50">2 · Palette</h2>
+
+    <!-- Base / surfaces -->
+    <div class="bg-base-100 border border-base-300 rounded-box p-6 md:p-8 space-y-6">
+      <p class="text-sm font-medium text-base-content/60">Surfaces (fond papier chaud)</p>
+      <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+        <div class="rounded-box border border-base-300 overflow-hidden">
+          <div class="h-16 bg-base-100"></div>
+          <div class="p-3 text-xs space-y-1">
+            <p class="font-semibold">base-100</p>
+            <p class="text-base-content/60">oklch(97.5% .012 85)</p>
+            <p class="text-base-content/60">--color-base-100</p>
+          </div>
+        </div>
+        <div class="rounded-box border border-base-300 overflow-hidden">
+          <div class="h-16 bg-base-200"></div>
+          <div class="p-3 text-xs space-y-1">
+            <p class="font-semibold">base-200</p>
+            <p class="text-base-content/60">oklch(94% .016 80)</p>
+            <p class="text-base-content/60">--color-base-200</p>
+          </div>
+        </div>
+        <div class="rounded-box border border-base-300 overflow-hidden">
+          <div class="h-16 bg-base-300"></div>
+          <div class="p-3 text-xs space-y-1">
+            <p class="font-semibold">base-300</p>
+            <p class="text-base-content/60">oklch(88.5% .022 75)</p>
+            <p class="text-base-content/60">--color-base-300</p>
+          </div>
+        </div>
+        <div class="rounded-box border border-base-300 overflow-hidden">
+          <div class="h-16 bg-base-content"></div>
+          <div class="p-3 text-xs space-y-1">
+            <p class="font-semibold">base-content</p>
+            <p class="text-base-content/60">oklch(24% .025 40)</p>
+            <p class="text-base-content/60">--color-base-content</p>
+          </div>
+        </div>
+        <div class="rounded-box border border-base-300 overflow-hidden">
+          <div class="h-16 bg-neutral"></div>
+          <div class="p-3 text-xs space-y-1">
+            <p class="font-semibold">neutral</p>
+            <p class="text-base-content/60">oklch(28% .02 45)</p>
+            <p class="text-base-content/60">--color-neutral</p>
+          </div>
+        </div>
+      </div>
+      <div class="flex flex-wrap gap-2 pt-1">
+        <span class="badge badge-ghost gap-1 text-xs">base-100 vs base-content — 15.40:1 · AAA</span>
+        <span class="badge badge-ghost gap-1 text-xs">base-200 vs base-content — 13.88:1 · AAA</span>
+        <span class="badge badge-ghost gap-1 text-xs">base-300 vs base-content — 11.70:1 · AAA</span>
+        <span class="badge badge-ghost gap-1 text-xs">neutral vs neutral-content — 13.26:1 · AAA</span>
+      </div>
+    </div>
+
+    <!-- Brand hues -->
+    <div class="bg-base-100 border border-base-300 rounded-box p-6 md:p-8 space-y-6">
+      <p class="text-sm font-medium text-base-content/60">Identité (primaire, secondaire, accent)</p>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="rounded-box border border-base-300 overflow-hidden">
+          <div class="h-20 bg-primary flex items-end p-3">
+            <span class="text-primary-content text-xs font-medium">Aa — primary-content</span>
+          </div>
+          <div class="p-3 text-xs space-y-1">
+            <p class="font-semibold text-sm">primary — terracotta</p>
+            <p class="text-base-content/60">--color-primary: oklch(53% .145 39) · #af4721</p>
+            <p class="text-base-content/60">--color-primary-content: oklch(98.5% .006 39) · #fef9f7</p>
+            <p class="pt-1"><span class="badge badge-outline badge-xs">5.39:1 · AA</span></p>
+          </div>
+        </div>
+        <div class="rounded-box border border-base-300 overflow-hidden">
+          <div class="h-20 bg-secondary flex items-end p-3">
+            <span class="text-secondary-content text-xs font-medium">Aa — secondary-content</span>
+          </div>
+          <div class="p-3 text-xs space-y-1">
+            <p class="font-semibold text-sm">secondary — teal sourd</p>
+            <p class="text-base-content/60">--color-secondary: oklch(44% .052 193) · #2c5c5a</p>
+            <p class="text-base-content/60">--color-secondary-content: oklch(98% .006 193) · #f4faf9</p>
+            <p class="pt-1"><span class="badge badge-outline badge-xs">7.15:1 · AAA</span></p>
+          </div>
+        </div>
+        <div class="rounded-box border border-base-300 overflow-hidden">
+          <div class="h-20 bg-accent flex items-end p-3">
+            <span class="text-accent-content text-xs font-medium">Aa — accent-content</span>
+          </div>
+          <div class="p-3 text-xs space-y-1">
+            <p class="font-semibold text-sm">accent — bronze</p>
+            <p class="text-base-content/60">--color-accent: oklch(52% .095 65) · #8e5c26</p>
+            <p class="text-base-content/60">--color-accent-content: oklch(98% .008 65) · #fcf7f3</p>
+            <p class="pt-1"><span class="badge badge-outline badge-xs">5.32:1 · AA</span></p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Error vs primary — the risk, shown and measured -->
+    <div class="bg-base-100 border border-base-300 rounded-box p-6 md:p-8 space-y-4">
+      <p class="text-sm font-medium text-base-content/60">Le risque : la terracotta ne doit jamais se lire comme une erreur</p>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="rounded-box border border-base-300 overflow-hidden">
+          <div class="h-20 bg-primary flex items-end p-3">
+            <span class="text-primary-content text-xs font-medium">primary — action, marque</span>
+          </div>
+          <div class="p-3 text-xs space-y-1">
+            <p class="text-base-content/60">--color-primary: oklch(53% .145 39) · #af4721 — teinte sourde, chroma 0.145</p>
+          </div>
+        </div>
+        <div class="rounded-box border border-base-300 overflow-hidden">
+          <div class="h-20 bg-error flex items-end p-3">
+            <span class="text-error-content text-xs font-medium">error — alerte, échec</span>
+          </div>
+          <div class="p-3 text-xs space-y-1">
+            <p class="text-base-content/60">--color-error: oklch(51% .205 21) · #c0002d — teinte vive, chroma 0.205</p>
+            <p class="text-base-content/60">--color-error-content: oklch(98.5% .006 21) · #fef9f8</p>
+          </div>
+        </div>
+      </div>
+      <p class="text-xs text-base-content/60 leading-relaxed max-w-2xl">Même famille de teinte au sens colorimétrique (rouge-orangé), mais séparées de 18° de teinte et surtout d'un écart de chroma de +41&nbsp;% (0.205 contre 0.145) : l'erreur est nettement plus saturée et virée vers le magenta, la marque reste mate et brique. Côte à côte elles ne se confondent pas — testé à l'œil sur cette planche, pas seulement au calcul.</p>
+      <div class="flex flex-wrap gap-2">
+        <span class="badge badge-outline badge-xs">error vs error-content — 6.14:1 · AA</span>
+        <span class="badge badge-outline badge-xs">error vs base-100 (texte) — 5.97:1 · AA</span>
+      </div>
+    </div>
+
+    <!-- Semantic remainder -->
+    <div class="bg-base-100 border border-base-300 rounded-box p-6 md:p-8 space-y-6">
+      <p class="text-sm font-medium text-base-content/60">Sémantique (info, succès, avertissement)</p>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="rounded-box border border-base-300 overflow-hidden">
+          <div class="h-16 bg-info flex items-end p-3">
+            <span class="text-info-content text-xs font-medium">Aa</span>
+          </div>
+          <div class="p-3 text-xs space-y-1">
+            <p class="font-semibold text-sm">info</p>
+            <p class="text-base-content/60">--color-info: oklch(49% .10 235) · #0d6891</p>
+            <p class="text-base-content/60">--color-info-content: oklch(98% .01 235) · #f2fafe</p>
+            <p class="pt-1"><span class="badge badge-outline badge-xs">5.81:1 · AA</span></p>
+          </div>
+        </div>
+        <div class="rounded-box border border-base-300 overflow-hidden">
+          <div class="h-16 bg-success flex items-end p-3">
+            <span class="text-success-content text-xs font-medium">Aa</span>
+          </div>
+          <div class="p-3 text-xs space-y-1">
+            <p class="font-semibold text-sm">success</p>
+            <p class="text-base-content/60">--color-success: oklch(50% .125 145) · #2b7532</p>
+            <p class="text-base-content/60">--color-success-content: oklch(98% .01 145) · #f4faf4</p>
+            <p class="pt-1"><span class="badge badge-outline badge-xs">5.38:1 · AA</span></p>
+          </div>
+        </div>
+        <div class="rounded-box border border-base-300 overflow-hidden">
+          <div class="h-16 bg-warning flex items-end p-3">
+            <span class="text-warning-content text-xs font-medium">Aa</span>
+          </div>
+          <div class="p-3 text-xs space-y-1">
+            <p class="font-semibold text-sm">warning</p>
+            <p class="text-base-content/60">--color-warning: oklch(78% .14 80) · #e6ac3d</p>
+            <p class="text-base-content/60">--color-warning-content: oklch(24% .04 80) · #291d07</p>
+            <p class="pt-1"><span class="badge badge-outline badge-xs">8.13:1 · AAA</span></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 3. TYPOGRAPHY ============ -->
+  <section class="space-y-6">
+    <h2 class="text-xs font-semibold tracking-widest uppercase text-base-content/50">3 · Typographie</h2>
+    <div class="bg-base-100 border border-base-300 rounded-box p-6 md:p-8 space-y-8">
+      <p class="text-sm text-base-content/60">Bricolage Grotesque (titres, wordmark) + Instrument Sans (texte, interface). Échelle à 5 paliers.</p>
+
+      <div class="space-y-5">
+        <div class="flex flex-col sm:flex-row sm:items-baseline sm:gap-6 border-b border-base-200 pb-4">
+          <span class="text-xs text-base-content/40 w-32 shrink-0">40px · Display</span>
+          <span class="text-4xl font-bold [font-family:var(--font-display)]">La Cartoucherie</span>
+          <span class="text-xs text-base-content/40 sm:ml-auto">Wordmark, titre d'accueil</span>
+        </div>
+        <div class="flex flex-col sm:flex-row sm:items-baseline sm:gap-6 border-b border-base-200 pb-4">
+          <span class="text-xs text-base-content/40 w-32 shrink-0">28px · Titre</span>
+          <span class="text-[28px] font-semibold [font-family:var(--font-display)]">Camille Roussel</span>
+          <span class="text-xs text-base-content/40 sm:ml-auto">Titres de section, nom de membre</span>
+        </div>
+        <div class="flex flex-col sm:flex-row sm:items-baseline sm:gap-6 border-b border-base-200 pb-4">
+          <span class="text-xs text-base-content/40 w-32 shrink-0">20px · Sous-titre</span>
+          <span class="text-xl font-medium [font-family:var(--font-display)]">Retrouver l'équilibre</span>
+          <span class="text-xs text-base-content/40 sm:ml-auto">Tuiles « Je cherche… », en-têtes de carte</span>
+        </div>
+        <div class="flex flex-col sm:flex-row sm:items-baseline sm:gap-6 border-b border-base-200 pb-4">
+          <span class="text-xs text-base-content/40 w-32 shrink-0">16px · Texte</span>
+          <span class="text-base">Gestion du stress, sommeil et préparation aux examens.</span>
+          <span class="text-xs text-base-content/40 sm:ml-auto">Corps de texte — taille plancher imposée</span>
+        </div>
+        <div class="flex flex-col sm:flex-row sm:items-baseline sm:gap-6">
+          <span class="text-xs text-base-content/40 w-32 shrink-0">14px · Méta</span>
+          <span class="text-sm font-medium text-base-content/70">120 m · 12 avis du quartier</span>
+          <span class="text-xs text-base-content/40 sm:ml-auto">Étiquettes, métadonnées non porteuses seules</span>
+        </div>
+      </div>
+
+      <div class="divider my-0"></div>
+
+      <div class="max-w-xl">
+        <p class="text-xs text-base-content/50 mb-2">Paragraphe réel, 16px, Instrument Sans</p>
+        <p class="text-base leading-relaxed">
+          L'Annuaire de la Cartoucherie rassemble les artisans, soignants et indépendants du quartier, présentés par les voisins qui les connaissent. Besoin d'un coup de main, d'un soin ou d'un bon plat ce soir&nbsp;? Commencez par « Je cherche… » et laissez le quartier vous répondre. Rien n'est envoyé à un serveur&nbsp;: le calcul reste sur votre téléphone.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 4. LES TROIS BLOCS ============ -->
+  <section class="space-y-6">
+    <h2 class="text-xs font-semibold tracking-widest uppercase text-base-content/50">4 · Les trois blocs</h2>
+
+    <!-- Portrait card -->
+    <div class="space-y-3">
+      <p class="text-sm font-medium text-base-content/60">Carte portrait</p>
+      <div class="card bg-base-100 border border-base-300 rounded-box max-w-sm">
+        <figure class="px-5 pt-5">
+          <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Portrait de Camille Roussel" class="w-24 h-24 rounded-full object-cover border-2 border-base-100 ring-2 ring-primary/20" />
+        </figure>
+        <div class="card-body items-start pt-3">
+          <h3 class="card-title [font-family:var(--font-display)] text-[28px]">Camille Roussel</h3>
+          <p class="text-sm text-base-content/70 -mt-2">Sophrologue</p>
+          <div class="flex flex-wrap gap-2 pt-1">
+            <span class="badge badge-secondary badge-outline gap-1 text-sm py-3">
+              <svg class="w-3.5 h-3.5" viewBox="0 0 24 24"><use href="#icon-heart"/></svg>
+              Santé &amp; bien-être
+            </span>
+          </div>
+          <p class="text-base pt-2 leading-snug">Gestion du stress, sommeil et préparation aux examens, en cabinet ou en visio.</p>
+          <div class="flex items-center gap-1 pt-1 text-sm text-base-content/70">
+            <svg class="w-4 h-4 text-accent" viewBox="0 0 24 24"><use href="#icon-star"/></svg>
+            <span class="font-medium text-base-content">4.8</span>
+            <span>· 12 avis du quartier · 120 m</span>
+          </div>
+          <div class="card-actions pt-3 w-full items-center gap-3">
+            <button type="button" class="btn btn-primary rounded-full min-h-11 h-11 gap-2 flex-1">
+              <svg class="w-4 h-4" viewBox="0 0 24 24"><use href="#icon-phone"/></svg>
+              Appeler
+            </button>
+            <a href="#" class="btn btn-outline btn-secondary rounded-full min-h-11 h-11 w-11 p-0" aria-label="Voir le site de Camille Roussel">
+              <svg class="w-4.5 h-4.5" viewBox="0 0 24 24"><use href="#icon-globe"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Button set -->
+    <div class="space-y-3">
+      <p class="text-sm font-medium text-base-content/60">Jeu de boutons</p>
+      <div class="bg-base-100 border border-base-300 rounded-box p-6 md:p-8">
+        <div class="flex flex-wrap items-center gap-4">
+          <button type="button" class="btn btn-primary rounded-full min-h-11 h-11 gap-2">
+            <svg class="w-4 h-4" viewBox="0 0 24 24"><use href="#icon-phone"/></svg>
+            Contacter
+          </button>
+          <button type="button" class="btn btn-secondary rounded-full min-h-11 h-11 gap-2">
+            <svg class="w-4 h-4" viewBox="0 0 24 24"><use href="#icon-users"/></svg>
+            Voir les membres
+          </button>
+          <button type="button" class="btn btn-ghost rounded-full min-h-11 h-11 gap-2">
+            En savoir plus
+            <svg class="w-4 h-4" viewBox="0 0 24 24"><use href="#icon-arrow-right"/></svg>
+          </button>
+          <button type="button" class="btn btn-disabled rounded-full min-h-11 h-11 gap-2" disabled aria-disabled="true">
+            <svg class="w-4 h-4" viewBox="0 0 24 24"><use href="#icon-clock"/></svg>
+            Rendez-vous en ligne — bientôt
+          </button>
+        </div>
+        <p class="text-xs text-base-content/50 pt-4">De gauche à droite&nbsp;: primaire, secondaire, ghost, désactivé. Le désactivé annonce ce qui manque plutôt que de le cacher.</p>
+      </div>
+    </div>
+
+    <!-- Je cherche tile -->
+    <div class="space-y-3">
+      <p class="text-sm font-medium text-base-content/60">Tuile « Je cherche… »</p>
+      <a href="#" class="group flex items-center gap-4 bg-base-100 border border-base-300 hover:border-primary rounded-box p-5 max-w-md transition-colors">
+        <span class="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-primary/10 text-primary shrink-0">
+          <svg class="w-6 h-6" viewBox="0 0 24 24"><use href="#icon-heart"/></svg>
+        </span>
+        <span class="flex-1">
+          <span class="block text-xl font-medium [font-family:var(--font-display)] leading-snug">Retrouver l'équilibre&nbsp;: stress, sommeil, énergie</span>
+          <span class="flex items-center gap-2 pt-1.5">
+            <span class="badge badge-ghost text-sm">Santé &amp; bien-être</span>
+            <span class="text-sm text-base-content/70 inline-flex items-center gap-1">
+              <svg class="w-3.5 h-3.5" viewBox="0 0 24 24"><use href="#icon-users"/></svg>
+              4 membres
+            </span>
+          </span>
+        </span>
+        <svg class="w-5 h-5 text-base-content/50 group-hover:text-primary shrink-0" viewBox="0 0 24 24"><use href="#icon-arrow-right"/></svg>
+      </a>
+    </div>
+  </section>
+
+  <!-- ============ 5. APPLICATION FRAGMENT (390px) ============ -->
+  <section class="space-y-6">
+    <h2 class="text-xs font-semibold tracking-widest uppercase text-base-content/50">5 · Fragment d'application — 390&nbsp;px</h2>
+
+    <div class="w-[390px] max-w-full mx-auto border border-base-300 rounded-box overflow-hidden bg-base-200">
+
+      <!-- top bar -->
+      <div class="bg-base-100 border-b border-base-300 px-4 py-3 flex items-center gap-2.5">
+        <span class="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-primary text-primary-content shrink-0">
+          <svg class="w-5 h-5" viewBox="0 0 64 40"><use href="#mark-arches"/></svg>
+        </span>
+        <span class="text-base font-semibold [font-family:var(--font-display)]">La Cartoucherie</span>
+      </div>
+
+      <div class="p-4 space-y-4">
+        <!-- search -->
+        <label class="input w-full rounded-full bg-base-100 border-base-300">
+          <svg class="w-4 h-4 text-base-content/50" viewBox="0 0 24 24"><use href="#icon-search"/></svg>
+          <input type="search" placeholder="Je cherche…" class="grow text-base" aria-label="Je cherche…" />
+        </label>
+
+        <!-- je cherche tile -->
+        <a href="#" class="flex items-center gap-3 bg-base-100 border border-base-300 rounded-box p-4">
+          <span class="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-primary/10 text-primary shrink-0">
+            <svg class="w-5 h-5" viewBox="0 0 24 24"><use href="#icon-heart"/></svg>
+          </span>
+          <span class="flex-1">
+            <span class="block text-xl font-medium [font-family:var(--font-display)] leading-snug">Retrouver l'équilibre&nbsp;: stress, sommeil, énergie</span>
+            <span class="flex items-center gap-2 pt-1">
+              <span class="badge badge-ghost badge-sm text-sm">Santé &amp; bien-être</span>
+              <span class="text-sm text-base-content/70">4 membres</span>
+            </span>
+          </span>
+          <svg class="w-4 h-4 text-base-content/50 shrink-0" viewBox="0 0 24 24"><use href="#icon-arrow-right"/></svg>
+        </a>
+
+        <!-- section label -->
+        <p class="text-sm font-medium text-base-content/70 pt-1">Près de vous</p>
+
+        <!-- portrait card -->
+        <div class="card bg-base-100 border border-base-300 rounded-box">
+          <div class="card-body p-4 items-start">
+            <div class="flex items-center gap-3 w-full">
+              <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Portrait de Camille Roussel" class="w-14 h-14 rounded-full object-cover ring-2 ring-primary/20 shrink-0" />
+              <div class="min-w-0">
+                <h3 class="font-semibold [font-family:var(--font-display)] text-xl leading-tight">Camille Roussel</h3>
+                <p class="text-sm text-base-content/70">Sophrologue</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-1 text-sm text-base-content/70">
+              <svg class="w-4 h-4 text-accent" viewBox="0 0 24 24"><use href="#icon-star"/></svg>
+              <span class="font-medium text-base-content">4.8</span>
+              <span>· 120 m</span>
+            </div>
+            <p class="text-base leading-snug text-base-content/80">Gestion du stress, sommeil et préparation aux examens, en cabinet ou en visio.</p>
+            <div class="flex items-center gap-2 w-full pt-2">
+              <button type="button" class="btn btn-primary rounded-full min-h-11 h-11 flex-1 gap-2">
+                <svg class="w-4 h-4" viewBox="0 0 24 24"><use href="#icon-phone"/></svg>
+                Appeler
+              </button>
+              <a href="#" class="btn btn-outline btn-secondary rounded-full min-h-11 h-11 w-11 p-0" aria-label="Voir le site">
+                <svg class="w-4 h-4" viewBox="0 0 24 24"><use href="#icon-globe"/></svg>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- other actions row: ghost + disabled, so all 4 button states live in the fragment -->
+        <div class="flex items-center gap-2 pt-1">
+          <button type="button" class="btn btn-ghost rounded-full min-h-11 h-11 flex-1 gap-2">
+            Voir tous les membres
+            <svg class="w-4 h-4" viewBox="0 0 24 24"><use href="#icon-arrow-right"/></svg>
+          </button>
+        </div>
+        <button type="button" class="btn btn-disabled rounded-full min-h-11 h-11 w-full gap-2" disabled aria-disabled="true">
+          <svg class="w-4 h-4" viewBox="0 0 24 24"><use href="#icon-clock"/></svg>
+          Prise de rendez-vous — bientôt
+        </button>
+      </div>
+    </div>
+  </section>
+
+</div>
+</body>
+</html>

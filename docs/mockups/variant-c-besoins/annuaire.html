@@ -1,0 +1,465 @@
+<!doctype html>
+<html lang="fr" data-theme="autumn">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Annuaire — Cartoucherie</title>
+  <meta name="description" content="Les 12 membres de l'annuaire de la Cartoucherie, classés par besoin." />
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@5/themes.css" rel="stylesheet" type="text/css" />
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body class="min-h-screen bg-base-200">
+  <div class="drawer">
+    <input id="nav-drawer" type="checkbox" class="drawer-toggle" />
+    <div class="drawer-content min-h-screen flex flex-col bg-base-200">
+
+      <!-- Sticky chrome: navbar + current-category context -->
+      <div class="sticky top-0 z-30 bg-base-100 border-b border-base-300">
+        <div class="navbar px-2">
+          <div class="navbar-start">
+            <label for="nav-drawer" class="btn btn-ghost btn-lg min-h-11 px-3" aria-label="Ouvrir les catégories">
+              <span class="text-2xl leading-none">☰</span>
+            </label>
+          </div>
+          <div class="navbar-center">
+            <a href="index.html" class="btn btn-ghost min-h-11 text-lg font-['Baloo_2'] font-bold normal-case gap-1">
+              <span aria-hidden="true">📍</span> Cartoucherie
+            </a>
+          </div>
+          <div class="navbar-end">
+            <a href="carte.html" class="btn btn-ghost btn-circle btn-lg min-h-11" aria-label="Voir la carte du quartier">
+              <span class="text-2xl" aria-hidden="true">🗺️</span>
+            </a>
+          </div>
+        </div>
+        <div id="context-bar" class="px-4 py-2 flex items-center gap-2 border-t border-base-300 bg-primary/10">
+          <span id="context-emoji" class="text-xl" aria-hidden="true">🌿</span>
+          <span id="context-label" class="font-semibold text-base">Santé &amp; bien-être</span>
+          <span id="context-count" class="text-base-content/70 text-base">· 4 membres</span>
+          <a href="#all" id="context-clear" class="link link-primary ml-auto text-base font-semibold min-h-11 flex items-center">Tout voir</a>
+        </div>
+      </div>
+
+      <!-- Main -->
+      <main class="flex-1 px-4 pt-4 pb-10 max-w-2xl w-full mx-auto">
+
+        <!-- Secondary: direct search -->
+        <label for="live-search" class="label text-base-content/70 text-base px-1">Vous connaissez le nom ou le métier ?</label>
+        <label class="input input-bordered w-full min-h-11 mb-4 flex items-center gap-2">
+          <span aria-hidden="true">🔎</span>
+          <input id="live-search" type="search" placeholder="ex : Camille, sophrologue, électricien…" class="grow text-base" />
+        </label>
+        <p id="search-reset" hidden class="mb-4 -mt-2">
+          <button type="button" onclick="clearSearch()" class="link link-primary text-base font-semibold">✕ Effacer la recherche et revenir aux catégories</button>
+        </p>
+
+        <!-- Primary: category chips -->
+        <div id="chip-section">
+          <p class="text-base font-semibold text-base-content/70 mb-2 px-1">Parcourir par besoin</p>
+          <div id="chip-row" class="flex gap-2 overflow-x-auto pb-3 -mx-4 px-4 snap-x scroll-px-4">
+            <label class="btn min-h-11 shrink-0 snap-start has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-primary has-[:focus-visible]:ring-offset-2" data-cat="all">
+              <input type="radio" name="cat" value="all" class="sr-only" />
+              Tout voir <span class="badge badge-neutral ml-1">12</span>
+            </label>
+            <label class="btn min-h-11 shrink-0 snap-start has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-primary has-[:focus-visible]:ring-offset-2" data-cat="sante-bien-etre">
+              <input type="radio" name="cat" value="sante-bien-etre" class="sr-only" checked />
+              🌿 Santé &amp; bien-être <span class="badge ml-1">4</span>
+            </label>
+            <label class="btn min-h-11 shrink-0 snap-start has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-primary has-[:focus-visible]:ring-offset-2" data-cat="beaute-soins">
+              <input type="radio" name="cat" value="beaute-soins" class="sr-only" />
+              ✂️ Beauté &amp; soins <span class="badge ml-1">1</span>
+            </label>
+            <label class="btn min-h-11 shrink-0 snap-start has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-primary has-[:focus-visible]:ring-offset-2" data-cat="artisanat-travaux">
+              <input type="radio" name="cat" value="artisanat-travaux" class="sr-only" />
+              🔨 Artisanat &amp; travaux <span class="badge ml-1">2</span>
+            </label>
+            <label class="btn min-h-11 shrink-0 snap-start has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-primary has-[:focus-visible]:ring-offset-2" data-cat="alimentation-traiteur">
+              <input type="radio" name="cat" value="alimentation-traiteur" class="sr-only" />
+              🥖 Alimentation &amp; traiteur <span class="badge ml-1">1</span>
+            </label>
+            <label class="btn min-h-11 shrink-0 snap-start has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-primary has-[:focus-visible]:ring-offset-2" data-cat="conseil-entreprise">
+              <input type="radio" name="cat" value="conseil-entreprise" class="sr-only" />
+              📊 Conseil &amp; entreprise <span class="badge ml-1">2</span>
+            </label>
+            <label class="btn min-h-11 shrink-0 snap-start has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-primary has-[:focus-visible]:ring-offset-2" data-cat="numerique-creation">
+              <input type="radio" name="cat" value="numerique-creation" class="sr-only" />
+              💻 Numérique &amp; création <span class="badge ml-1">3</span>
+            </label>
+            <label class="btn min-h-11 shrink-0 snap-start has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-primary has-[:focus-visible]:ring-offset-2" data-cat="enfance-education">
+              <input type="radio" name="cat" value="enfance-education" class="sr-only" />
+              🎒 Enfance &amp; éducation <span class="badge badge-ghost ml-1">0</span>
+            </label>
+            <label class="btn min-h-11 shrink-0 snap-start has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-primary has-[:focus-visible]:ring-offset-2" data-cat="sport-mouvement">
+              <input type="radio" name="cat" value="sport-mouvement" class="sr-only" />
+              🏃 Sport &amp; mouvement <span class="badge ml-1">2</span>
+            </label>
+            <label class="btn min-h-11 shrink-0 snap-start has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-primary has-[:focus-visible]:ring-offset-2" data-cat="art-culture">
+              <input type="radio" name="cat" value="art-culture" class="sr-only" />
+              🎨 Art &amp; culture <span class="badge ml-1">2</span>
+            </label>
+            <label class="btn min-h-11 shrink-0 snap-start has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-primary has-[:focus-visible]:ring-offset-2" data-cat="services-domicile">
+              <input type="radio" name="cat" value="services-domicile" class="sr-only" />
+              🏠 Services à domicile <span class="badge ml-1">2</span>
+            </label>
+          </div>
+        </div>
+
+        <h1 id="list-heading" class="font-['Baloo_2'] font-bold text-2xl mt-2 mb-3 px-1">4 membres dans Santé &amp; bien-être</h1>
+
+        <ul id="member-list" class="list bg-base-100 rounded-box shadow-sm">
+
+          <li class="list-row items-center" data-cats="sante-bien-etre" data-search="camille roussel sophrologue gestion du stress sommeil préparation aux examens">
+            <img class="size-14 rounded-box object-cover" src="https://picsum.photos/seed/camille-roussel/600/600" alt="Portrait de Camille Roussel" />
+            <div class="list-col-grow min-w-0">
+              <p class="font-['Baloo_2'] font-bold text-lg truncate">Camille Roussel</p>
+              <p class="text-base text-base-content/80 truncate">Sophrologue</p>
+              <div class="flex flex-wrap gap-1.5 mt-1.5">
+                <a href="#sante-bien-etre" onclick="return selectCategory('sante-bien-etre')" class="badge badge-outline badge-primary py-3">🌿 Santé &amp; bien-être</a>
+              </div>
+            </div>
+            <div class="flex flex-col gap-1 items-end">
+              <a href="tel:0612345678" class="btn btn-square btn-ghost btn-lg min-h-11" aria-label="Appeler Camille Roussel">📞</a>
+              <a href="membre.html" class="btn btn-ghost btn-lg min-h-11" aria-label="Voir la fiche de Camille Roussel">→</a>
+            </div>
+          </li>
+
+          <li class="list-row items-center" data-cats="numerique-creation conseil-entreprise" data-search="yanis belhadj développeur web indépendant sites vitrines boutiques en ligne">
+            <img class="size-14 rounded-box object-cover" src="https://picsum.photos/seed/yanis-belhadj/600/600" alt="Portrait de Yanis Belhadj" />
+            <div class="list-col-grow min-w-0">
+              <p class="font-['Baloo_2'] font-bold text-lg truncate">Yanis Belhadj</p>
+              <p class="text-base text-base-content/80 truncate">Développeur web indépendant</p>
+              <div class="flex flex-wrap gap-1.5 mt-1.5">
+                <a href="#numerique-creation" onclick="return selectCategory('numerique-creation')" class="badge badge-outline badge-primary py-3">💻 Numérique &amp; création</a>
+                <a href="#conseil-entreprise" onclick="return selectCategory('conseil-entreprise')" class="badge badge-outline badge-secondary py-3">📊 Conseil &amp; entreprise</a>
+              </div>
+            </div>
+            <div class="flex flex-col gap-1 items-end">
+              <a href="tel:0623456789" class="btn btn-square btn-ghost btn-lg min-h-11" aria-label="Appeler Yanis Belhadj">📞</a>
+              <a href="membre.html" class="btn btn-ghost btn-lg min-h-11" aria-label="Voir la fiche de Yanis Belhadj">→</a>
+            </div>
+          </li>
+
+          <li class="list-row items-center" data-cats="numerique-creation art-culture" data-search="léa fontaine graphiste illustratrice identité visuelle affiches illustration">
+            <img class="size-14 rounded-box object-cover" src="https://picsum.photos/seed/lea-fontaine/600/600" alt="Portrait de Léa Fontaine" />
+            <div class="list-col-grow min-w-0">
+              <p class="font-['Baloo_2'] font-bold text-lg truncate">Léa Fontaine</p>
+              <p class="text-base text-base-content/80 truncate">Graphiste &amp; illustratrice</p>
+              <div class="flex flex-wrap gap-1.5 mt-1.5">
+                <a href="#numerique-creation" onclick="return selectCategory('numerique-creation')" class="badge badge-outline badge-primary py-3">💻 Numérique &amp; création</a>
+                <a href="#art-culture" onclick="return selectCategory('art-culture')" class="badge badge-outline badge-secondary py-3">🎨 Art &amp; culture</a>
+              </div>
+            </div>
+            <div class="flex flex-col gap-1 items-end">
+              <a href="tel:0634567890" class="btn btn-square btn-ghost btn-lg min-h-11" aria-label="Appeler Léa Fontaine">📞</a>
+              <a href="membre.html" class="btn btn-ghost btn-lg min-h-11" aria-label="Voir la fiche de Léa Fontaine">→</a>
+            </div>
+          </li>
+
+          <li class="list-row items-center" data-cats="artisanat-travaux" data-search="marc ollivier menuisier ébéniste meubles sur mesure agencement petits appartements">
+            <img class="size-14 rounded-box object-cover" src="https://picsum.photos/seed/marc-ollivier/600/600" alt="Portrait de Marc Ollivier" />
+            <div class="list-col-grow min-w-0">
+              <p class="font-['Baloo_2'] font-bold text-lg truncate">Marc Ollivier</p>
+              <p class="text-base text-base-content/80 truncate">Menuisier-ébéniste</p>
+              <div class="flex flex-wrap gap-1.5 mt-1.5">
+                <a href="#artisanat-travaux" onclick="return selectCategory('artisanat-travaux')" class="badge badge-outline badge-primary py-3">🔨 Artisanat &amp; travaux</a>
+              </div>
+            </div>
+            <div class="flex flex-col gap-1 items-end">
+              <a href="tel:0645678901" class="btn btn-square btn-ghost btn-lg min-h-11" aria-label="Appeler Marc Ollivier">📞</a>
+              <a href="membre.html" class="btn btn-ghost btn-lg min-h-11" aria-label="Voir la fiche de Marc Ollivier">→</a>
+            </div>
+          </li>
+
+          <li class="list-row items-center" data-cats="alimentation-traiteur" data-search="nadia berrada traiteur cuisine maison plats marocains buffets fêtes">
+            <img class="size-14 rounded-box object-cover" src="https://picsum.photos/seed/nadia-berrada/600/600" alt="Portrait de Nadia Berrada" />
+            <div class="list-col-grow min-w-0">
+              <p class="font-['Baloo_2'] font-bold text-lg truncate">Nadia Berrada</p>
+              <p class="text-base text-base-content/80 truncate">Traiteur — cuisine maison</p>
+              <div class="flex flex-wrap gap-1.5 mt-1.5">
+                <a href="#alimentation-traiteur" onclick="return selectCategory('alimentation-traiteur')" class="badge badge-outline badge-primary py-3">🥖 Alimentation &amp; traiteur</a>
+              </div>
+            </div>
+            <div class="flex flex-col gap-1 items-end">
+              <a href="tel:0656789012" class="btn btn-square btn-ghost btn-lg min-h-11" aria-label="Appeler Nadia Berrada">📞</a>
+              <a href="membre.html" class="btn btn-ghost btn-lg min-h-11" aria-label="Voir la fiche de Nadia Berrada">→</a>
+            </div>
+          </li>
+
+          <li class="list-row items-center" data-cats="sport-mouvement sante-bien-etre" data-search="thomas vidal coach sportif petits groupes extérieur reprise après blessure">
+            <img class="size-14 rounded-box object-cover" src="https://picsum.photos/seed/thomas-vidal/600/600" alt="Portrait de Thomas Vidal" />
+            <div class="list-col-grow min-w-0">
+              <p class="font-['Baloo_2'] font-bold text-lg truncate">Thomas Vidal</p>
+              <p class="text-base text-base-content/80 truncate">Coach sportif</p>
+              <div class="flex flex-wrap gap-1.5 mt-1.5">
+                <a href="#sante-bien-etre" onclick="return selectCategory('sante-bien-etre')" class="badge badge-outline badge-primary py-3">🌿 Santé &amp; bien-être</a>
+                <a href="#sport-mouvement" onclick="return selectCategory('sport-mouvement')" class="badge badge-outline badge-secondary py-3">🏃 Sport &amp; mouvement</a>
+              </div>
+            </div>
+            <div class="flex flex-col gap-1 items-end">
+              <a href="tel:0667890123" class="btn btn-square btn-ghost btn-lg min-h-11" aria-label="Appeler Thomas Vidal">📞</a>
+              <a href="membre.html" class="btn btn-ghost btn-lg min-h-11" aria-label="Voir la fiche de Thomas Vidal">→</a>
+            </div>
+          </li>
+
+          <li class="list-row items-center" data-cats="sante-bien-etre" data-search="sophie arnaud naturopathe alimentation digestion fatigue chronique">
+            <img class="size-14 rounded-box object-cover" src="https://picsum.photos/seed/sophie-arnaud/600/600" alt="Portrait de Sophie Arnaud" />
+            <div class="list-col-grow min-w-0">
+              <p class="font-['Baloo_2'] font-bold text-lg truncate">Sophie Arnaud</p>
+              <p class="text-base text-base-content/80 truncate">Naturopathe</p>
+              <div class="flex flex-wrap gap-1.5 mt-1.5">
+                <a href="#sante-bien-etre" onclick="return selectCategory('sante-bien-etre')" class="badge badge-outline badge-primary py-3">🌿 Santé &amp; bien-être</a>
+              </div>
+            </div>
+            <div class="flex flex-col gap-1 items-end">
+              <a href="tel:0678901234" class="btn btn-square btn-ghost btn-lg min-h-11" aria-label="Appeler Sophie Arnaud">📞</a>
+              <a href="membre.html" class="btn btn-ghost btn-lg min-h-11" aria-label="Voir la fiche de Sophie Arnaud">→</a>
+            </div>
+          </li>
+
+          <li class="list-row items-center" data-cats="artisanat-travaux services-domicile" data-search="julien marty électricien dépannage mise aux normes bornes de recharge">
+            <img class="size-14 rounded-box object-cover" src="https://picsum.photos/seed/julien-marty/600/600" alt="Portrait de Julien Marty" />
+            <div class="list-col-grow min-w-0">
+              <p class="font-['Baloo_2'] font-bold text-lg truncate">Julien Marty</p>
+              <p class="text-base text-base-content/80 truncate">Électricien</p>
+              <div class="flex flex-wrap gap-1.5 mt-1.5">
+                <a href="#artisanat-travaux" onclick="return selectCategory('artisanat-travaux')" class="badge badge-outline badge-primary py-3">🔨 Artisanat &amp; travaux</a>
+                <a href="#services-domicile" onclick="return selectCategory('services-domicile')" class="badge badge-outline badge-secondary py-3">🏠 Services à domicile</a>
+              </div>
+            </div>
+            <div class="flex flex-col gap-1 items-end">
+              <a href="tel:0689012345" class="btn btn-square btn-ghost btn-lg min-h-11" aria-label="Appeler Julien Marty">📞</a>
+              <a href="membre.html" class="btn btn-ghost btn-lg min-h-11" aria-label="Voir la fiche de Julien Marty">→</a>
+            </div>
+          </li>
+
+          <li class="list-row items-center" data-cats="sport-mouvement sante-bien-etre" data-search="inès lacombe professeure de yoga hatha prénatal halle">
+            <img class="size-14 rounded-box object-cover" src="https://picsum.photos/seed/ines-lacombe/600/600" alt="Portrait de Inès Lacombe" />
+            <div class="list-col-grow min-w-0">
+              <p class="font-['Baloo_2'] font-bold text-lg truncate">Inès Lacombe</p>
+              <p class="text-base text-base-content/80 truncate">Professeure de yoga</p>
+              <div class="flex flex-wrap gap-1.5 mt-1.5">
+                <a href="#sante-bien-etre" onclick="return selectCategory('sante-bien-etre')" class="badge badge-outline badge-primary py-3">🌿 Santé &amp; bien-être</a>
+                <a href="#sport-mouvement" onclick="return selectCategory('sport-mouvement')" class="badge badge-outline badge-secondary py-3">🏃 Sport &amp; mouvement</a>
+              </div>
+            </div>
+            <div class="flex flex-col gap-1 items-end">
+              <a href="tel:0690123456" class="btn btn-square btn-ghost btn-lg min-h-11" aria-label="Appeler Inès Lacombe">📞</a>
+              <a href="membre.html" class="btn btn-ghost btn-lg min-h-11" aria-label="Voir la fiche de Inès Lacombe">→</a>
+            </div>
+          </li>
+
+          <li class="list-row items-center" data-cats="conseil-entreprise" data-search="pierre delmas expert-comptable indépendants petites associations">
+            <img class="size-14 rounded-box object-cover" src="https://picsum.photos/seed/pierre-delmas/600/600" alt="Portrait de Pierre Delmas" />
+            <div class="list-col-grow min-w-0">
+              <p class="font-['Baloo_2'] font-bold text-lg truncate">Pierre Delmas</p>
+              <p class="text-base text-base-content/80 truncate">Expert-comptable</p>
+              <div class="flex flex-wrap gap-1.5 mt-1.5">
+                <a href="#conseil-entreprise" onclick="return selectCategory('conseil-entreprise')" class="badge badge-outline badge-primary py-3">📊 Conseil &amp; entreprise</a>
+              </div>
+            </div>
+            <div class="flex flex-col gap-1 items-end">
+              <a href="tel:0601234567" class="btn btn-square btn-ghost btn-lg min-h-11" aria-label="Appeler Pierre Delmas">📞</a>
+              <a href="membre.html" class="btn btn-ghost btn-lg min-h-11" aria-label="Voir la fiche de Pierre Delmas">→</a>
+            </div>
+          </li>
+
+          <li class="list-row items-center" data-cats="beaute-soins services-domicile" data-search="amandine rey coiffeuse à domicile coupe couleur soins">
+            <img class="size-14 rounded-box object-cover" src="https://picsum.photos/seed/amandine-rey/600/600" alt="Portrait de Amandine Rey" />
+            <div class="list-col-grow min-w-0">
+              <p class="font-['Baloo_2'] font-bold text-lg truncate">Amandine Rey</p>
+              <p class="text-base text-base-content/80 truncate">Coiffeuse à domicile</p>
+              <div class="flex flex-wrap gap-1.5 mt-1.5">
+                <a href="#beaute-soins" onclick="return selectCategory('beaute-soins')" class="badge badge-outline badge-primary py-3">✂️ Beauté &amp; soins</a>
+                <a href="#services-domicile" onclick="return selectCategory('services-domicile')" class="badge badge-outline badge-secondary py-3">🏠 Services à domicile</a>
+              </div>
+            </div>
+            <div class="flex flex-col gap-1 items-end">
+              <a href="tel:0612903456" class="btn btn-square btn-ghost btn-lg min-h-11" aria-label="Appeler Amandine Rey">📞</a>
+              <a href="membre.html" class="btn btn-ghost btn-lg min-h-11" aria-label="Voir la fiche de Amandine Rey">→</a>
+            </div>
+          </li>
+
+          <li class="list-row items-center" data-cats="art-culture numerique-creation" data-search="karim ziani photographe portraits familles reportages événements">
+            <img class="size-14 rounded-box object-cover" src="https://picsum.photos/seed/karim-ziani/600/600" alt="Portrait de Karim Ziani" />
+            <div class="list-col-grow min-w-0">
+              <p class="font-['Baloo_2'] font-bold text-lg truncate">Karim Ziani</p>
+              <p class="text-base text-base-content/80 truncate">Photographe</p>
+              <div class="flex flex-wrap gap-1.5 mt-1.5">
+                <a href="#art-culture" onclick="return selectCategory('art-culture')" class="badge badge-outline badge-primary py-3">🎨 Art &amp; culture</a>
+                <a href="#numerique-creation" onclick="return selectCategory('numerique-creation')" class="badge badge-outline badge-secondary py-3">💻 Numérique &amp; création</a>
+              </div>
+            </div>
+            <div class="flex flex-col gap-1 items-end">
+              <a href="tel:0623904567" class="btn btn-square btn-ghost btn-lg min-h-11" aria-label="Appeler Karim Ziani">📞</a>
+              <a href="membre.html" class="btn btn-ghost btn-lg min-h-11" aria-label="Voir la fiche de Karim Ziani">→</a>
+            </div>
+          </li>
+
+        </ul>
+
+        <div id="empty-state" hidden class="text-center py-12 px-4">
+          <p class="text-5xl mb-3" aria-hidden="true">🎒</p>
+          <p class="font-['Baloo_2'] font-bold text-xl mb-2">Personne pour l'instant</p>
+          <p class="text-base text-base-content/80 mb-4 max-w-sm mx-auto">Aucun membre n'est encore inscrit dans cette catégorie. Vous connaissez une assistante maternelle, un prof particulier, une association du quartier ?</p>
+          <a href="mailto:contact@cartoucherie-annuaire.fr?subject=Suggestion%20de%20membre" class="btn btn-primary btn-lg min-h-11">Suggérer un membre</a>
+        </div>
+
+      </main>
+
+      <!-- Footer -->
+      <footer class="footer sm:footer-horizontal bg-base-100 text-base-content border-t border-base-300 p-8 mt-auto">
+        <nav>
+          <h6 class="footer-title">Cartoucherie</h6>
+          <a class="link link-hover" href="#">À propos</a>
+          <a class="link link-hover" href="#">Confidentialité</a>
+          <a class="link link-hover" href="#">Mentions légales</a>
+          <a class="link link-hover" href="#">Avis : comment ça marche</a>
+        </nav>
+        <nav>
+          <h6 class="footer-title">Explorer</h6>
+          <a class="link link-hover" href="index.html">Accueil</a>
+          <a class="link link-hover" href="carte.html">La carte du quartier</a>
+        </nav>
+        <p class="text-sm text-base-content/60 basis-full">Fait avec 🧡 par et pour le quartier de la Cartoucherie, Toulouse.</p>
+      </footer>
+    </div>
+
+    <!-- Drawer: categories as primary navigation -->
+    <div class="drawer-side z-40">
+      <label for="nav-drawer" aria-label="Fermer le menu" class="drawer-overlay"></label>
+      <div class="menu bg-base-100 min-h-full w-80 max-w-[85vw] p-4 gap-1">
+        <p class="font-['Baloo_2'] font-bold text-xl px-2 pb-2">📍 Cartoucherie</p>
+        <ul class="menu-vertical gap-1">
+          <li><a href="index.html" class="min-h-11 text-base">🏠 Je cherche… (accueil)</a></li>
+          <li><a href="#all" onclick="return selectCategory('all')" class="min-h-11 text-base font-semibold">📖 Tout l'annuaire <span class="badge badge-sm ml-auto">12</span></a></li>
+          <li><a href="carte.html" class="min-h-11 text-base">🗺️ Carte du quartier</a></li>
+          <li class="menu-title mt-2 text-base">Parcourir par besoin</li>
+          <li><a href="#sante-bien-etre" onclick="return selectCategory('sante-bien-etre')" class="min-h-11 text-base">🌿 Santé &amp; bien-être <span class="badge badge-sm ml-auto">4</span></a></li>
+          <li><a href="#beaute-soins" onclick="return selectCategory('beaute-soins')" class="min-h-11 text-base">✂️ Beauté &amp; soins <span class="badge badge-sm ml-auto">1</span></a></li>
+          <li><a href="#artisanat-travaux" onclick="return selectCategory('artisanat-travaux')" class="min-h-11 text-base">🔨 Artisanat &amp; travaux <span class="badge badge-sm ml-auto">2</span></a></li>
+          <li><a href="#alimentation-traiteur" onclick="return selectCategory('alimentation-traiteur')" class="min-h-11 text-base">🥖 Alimentation &amp; traiteur <span class="badge badge-sm ml-auto">1</span></a></li>
+          <li><a href="#conseil-entreprise" onclick="return selectCategory('conseil-entreprise')" class="min-h-11 text-base">📊 Conseil &amp; entreprise <span class="badge badge-sm ml-auto">2</span></a></li>
+          <li><a href="#numerique-creation" onclick="return selectCategory('numerique-creation')" class="min-h-11 text-base">💻 Numérique &amp; création <span class="badge badge-sm ml-auto">3</span></a></li>
+          <li><a href="#enfance-education" onclick="return selectCategory('enfance-education')" class="min-h-11 text-base">🎒 Enfance &amp; éducation <span class="badge badge-sm badge-ghost ml-auto">0</span></a></li>
+          <li><a href="#sport-mouvement" onclick="return selectCategory('sport-mouvement')" class="min-h-11 text-base">🏃 Sport &amp; mouvement <span class="badge badge-sm ml-auto">2</span></a></li>
+          <li><a href="#art-culture" onclick="return selectCategory('art-culture')" class="min-h-11 text-base">🎨 Art &amp; culture <span class="badge badge-sm ml-auto">2</span></a></li>
+          <li><a href="#services-domicile" onclick="return selectCategory('services-domicile')" class="min-h-11 text-base">🏠 Services à domicile <span class="badge badge-sm ml-auto">2</span></a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    var CATS = {
+      'sante-bien-etre': { emoji: '🌿', nom: 'Santé & bien-être', count: 4 },
+      'beaute-soins': { emoji: '✂️', nom: 'Beauté & soins', count: 1 },
+      'artisanat-travaux': { emoji: '🔨', nom: 'Artisanat & travaux', count: 2 },
+      'alimentation-traiteur': { emoji: '🥖', nom: 'Alimentation & traiteur', count: 1 },
+      'conseil-entreprise': { emoji: '📊', nom: 'Conseil & entreprise', count: 2 },
+      'numerique-creation': { emoji: '💻', nom: 'Numérique & création', count: 3 },
+      'enfance-education': { emoji: '🎒', nom: 'Enfance & éducation', count: 0 },
+      'sport-mouvement': { emoji: '🏃', nom: 'Sport & mouvement', count: 2 },
+      'art-culture': { emoji: '🎨', nom: 'Art & culture', count: 2 },
+      'services-domicile': { emoji: '🏠', nom: 'Services à domicile', count: 2 }
+    };
+    var cards = document.querySelectorAll('#member-list [data-cats]');
+    var chips = document.querySelectorAll('#chip-row label');
+    var emptyState = document.getElementById('empty-state');
+    var heading = document.getElementById('list-heading');
+    var contextBar = document.getElementById('context-bar');
+    var contextEmoji = document.getElementById('context-emoji');
+    var contextLabel = document.getElementById('context-label');
+    var contextCount = document.getElementById('context-count');
+    var chipSection = document.getElementById('chip-section');
+    var searchInput = document.getElementById('live-search');
+    var searchReset = document.getElementById('search-reset');
+
+    function applyCategory(slug) {
+      chips.forEach(function (l) { l.classList.toggle('btn-primary', l.dataset.cat === slug); });
+      var visible = 0;
+      cards.forEach(function (c) {
+        var show = slug === 'all' || c.dataset.cats.split(' ').indexOf(slug) !== -1;
+        c.hidden = !show;
+        if (show) visible++;
+      });
+      if (slug === 'all') {
+        heading.textContent = 'Les 12 membres de l’annuaire';
+        contextBar.hidden = true;
+      } else {
+        var cat = CATS[slug];
+        heading.textContent = (cat.count === 1 ? '1 membre dans ' : cat.count + ' membres dans ') + cat.nom;
+        contextBar.hidden = false;
+        contextEmoji.textContent = cat.emoji;
+        contextLabel.textContent = cat.nom;
+        contextCount.textContent = '· ' + (cat.count === 1 ? '1 membre' : cat.count + ' membres');
+      }
+      emptyState.hidden = visible !== 0;
+      if (history.replaceState) history.replaceState(null, '', slug === 'all' ? '#all' : '#' + slug);
+    }
+
+    window.selectCategory = function (slug) {
+      searchInput.value = '';
+      searchReset.hidden = true;
+      chipSection.hidden = false;
+      var radio = document.querySelector('input[name="cat"][value="' + slug + '"]');
+      if (radio) radio.checked = true;
+      applyCategory(slug);
+      document.getElementById('chip-row').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      return false;
+    };
+
+    document.getElementById('chip-row').addEventListener('change', function (e) {
+      if (e.target.name === 'cat') applyCategory(e.target.value);
+    });
+
+    document.getElementById('context-clear').addEventListener('click', function (e) {
+      e.preventDefault();
+      selectCategory('all');
+    });
+
+    function runSearch(needleRaw) {
+      var needle = needleRaw.trim().toLowerCase();
+      chipSection.hidden = true;
+      contextBar.hidden = true;
+      searchReset.hidden = false;
+      var visible = 0;
+      cards.forEach(function (c) {
+        var show = c.dataset.search.indexOf(needle) !== -1;
+        c.hidden = !show;
+        if (show) visible++;
+      });
+      heading.textContent = (visible === 0 ? 'Aucun résultat' : visible + (visible === 1 ? ' résultat' : ' résultats')) + ' pour « ' + needleRaw.trim() + ' »';
+      emptyState.hidden = visible !== 0;
+    }
+
+    window.clearSearch = function () {
+      searchInput.value = '';
+      searchReset.hidden = true;
+      var current = (document.querySelector('input[name="cat"]:checked') || {}).value || 'sante-bien-etre';
+      chipSection.hidden = false;
+      applyCategory(current);
+    };
+
+    searchInput.addEventListener('input', function () {
+      if (searchInput.value.trim() === '') { clearSearch(); return; }
+      runSearch(searchInput.value);
+    });
+
+    // Initial state: a direct search from index.html, or a category via hash
+    var params = new URLSearchParams(location.search);
+    var q = params.get('q');
+    if (q && q.trim() !== '') {
+      searchInput.value = q;
+      runSearch(q);
+    } else {
+      var initial = (location.hash || '').replace('#', '');
+      if (initial !== 'all' && !CATS[initial]) initial = 'sante-bien-etre';
+      var radio = document.querySelector('input[name="cat"][value="' + initial + '"]');
+      if (radio) radio.checked = true;
+      applyCategory(initial);
+    }
+  </script>
+</body>
+</html>

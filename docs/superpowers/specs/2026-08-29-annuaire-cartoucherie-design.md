@@ -88,6 +88,17 @@ visibility. Seeding it into this directory carries no consent problem. Profiles 
 published, including reviews, without a consent gate. A visible "remove this listing"
 contact route exists as ordinary hygiene.
 
+**The code repository is public and never contains real member data.** Fictional fixtures are
+committed; real names, addresses, phone numbers, emails and portraits are injected at build
+from a private source. This is not a consent rule — that question is settled above. It is
+about erasure and bulk exposure: git has no delete, a phone number cannot be rotated like a
+token, and a committed data file is precisely the whole-quartier contact list that §5's
+search index already refuses to ship.
+
+**The app is written in French; the source code is written in English.** UI copy, content and
+user-facing strings are French. Identifiers, comments, filenames, test descriptions, commit
+messages and documentation are English. Engineering standards: `docs/STANDARDS.md`.
+
 ## 4. Stack
 
 | Concern | Choice | Rationale |
@@ -114,8 +125,15 @@ idle), Firebase (Cloud Storage requires the Blaze plan, which fails open).
 ### Rendering
 
 **Profiles live in D1; profile pages are prerendered to static HTML at build time.** A
-build reads the members table and emits the pages plus a search index. Data changes
+build reads the members and emits the pages plus a search index. Data changes
 trigger a rebuild via a Cloudflare deploy hook.
+
+**In v1 the build reads the seed file directly, not D1.** Member self-editing is a v2
+feature (§2) and the seed script is the v1 editing interface (§10), so in v1 the repo file
+is the only thing that changes member content; the build has no reason to reach for the
+database. D1 becomes the build's source from v2, when self-editing makes the file
+non-primary — and that is when the §14 mechanism (the D1 HTTP API with a scoped token) is
+needed, because Cloudflare's build CI exposes no D1 binding.
 
 ```
 seed script ─┐
@@ -252,7 +270,9 @@ for older residents, on small screens, with large text and screen readers.
 
 - 200 profiles live
 - All four discovery surfaces working
-- Lighthouse ≥ 95 on mobile
+- Lighthouse on mobile: accessibility, best practices and SEO at 1.0, performance ≥ 0.95
+  (the three category scores that are sums of binary audits are gated at a perfect score;
+  performance is a continuous measurement and is not — `lighthouserc.json`)
 - Both Playwright flows green
 - Deployed to a custom domain with analytics reporting
 
@@ -266,15 +286,22 @@ for older residents, on small screens, with large text and screen readers.
 
 ## 14. Open items for implementation planning
 
-- Build-time access to D1: Cloudflare's build CI does not expose D1 bindings, so the
-  Astro build must read members over the D1 HTTP API (or `wrangler d1 execute`) with a
-  scoped token. This is the least-trodden part of the architecture and the mechanism
-  must be settled early in the implementation plan
-- Category taxonomy: the initial French category list must be drafted with Sandra
-  before seeding
+- ~~Build-time access to D1~~ — **resolved 2026-09-14.** The v1 build reads the seed file,
+  so no D1 binding is needed at build time at all. The D1 HTTP API with a scoped token
+  becomes a v2 task, when member self-editing makes the file non-primary. See §5.
+- ~~Category taxonomy~~ — **drafted 2026-09-14.** Ten categories, each in two registers:
+  the formal name and a « Je cherche… » need phrasing. In
+  `docs/mockups/_shared/members.json` and carried into `src/content/categories.json`, which
+  Sandra edits without a developer. Still to be reviewed with her.
 - Domain name not yet chosen or registered
 - Cloudflare account and MCP server not yet configured
-- Licence and repository visibility undecided. Cloudflare imposes no open-source
-  requirement, so this is a free choice rather than a constraint; open-sourcing suits a
-  community project and unlocks Cloudflare's non-profit credit programmes as headroom
+- Licence and repository visibility undecided, and the two goals stated so far conflict.
+  "Open source with non-commercial reuse only" is a contradiction: a field-of-use
+  restriction fails the Open Source Definition §6, so the result is *source-available*, not
+  open source. That matters concretely here — Cloudflare's non-profit credit programmes,
+  cited in earlier drafts of this section as headroom, require a recognised OSS licence, so
+  a non-commercial licence forfeits them. The decision is between **AGPL-3.0** (genuinely
+  open source, removes the proprietary-fork incentive, keeps the credits — but permits
+  commercial use) and **PolyForm Noncommercial 1.0.0** (source-available, if "nobody
+  profits" is the literal requirement). Not a legal opinion; confirm before relying on it
 - Vercel CLI is not installed and is not needed under this stack

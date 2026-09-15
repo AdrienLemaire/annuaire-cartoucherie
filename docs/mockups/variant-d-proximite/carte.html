@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="retro">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Carte — La Cartoucherie</title>
+<meta name="description" content="Qui est où dans le quartier de la Cartoucherie, classé par distance depuis la Halle." />
+<link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
+<link href="https://cdn.jsdelivr.net/npm/daisyui@5/themes.css" rel="stylesheet" type="text/css" />
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,600;0,700;1,500&family=DM+Mono:wght@500&display=swap" rel="stylesheet" />
+</head>
+<body class="bg-base-100 text-base-content">
+
+<div class="navbar bg-base-200 sticky top-0 z-40 px-3 sm:px-4 gap-2 border-b border-base-300">
+  <div class="navbar-start">
+    <a href="index.html" class="btn btn-ghost min-h-11 px-2 text-lg font-[Fraunces] font-bold normal-case gap-1">
+      <span aria-hidden="true">📍</span> Cartoucherie
+    </a>
+  </div>
+  <div class="navbar-end gap-1">
+    <a href="index.html" aria-label="Accueil" class="btn btn-ghost btn-circle min-h-11 min-w-11 md:hidden"><span aria-hidden="true">🏠</span></a>
+    <a href="annuaire.html" aria-label="Annuaire" class="btn btn-ghost btn-circle min-h-11 min-w-11 md:hidden"><span aria-hidden="true">📖</span></a>
+    <div class="hidden md:flex gap-1">
+      <a href="index.html" class="btn btn-ghost min-h-11">Accueil</a>
+      <a href="annuaire.html" class="btn btn-ghost min-h-11">Annuaire</a>
+      <a href="carte.html" class="btn btn-ghost btn-active min-h-11">Carte</a>
+    </div>
+  </div>
+</div>
+
+<!-- ================= CARTE ================= -->
+<div class="relative w-full h-[62vh] min-h-[420px] overflow-hidden bg-[linear-gradient(160deg,var(--color-success)_0%,var(--color-base-300)_55%,var(--color-base-200)_100%)]">
+
+  <!-- Sol : quadrillage de rues suggéré -->
+  <div class="absolute inset-0 opacity-40 bg-[linear-gradient(var(--color-base-content)_1px,transparent_1px),linear-gradient(90deg,var(--color-base-content)_1px,transparent_1px)] bg-[length:14%_14%] mix-blend-overlay pointer-events-none" aria-hidden="true"></div>
+
+  <!-- Avenue de Grande-Bretagne (diagonale) -->
+  <div class="absolute left-[-10%] top-[62%] w-[130%] h-3 sm:h-4 bg-base-100/70 -rotate-6 shadow-sm pointer-events-none" aria-hidden="true"></div>
+  <span class="absolute left-[58%] top-[68%] text-[10px] font-semibold uppercase tracking-wide opacity-70 bg-base-100/80 px-1 rounded pointer-events-none">Av. de Grande-Bretagne</span>
+
+  <!-- Rue Paul Mesplé (verticale) -->
+  <div class="absolute left-[32%] top-0 w-3 sm:w-4 h-full bg-base-100/70 shadow-sm pointer-events-none" aria-hidden="true"></div>
+  <span class="absolute left-[8%] top-[8%] text-[10px] font-semibold uppercase tracking-wide opacity-70 bg-base-100/80 px-1 rounded pointer-events-none">Rue Paul Mesplé</span>
+
+  <!-- Place / parvis de la Halle -->
+  <div class="absolute left-[38%] top-[34%] w-[26%] h-[20%] rounded-box bg-base-100/50 border-2 border-dashed border-base-content/30 pointer-events-none" aria-hidden="true"></div>
+  <span class="absolute left-[40%] top-[30%] text-xs font-[Fraunces] font-bold opacity-80 pointer-events-none">🏛️ La Halle</span>
+
+  <!-- Arrêt de tram -->
+  <div class="absolute left-[14%] top-[16%] flex items-center gap-1 pointer-events-none">
+    <span class="text-lg">🚊</span>
+    <span class="text-[10px] font-semibold bg-base-100/80 px-1 rounded">Tram Cartoucherie</span>
+  </div>
+
+  <!-- Vous êtes ici -->
+  <div class="absolute left-[48%] top-[46%] -translate-x-1/2 -translate-y-1/2 flex flex-col items-center pointer-events-none">
+    <span class="relative flex h-5 w-5">
+      <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-info opacity-60"></span>
+      <span class="relative inline-flex rounded-full h-5 w-5 bg-info border-2 border-base-100"></span>
+    </span>
+    <span class="mt-1 text-[10px] font-bold bg-info text-info-content px-2 py-0.5 rounded-full whitespace-nowrap shadow">point de départ : la Halle</span>
+  </div>
+
+  <!-- Pins des membres (surCarte: true) -->
+  <a id="pin-yanis-belhadj" href="#sheet-yanis-belhadj" aria-label="Yanis Belhadj, développeur web, 60 m — voir dans la liste" class="group absolute left-[40%] top-[35%] -translate-x-1/2 -translate-y-full flex flex-col items-center target:z-30 target:scale-125 transition-transform">
+    <span class="w-8 h-8 rounded-full bg-primary border-2 border-base-100 shadow-md flex items-center justify-center text-sm group-target:ring-4 group-target:ring-primary/50">💻</span>
+    <span class="w-2 h-2 -mt-1 rotate-45 bg-primary"></span>
+  </a>
+
+  <a id="pin-thomas-vidal" href="#sheet-thomas-vidal" aria-label="Thomas Vidal, coach sportif, 60 m — voir dans la liste" class="group absolute left-[59%] top-[38%] -translate-x-1/2 -translate-y-full flex flex-col items-center target:z-30 target:scale-125 transition-transform">
+    <span class="w-8 h-8 rounded-full bg-primary border-2 border-base-100 shadow-md flex items-center justify-center text-sm group-target:ring-4 group-target:ring-primary/50">🏃</span>
+    <span class="w-2 h-2 -mt-1 rotate-45 bg-primary"></span>
+  </a>
+
+  <a id="pin-ines-lacombe" href="#sheet-ines-lacombe" aria-label="Inès Lacombe, professeure de yoga, 60 m — voir dans la liste" class="group absolute left-[46%] top-[52%] -translate-x-1/2 -translate-y-full flex flex-col items-center target:z-30 target:scale-125 transition-transform">
+    <span class="w-8 h-8 rounded-full bg-primary border-2 border-base-100 shadow-md flex items-center justify-center text-sm group-target:ring-4 group-target:ring-primary/50">🧘</span>
+    <span class="w-2 h-2 -mt-1 rotate-45 bg-primary"></span>
+  </a>
+
+  <a id="pin-camille-roussel" href="#sheet-camille-roussel" aria-label="Camille Roussel, sophrologue, 120 m — voir dans la liste" class="group absolute left-[33%] top-[58%] -translate-x-1/2 -translate-y-full flex flex-col items-center target:z-30 target:scale-125 transition-transform">
+    <span class="w-8 h-8 rounded-full bg-primary border-2 border-base-100 shadow-md flex items-center justify-center text-sm group-target:ring-4 group-target:ring-primary/50">🌿</span>
+    <span class="w-2 h-2 -mt-1 rotate-45 bg-primary"></span>
+  </a>
+
+  <a id="pin-pierre-delmas" href="#sheet-pierre-delmas" aria-label="Pierre Delmas, expert-comptable, 150 m — voir dans la liste" class="group absolute left-[35%] top-[70%] -translate-x-1/2 -translate-y-full flex flex-col items-center target:z-30 target:scale-125 transition-transform">
+    <span class="w-8 h-8 rounded-full bg-primary border-2 border-base-100 shadow-md flex items-center justify-center text-sm group-target:ring-4 group-target:ring-primary/50">📊</span>
+    <span class="w-2 h-2 -mt-1 rotate-45 bg-primary"></span>
+  </a>
+
+  <a id="pin-lea-fontaine" href="#sheet-lea-fontaine" aria-label="Léa Fontaine, graphiste, 340 m — voir dans la liste" class="group absolute left-[68%] top-[74%] -translate-x-1/2 -translate-y-full flex flex-col items-center target:z-30 target:scale-125 transition-transform">
+    <span class="w-8 h-8 rounded-full bg-primary border-2 border-base-100 shadow-md flex items-center justify-center text-sm group-target:ring-4 group-target:ring-primary/50">🎨</span>
+    <span class="w-2 h-2 -mt-1 rotate-45 bg-primary"></span>
+  </a>
+
+  <a id="pin-karim-ziani" href="#sheet-karim-ziani" aria-label="Karim Ziani, photographe, 380 m — voir dans la liste" class="group absolute left-[78%] top-[66%] -translate-x-1/2 -translate-y-full flex flex-col items-center target:z-30 target:scale-125 transition-transform">
+    <span class="w-8 h-8 rounded-full bg-primary border-2 border-base-100 shadow-md flex items-center justify-center text-sm group-target:ring-4 group-target:ring-primary/50">📷</span>
+    <span class="w-2 h-2 -mt-1 rotate-45 bg-primary"></span>
+  </a>
+
+  <a id="pin-sophie-arnaud" href="#sheet-sophie-arnaud" aria-label="Sophie Arnaud, naturopathe, 450 m — voir dans la liste" class="group absolute left-[12%] top-[76%] -translate-x-1/2 -translate-y-full flex flex-col items-center target:z-30 target:scale-125 transition-transform">
+    <span class="w-8 h-8 rounded-full bg-primary border-2 border-base-100 shadow-md flex items-center justify-center text-sm group-target:ring-4 group-target:ring-primary/50">🌿</span>
+    <span class="w-2 h-2 -mt-1 rotate-45 bg-primary"></span>
+  </a>
+
+  <a id="pin-marc-ollivier" href="#sheet-marc-ollivier" aria-label="Marc Ollivier, menuisier-ébéniste, 800 m — voir dans la liste" class="group absolute left-[92%] top-[90%] -translate-x-1/2 -translate-y-full flex flex-col items-center target:z-30 target:scale-125 transition-transform">
+    <span class="w-8 h-8 rounded-full bg-primary border-2 border-base-100 shadow-md flex items-center justify-center text-sm group-target:ring-4 group-target:ring-primary/50">🔨</span>
+    <span class="w-2 h-2 -mt-1 rotate-45 bg-primary"></span>
+  </a>
+
+  <!-- Repère : légende rapide, coin haut-droit -->
+  <div class="absolute right-2 top-2 bg-base-100/90 rounded-box px-2 py-1.5 text-[10px] leading-tight shadow flex items-center gap-1.5">
+    <span class="w-3 h-3 rounded-full bg-primary inline-block"></span> membre
+    <span class="w-3 h-3 rounded-full bg-info inline-block ml-1"></span> vous
+  </div>
+</div>
+
+<!-- ================= FEUILLE DU BAS ================= -->
+<details class="fixed inset-x-0 bottom-0 z-30 bg-base-100 border-t border-base-300 rounded-t-2xl shadow-2xl max-h-[70vh] flex flex-col" open>
+  <summary class="list-none flex flex-col items-center gap-1 py-2 cursor-pointer select-none shrink-0">
+    <span class="w-10 h-1.5 rounded-full bg-base-300" aria-hidden="true"></span>
+    <span class="text-sm font-semibold">9 membres sur la carte · du plus proche au plus loin</span>
+  </summary>
+
+  <div class="overflow-y-auto px-3 pb-3 grow">
+    <ul class="flex flex-col gap-2">
+
+      <li><a id="sheet-yanis-belhadj" href="#pin-yanis-belhadj" class="flex items-center gap-3 bg-base-200 hover:bg-base-300 rounded-box p-2.5 border border-base-300 target:border-primary target:bg-primary/10 transition">
+        <img src="https://picsum.photos/seed/yanis-belhadj/600/600" alt="" class="w-11 h-11 rounded-box object-cover shrink-0" />
+        <div class="min-w-0 grow"><p class="font-semibold text-sm truncate">Yanis Belhadj</p><p class="text-xs opacity-60 truncate">💻 à la Halle</p></div>
+        <span class="font-[DM_Mono] font-bold text-primary shrink-0">60 m</span>
+      </a></li>
+
+      <li><a id="sheet-thomas-vidal" href="#pin-thomas-vidal" class="flex items-center gap-3 bg-base-200 hover:bg-base-300 rounded-box p-2.5 border border-base-300 target:border-primary target:bg-primary/10 transition">
+        <img src="https://picsum.photos/seed/thomas-vidal/600/600" alt="" class="w-11 h-11 rounded-box object-cover shrink-0" />
+        <div class="min-w-0 grow"><p class="font-semibold text-sm truncate">Thomas Vidal</p><p class="text-xs opacity-60 truncate">🏃 parvis de la Halle</p></div>
+        <span class="font-[DM_Mono] font-bold text-primary shrink-0">60 m</span>
+      </a></li>
+
+      <li><a id="sheet-ines-lacombe" href="#pin-ines-lacombe" class="flex items-center gap-3 bg-base-200 hover:bg-base-300 rounded-box p-2.5 border border-base-300 target:border-primary target:bg-primary/10 transition">
+        <img src="https://picsum.photos/seed/ines-lacombe/600/600" alt="" class="w-11 h-11 rounded-box object-cover shrink-0" />
+        <div class="min-w-0 grow"><p class="font-semibold text-sm truncate">Inès Lacombe</p><p class="text-xs opacity-60 truncate">🧘 à la Halle</p></div>
+        <span class="font-[DM_Mono] font-bold text-primary shrink-0">60 m</span>
+      </a></li>
+
+      <li><a id="sheet-camille-roussel" href="#pin-camille-roussel" class="flex items-center gap-3 bg-base-200 hover:bg-base-300 rounded-box p-2.5 border border-base-300 target:border-primary target:bg-primary/10 transition">
+        <img src="https://picsum.photos/seed/camille-roussel/600/600" alt="" class="w-11 h-11 rounded-box object-cover shrink-0" />
+        <div class="min-w-0 grow"><p class="font-semibold text-sm truncate">Camille Roussel</p><p class="text-xs opacity-60 truncate">🌿 rue Paul Mesplé</p></div>
+        <span class="font-[DM_Mono] font-bold text-primary shrink-0">120 m</span>
+      </a></li>
+
+      <li><a id="sheet-pierre-delmas" href="#pin-pierre-delmas" class="flex items-center gap-3 bg-base-200 hover:bg-base-300 rounded-box p-2.5 border border-base-300 target:border-primary target:bg-primary/10 transition">
+        <img src="https://picsum.photos/seed/pierre-delmas/600/600" alt="" class="w-11 h-11 rounded-box object-cover shrink-0" />
+        <div class="min-w-0 grow"><p class="font-semibold text-sm truncate">Pierre Delmas</p><p class="text-xs opacity-60 truncate">📊 rue Paul Mesplé</p></div>
+        <span class="font-[DM_Mono] font-bold text-primary shrink-0">150 m</span>
+      </a></li>
+
+      <li><a id="sheet-lea-fontaine" href="#pin-lea-fontaine" class="flex items-center gap-3 bg-base-200 hover:bg-base-300 rounded-box p-2.5 border border-base-300 target:border-primary target:bg-primary/10 transition">
+        <img src="https://picsum.photos/seed/lea-fontaine/600/600" alt="" class="w-11 h-11 rounded-box object-cover shrink-0" />
+        <div class="min-w-0 grow"><p class="font-semibold text-sm truncate">Léa Fontaine</p><p class="text-xs opacity-60 truncate">🎨 av. de Grande-Bretagne</p></div>
+        <span class="font-[DM_Mono] font-bold text-primary shrink-0">340 m</span>
+      </a></li>
+
+      <li><a id="sheet-karim-ziani" href="#pin-karim-ziani" class="flex items-center gap-3 bg-base-200 hover:bg-base-300 rounded-box p-2.5 border border-base-300 target:border-primary target:bg-primary/10 transition">
+        <img src="https://picsum.photos/seed/karim-ziani/600/600" alt="" class="w-11 h-11 rounded-box object-cover shrink-0" />
+        <div class="min-w-0 grow"><p class="font-semibold text-sm truncate">Karim Ziani</p><p class="text-xs opacity-60 truncate">📷 av. de Grande-Bretagne</p></div>
+        <span class="font-[DM_Mono] font-bold text-primary shrink-0">380 m</span>
+      </a></li>
+
+      <li><a id="sheet-sophie-arnaud" href="#pin-sophie-arnaud" class="flex items-center gap-3 bg-base-200 hover:bg-base-300 rounded-box p-2.5 border border-base-300 target:border-primary target:bg-primary/10 transition">
+        <img src="https://picsum.photos/seed/sophie-arnaud/600/600" alt="" class="w-11 h-11 rounded-box object-cover shrink-0" />
+        <div class="min-w-0 grow"><p class="font-semibold text-sm truncate">Sophie Arnaud</p><p class="text-xs opacity-60 truncate">🌿 allée du Bois Vert</p></div>
+        <span class="font-[DM_Mono] font-bold text-primary shrink-0">450 m</span>
+      </a></li>
+
+      <li><a id="sheet-marc-ollivier" href="#pin-marc-ollivier" class="flex items-center gap-3 bg-base-200 hover:bg-base-300 rounded-box p-2.5 border border-base-300 target:border-primary target:bg-primary/10 transition">
+        <img src="https://picsum.photos/seed/marc-ollivier/600/600" alt="" class="w-11 h-11 rounded-box object-cover shrink-0" />
+        <div class="min-w-0 grow"><p class="font-semibold text-sm truncate">Marc Ollivier</p><p class="text-xs opacity-60 truncate">🔨 route de Bayonne</p></div>
+        <span class="font-[DM_Mono] font-bold text-primary shrink-0">800 m</span>
+      </a></li>
+
+    </ul>
+
+    <div class="divider text-xs">sans point sur la carte</div>
+    <p class="text-xs opacity-60 mb-2 px-1">Ils servent le quartier mais n'ont pas d'adresse publique à afficher.</p>
+    <ul class="flex flex-col gap-2 mb-2">
+
+      <li><a href="membre.html" class="flex items-center gap-3 bg-base-200 hover:bg-base-300 rounded-box p-2.5 border border-base-300 transition">
+        <img src="https://picsum.photos/seed/nadia-berrada/600/600" alt="" class="w-11 h-11 rounded-box object-cover shrink-0" />
+        <div class="min-w-0 grow"><p class="font-semibold text-sm truncate">Nadia Berrada</p><p class="text-xs opacity-60 truncate">🥖 traiteur — résidence privée</p></div>
+        <span class="badge badge-ghost shrink-0 whitespace-nowrap text-xs">210 m à vol d'oiseau</span>
+      </a></li>
+
+      <li><a href="membre.html" class="flex items-center gap-3 bg-base-200 hover:bg-base-300 rounded-box p-2.5 border border-base-300 transition">
+        <img src="https://picsum.photos/seed/julien-marty/600/600" alt="" class="w-11 h-11 rounded-box object-cover shrink-0" />
+        <div class="min-w-0 grow"><p class="font-semibold text-sm truncate">Julien Marty</p><p class="text-xs opacity-60 truncate">🔨 électricien, tout le quartier</p></div>
+        <span class="badge badge-secondary shrink-0 whitespace-nowrap text-xs">🚗 chez vous</span>
+      </a></li>
+
+      <li><a href="membre.html" class="flex items-center gap-3 bg-base-200 hover:bg-base-300 rounded-box p-2.5 border border-base-300 transition">
+        <img src="https://picsum.photos/seed/amandine-rey/600/600" alt="" class="w-11 h-11 rounded-box object-cover shrink-0" />
+        <div class="min-w-0 grow"><p class="font-semibold text-sm truncate">Amandine Rey</p><p class="text-xs opacity-60 truncate">✂️ coiffeuse à domicile</p></div>
+        <span class="badge badge-secondary shrink-0 whitespace-nowrap text-xs">🚗 chez vous</span>
+      </a></li>
+
+    </ul>
+  </div>
+</details>
+
+</body>
+</html>

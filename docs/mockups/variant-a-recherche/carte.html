@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="fr" data-theme="autumn">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Carte — La Cartoucherie</title>
+  <meta name="description" content="Les professionnels du quartier de la Cartoucherie repérés sur le plan du quartier." />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&display=swap" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@5/themes.css" rel="stylesheet" type="text/css" />
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body class="bg-base-200 text-base-content min-h-screen flex flex-col">
+
+  <!-- HEADER — persistent search, always one tap away -->
+  <header class="navbar sticky top-0 z-30 bg-base-100/95 backdrop-blur border-b border-base-300 gap-2 px-3 py-2">
+    <div class="navbar-start w-auto shrink-0">
+      <a href="index.html" class="btn btn-ghost px-2 gap-1 normal-case" aria-label="Retour à l'accueil">
+        <span aria-hidden="true" class="text-xl">🧵</span>
+        <span class="font-['Fraunces'] text-lg font-semibold hidden min-[420px]:inline">Cartoucherie</span>
+      </a>
+    </div>
+    <div class="navbar-center flex-1 min-w-0">
+      <div class="dropdown w-full">
+        <label class="input w-full flex items-center gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 opacity-60 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35M11 19a8 8 0 100-16 8 8 0 000 16z"/></svg>
+          <input id="site-search" type="search" autocomplete="off" placeholder="un métier, un besoin, un nom…" aria-label="Rechercher un professionnel" class="grow" />
+        </label>
+        <ul tabindex="-1" id="site-search-results" class="dropdown-content menu empty:hidden bg-base-100 rounded-box z-20 mt-2 w-full max-h-80 overflow-y-auto shadow-lg p-2"></ul>
+      </div>
+    </div>
+    <div class="navbar-end w-auto shrink-0 gap-1">
+      <a href="annuaire.html" class="btn btn-ghost btn-square size-11" aria-label="Voir l'annuaire" title="Annuaire">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h7"/></svg>
+      </a>
+    </div>
+  </header>
+
+  <main class="flex-1 max-w-2xl w-full mx-auto px-4 pt-4 pb-10">
+    <h1 class="font-['Fraunces'] text-2xl font-semibold mb-1">La carte du quartier</h1>
+    <p class="text-sm opacity-70 mb-1" id="map-intro">9 professionnels ont une adresse fixe et apparaissent sur le plan.</p>
+    <p class="text-xs opacity-50 mb-3">Les services à domicile (coiffure, dépannage électrique, traiteur) se déplacent chez vous — retrouvez-les dans <a href="annuaire.html" class="link">l'annuaire</a>.</p>
+
+    <!-- MAP — styled static placeholder, no map library -->
+    <div class="relative w-full h-[420px] rounded-box overflow-hidden border border-base-300 bg-base-200 mb-3" id="map-canvas" role="group" aria-label="Plan illustratif du quartier avec les professionnels repérés">
+      <!-- decorative building blocks -->
+      <div class="absolute bg-base-300/70 rounded-md" style="left:4%; top:6%; width:14%; height:12%;"></div>
+      <div class="absolute bg-base-300/70 rounded-md" style="left:20%; top:8%; width:10%; height:9%;"></div>
+      <div class="absolute bg-base-300/50 rounded-md" style="left:62%; top:6%; width:16%; height:10%;"></div>
+      <div class="absolute bg-base-300/50 rounded-md" style="left:82%; top:8%; width:14%; height:14%;"></div>
+      <div class="absolute bg-base-300/60 rounded-md" style="left:4%; top:55%; width:12%; height:16%;"></div>
+      <div class="absolute bg-base-300/60 rounded-md" style="left:4%; top:78%; width:18%; height:14%;"></div>
+      <div class="absolute bg-base-300/50 rounded-md" style="left:80%; top:60%; width:16%; height:20%;"></div>
+      <div class="absolute bg-base-300/50 rounded-md" style="left:60%; top:80%; width:14%; height:12%;"></div>
+      <div class="absolute bg-base-300/40 rounded-md" style="left:36%; top:8%; width:10%; height:8%;"></div>
+
+      <!-- roads -->
+      <div class="absolute bg-base-100/70" style="left:-5%; top:22%; width:110%; height:5%; transform: rotate(-3deg);" aria-hidden="true"></div>
+      <div class="absolute bg-base-100/70" style="left:15%; top:-5%; width:5%; height:110%; transform: rotate(6deg);" aria-hidden="true"></div>
+      <!-- tram line -->
+      <div class="absolute border-t-4 border-dashed border-neutral/40" style="left:0; top:16%; width:100%;" aria-hidden="true"></div>
+
+      <!-- landmark labels -->
+      <span class="absolute text-[10px] font-medium opacity-60 bg-base-100/80 px-1.5 py-0.5 rounded whitespace-nowrap" style="left:6%; top:12%;">🚊 Arènes Romaines</span>
+      <span class="absolute text-[10px] font-medium opacity-60 bg-base-100/80 px-1.5 py-0.5 rounded whitespace-nowrap" style="left:70%; top:9%;">🚊 Zénith</span>
+      <span class="absolute text-[10px] font-medium opacity-60 bg-base-100/80 px-1.5 py-0.5 rounded whitespace-nowrap" style="left:26%; top:24%;">Rue Paul Mesplé</span>
+      <span class="absolute text-[10px] font-medium opacity-60 bg-base-100/80 px-1.5 py-0.5 rounded whitespace-nowrap" style="left:56%; top:19%; transform: rotate(6deg);">Av. de Grande-Bretagne</span>
+      <span class="absolute badge badge-soft badge-primary font-semibold" style="left:44%; top:60%;">🏛️ La Halle</span>
+
+      <!-- member pins, positioned in JS from data + a fixed layout map -->
+      <div id="pins-layer" class="absolute inset-0"></div>
+    </div>
+
+    <div class="flex items-center gap-3 text-xs opacity-60 mb-5">
+      <span class="inline-flex items-center gap-1"><span class="size-3 rounded-full bg-primary inline-block"></span> professionnel</span>
+      <span class="inline-flex items-center gap-1"><span class="size-3 rounded-full bg-primary/15 border border-primary/40 inline-block"></span> repère du quartier</span>
+    </div>
+
+    <!-- companion list — accessible equivalent of the map, also filtered by the header search -->
+    <h2 class="font-['Fraunces'] text-lg font-semibold mb-2" id="list-heading">Sur la carte</h2>
+    <div id="map-no-results" class="hidden alert alert-warning alert-soft mb-3 text-sm"><p>Aucun professionnel du plan ne correspond à « <span id="map-no-results-q"></span> ». Essayez <a href="annuaire.html" class="link">l'annuaire complet</a>.</p></div>
+    <ul id="map-list" class="list bg-base-100 rounded-box shadow-sm divide-y divide-base-200"></ul>
+  </main>
+
+  <!-- PIN DETAIL DIALOG -->
+  <dialog id="pin-dialog" class="modal">
+    <div class="modal-box">
+      <div class="flex items-start gap-3">
+        <img id="pin-photo" src="" alt="" class="size-16 rounded-full object-cover" />
+        <div class="min-w-0">
+          <h3 class="font-['Fraunces'] text-lg font-semibold" id="pin-nom"></h3>
+          <p class="text-sm opacity-70" id="pin-metier"></p>
+          <p class="text-xs opacity-50 mt-0.5" id="pin-adresse"></p>
+        </div>
+      </div>
+      <p class="text-sm mt-3" id="pin-accroche"></p>
+      <div class="modal-action flex-wrap gap-2">
+        <a id="pin-tel" href="#" class="btn btn-primary min-h-11">📞 Appeler</a>
+        <a id="pin-fiche" href="membre.html" class="btn btn-outline min-h-11">Voir la fiche</a>
+        <form method="dialog"><button class="btn btn-ghost min-h-11">Fermer</button></form>
+      </div>
+    </div>
+    <form method="dialog" class="modal-backdrop"><button>fermer</button></form>
+  </dialog>
+
+  <footer class="footer footer-center bg-base-200 text-base-content/70 p-8 border-t border-base-300">
+    <nav class="flex flex-wrap justify-center gap-x-4 gap-y-2 text-sm">
+      <a href="#" class="link link-hover">À propos</a>
+      <a href="#" class="link link-hover">Confidentialité</a>
+      <a href="#" class="link link-hover">Mentions légales</a>
+      <a href="#" class="link link-hover">Avis</a>
+    </nav>
+    <p class="text-xs opacity-70">Annuaire associatif du quartier de la Cartoucherie · Toulouse 31300</p>
+  </footer>
+
+  <script id="ctch-data" type="application/json">{"quartier":{"nom":"La Cartoucherie","ville":"Toulouse","codePostal":"31300","reperes":["La Halle de la Cartoucherie","Tram T1 — arrêts Cartoucherie, Zénith, Arènes Romaines","Avenue de Grande-Bretagne","Rue Paul Mesplé"]},"categories":[{"slug":"sante-bien-etre","nom":"Santé & bien-être","emoji":"🌿"},{"slug":"beaute-soins","nom":"Beauté & soins","emoji":"✂️"},{"slug":"artisanat-travaux","nom":"Artisanat & travaux","emoji":"🔨"},{"slug":"alimentation-traiteur","nom":"Alimentation & traiteur","emoji":"🥖"},{"slug":"conseil-entreprise","nom":"Conseil & entreprise","emoji":"📊"},{"slug":"numerique-creation","nom":"Numérique & création","emoji":"💻"},{"slug":"enfance-education","nom":"Enfance & éducation","emoji":"🎒"},{"slug":"sport-mouvement","nom":"Sport & mouvement","emoji":"🏃"},{"slug":"art-culture","nom":"Art & culture","emoji":"🎨"},{"slug":"services-domicile","nom":"Services à domicile","emoji":"🏠"}],"membres":[{"slug":"camille-roussel","nom":"Camille Roussel","metier":"Sophrologue","accroche":"Gestion du stress, sommeil et préparation aux examens, en cabinet ou en visio.","bio":"Installée à la Cartoucherie depuis 2022, j'accompagne adultes et adolescents sur le stress, le sommeil et la confiance en soi. Séances individuelles d'une heure, et un atelier collectif le samedi matin à la Halle.","categories":["sante-bien-etre"],"services":["Séance individuelle","Atelier collectif","Visio"],"adresse":"14 rue Paul Mesplé, 31300 Toulouse","distance":"120 m","tel":"06 12 34 56 78","email":"camille.roussel@example.fr","site":"camille-sophrologie.fr","instagram":"camille_sophro_ctch","photo":"https://picsum.photos/seed/camille-roussel/600/600","note":4.8,"nbAvis":12,"surCarte":true,"categoriesNoms":["Santé & bien-être"],"categoriesEmoji":["🌿"]},{"slug":"yanis-belhadj","nom":"Yanis Belhadj","metier":"Développeur web indépendant","accroche":"Sites vitrines et boutiques en ligne pour les commerces et associations du quartier.","bio":"Je fabrique des sites simples, rapides et faciles à mettre à jour soi-même. Je travaille surtout avec des artisans, des associations et des commerçants qui n'ont ni le temps ni l'envie de gérer de la technique.","categories":["numerique-creation","conseil-entreprise"],"services":["Site vitrine","Boutique en ligne","Dépannage & maintenance"],"adresse":"Espace de coworking, La Halle de la Cartoucherie","distance":"60 m","tel":"06 23 45 67 89","email":"yanis@example.fr","site":"yanisbelhadj.fr","instagram":null,"photo":"https://picsum.photos/seed/yanis-belhadj/600/600","note":5,"nbAvis":7,"surCarte":true,"categoriesNoms":["Numérique & création","Conseil & entreprise"],"categoriesEmoji":["💻","📊"]},{"slug":"lea-fontaine","nom":"Léa Fontaine","metier":"Graphiste & illustratrice","accroche":"Identité visuelle, affiches et illustrations sur mesure.","bio":"Graphiste depuis dix ans, je dessine des identités visuelles qui ressemblent vraiment aux gens qui les portent. Beaucoup d'affiches pour les événements du quartier, dont celles de la fête des voisins.","categories":["numerique-creation","art-culture"],"services":["Logo & identité","Affiches","Illustration"],"adresse":"Atelier partagé, avenue de Grande-Bretagne, 31300 Toulouse","distance":"340 m","tel":"06 34 56 78 90","email":"lea.fontaine@example.fr","site":"leafontaine-studio.fr","instagram":"lea_dessine","photo":"https://picsum.photos/seed/lea-fontaine/600/600","note":4.9,"nbAvis":15,"surCarte":true,"categoriesNoms":["Numérique & création","Art & culture"],"categoriesEmoji":["💻","🎨"]},{"slug":"marc-ollivier","nom":"Marc Ollivier","metier":"Menuisier-ébéniste","accroche":"Meubles sur mesure et agencement pour les petits appartements du quartier.","bio":"Vingt ans de métier. Je fabrique surtout du sur-mesure pour les logements neufs de la Cartoucherie : bibliothèques, dressings, lits en mezzanine. Devis gratuit après visite.","categories":["artisanat-travaux"],"services":["Meuble sur mesure","Agencement","Réparation"],"adresse":"Atelier, route de Bayonne, 31300 Toulouse","distance":"800 m","tel":"06 45 67 89 01","email":"atelier.ollivier@example.fr","site":null,"instagram":"atelier_ollivier","photo":"https://picsum.photos/seed/marc-ollivier/600/600","note":4.7,"nbAvis":9,"surCarte":true,"categoriesNoms":["Artisanat & travaux"],"categoriesEmoji":["🔨"]},{"slug":"nadia-berrada","nom":"Nadia Berrada","metier":"Traiteur — cuisine maison","accroche":"Plats marocains à emporter et buffets pour les fêtes de quartier.","bio":"Je cuisine chez moi, comme à la maison. Commandes à récupérer le vendredi et le samedi, et buffets pour vos anniversaires, réunions et fêtes d'immeuble.","categories":["alimentation-traiteur"],"services":["Plats à emporter","Buffet","Livraison quartier"],"adresse":"Résidence Les Cartouches, 31300 Toulouse","distance":"210 m","tel":"06 56 78 90 12","email":"nadia.berrada@example.fr","site":null,"instagram":"chez_nadia_ctch","photo":"https://picsum.photos/seed/nadia-berrada/600/600","note":5,"nbAvis":23,"surCarte":false,"categoriesNoms":["Alimentation & traiteur"],"categoriesEmoji":["🥖"]},{"slug":"thomas-vidal","nom":"Thomas Vidal","metier":"Coach sportif","accroche":"Petits groupes en extérieur, tous niveaux, y compris reprise après blessure.","bio":"Séances en plein air le long du canal et sur les pelouses de la Cartoucherie. Groupes de six maximum pour que chacun soit corrigé. Premier cours d'essai offert.","categories":["sport-mouvement","sante-bien-etre"],"services":["Cours collectif","Coaching individuel","Reprise du sport"],"adresse":"Rendez-vous : parvis de la Halle, 31300 Toulouse","distance":"60 m","tel":"06 67 89 01 23","email":"thomas.vidal@example.fr","site":"vidal-coaching.fr","instagram":"tvidal_coach","photo":"https://picsum.photos/seed/thomas-vidal/600/600","note":4.6,"nbAvis":18,"surCarte":true,"categoriesNoms":["Sport & mouvement","Santé & bien-être"],"categoriesEmoji":["🏃","🌿"]},{"slug":"sophie-arnaud","nom":"Sophie Arnaud","metier":"Naturopathe","accroche":"Alimentation, digestion et fatigue chronique. Consultations sur rendez-vous.","bio":"J'accompagne surtout des femmes sur la fatigue, la digestion et les périodes de transition. Bilan complet à la première séance, puis suivi tous les mois.","categories":["sante-bien-etre"],"services":["Bilan naturopathique","Suivi mensuel","Visio"],"adresse":"8 allée du Bois Vert, 31300 Toulouse","distance":"450 m","tel":"06 78 90 12 34","email":"sophie.arnaud@example.fr","site":"sophiearnaud-naturo.fr","instagram":null,"photo":"https://picsum.photos/seed/sophie-arnaud/600/600","note":4.5,"nbAvis":6,"surCarte":true,"categoriesNoms":["Santé & bien-être"],"categoriesEmoji":["🌿"]},{"slug":"julien-marty","nom":"Julien Marty","metier":"Électricien","accroche":"Dépannage rapide, mise aux normes et installation de bornes de recharge.","bio":"Artisan électricien, je travaille dans un rayon de deux kilomètres autour de la Cartoucherie. Dépannage sous 48 h, et beaucoup de bornes de recharge dans les parkings des résidences.","categories":["artisanat-travaux","services-domicile"],"services":["Dépannage","Mise aux normes","Borne de recharge"],"adresse":"Interventions dans tout le quartier","distance":"—","tel":"06 89 01 23 45","email":"jmarty.elec@example.fr","site":null,"instagram":null,"photo":"https://picsum.photos/seed/julien-marty/600/600","note":4.4,"nbAvis":11,"surCarte":false,"categoriesNoms":["Artisanat & travaux","Services à domicile"],"categoriesEmoji":["🔨","🏠"]},{"slug":"ines-lacombe","nom":"Inès Lacombe","metier":"Professeure de yoga","accroche":"Hatha et yoga prénatal, à la Halle et en petits groupes chez l'habitant.","bio":"Cours doux, accessibles aux débutants et aux corps fatigués. Trois créneaux par semaine à la Halle, plus des séances prénatales le mardi.","categories":["sport-mouvement","sante-bien-etre"],"services":["Cours collectif","Yoga prénatal","Cours privé"],"adresse":"La Halle de la Cartoucherie, 31300 Toulouse","distance":"60 m","tel":"06 90 12 34 56","email":"ines.lacombe@example.fr","site":null,"instagram":"ines_yoga_toulouse","photo":"https://picsum.photos/seed/ines-lacombe/600/600","note":4.9,"nbAvis":27,"surCarte":true,"categoriesNoms":["Sport & mouvement","Santé & bien-être"],"categoriesEmoji":["🏃","🌿"]},{"slug":"pierre-delmas","nom":"Pierre Delmas","metier":"Expert-comptable","accroche":"Accompagnement des indépendants et des petites associations du quartier.","bio":"Je travaille surtout avec des micro-entreprises et des associations. Premier rendez-vous gratuit pour faire le point, souvent autour d'un café à la Halle.","categories":["conseil-entreprise"],"services":["Comptabilité","Création d'entreprise","Conseil associatif"],"adresse":"Bureau partagé, 3 rue Paul Mesplé, 31300 Toulouse","distance":"150 m","tel":"06 01 23 45 67","email":"p.delmas@example.fr","site":"delmas-conseil.fr","instagram":null,"photo":"https://picsum.photos/seed/pierre-delmas/600/600","note":4.3,"nbAvis":5,"surCarte":true,"categoriesNoms":["Conseil & entreprise"],"categoriesEmoji":["📊"]},{"slug":"amandine-rey","nom":"Amandine Rey","metier":"Coiffeuse à domicile","accroche":"Coupe, couleur et soins chez vous, du mardi au samedi.","bio":"Je me déplace dans tout le quartier avec mon matériel. Beaucoup de familles et de personnes âgées qui préfèrent rester chez elles. Tarifs affichés, sans surprise.","categories":["beaute-soins","services-domicile"],"services":["Coupe","Couleur","Soin & coiffage"],"adresse":"À domicile, quartier Cartoucherie","distance":"—","tel":"06 12 90 34 56","email":"amandine.rey@example.fr","site":null,"instagram":"amandine_coiffure_dom","photo":"https://picsum.photos/seed/amandine-rey/600/600","note":4.8,"nbAvis":31,"surCarte":false,"categoriesNoms":["Beauté & soins","Services à domicile"],"categoriesEmoji":["✂️","🏠"]},{"slug":"karim-ziani","nom":"Karim Ziani","metier":"Photographe","accroche":"Portraits, familles et reportages d'événements de quartier.","bio":"Je photographie surtout des familles et des artisans au travail. C'est moi qui réalise une partie des portraits publiés sur le compte Instagram du collectif.","categories":["art-culture","numerique-creation"],"services":["Portrait","Séance famille","Reportage événement"],"adresse":"Studio, avenue de Grande-Bretagne, 31300 Toulouse","distance":"380 m","tel":"06 23 90 45 67","email":"karim.ziani@example.fr","site":"karimziani-photo.fr","instagram":"karim_ziani_photo","photo":"https://picsum.photos/seed/karim-ziani/600/600","note":4.9,"nbAvis":14,"surCarte":true,"categoriesNoms":["Art & culture","Numérique & création"],"categoriesEmoji":["🎨","💻"]}],"avis":[{"membre":"camille-roussel","auteur":"Hélène M.","note":5,"date":"12 août 2026","texte":"Trois séances et je dors enfin. Camille explique très bien, on n'a jamais l'impression de perdre son temps. Et c'est à deux pas de chez moi."},{"membre":"camille-roussel","auteur":"Damien L.","note":5,"date":"3 juillet 2026","texte":"J'y suis allé pour le stress au travail. Accueil très simple, aucun jargon. Je recommande sans réserve."},{"membre":"camille-roussel","auteur":"Fatou D.","note":4,"date":"18 juin 2026","texte":"Très bien pour l'atelier du samedi. Un peu difficile d'obtenir un créneau en semaine, c'est le seul bémol."}]}</script>
+
+  <script>
+    (function () {
+      const DATA = JSON.parse(document.getElementById('ctch-data').textContent);
+      const MEMBERS = DATA.membres;
+      function norm(s) {
+        return (s || '').toString().normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().trim();
+      }
+      function esc(s) {
+        return (s == null ? '' : String(s)).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+      }
+      function hi(text, q) {
+        const t = text == null ? '' : String(text);
+        if (!q) return esc(t);
+        const nq = norm(q), nt = norm(t);
+        const i = nt.indexOf(nq);
+        if (i < 0 || !nq) return esc(t);
+        return esc(t.slice(0, i)) + '<mark class="bg-primary/25 text-current rounded-sm px-0.5">' + esc(t.slice(i, i + nq.length)) + '</mark>' + esc(t.slice(i + nq.length));
+      }
+      function fieldsOf(m) {
+        return [
+          { label: 'nom', val: m.nom }, { label: 'métier', val: m.metier }, { label: 'description', val: m.accroche },
+          { label: 'services', val: (m.services || []).join(', ') }, { label: 'catégorie', val: (m.categoriesNoms || []).join(', ') },
+        ];
+      }
+      function matchOf(m, q) {
+        const nq = norm(q);
+        if (!nq) return { ok: true, reasons: [] };
+        const reasons = [];
+        for (const f of fieldsOf(m)) if (norm(f.val).includes(nq)) reasons.push(f.label);
+        return { ok: reasons.length > 0, reasons };
+      }
+      function telHref(tel) { return 'tel:' + (tel || '').replace(/\s+/g, ''); }
+      window.CTCH = { DATA, MEMBERS, norm, esc, hi, matchOf, telHref };
+    })();
+  </script>
+
+  <script>
+    // ---- header quick-search dropdown ----
+    (function () {
+      const { MEMBERS, esc, hi, matchOf } = window.CTCH;
+      const input = document.getElementById('site-search');
+      const list = document.getElementById('site-search-results');
+      if (!input) return;
+      function render(qRaw) {
+        const q = qRaw.trim();
+        if (!q) { list.innerHTML = ''; return; }
+        const matched = MEMBERS.map(m => ({ m, r: matchOf(m, q) })).filter(x => x.r.ok).slice(0, 6);
+        if (matched.length === 0) {
+          list.innerHTML = `<li class="p-3 text-sm opacity-70">Aucun résultat pour « ${esc(q)} »</li>`;
+          return;
+        }
+        list.innerHTML = matched.map(({ m }) => `
+          <li><a href="membre.html" class="flex items-center gap-3 py-2">
+            <img src="${m.photo}" class="size-9 rounded-full object-cover" alt="" />
+            <span class="flex flex-col min-w-0">
+              <span class="font-medium truncate">${hi(m.nom, q)}</span>
+              <span class="text-xs opacity-60 truncate">${hi(m.metier, q)}</span>
+            </span>
+          </a></li>`).join('');
+      }
+      input.addEventListener('input', e => render(e.target.value));
+      input.addEventListener('keydown', e => {
+        if (e.key === 'Enter') {
+          if (typeof window.applyQuery === 'function') window.applyQuery(input.value);
+          else window.location.href = 'annuaire.html?q=' + encodeURIComponent(input.value.trim());
+        }
+      });
+    })();
+  </script>
+
+  <script>
+    // ---- carte.html: pins + companion list, both driven by the same search field ----
+    (function () {
+      const { MEMBERS, esc, hi, matchOf, telHref } = window.CTCH;
+      const searchInput = document.getElementById('site-search');
+      const pinsLayer = document.getElementById('pins-layer');
+      const mapList = document.getElementById('map-list');
+      const mapNoResults = document.getElementById('map-no-results');
+      const mapNoResultsQ = document.getElementById('map-no-results-q');
+
+      // fixed illustrative layout — a real build would use lat/lon; this is a styled placeholder
+      const layout = {
+        'pierre-delmas': { x: 20, y: 20 },
+        'camille-roussel': { x: 28, y: 44 },
+        'yanis-belhadj': { x: 50, y: 50 },
+        'thomas-vidal': { x: 38, y: 68 },
+        'ines-lacombe': { x: 62, y: 32 },
+        'sophie-arnaud': { x: 12, y: 78 },
+        'lea-fontaine': { x: 74, y: 22 },
+        'karim-ziani': { x: 85, y: 40 },
+        'marc-ollivier': { x: 88, y: 75 },
+      };
+      const onMap = MEMBERS.filter(m => layout[m.slug]);
+
+      pinsLayer.innerHTML = onMap.map(m => {
+        const p = layout[m.slug];
+        return `
+        <button
+          type="button"
+          class="pin absolute -translate-x-1/2 -translate-y-1/2 tooltip"
+          data-tip="${esc(m.nom)} · ${esc(m.metier)}"
+          data-slug="${m.slug}"
+          style="left:${p.x}%; top:${p.y}%;"
+          aria-label="${esc(m.nom)}, ${esc(m.metier)}"
+        >
+          <img src="${m.photo}" alt="" class="size-10 rounded-full object-cover ring-2 ring-primary shadow-md" />
+        </button>`;
+      }).join('');
+
+      function openPin(slug) {
+        const m = MEMBERS.find(x => x.slug === slug);
+        if (!m) return;
+        document.getElementById('pin-photo').src = m.photo;
+        document.getElementById('pin-photo').alt = m.nom;
+        document.getElementById('pin-nom').textContent = m.nom;
+        document.getElementById('pin-metier').textContent = m.metier;
+        document.getElementById('pin-adresse').textContent = '📍 ' + m.adresse;
+        document.getElementById('pin-accroche').textContent = m.accroche;
+        document.getElementById('pin-tel').href = telHref(m.tel);
+        document.getElementById('pin-dialog').showModal();
+      }
+      pinsLayer.addEventListener('click', e => {
+        const btn = e.target.closest('.pin');
+        if (btn) openPin(btn.dataset.slug);
+      });
+
+      function rowHtml(m, r, q) {
+        return `
+        <li class="list-row items-center gap-3">
+          <img src="${m.photo}" alt="" class="size-11 rounded-full object-cover" />
+          <div class="min-w-0">
+            <div class="font-semibold truncate">${hi(m.nom, q)}</div>
+            <div class="text-sm opacity-70 truncate">${hi(m.metier, q)}</div>
+          </div>
+          <div class="flex gap-1 shrink-0">
+            <a href="${telHref(m.tel)}" aria-label="Appeler ${esc(m.nom)}" class="btn btn-circle btn-primary btn-lg" title="Appeler">📞</a>
+            <a href="membre.html" class="btn btn-ghost min-h-11">Voir</a>
+          </div>
+        </li>`;
+      }
+
+      function render() {
+        const q = searchInput.value.trim();
+        const matches = onMap.map(m => ({ m, r: matchOf(m, q) })).filter(x => x.r.ok);
+        const matchedSlugs = new Set(matches.map(x => x.m.slug));
+
+        pinsLayer.querySelectorAll('.pin').forEach(pin => {
+          const match = !q || matchedSlugs.has(pin.dataset.slug);
+          pin.classList.toggle('opacity-25', !match);
+          pin.classList.toggle('scale-90', !match);
+        });
+
+        if (q && matches.length === 0) {
+          mapList.innerHTML = '';
+          mapNoResults.classList.remove('hidden');
+          mapNoResultsQ.textContent = q;
+        } else {
+          mapNoResults.classList.add('hidden');
+          mapList.innerHTML = matches.map(({ m, r }) => rowHtml(m, r, q)).join('');
+        }
+      }
+
+      window.applyQuery = function (q) { searchInput.value = q; render(); };
+      searchInput.addEventListener('input', render);
+      render();
+    })();
+  </script>
+</body>
+</html>

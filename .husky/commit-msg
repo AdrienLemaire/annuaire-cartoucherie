@@ -1,0 +1,8 @@
+npx --no -- commitlint --edit "$1" || exit 1
+
+# Agent harnesses inject these lines. CLAUDE.md forbids them. A rule without a
+# mechanism loses this argument on every single commit.
+if grep -qiE '^(co-authored-by:|generated with)|claude-session' "$1"; then
+  echo "Commit messages credit no AI (CLAUDE.md)." >&2
+  exit 1
+fi

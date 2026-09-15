@@ -1,0 +1,406 @@
+<!doctype html>
+<html lang="fr" data-theme="cartoucherie">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Voisinage — Planche de marque · Annuaire de la Cartoucherie</title>
+  <meta name="description" content="Direction 1 « Voisinage » — planche de marque pour l'Annuaire de la Cartoucherie." />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <style>
+    [data-theme="cartoucherie"] {
+      color-scheme: light;
+      --color-base-100: oklch(97.5% 0.008 88);
+      --color-base-200: oklch(95% 0.010 88);
+      --color-base-300: oklch(90% 0.012 88);
+      --color-base-content: oklch(22% 0.020 145);
+      --color-primary: oklch(38% 0.075 152);
+      --color-primary-content: oklch(98% 0.012 152);
+      --color-secondary: oklch(90% 0.035 152);
+      --color-secondary-content: oklch(28% 0.060 152);
+      --color-accent: oklch(74% 0.150 58);
+      --color-accent-content: oklch(24% 0.040 58);
+      --color-neutral: oklch(26% 0.018 95);
+      --color-neutral-content: oklch(96% 0.010 95);
+      --color-info: oklch(50% 0.090 230);
+      --color-info-content: oklch(97% 0.010 230);
+      --color-success: oklch(44% 0.100 152);
+      --color-success-content: oklch(97% 0.010 152);
+      --color-warning: oklch(80% 0.160 80);
+      --color-warning-content: oklch(24% 0.030 80);
+      --color-error: oklch(50% 0.190 24);
+      --color-error-content: oklch(98% 0.010 24);
+      --radius-selector: 1rem;
+      --radius-field: 0.75rem;
+      --radius-box: 1.5rem;
+      --size-selector: 0.25rem;
+      --size-field: 0.275rem;
+      --border: 1px;
+      --depth: 0;
+      --noise: 0;
+    }
+  </style>
+</head>
+<body class="bg-base-100 text-base-content font-['Public_Sans'] antialiased">
+
+<!-- =================== reusable mark (inline SVG, no ammunition, no emoji) =================== -->
+<!-- Concept: a ring left open like a door ajar, with a small accent dot standing in the gap — a porch light left on for a neighbour. -->
+
+<main class="mx-auto max-w-6xl px-6 md:px-10 py-14 space-y-28">
+
+  <!-- ============ BOARD HEADER ============ -->
+  <header class="space-y-3">
+    <p class="text-[13px] font-['Manrope'] font-semibold uppercase tracking-[0.14em] text-primary">Planche de marque — Direction 1</p>
+    <h1 class="font-['Manrope'] font-extrabold text-[40px] leading-[1.05] tracking-tight">Voisinage</h1>
+    <p class="max-w-2xl text-base text-base-content/70">La confiance par le calme et l'espace. Un vert unique porte toute l'identité — civique et frais, jamais un cliché écologique.</p>
+  </header>
+
+  <!-- ============ 1. WORDMARK ============ -->
+  <section aria-labelledby="h-wordmark" class="space-y-8">
+    <h2 id="h-wordmark" class="font-['Manrope'] font-bold text-[20px]">1 · Le mot-symbole</h2>
+
+    <div class="rounded-box bg-base-200 border border-base-300 p-10 md:p-16 flex flex-col items-center gap-10">
+      <!-- Large lockup -->
+      <div class="flex items-center gap-5">
+        <svg viewBox="0 0 48 48" class="w-16 h-16 md:w-20 md:h-20 shrink-0" aria-hidden="true">
+          <rect x="1" y="1" width="46" height="46" rx="14" fill="var(--color-primary)" />
+          <circle cx="24" cy="24" r="12" fill="none" stroke="var(--color-primary-content)" stroke-width="4.5" stroke-linecap="round" stroke-dasharray="61 14" transform="rotate(125 24 24)" />
+          <circle cx="34.6" cy="17.4" r="3.6" fill="var(--color-accent)" />
+        </svg>
+        <div class="leading-none">
+          <p class="font-['Manrope'] tracking-tight text-[40px] md:text-[48px] leading-[0.95]">
+            <span class="font-extrabold text-primary">annuaire</span><span class="font-normal text-base-content/70"> de la</span>
+          </p>
+          <p class="font-['Manrope'] font-extrabold tracking-tight text-[40px] md:text-[48px] leading-[0.95] text-primary">cartoucherie</p>
+        </div>
+      </div>
+
+      <!-- Short form -->
+      <div class="flex items-center gap-3">
+        <svg viewBox="0 0 48 48" class="w-8 h-8 shrink-0" aria-hidden="true">
+          <rect x="1" y="1" width="46" height="46" rx="14" fill="var(--color-primary)" />
+          <circle cx="24" cy="24" r="12" fill="none" stroke="var(--color-primary-content)" stroke-width="4.5" stroke-linecap="round" stroke-dasharray="61 14" transform="rotate(125 24 24)" />
+          <circle cx="34.6" cy="17.4" r="3.6" fill="var(--color-accent)" />
+        </svg>
+        <p class="font-['Manrope'] font-extrabold tracking-tight text-[24px] text-primary">la cartoucherie</p>
+      </div>
+    </div>
+
+    <!-- 24px proof: does it read in a browser tab -->
+    <div class="max-w-sm">
+      <p class="text-[13px] font-['Manrope'] font-semibold uppercase tracking-[0.1em] text-base-content/70 mb-2">À 24 px, dans un onglet</p>
+      <div class="rounded-t-box bg-base-300/70 border border-base-300 border-b-0 px-3 pt-2.5 pb-0 flex items-end gap-2">
+        <div class="bg-base-100 rounded-t-lg px-3 py-2 flex items-center gap-2 border border-base-300 border-b-0">
+          <svg viewBox="0 0 48 48" class="w-6 h-6 shrink-0" aria-hidden="true">
+            <rect x="1" y="1" width="46" height="46" rx="14" fill="var(--color-primary)" />
+            <circle cx="24" cy="24" r="12" fill="none" stroke="var(--color-primary-content)" stroke-width="5" stroke-linecap="round" stroke-dasharray="61 14" transform="rotate(125 24 24)" />
+            <circle cx="34.6" cy="17.4" r="4" fill="var(--color-accent)" />
+          </svg>
+          <span class="text-[13px] text-base-content/70 max-w-[110px] truncate">Annuaire — La Cart…</span>
+        </div>
+      </div>
+      <div class="rounded-b-box bg-base-100 border border-base-300 border-t-0 h-3"></div>
+    </div>
+
+    <p class="max-w-2xl text-sm text-base-content/70">Le repère : un anneau ouvert comme une porte entrebâillée, avec un petit point d'accent qui tient lieu de lumière du perron — la lumière laissée allumée pour un voisin. Pure géométrie (anneau + point), aucune référence à la munition.</p>
+  </section>
+
+  <!-- ============ 2. PALETTE ============ -->
+  <section aria-labelledby="h-palette" class="space-y-8">
+    <h2 id="h-palette" class="font-['Manrope'] font-bold text-[20px]">2 · La palette</h2>
+
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
+
+      <!-- base-100/200/300 trio -->
+      <div class="rounded-box border border-base-300 overflow-hidden">
+        <div class="h-16 bg-base-100 border-b border-base-300"></div>
+        <div class="h-16 bg-base-200 border-b border-base-300"></div>
+        <div class="h-16 bg-base-300"></div>
+        <div class="p-4 space-y-1 bg-base-100">
+          <p class="font-['Manrope'] font-semibold text-sm">Base 100 / 200 / 300</p>
+          <p class="text-xs text-base-content/70 font-mono">oklch(97.5% .008 88) · oklch(95% .010 88) · oklch(90% .012 88)</p>
+          <p class="text-xs text-base-content/70 font-mono">--color-base-100 / -200 / -300</p>
+        </div>
+      </div>
+
+      <!-- base-content -->
+      <div class="rounded-box border border-base-300 overflow-hidden">
+        <div class="h-16 bg-base-content flex items-center justify-center"><span class="text-base-100 font-['Manrope'] font-bold text-lg">Aa</span></div>
+        <div class="p-4 space-y-1 bg-base-100">
+          <p class="font-['Manrope'] font-semibold text-sm">Base content</p>
+          <p class="text-xs text-base-content/70 font-mono">oklch(22% .020 145)</p>
+          <p class="text-xs text-base-content/70 font-mono">--color-base-content</p>
+          <p class="text-xs font-semibold text-primary">16,09:1 sur base-100 (AAA)</p>
+        </div>
+      </div>
+
+      <!-- primary -->
+      <div class="rounded-box border border-base-300 overflow-hidden">
+        <div class="h-16 bg-primary flex items-center justify-center"><span class="text-primary-content font-['Manrope'] font-bold text-lg">Aa</span></div>
+        <div class="p-4 space-y-1 bg-base-100">
+          <p class="font-['Manrope'] font-semibold text-sm">Primary — le vert</p>
+          <p class="text-xs text-base-content/70 font-mono">oklch(38% .075 152) · #1e4e2e</p>
+          <p class="text-xs text-base-content/70 font-mono">--color-primary / -content</p>
+          <p class="text-xs font-semibold text-primary">9,12:1 (AAA)</p>
+        </div>
+      </div>
+
+      <!-- secondary -->
+      <div class="rounded-box border border-base-300 overflow-hidden">
+        <div class="h-16 bg-secondary flex items-center justify-center"><span class="text-secondary-content font-['Manrope'] font-bold text-lg">Aa</span></div>
+        <div class="p-4 space-y-1 bg-base-100">
+          <p class="font-['Manrope'] font-semibold text-sm">Secondary — sauge</p>
+          <p class="text-xs text-base-content/70 font-mono">oklch(90% .035 152) · #cee5d3</p>
+          <p class="text-xs text-base-content/70 font-mono">--color-secondary / -content</p>
+          <p class="text-xs font-semibold text-primary">10,73:1 (AAA)</p>
+        </div>
+      </div>
+
+      <!-- accent -->
+      <div class="rounded-box border border-base-300 overflow-hidden">
+        <div class="h-16 bg-accent flex items-center justify-center"><span class="text-accent-content font-['Manrope'] font-bold text-lg">Aa</span></div>
+        <div class="p-4 space-y-1 bg-base-100">
+          <p class="font-['Manrope'] font-semibold text-sm">Accent — ambre</p>
+          <p class="text-xs text-base-content/70 font-mono">oklch(74% .150 58) · #f0903c</p>
+          <p class="text-xs text-base-content/70 font-mono">--color-accent / -content</p>
+          <p class="text-xs font-semibold text-warning">6,93:1 (AA — sous AAA de peu)</p>
+        </div>
+      </div>
+
+      <!-- neutral -->
+      <div class="rounded-box border border-base-300 overflow-hidden">
+        <div class="h-16 bg-neutral flex items-center justify-center"><span class="text-neutral-content font-['Manrope'] font-bold text-lg">Aa</span></div>
+        <div class="p-4 space-y-1 bg-base-100">
+          <p class="font-['Manrope'] font-semibold text-sm">Neutral</p>
+          <p class="text-xs text-base-content/70 font-mono">oklch(26% .018 95) · #27241a</p>
+          <p class="text-xs text-base-content/70 font-mono">--color-neutral / -content</p>
+          <p class="text-xs font-semibold text-primary">13,84:1 (AAA)</p>
+        </div>
+      </div>
+
+      <!-- info -->
+      <div class="rounded-box border border-base-300 overflow-hidden">
+        <div class="h-16 bg-info flex items-center justify-center"><span class="text-info-content font-['Manrope'] font-bold text-lg">Aa</span></div>
+        <div class="p-4 space-y-1 bg-base-100">
+          <p class="font-['Manrope'] font-semibold text-sm">Info</p>
+          <p class="text-xs text-base-content/70 font-mono">oklch(50% .090 230) · #1b6c8c</p>
+          <p class="text-xs text-base-content/70 font-mono">--color-info / -content</p>
+          <p class="text-xs font-semibold text-warning">5,42:1 (AA)</p>
+        </div>
+      </div>
+
+      <!-- success -->
+      <div class="rounded-box border border-base-300 overflow-hidden">
+        <div class="h-16 bg-success flex items-center justify-center"><span class="text-success-content font-['Manrope'] font-bold text-lg">Aa</span></div>
+        <div class="p-4 space-y-1 bg-base-100">
+          <p class="font-['Manrope'] font-semibold text-sm">Success</p>
+          <p class="text-xs text-base-content/70 font-mono">oklch(44% .100 152) · #1b6236</p>
+          <p class="text-xs text-base-content/70 font-mono">--color-success / -content</p>
+          <p class="text-xs font-semibold text-warning">6,78:1 (AA, proche AAA)</p>
+        </div>
+      </div>
+
+      <!-- warning -->
+      <div class="rounded-box border border-base-300 overflow-hidden">
+        <div class="h-16 bg-warning flex items-center justify-center"><span class="text-warning-content font-['Manrope'] font-bold text-lg">Aa</span></div>
+        <div class="p-4 space-y-1 bg-base-100">
+          <p class="font-['Manrope'] font-semibold text-sm">Warning</p>
+          <p class="text-xs text-base-content/70 font-mono">oklch(80% .160 80) · #f3b01d</p>
+          <p class="text-xs text-base-content/70 font-mono">--color-warning / -content</p>
+          <p class="text-xs font-semibold text-primary">8,64:1 (AAA)</p>
+        </div>
+      </div>
+
+      <!-- error -->
+      <div class="rounded-box border border-base-300 overflow-hidden">
+        <div class="h-16 bg-error flex items-center justify-center"><span class="text-error-content font-['Manrope'] font-bold text-lg">Aa</span></div>
+        <div class="p-4 space-y-1 bg-base-100">
+          <p class="font-['Manrope'] font-semibold text-sm">Error</p>
+          <p class="text-xs text-base-content/70 font-mono">oklch(50% .190 24) · #b71727</p>
+          <p class="text-xs text-base-content/70 font-mono">--color-error / -content</p>
+          <p class="text-xs font-semibold text-warning">6,24:1 (AA)</p>
+        </div>
+      </div>
+    </div>
+    <p class="text-sm text-base-content/70 max-w-2xl">Ratios calculés (WCAG 2.x, luminance relative sRGB) sur les valeurs OKLCH réelles, pas estimés. Tous dépassent le seuil AA (4,5:1) exigé pour du texte ; six des neuf paires dépassent même l'AAA (7:1). L'accent, l'info et l'erreur restent en AA — honnête, et suffisant : ce sont des touches courtes (boutons, badges), jamais du texte de paragraphe.</p>
+  </section>
+
+  <!-- ============ 3. TYPOGRAPHIE ============ -->
+  <section aria-labelledby="h-type" class="space-y-8">
+    <h2 id="h-type" class="font-['Manrope'] font-bold text-[20px]">3 · Typographie — Manrope + Public Sans</h2>
+
+    <div class="grid md:grid-cols-2 gap-10">
+      <div class="space-y-5">
+        <div class="border-b border-base-300 pb-4">
+          <p class="font-['Manrope'] font-extrabold text-[40px] leading-tight">Aa Bb Voisinage</p>
+          <p class="text-sm text-base-content/70 mt-1">40 px · Manrope 800 · mot-symbole, titre héros</p>
+        </div>
+        <div class="border-b border-base-300 pb-4">
+          <p class="font-['Manrope'] font-bold text-[28px] leading-tight">Trouvez un voisin qui sait faire</p>
+          <p class="text-sm text-base-content/70 mt-1">28 px · Manrope 700 · titres de section</p>
+        </div>
+        <div class="border-b border-base-300 pb-4">
+          <p class="font-['Manrope'] font-bold text-[20px] leading-snug">Retrouver l'équilibre</p>
+          <p class="text-sm text-base-content/70 mt-1">20 px · Manrope 700 · titres de carte, tuiles « Je cherche… »</p>
+        </div>
+        <div class="border-b border-base-300 pb-4">
+          <p class="font-['Public_Sans'] text-[16px] leading-relaxed">Séances individuelles d'une heure, et un atelier collectif le samedi matin à la Halle.</p>
+          <p class="text-sm text-base-content/70 mt-1">16 px · Public Sans 400 · paragraphes, descriptions</p>
+        </div>
+        <div>
+          <p class="font-['Public_Sans'] font-semibold text-[13px] uppercase tracking-[0.1em] text-base-content/70">Santé &amp; bien-être</p>
+          <p class="text-sm text-base-content/70 mt-1">13 px · Public Sans 600, majuscules espacées · catégories, libellés, métadonnées</p>
+        </div>
+      </div>
+
+      <div class="rounded-box bg-base-200 border border-base-300 p-8 flex flex-col justify-center">
+        <p class="font-['Public_Sans'] text-[16px] leading-relaxed max-w-[52ch]">Installée à la Cartoucherie depuis 2022, Camille accompagne adultes et adolescents sur le stress, le sommeil et la confiance en soi. Séances individuelles d'une heure, et un atelier collectif le samedi matin à la Halle. Premier échange sans engagement, pour savoir si l'accompagnement vous convient.</p>
+        <p class="text-xs text-base-content/70 mt-4 font-['Manrope'] font-semibold uppercase tracking-[0.1em]">Paragraphe réel, 16 px, Public Sans</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 4. LES TROIS BLOCS ============ -->
+  <section aria-labelledby="h-blocs" class="space-y-14">
+    <h2 id="h-blocs" class="font-['Manrope'] font-bold text-[20px]">4 · Les trois blocs</h2>
+
+    <!-- 4a. Portrait card -->
+    <div class="space-y-4">
+      <h3 class="font-['Manrope'] font-semibold text-base text-base-content/70">La carte-portrait</h3>
+      <div class="card bg-base-100 border border-base-300 w-full max-w-sm">
+        <figure class="aspect-[4/5]">
+          <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Portrait de Camille Roussel" class="w-full h-full object-cover" />
+        </figure>
+        <div class="card-body gap-3">
+          <div>
+            <h4 class="font-['Manrope'] font-bold text-[20px] leading-snug">Camille Roussel</h4>
+            <p class="text-base-content/70 text-base">Sophrologue</p>
+          </div>
+          <div class="flex flex-wrap gap-2">
+            <span class="badge badge-secondary font-['Public_Sans'] font-semibold text-[13px] uppercase tracking-[0.06em] px-3 py-3">Santé &amp; bien-être</span>
+          </div>
+          <p class="font-['Public_Sans'] text-[16px] leading-relaxed text-base-content/80">Gestion du stress, sommeil et préparation aux examens, en cabinet ou en visio.</p>
+          <div class="card-actions pt-2 gap-2">
+            <a href="tel:0612345678" class="btn btn-accent btn-square" aria-label="Appeler Camille Roussel" title="Appeler">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="w-5 h-5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" /></svg>
+            </a>
+            <a href="mailto:camille.roussel@example.fr" class="btn btn-outline btn-square" aria-label="Écrire un courriel à Camille Roussel" title="Courriel">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="w-5 h-5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" /></svg>
+            </a>
+            <a href="https://camille-sophrologie.fr" class="btn btn-ghost btn-square" aria-label="Voir le site de Camille Roussel" title="Site">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="w-5 h-5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418" /></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4b. Button set -->
+    <div class="space-y-4">
+      <h3 class="font-['Manrope'] font-semibold text-base text-base-content/70">Le jeu de boutons</h3>
+      <div class="flex flex-wrap items-center gap-4 rounded-box bg-base-200 border border-base-300 p-8">
+        <button class="btn btn-primary font-['Manrope'] font-semibold">Voir le profil</button>
+        <button class="btn btn-secondary font-['Manrope'] font-semibold">Envoyer un message</button>
+        <button class="btn btn-ghost font-['Manrope'] font-semibold">Partager</button>
+        <button class="btn btn-disabled font-['Manrope'] font-semibold" aria-disabled="true" tabindex="-1">Prendre rendez-vous en ligne</button>
+      </div>
+      <p class="text-sm text-base-content/70 max-w-xl">Primaire, secondaire (sauge), fantôme, et un état désactivé assumé : la prise de rendez-vous en ligne n'existe pas encore — on le dit, on ne le cache pas.</p>
+    </div>
+
+    <!-- 4c. Je cherche tile -->
+    <div class="space-y-4">
+      <h3 class="font-['Manrope'] font-semibold text-base text-base-content/70">La tuile « Je cherche… »</h3>
+      <button class="card card-side w-full max-w-lg bg-primary text-primary-content text-left hover:brightness-110 transition">
+        <div class="card-body flex-row items-center justify-between gap-4 py-6">
+          <div class="space-y-1">
+            <p class="font-['Manrope'] font-bold text-[20px] leading-snug">Retrouver l'équilibre : stress, sommeil, énergie</p>
+            <p class="font-['Public_Sans'] text-[13px] font-semibold uppercase tracking-[0.08em] text-primary-content/80">Santé &amp; bien-être · 4 voisins</p>
+          </div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="w-6 h-6 shrink-0" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" /></svg>
+        </div>
+      </button>
+    </div>
+  </section>
+
+  <!-- ============ 5. APPLICATION (390px) ============ -->
+  <section aria-labelledby="h-app" class="space-y-6">
+    <h2 id="h-app" class="font-['Manrope'] font-bold text-[20px]">5 · Fragment d'application — 390 px</h2>
+
+    <div class="w-[390px] rounded-[2rem] border border-base-300 overflow-hidden shadow-sm">
+      <div class="bg-base-100 min-h-[600px]">
+
+        <!-- mini header -->
+        <div class="flex items-center gap-2 px-5 pt-6 pb-4">
+          <svg viewBox="0 0 48 48" class="w-6 h-6 shrink-0" aria-hidden="true">
+            <rect x="1" y="1" width="46" height="46" rx="14" fill="var(--color-primary)" />
+            <circle cx="24" cy="24" r="12" fill="none" stroke="var(--color-primary-content)" stroke-width="5" stroke-linecap="round" stroke-dasharray="61 14" transform="rotate(125 24 24)" />
+            <circle cx="34.6" cy="17.4" r="4" fill="var(--color-accent)" />
+          </svg>
+          <span class="font-['Manrope'] font-extrabold text-[15px] text-primary">la cartoucherie</span>
+        </div>
+
+        <div class="px-5 space-y-6 pb-8">
+          <div>
+            <p class="font-['Public_Sans'] text-base-content/70 text-[16px]">Bonjour,</p>
+            <h3 class="font-['Manrope'] font-extrabold text-[28px] leading-tight">Je cherche…</h3>
+          </div>
+
+          <!-- tile -->
+          <button class="card w-full bg-primary text-primary-content text-left">
+            <div class="card-body gap-2 py-5">
+              <p class="font-['Manrope'] font-bold text-[20px] leading-snug">Retrouver l'équilibre : stress, sommeil, énergie</p>
+              <div class="flex items-center justify-between">
+                <p class="font-['Public_Sans'] text-[13px] font-semibold uppercase tracking-[0.08em] text-primary-content/80">Santé &amp; bien-être · 4 voisins</p>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="w-5 h-5 shrink-0" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" /></svg>
+              </div>
+            </div>
+          </button>
+
+          <div>
+            <p class="font-['Public_Sans'] font-semibold text-[13px] uppercase tracking-[0.08em] text-base-content/70 mb-3">4 voisins peuvent vous aider</p>
+
+            <div class="space-y-3">
+              <!-- compact portrait row 1 -->
+              <div class="card card-side bg-base-100 border border-base-300 items-center">
+                <figure class="w-20 h-20 shrink-0 self-stretch">
+                  <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Portrait de Camille Roussel" class="w-full h-full object-cover" />
+                </figure>
+                <div class="card-body flex-row items-center justify-between py-3 pl-4 pr-3 gap-2">
+                  <div class="min-w-0">
+                    <p class="font-['Manrope'] font-bold text-[16px] leading-snug">Camille Roussel</p>
+                    <p class="text-base-content/70 text-base">Sophrologue · 120 m</p>
+                  </div>
+                  <a href="tel:0612345678" class="btn btn-accent btn-circle shrink-0" aria-label="Appeler Camille Roussel">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="w-5 h-5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" /></svg>
+                  </a>
+                </div>
+              </div>
+
+              <!-- compact portrait row 2 -->
+              <div class="card card-side bg-base-100 border border-base-300 items-center">
+                <figure class="w-20 h-20 shrink-0 self-stretch">
+                  <img src="https://randomuser.me/api/portraits/women/26.jpg" alt="Portrait de Sophie Arnaud" class="w-full h-full object-cover" />
+                </figure>
+                <div class="card-body flex-row items-center justify-between py-3 pl-4 pr-3 gap-2">
+                  <div class="min-w-0">
+                    <p class="font-['Manrope'] font-bold text-[16px] leading-snug">Sophie Arnaud</p>
+                    <p class="text-base-content/70 text-base">Naturopathe · 450 m</p>
+                  </div>
+                  <a href="tel:0678901234" class="btn btn-accent btn-circle shrink-0" aria-label="Appeler Sophie Arnaud">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="w-5 h-5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" /></svg>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <button class="btn btn-outline btn-primary btn-block font-['Manrope'] font-semibold">Voir tout le quartier</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+</body>
+</html>

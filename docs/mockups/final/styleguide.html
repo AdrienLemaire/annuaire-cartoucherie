@@ -1,0 +1,2296 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="cartoucherie">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bibliothèque de blocs — Annuaire de la Cartoucherie</title>
+<meta name="description" content="Le catalogue des blocs de l'Annuaire de la Cartoucherie : chaque bloc rendu à 390 px, et le HTML exact à copier juste à côté.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..800,0..100,0..1&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+
+<link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     FONDATION 1 — les rampes, copiées VERBATIM de _shared/couleurs.md §8.
+     Ce bloc est réglé. On n'y touche pas. Il est affiché tel quel dans le
+     catalogue : le <pre> lit le contenu de cette balise, il ne le recopie pas.
+     ═══════════════════════════════════════════════════════════════════════ -->
+<style type="text/tailwindcss" id="src-theme-couleurs">
+@theme static {
+  /* ── teal · identité ─────────────────────────────────────── */
+  --color-teal-50:  oklch(98.0% 0.010 198);
+  --color-teal-100: oklch(95.5% 0.022 197);
+  --color-teal-200: oklch(91.0% 0.040 196);
+  --color-teal-300: oklch(84.0% 0.058 195);
+  --color-teal-400: oklch(74.0% 0.080 195);
+  --color-teal-500: oklch(63.0% 0.098 196);
+  --color-teal-600: oklch(53.0% 0.090 196);
+  --color-teal-700: oklch(44.0% 0.074 197);
+  --color-teal-800: oklch(35.0% 0.060 198);
+  --color-teal-900: oklch(27.0% 0.045 199);
+  --color-teal-950: oklch(19.0% 0.030 201);
+
+  /* ── orange · action ─────────────────────────────────────── */
+  --color-orange-50:  oklch(97.8% 0.018 75);
+  --color-orange-100: oklch(95.0% 0.042 72);
+  --color-orange-200: oklch(90.0% 0.078 68);
+  --color-orange-300: oklch(84.0% 0.110 64);
+  --color-orange-400: oklch(78.0% 0.145 60);
+  --color-orange-500: oklch(72.0% 0.170 56);
+  --color-orange-600: oklch(65.0% 0.178 50);
+  --color-orange-700: oklch(56.0% 0.172 44);
+  --color-orange-800: oklch(46.0% 0.140 40);
+  --color-orange-900: oklch(37.0% 0.108 38);
+  --color-orange-950: oklch(27.0% 0.078 36);
+
+  /* ── sauge · taxonomie ───────────────────────────────────── */
+  --color-sauge-50:  oklch(97.5% 0.012 170);
+  --color-sauge-100: oklch(94.5% 0.026 170);
+  --color-sauge-200: oklch(89.5% 0.050 170);
+  --color-sauge-300: oklch(82.0% 0.074 168);
+  --color-sauge-400: oklch(73.0% 0.100 164);
+  --color-sauge-500: oklch(64.0% 0.120 160);
+  --color-sauge-600: oklch(54.5% 0.122 156);
+  --color-sauge-700: oklch(45.5% 0.108 152);
+  --color-sauge-800: oklch(37.0% 0.088 150);
+  --color-sauge-900: oklch(29.0% 0.066 152);
+  --color-sauge-950: oklch(20.5% 0.044 156);
+
+  /* ── sable · illustration (50→600 : remplissage seul) ────── */
+  --color-sable-50:  oklch(98.2% 0.010 95);
+  --color-sable-100: oklch(96.0% 0.024 93);
+  --color-sable-200: oklch(92.5% 0.044 91);
+  --color-sable-300: oklch(88.0% 0.064 90);
+  --color-sable-400: oklch(82.0% 0.090 89);
+  --color-sable-500: oklch(76.0% 0.115 88);
+  --color-sable-600: oklch(68.0% 0.118 86);
+  --color-sable-700: oklch(57.5% 0.105 83);
+  --color-sable-800: oklch(47.0% 0.088 80);
+  --color-sable-900: oklch(37.5% 0.068 78);
+  --color-sable-950: oklch(27.0% 0.048 75);
+
+  /* ── neutre · structure, teintée teal ────────────────────── */
+  --color-neutre-50:  oklch(98.6% 0.004 200);
+  --color-neutre-100: oklch(97.2% 0.006 199);
+  --color-neutre-200: oklch(94.4% 0.008 198);
+  --color-neutre-300: oklch(89.8% 0.010 198);
+  --color-neutre-400: oklch(79.5% 0.013 197);
+  --color-neutre-500: oklch(66.5% 0.016 197);
+  --color-neutre-600: oklch(54.5% 0.019 198);
+  --color-neutre-700: oklch(44.0% 0.022 199);
+  --color-neutre-800: oklch(34.0% 0.025 200);
+  --color-neutre-900: oklch(25.5% 0.028 201);
+  --color-neutre-950: oklch(17.5% 0.030 202);
+
+  /* ── rouge · erreur ──────────────────────────────────────── */
+  --color-rouge-50:  oklch(97.6% 0.014 25);
+  --color-rouge-100: oklch(94.6% 0.029 24);
+  --color-rouge-200: oklch(89.0% 0.057 24);
+  --color-rouge-300: oklch(81.0% 0.100 24);
+  --color-rouge-400: oklch(70.0% 0.150 25);
+  --color-rouge-500: oklch(62.0% 0.190 26);
+  --color-rouge-600: oklch(54.0% 0.205 24);
+  --color-rouge-700: oklch(46.0% 0.180 22);
+  --color-rouge-800: oklch(38.0% 0.145 20);
+  --color-rouge-900: oklch(31.0% 0.115 18);
+  --color-rouge-950: oklch(22.0% 0.080 16);
+
+  /* ── profondeur ──────────────────────────────────────────── */
+  --shadow-carte:       0 1px 2px oklch(17.5% .03 202/.05), 0 4px 12px -2px oklch(17.5% .03 202/.09);
+  --shadow-carte-hover: 0 2px 4px oklch(17.5% .03 202/.06), 0 14px 32px -8px oklch(17.5% .03 202/.16);
+  --shadow-flottant:    0 4px 8px oklch(17.5% .03 202/.06), 0 28px 64px -20px oklch(17.5% .03 202/.28);
+  --shadow-cta:         0 2px 4px oklch(37% .108 38/.28), 0 10px 24px -8px oklch(37% .108 38/.38);
+  --shadow-cta-press:   0 1px 2px oklch(37% .108 38/.34);
+}
+</style>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     FONDATION 2 — la typographie. Les fontes viennent de « colly », l'échelle
+     vient de « typo ». Amplitude 72/16 = 4,5×.
+     ═══════════════════════════════════════════════════════════════════════ -->
+<style type="text/tailwindcss" id="src-theme-typo">
+@theme static {
+  --font-display: "Fraunces", "Iowan Old Style", Georgia, serif;
+  --font-sans:    "Source Sans 3", system-ui, sans-serif;
+  --font-mono:    "IBM Plex Mono", ui-monospace, monospace;
+
+  /* l'échelle · quarte juste 1,333 depuis 17 px — 8 pas, amplitude 4,5× */
+  --text-etiquette: 1rem;      /* 16 · capitales espacées, méta, comptes    */
+  --text-etiquette--line-height: 1.25;
+  --text-etiquette--letter-spacing: 0.14em;
+
+  --text-corps: 1.0625rem;     /* 17 · le corps de texte                    */
+  --text-corps--line-height: 1.55;
+
+  --text-chapo: 1.375rem;      /* 22 · chapô, accroche, sous-titre de bloc  */
+  --text-chapo--line-height: 1.4;
+
+  --text-besoin: 1.1875rem;    /* 19 · une ligne de l'index « Je cherche… » */
+  --text-besoin--line-height: 1.2;
+  --text-besoin--letter-spacing: -0.012em;
+
+  --text-nom: 1.875rem;        /* 30 · titre de section, nom sur une carte  */
+  --text-nom--line-height: 1.08;
+  --text-nom--letter-spacing: -0.018em;
+
+  --text-grand: 2.5rem;        /* 40 · le nom sur la fiche membre           */
+  --text-grand--line-height: 1.0;
+  --text-grand--letter-spacing: -0.022em;
+
+  --text-enorme: 3.375rem;     /* 54 · les nombres du quartier              */
+  --text-enorme--line-height: 0.94;
+  --text-enorme--letter-spacing: -0.028em;
+
+  --text-cri: 4.5rem;          /* 72 · « Je cherche… », une fois par site   */
+  --text-cri--line-height: 0.9;
+  --text-cri--letter-spacing: -0.032em;
+}
+</style>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     FONDATION 3 — le thème daisyUI, VERBATIM de couleurs.md §8.
+     ═══════════════════════════════════════════════════════════════════════ -->
+<style type="text/tailwindcss" id="src-theme-daisy">
+[data-theme="cartoucherie"] {
+  color-scheme: light;
+
+  --color-base-100:          #ffffff;                 /* la page, blanche  */
+  --color-base-200:          oklch(97.2% 0.006 199);  /* neutre-100        */
+  --color-base-300:          oklch(94.4% 0.008 198);  /* neutre-200        */
+  --color-base-content:      oklch(25.5% 0.028 201);  /* neutre-900        */
+
+  --color-primary:           oklch(44.0% 0.074 197);  /* teal-700          */
+  --color-primary-content:   #ffffff;
+
+  --color-secondary:         oklch(94.5% 0.026 170);  /* sauge-100 teinté  */
+  --color-secondary-content: oklch(19.0% 0.030 201);  /* teal-950          */
+
+  --color-accent:            oklch(72.0% 0.170 56);   /* orange-500 · CTA  */
+  --color-accent-content:    oklch(19.0% 0.030 201);  /* teal-950          */
+
+  --color-neutral:           oklch(25.5% 0.028 201);  /* neutre-900        */
+  --color-neutral-content:   oklch(98.6% 0.004 200);  /* neutre-50         */
+
+  --color-info:              oklch(53.0% 0.090 196);  /* teal-600          */
+  --color-info-content:      #ffffff;
+
+  --color-success:           oklch(45.5% 0.108 152);  /* sauge-700         */
+  --color-success-content:   #ffffff;
+
+  --color-warning:           oklch(76.0% 0.115 88);   /* sable-500         */
+  --color-warning-content:   oklch(19.0% 0.030 201);  /* teal-950          */
+
+  --color-error:             oklch(54.0% 0.205 24);   /* rouge-600         */
+  --color-error-content:     #ffffff;
+
+  --radius-selector: 2rem;      /* pastilles, bascules, badges */
+  --radius-field:    0.75rem;   /* champs, boutons             */
+  --radius-box:      1.25rem;   /* cartes, modales, feuilles   */
+  --size-selector:   0.28125rem;
+  --size-field:      0.28125rem;
+  --border:          1px;
+  --depth:           1;
+  --noise:           0;
+}
+</style>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     FONDATION 4 — les classes du produit. Tout ce qu'un utilitaire Tailwind ne
+     sait pas dire : les dégradés sanctionnés, le motif ventouse, la pastille,
+     l'arche, le halo, le CTA. Une classe = un objet du système.
+     ═══════════════════════════════════════════════════════════════════════ -->
+<style id="src-css-produit">
+:root{
+  --gradient-aube:  linear-gradient(168deg, var(--color-teal-50) 0%, #ffffff 44%, var(--color-orange-50) 100%);
+  --gradient-cta:   linear-gradient(180deg, var(--color-orange-400), var(--color-orange-500) 55%, var(--color-orange-600));
+  --gradient-colly: radial-gradient(120% 90% at 30% 15%, var(--color-sable-100), var(--color-sauge-100) 62%, var(--color-teal-100));
+  --gradient-filet: linear-gradient(90deg, var(--color-teal-600), var(--color-sauge-500) 46%, var(--color-orange-500));
+}
+
+html{ -webkit-text-size-adjust:100%; }
+body{ font-family:var(--font-sans); font-size:17px; line-height:1.55; color:var(--color-neutre-900); background:#fff; }
+
+/* Fraunces sur trois axes. WONK est épinglé à 0 : l'italique bancal est
+   exactement ce qui ferait basculer la page du côté « livre pour enfants ». */
+.ff{ font-family:var(--font-display); font-variation-settings:"SOFT" 55,"WONK" 0; font-weight:600; letter-spacing:-0.015em; }
+
+/* un seul anneau de focus, partout, sans exception (couleurs.md §7) */
+:where(a,button,input,textarea,select,summary,[tabindex]):focus-visible{
+  outline:2px solid var(--color-teal-600); outline-offset:2px; border-radius:6px;
+}
+
+/* les quatre dégradés sanctionnés */
+.filet{ background-image:var(--gradient-filet); }
+.aube{ background-image:var(--gradient-aube); }
+.colly-fond{ background-image:var(--gradient-colly); }
+
+/* les trois marches d'élévation */
+.carte{ box-shadow: var(--shadow-carte), inset 0 0 0 1px oklch(17.5% .03 202/.07); }
+.carte:hover{ box-shadow: var(--shadow-carte-hover), inset 0 0 0 1px oklch(17.5% .03 202/.07); }
+.flottant{ box-shadow: var(--shadow-flottant), inset 0 0 0 1px oklch(17.5% .03 202/.07); }
+
+/* le CTA orange — la seule grande surface chaude de l'interface */
+.cta{
+  background-image: var(--gradient-cta);
+  color: var(--color-teal-950);
+  box-shadow: var(--shadow-cta), inset 0 0 0 1px oklch(56% .172 44/.6);
+}
+.cta:hover{ background-image: linear-gradient(180deg, var(--color-orange-300), var(--color-orange-400) 55%, var(--color-orange-500)); }
+.cta:active{ background-image: linear-gradient(180deg, var(--color-orange-500), var(--color-orange-600));
+             transform:translateY(1px); box-shadow:var(--shadow-cta-press), inset 0 0 0 1px oklch(56% .172 44/.6); }
+
+/* ── LE MOTIF VENTOUSE ──────────────────────────────────────────────────────
+   Trois cercles concentriques. Le même dessin sert de symbole, de puce, de
+   médaillon d'icône et de papier peint. Une seule forme tient l'identité.  */
+.ventouses{
+  --v: oklch(68% .118 86 / .26);          /* sable-600 à 26 % : décoratif seul */
+  background-image:
+    radial-gradient(circle at 50% 50%, transparent 0 12.5px, var(--v) 12.5px 14px, transparent 14px),
+    radial-gradient(circle at 50% 50%, transparent 0 7px,   var(--v) 7px 8.4px,   transparent 8.4px),
+    radial-gradient(circle at 50% 50%, var(--v) 0 2.6px, transparent 2.6px);
+  background-size:56px 56px;
+}
+.ventouses--teal{ --v: oklch(53% .09 196 / .16); }
+
+/* la ventouse en médaillon : anneau + halo + anneau, autour de n'importe quoi */
+.pastille{
+  display:grid; place-items:center; flex:none; border-radius:9999px;
+  box-shadow: inset 0 0 0 1.5px var(--color-sauge-400),
+              0 0 0 4px var(--color-sauge-50),
+              0 0 0 5.5px var(--color-sauge-300);
+}
+.pastille--teal{
+  box-shadow: inset 0 0 0 1.5px var(--color-teal-300),
+              0 0 0 4px var(--color-teal-50),
+              0 0 0 5.5px var(--color-teal-200);
+}
+
+/* l'arche de la Halle : demi-cercle en haut, base droite */
+.arche{ border-radius:999px 999px 22px 22px; }
+
+/* la pastille de catégorie */
+.chip{ background:var(--color-sauge-100); color:var(--color-sauge-800); }
+
+/* ── LE HALO ────────────────────────────────────────────────────────────────
+   Le portrait du membre lui-même, agrandi et flouté, multiplié sur le lavis.
+   Chaque fiche hérite de l'ambiance colorée de la personne qu'elle décrit,
+   sans un seul octet d'illustration supplémentaire.                       */
+.halo-fond{ position:absolute; inset:0; overflow:hidden; isolation:isolate; }
+.halo{ position:absolute; background-size:cover; background-position:50% 35%;
+       filter: blur(54px) saturate(2.6) contrast(1.16); mix-blend-mode:multiply; }
+
+/* les croquis au crayon, fondus dans leur panneau : le papier devient la
+   couleur du fond, il ne reste que le graphite */
+.croquis{ mix-blend-mode:multiply; filter:grayscale(1) contrast(1.16) brightness(1.07); }
+
+/* une ligne de l'index « Je cherche… » : le survol allume le numéro,
+   il ne dessine pas une boîte. Dix boîtes empilées, c'est une grille. */
+.besoin{ transition: background-color .18s ease; }
+.besoin:hover, .besoin:focus-visible{ background-color: var(--color-teal-50); }
+.besoin:hover .num, .besoin:focus-visible .num{ color: var(--color-orange-800); }
+.num{ transition: color .18s ease; }
+
+/* la ligne de liste d'un voisin : le lien du nom couvre toute la carte,
+   sauf le bouton d'appel qui remonte en z-10 */
+.carte-lien{ transition: box-shadow .18s ease; }
+
+.tnum{ font-variant-numeric: tabular-nums; }
+
+@media (prefers-reduced-motion: reduce){ *{ transition:none !important; animation:none !important; } }
+</style>
+
+<!-- ═══════════ le catalogue lui-même — pas le produit ═══════════ -->
+<style>
+  .doc{ background: var(--color-neutre-100); }
+
+  /* la scène : un téléphone de 390 px posé sur la page.
+     `contain:layout` fait de la scène le bloc conteneur des descendants
+     `position:fixed` — c'est ce qui permet de montrer la barre d'appel
+     collante avec son code exact, sans qu'elle s'échappe dans la page. */
+  .scene{
+    width:390px; flex:none; position:relative; contain:layout;
+    background:#fff; overflow:hidden;
+    border-radius:18px;
+    box-shadow: 0 0 0 1px var(--color-neutre-300), var(--shadow-carte);
+  }
+  .scene--large{ width:100%; }
+  .scene > *{ font-size:17px; }
+
+  pre.code{
+    margin:0; background: var(--color-teal-950); color:#dff2f2;
+    border-radius:14px; padding:50px 18px 18px; overflow:auto; max-height:640px;
+    font-family:var(--font-mono); font-size:15px; line-height:1.55;
+    tab-size:2; -moz-tab-size:2; white-space:pre;
+    box-shadow: inset 0 0 0 1px oklch(63% .098 196/.28);
+  }
+  pre.code::selection, pre.code *::selection{ background:#f28318; color:#021819; }
+  .bloc{ scroll-margin-top:88px; }
+
+  /* le couple « rendu · code » : côte à côte dès qu'il y a la place */
+  .duo{ display:grid; gap:16px; align-items:start; grid-template-columns:minmax(0,1fr); }
+  .duo > *{ min-width:0; }
+  @media (min-width:1140px){ .duo{ grid-template-columns:390px minmax(0,1fr); } }
+
+  /* une scène fait 390 px ; si l'écran est plus étroit, c'est ELLE qui défile,
+     jamais la page. Aucun défilement horizontal du document à 360 px. */
+  .scene-boite{ max-width:100%; overflow-x:auto; }
+
+  /* l'étiquette d'une variante */
+  .variante{ font-size:16px; font-weight:600; color:var(--color-sauge-800);
+             letter-spacing:.02em; }
+  .variante::before{ content:"— "; color:var(--color-neutre-500); }
+
+  /* la règle de 390 px, pour qu'on voie que c'est bien un téléphone */
+  .regle390{ font-family:var(--font-mono); font-size:14px; color:var(--color-neutre-600);
+             letter-spacing:.06em; }
+</style>
+</head>
+
+<body class="doc font-sans text-neutre-900 antialiased">
+
+<a href="#blocs" class="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:bg-white focus:px-4 focus:py-3 focus:rounded-xl focus:shadow-flottant">Aller aux blocs</a>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     LE SPRITE — un seul jeu d'icônes, tracé 1,7 px, bouts ronds. Défini une
+     fois, appelé partout par <use>. Aucun emoji dans l'interface.
+     ═══════════════════════════════════════════════════════════════════════ -->
+<svg width="0" height="0" class="hidden" aria-hidden="true" focusable="false" id="src-sprite"><defs>
+<symbol id="i-ventouse" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.1"><circle cx="16" cy="16" r="13.2"/><circle cx="16" cy="16" r="7.4"/><circle cx="16" cy="16" r="2.2" fill="currentColor" stroke="none"/></symbol>
+<symbol id="i-loupe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m16.6 16.6 4.4 4.4"/></symbol>
+<symbol id="i-tel" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6.6 3.5h2.9l1.5 4-2 1.4a12.4 12.4 0 0 0 6.1 6.1l1.4-2 4 1.5v2.9a2 2 0 0 1-2.2 2A16.6 16.6 0 0 1 4.6 5.7a2 2 0 0 1 2-2.2Z"/></symbol>
+<symbol id="i-mail" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="m3.8 7 8.2 5.8L20.2 7"/></symbol>
+<symbol id="i-globe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="12" r="8.6"/><path d="M3.4 12h17.2M12 3.4c4.4 4.8 4.4 12.4 0 17.2-4.4-4.8-4.4-12.4 0-17.2Z"/></symbol>
+<symbol id="i-insta" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><rect x="3.2" y="3.2" width="17.6" height="17.6" rx="5.2"/><circle cx="12" cy="12" r="4.1"/><circle cx="17.2" cy="6.8" r=".95" fill="currentColor" stroke="none"/></symbol>
+<symbol id="i-pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21.2s7.2-6.6 7.2-11.3a7.2 7.2 0 1 0-14.4 0C4.8 14.6 12 21.2 12 21.2Z"/><circle cx="12" cy="9.8" r="2.7"/></symbol>
+<symbol id="i-etoile" viewBox="0 0 24 24"><path fill="currentColor" d="m12 3.4 2.7 5.5 6 .9-4.3 4.2 1 6-5.4-2.8-5.4 2.8 1-6L3.3 9.8l6-.9z"/></symbol>
+<symbol id="i-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9.5 5 7 7-7 7"/></symbol>
+<symbol id="i-retour" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M19.5 12H5M11 6l-6 6 6 6"/></symbol>
+<symbol id="i-plume" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m4.5 19.5 4.2-.8L20.1 7.4a2.35 2.35 0 0 0-3.3-3.3L5.3 15.3l-.8 4.2Z"/><path d="m15.3 5.5 3.3 3.3"/></symbol>
+<symbol id="i-signal" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5.8 21.2V3.4M5.8 4h11.4l-2.3 4.3 2.3 4.3H5.8"/></symbol>
+<symbol id="i-fermer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="m6.5 6.5 11 11M17.5 6.5l-11 11"/></symbol>
+<symbol id="i-coeur" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20.4C10.3 19.2 4.2 15 4.2 10.6A4.4 4.4 0 0 1 12 7.8a4.4 4.4 0 0 1 7.8 2.8c0 4.4-6.1 8.6-7.8 9.8Z"/></symbol>
+<symbol id="i-dl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.6v11M7.4 10.2 12 14.8l4.6-4.6M4.4 19.6h15.2"/></symbol>
+<symbol id="i-groupe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8.4" r="3.4"/><path d="M2.8 20.2a6.2 6.2 0 0 1 12.4 0"/><path d="M16.4 5.4a3.4 3.4 0 0 1 0 6.6M17.6 14.6a6.2 6.2 0 0 1 3.6 5.6"/></symbol>
+<symbol id="i-visio" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="2.8" y="6" width="12.6" height="12" rx="2.8"/><path d="m15.4 12.6 5.8 3.6V7.8l-5.8 3.6Z"/></symbol>
+<symbol id="i-alerte" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7.6v5.2M12 16.3v.1"/></symbol>
+<!-- les dix catégories -->
+<symbol id="c-sante" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4.6 19.6C3.4 11 9.6 4.4 19.8 3.8c1 10.2-5.4 16.4-14 15.4Z"/><path d="M4.6 19.6 13 11.2"/></symbol>
+<symbol id="c-beaute" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="6.6" cy="17.8" r="2.6"/><circle cx="6.6" cy="6.2" r="2.6"/><path d="M8.6 7.9 20 19.4M8.6 16.1 20 4.6"/></symbol>
+<symbol id="c-artisanat" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m14.6 6.4-11 11 3 3 11-11"/><path d="m13.2 8.2 3 3"/><path d="m15 3.4 5.6 5.6-2.4 2.4-5.6-5.6z"/></symbol>
+<symbol id="c-alimentation" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3.8 14.6c0-4.4 3.7-7.8 8.2-7.8s8.2 3.4 8.2 7.8v1.6a2.4 2.4 0 0 1-2.4 2.4H6.2a2.4 2.4 0 0 1-2.4-2.4Z"/><path d="M9 8.2 8.2 17M12.6 7.4 12 17M16.2 9 15.8 17"/></symbol>
+<symbol id="c-conseil" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3.8 20.2h16.4"/><path d="M6.6 20.2v-6.6M11.4 20.2V8.4M16.2 20.2V4.6"/></symbol>
+<symbol id="c-numerique" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="2.8" y="4" width="18.4" height="12.6" rx="2.4"/><path d="M9.4 20.4h5.2M12 16.6v3.8"/><path d="m10.2 8.4-1.8 1.9 1.8 1.9M13.8 8.4l1.8 1.9-1.8 1.9"/></symbol>
+<symbol id="c-enfance" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M7.4 8.2V6.6a4.6 4.6 0 0 1 9.2 0v1.6"/><rect x="3.8" y="8.2" width="16.4" height="12" rx="3.2"/><path d="M9.4 14.2h5.2"/></symbol>
+<symbol id="c-sport" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="15.4" cy="4.9" r="2.1"/><path d="m12.4 21 2.2-6-3.6-2.6.9-4.8 3 3 3.1 1"/><path d="m8.2 21 2.6-5.2M11.9 8.6 8.4 10"/></symbol>
+<symbol id="c-art" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20.8a8.8 8.8 0 1 1 8.8-8.8c0 2-1.7 2.6-3.1 2.6h-1.3a2.3 2.3 0 0 0-2.3 2.3c0 .8.5 1.2.5 2 0 1.1-.9 1.9-2.6 1.9Z"/><circle cx="8" cy="9.4" r="1.1" fill="currentColor" stroke="none"/><circle cx="12.4" cy="7.4" r="1.1" fill="currentColor" stroke="none"/><circle cx="16.3" cy="9.8" r="1.1" fill="currentColor" stroke="none"/></symbol>
+<symbol id="c-domicile" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m3.4 11.2 8.6-7.4 8.6 7.4"/><path d="M6.2 9.6v10.6h11.6V9.6"/><path d="M10 20.2v-5.2h4v5.2"/></symbol>
+</defs></svg>
+
+
+<!-- ═══════════════════════════ L'EN-TÊTE DU CATALOGUE ═══════════════════════ -->
+<header class="bg-white">
+  <div class="mx-auto max-w-[1280px] px-5 lg:px-8 pt-8 pb-9">
+    <p class="flex items-center gap-2.5">
+      <svg class="w-8 h-8 text-teal-700 shrink-0" aria-hidden="true"><use href="#i-ventouse"/></svg>
+      <span class="leading-none">
+        <span class="block text-[11.5px] uppercase tracking-[.18em] text-neutre-700 font-semibold">Annuaire de</span>
+        <span class="ff block text-[20px] text-teal-900 leading-tight">la Cartoucherie</span>
+      </span>
+    </p>
+    <h1 class="ff mt-7 text-[clamp(2.5rem,9vw,4.5rem)] leading-[0.9] tracking-[-0.032em] text-teal-900 max-w-[16ch]">
+      La bibliothèque<br>de blocs<span class="text-orange-800">.</span>
+    </h1>
+    <p class="mt-6 text-chapo text-neutre-800 max-w-[54ch]">
+      Toutes les pages du produit se composent avec ce qui suit. Chaque bloc est
+      <strong class="font-semibold text-neutre-900">rendu vivant à 390 px</strong>, et le HTML
+      exact est juste à côté — pas une transcription, le code même qui produit l'image.
+    </p>
+    <p class="mt-4 text-corps text-neutre-700 max-w-[62ch]">
+      Base <strong class="font-semibold text-neutre-900">colly</strong> (le motif ventouse, le
+      bandeau sable, les coordonnées en toutes lettres) · index numéroté de
+      <strong class="font-semibold text-neutre-900">typo</strong>, compacté ·
+      halo et « la forme suit la donnée » de <strong class="font-semibold text-neutre-900">photo</strong>.
+      Palette&nbsp;: <code class="font-mono text-[15px] text-teal-800">_shared/couleurs.md</code>, non négociée.
+    </p>
+    <p class="mt-4 text-corps text-neutre-700 max-w-[62ch]">
+      <strong class="font-semibold text-neutre-900">Une réserve d'usage&nbsp;:</strong> une scène
+      fait bien 390 px de large, mais les requêtes média restent celles de <em>votre</em> fenêtre.
+      Sur un grand écran, une scène affiche donc la forme ≥&nbsp;640 px d'un bloc. Pour juger la
+      forme mobile, ouvrez ce catalogue dans une fenêtre de 390 px.
+    </p>
+  </div>
+  <div class="filet h-[3px]"></div>
+</header>
+
+<div class="mx-auto max-w-[1280px] px-5 lg:px-8 py-10 lg:py-14 lg:grid lg:grid-cols-[210px_minmax(0,1fr)] lg:gap-12">
+
+  <!-- ═══════════ le sommaire ═══════════ -->
+  <nav aria-label="Sommaire des blocs" class="lg:sticky lg:top-8 lg:self-start mb-10 lg:mb-0">
+    <p class="text-etiquette font-semibold uppercase text-sauge-800">Sommaire</p>
+    <ol id="sommaire" class="mt-3 space-y-0.5 list-none p-0 m-0 text-corps"></ol>
+  </nav>
+
+  <main id="blocs" class="min-w-0 space-y-8">
+
+<!-- ╔═══════════════════════════════════════════════════════════════════════╗
+     ║  01 · FONDATIONS — les rampes                                        ║
+     ╚═══════════════════════════════════════════════════════════════════════╝ -->
+<section class="bloc carte rounded-[22px] bg-white p-5 sm:p-7" id="b-rampes" data-bloc>
+  <p class="text-etiquette font-semibold uppercase text-sauge-800">Fondations</p>
+  <h2 data-court="Les rampes" class="ff mt-1.5 text-nom text-teal-900">Le bloc <code class="font-mono text-[0.8em]">@theme</code></h2>
+  <p class="mt-3 text-corps text-neutre-800 max-w-[72ch]">
+    Six rampes de onze pas, plus les cinq ombres teintées. Copié verbatim de
+    <code class="font-mono text-[15px] text-teal-800">_shared/couleurs.md</code> §8 — c'est la
+    seule partie du système qui n'est pas discutable. Règle&nbsp;: <strong class="font-semibold text-neutre-900">50→500
+    sont des remplissages, 700→950 sont de l'encre</strong> ; 600 n'est de l'encre que pour
+    <em>teal</em>, <em>sauge</em>, <em>neutre</em> et <em>rouge</em>.
+  </p>
+
+  <div class="mt-6 space-y-5" data-rampes></div>
+
+  <details class="mt-6 group">
+    <summary class="inline-flex items-center gap-2 min-h-[44px] cursor-pointer text-corps font-semibold text-teal-700">
+      <svg class="w-4 h-4 transition group-open:rotate-90" aria-hidden="true"><use href="#i-chev"/></svg>
+      Le bloc à coller (66 variables)
+    </summary>
+    <div class="relative mt-3"><pre class="code" data-source="src-theme-couleurs"></pre></div>
+  </details>
+</section>
+
+
+<!-- ╔═══ 02 · le thème daisyUI ═══════════════════════════════════════════════╗ -->
+<section class="bloc carte rounded-[22px] bg-white p-5 sm:p-7" id="b-daisy" data-bloc>
+  <p class="text-etiquette font-semibold uppercase text-sauge-800">Fondations</p>
+  <h2 data-court="Le thème daisyUI" class="ff mt-1.5 text-nom text-teal-900">Le thème daisyUI</h2>
+  <p class="mt-3 text-corps text-neutre-800 max-w-[72ch]">
+    Déclaré en variables CSS sur <code class="font-mono text-[15px] text-teal-800">[data-theme="cartoucherie"]</code>
+    — <code class="font-mono text-[15px] text-teal-800">@plugin&nbsp;"daisyui/theme"</code> ne fait rien dans
+    le build navigateur. Mettre <code class="font-mono text-[15px] text-teal-800">&lt;html data-theme="cartoucherie"&gt;</code>.
+    <strong class="font-semibold text-neutre-900">Deux pièges, dans le même sens&nbsp;:</strong>
+    <code class="font-mono text-[15px] text-teal-800">primary</code> est la teal, pas l'orange
+    (le CTA est <code class="font-mono text-[15px] text-teal-800">accent</code>) ; et
+    <code class="font-mono text-[15px] text-teal-800">secondary</code> est une teinte à 1,16:1 —
+    elle ne va qu'en fond.
+  </p>
+
+  <div class="mt-6 grid gap-2.5 sm:grid-cols-2 lg:grid-cols-3" data-paires></div>
+
+  <details class="mt-6 group">
+    <summary class="inline-flex items-center gap-2 min-h-[44px] cursor-pointer text-corps font-semibold text-teal-700">
+      <svg class="w-4 h-4 transition group-open:rotate-90" aria-hidden="true"><use href="#i-chev"/></svg>
+      Le bloc à coller
+    </summary>
+    <div class="relative min-w-0 mt-3"><pre class="code" data-source="src-theme-daisy"></pre></div>
+  </details>
+
+  <div class="mt-6 rounded-[16px] bg-rouge-50 p-4 sm:p-5" style="box-shadow: inset 3px 0 0 var(--color-rouge-600)">
+    <p class="flex items-center gap-2 text-corps font-semibold text-rouge-800">
+      <svg class="w-5 h-5 shrink-0" aria-hidden="true"><use href="#i-alerte"/></svg>
+      Remplissage seul — ne jamais écrire en texte
+    </p>
+    <ul class="mt-2.5 grid gap-1.5 sm:grid-cols-2 text-corps text-neutre-900 list-none p-0 m-0">
+      <li><code class="font-mono text-[15px]">text-accent</code> · <code class="font-mono text-[15px]">text-orange-300…600</code> <span class="text-neutre-700">→ <code class="font-mono text-[15px]">text-orange-800</code></span></li>
+      <li><code class="font-mono text-[15px]">text-warning</code> · <code class="font-mono text-[15px]">text-sable-50…600</code> <span class="text-neutre-700">→ <code class="font-mono text-[15px]">text-sable-800</code></span></li>
+      <li><code class="font-mono text-[15px]">text-teal-300/400/500</code> <span class="text-neutre-700">→ <code class="font-mono text-[15px]">text-teal-700</code></span></li>
+      <li><code class="font-mono text-[15px]">text-sauge-300/400/500</code> <span class="text-neutre-700">→ <code class="font-mono text-[15px]">text-sauge-700</code></span></li>
+      <li><code class="font-mono text-[15px]">text-neutre-300/400/500</code> <span class="text-neutre-700">→ <code class="font-mono text-[15px]">text-neutre-600</code></span></li>
+      <li><code class="font-mono text-[15px]">text-secondary</code>, <code class="font-mono text-[15px]">checkbox-secondary</code>, <code class="font-mono text-[15px]">progress-secondary</code> <span class="text-neutre-700">→ <code class="font-mono text-[15px]">…-primary</code></span></li>
+    </ul>
+  </div>
+</section>
+
+
+<!-- ╔═══ 03 · l'échelle typographique ════════════════════════════════════════╗ -->
+<section class="bloc carte rounded-[22px] bg-white p-5 sm:p-7" id="b-typo" data-bloc>
+  <p class="text-etiquette font-semibold uppercase text-sauge-800">Fondations</p>
+  <h2 data-court="L'échelle de type" class="ff mt-1.5 text-nom text-teal-900">L'échelle typographique</h2>
+  <p class="mt-3 text-corps text-neutre-800 max-w-[72ch]">
+    <strong class="font-semibold text-neutre-900">Fraunces</strong> pour les titres —
+    <code class="font-mono text-[15px] text-teal-800">SOFT 55</code>, et surtout
+    <code class="font-mono text-[15px] text-teal-800">WONK 0</code> : l'axe bancal est
+    précisément ce qui ferait basculer une page tenue par une mascotte du côté du livre
+    d'images. <strong class="font-semibold text-neutre-900">Source Sans 3</strong> pour tout le
+    reste : humaniste large, dessiné pour l'écran et pour le français accentué.
+    L'échelle vient de <em>typo</em> — quarte juste depuis 17 px, huit pas,
+    <strong class="font-semibold text-neutre-900">amplitude 72/16 = 4,5×</strong>.
+  </p>
+
+  <div class="mt-6 divide-y divide-neutre-200" data-echelle></div>
+
+  <div class="mt-6 duo">
+    <div class="rounded-[16px] bg-neutre-100 p-4">
+      <p class="text-etiquette font-semibold uppercase text-sauge-800">Un paragraphe réel, 17 px</p>
+      <p class="mt-2.5 text-corps text-neutre-900">
+        Installée à la Cartoucherie depuis 2022, j'accompagne adultes et adolescents sur le
+        stress, le sommeil et la confiance en soi. Séances individuelles d'une heure, et un
+        atelier collectif le samedi matin à la Halle.
+      </p>
+    </div>
+    <div class="relative min-w-0"><pre class="code" data-source="src-theme-typo"></pre></div>
+  </div>
+</section>
+
+
+<!-- ╔═══ 04 · le rythme d'espacement ═════════════════════════════════════════╗ -->
+<section class="bloc carte rounded-[22px] bg-white p-5 sm:p-7" id="b-espacement" data-bloc>
+  <p class="text-etiquette font-semibold uppercase text-sauge-800">Fondations</p>
+  <h2 data-court="Le rythme" class="ff mt-1.5 text-nom text-teal-900">Le rythme d'espacement</h2>
+  <p class="mt-3 text-corps text-neutre-800 max-w-[72ch]">
+    Base 4. Six valeurs seulement circulent dans le produit ; tout le reste est une exception
+    qu'il faut pouvoir défendre. La gouttière mobile est <strong class="font-semibold text-neutre-900">20 px</strong>
+    (<code class="font-mono text-[15px] text-teal-800">px-5</code>) — jamais 16, qui colle le
+    texte au bord sur un téléphone tenu d'une main.
+  </p>
+
+  <div class="mt-6 grid gap-2.5 sm:grid-cols-2" data-espacement></div>
+
+  <div class="mt-6 rounded-[16px] bg-neutre-100 p-4 sm:p-5">
+    <p class="text-etiquette font-semibold uppercase text-sauge-800">Les cinq mesures qui ne se négocient pas</p>
+    <ul class="mt-3 grid gap-2 sm:grid-cols-2 text-corps text-neutre-900 list-none p-0 m-0">
+      <li><strong class="font-semibold">44 px</strong> — cible tactile minimale, partout</li>
+      <li><strong class="font-semibold">52–54 px</strong> — hauteur du CTA « Appeler »</li>
+      <li><strong class="font-semibold">88 px</strong> — plancher d'un visage en ligne de liste</li>
+      <li><strong class="font-semibold">20 px</strong> — gouttière mobile <code class="font-mono text-[15px] text-teal-800">px-5</code></li>
+      <li><strong class="font-semibold">40 px</strong> — respiration entre deux sections <code class="font-mono text-[15px] text-teal-800">pt-10</code></li>
+      <li><strong class="font-semibold">1160 px</strong> — largeur maximale du contenu</li>
+    </ul>
+  </div>
+</section>
+
+
+<!-- ╔═══ 05 · la profondeur ══════════════════════════════════════════════════╗ -->
+<section class="bloc carte rounded-[22px] bg-white p-5 sm:p-7" id="b-profondeur" data-bloc>
+  <p class="text-etiquette font-semibold uppercase text-sauge-800">Fondations</p>
+  <h2 data-court="La profondeur" class="ff mt-1.5 text-nom text-teal-900">Ombres, anneaux, dégradés</h2>
+  <p class="mt-3 text-corps text-neutre-800 max-w-[72ch]">
+    <code class="font-mono text-[15px] text-teal-800">--depth: 1</code>. Les ombres sont
+    <strong class="font-semibold text-neutre-900">teintées, jamais noires</strong> : une ombre
+    noire sur un blanc teinté teal est une salissure grise ; une ombre teintée
+    <code class="font-mono text-[15px] text-teal-800">neutre-950</code> se lit comme de l'ombre,
+    comme dehors. La teinte d'une ombre vient toujours de l'objet au-dessus, jamais de la
+    surface en dessous — c'est pourquoi le CTA a la sienne, chaude.
+  </p>
+
+  <p class="mt-6 variante">Les trois marches d'élévation. Ne jamais imbriquer une marche 1 dans une marche 1.</p>
+  <div class="mt-3 grid gap-4 sm:grid-cols-3">
+    <div class="rounded-[16px] bg-neutre-100 p-5">
+      <p class="text-etiquette font-semibold uppercase text-sauge-800">0 · plat</p>
+      <p class="mt-2 text-corps text-neutre-800">Bande de section <code class="font-mono text-[15px] text-teal-800">neutre-100</code>. Séparée par la couleur seule.</p>
+    </div>
+    <div class="carte rounded-[16px] bg-white p-5">
+      <p class="text-etiquette font-semibold uppercase text-sauge-800">1 · carte</p>
+      <p class="mt-2 text-corps text-neutre-800">Blanc + <code class="font-mono text-[15px] text-teal-800">ring-carte</code> + <code class="font-mono text-[15px] text-teal-800">shadow-carte</code>. Le défaut.</p>
+    </div>
+    <div class="flottant rounded-[16px] bg-white p-5">
+      <p class="text-etiquette font-semibold uppercase text-sauge-800">2 · flottant</p>
+      <p class="mt-2 text-corps text-neutre-800">Feuilles, modales, barre d'appel collante.</p>
+    </div>
+  </div>
+
+  <p class="mt-8 variante">Les quatre dégradés sanctionnés. Il n'y en a pas de cinquième.</p>
+  <div class="mt-3 grid gap-3 sm:grid-cols-2">
+    <div class="rounded-[16px] overflow-hidden" style="box-shadow: inset 0 0 0 1px var(--color-neutre-300)">
+      <div class="aube h-20"></div>
+      <p class="px-4 py-3 text-corps text-neutre-800"><code class="font-mono text-[15px] text-teal-800">--gradient-aube</code> — le lavis du héros. 4 points de L : atmosphérique, jamais « un dégradé ».</p>
+    </div>
+    <div class="rounded-[16px] overflow-hidden" style="box-shadow: inset 0 0 0 1px var(--color-neutre-300)">
+      <div class="colly-fond h-20"></div>
+      <p class="px-4 py-3 text-corps text-neutre-800"><code class="font-mono text-[15px] text-teal-800">--gradient-colly</code> — le panneau d'illustration où vit Colly.</p>
+    </div>
+    <div class="rounded-[16px] overflow-hidden" style="box-shadow: inset 0 0 0 1px var(--color-neutre-300)">
+      <div class="h-20" style="background-image:var(--gradient-cta)"></div>
+      <p class="px-4 py-3 text-corps text-neutre-800"><code class="font-mono text-[15px] text-teal-800">--gradient-cta</code> — 13 points de L, il donne au galet une lumière du haut.</p>
+    </div>
+    <div class="rounded-[16px] overflow-hidden" style="box-shadow: inset 0 0 0 1px var(--color-neutre-300)">
+      <div class="grid place-items-center h-20 bg-white"><div class="filet h-[3px] w-full"></div></div>
+      <p class="px-4 py-3 text-corps text-neutre-800"><code class="font-mono text-[15px] text-teal-800">--gradient-filet</code> — <strong class="font-semibold text-neutre-900">le dispositif signature</strong>. 3 px sous l'en-tête blanc. Il remplace la barre de couleur qui a fait échouer les révisions 1 et 2.</p>
+    </div>
+  </div>
+
+  <p class="mt-8 variante">Les anneaux</p>
+  <div class="mt-3 grid gap-3 sm:grid-cols-2 text-corps text-neutre-800">
+    <p class="rounded-[14px] bg-white px-4 py-3.5" style="box-shadow: 0 0 0 2px var(--color-teal-600), 0 0 0 4px #fff, 0 0 0 5px var(--color-neutre-200)"><code class="font-mono text-[15px] text-teal-800">--ring-focus</code> — 2 px <em>teal-600</em> + 2 px de décalage blanc. <strong class="font-semibold text-neutre-900">Tout</strong> le focus, sans exception. Jamais orange sur orange.</p>
+    <p class="rounded-[14px] bg-white px-4 py-3.5" style="box-shadow: inset 0 0 0 1px oklch(17.5% .03 202/.07), var(--shadow-carte)"><code class="font-mono text-[15px] text-teal-800">--ring-carte</code> — liseré d'une carte, sous l'ombre : il la tient nette sur une photo.</p>
+    <div class="rounded-[14px] bg-white overflow-hidden" style="box-shadow: inset 0 0 0 1px var(--color-neutre-300)">
+      <div class="h-11" style="background-image:var(--gradient-cta); box-shadow: inset 0 0 0 1px oklch(56% .172 44/.6)"></div>
+      <p class="px-4 py-3.5"><code class="font-mono text-[15px] text-teal-800">--ring-cta</code> — l'orange sur blanc n'est qu'à 2,61:1. Ce liseré <em>orange-700</em> (5,01:1) porte le seuil 1.4.11 et donne au galet son trait d'encre.</p>
+    </div>
+    <p class="rounded-[14px] bg-sauge-50 px-4 py-3.5" style="box-shadow: 0 0 0 2px var(--color-orange-500)"><code class="font-mono text-[15px] text-teal-800">--ring-actif</code> — l'unique état sélectionné autorisé en orange. Un seul par écran.</p>
+  </div>
+</section>
+
+
+<!-- ╔═══ 06 · les classes du produit ═════════════════════════════════════════╗ -->
+<section class="bloc carte rounded-[22px] bg-white p-5 sm:p-7" id="b-css" data-bloc>
+  <p class="text-etiquette font-semibold uppercase text-sauge-800">Fondations</p>
+  <h2 data-court="Les classes CSS" class="ff mt-1.5 text-nom text-teal-900">Les classes du produit</h2>
+  <p class="mt-3 text-corps text-neutre-800 max-w-[72ch]">
+    Tout ce qu'un utilitaire Tailwind ne sait pas dire :
+    <code class="font-mono text-[15px] text-teal-800">.filet .aube .colly-fond .carte .flottant .cta
+    .ventouses .pastille .arche .chip .halo .croquis</code>. Une classe = un objet du système.
+    Ce bloc est la <em>troisième</em> chose à coller, après les deux
+    <code class="font-mono text-[15px] text-teal-800">@theme</code> et le thème daisyUI.
+  </p>
+
+  <div class="mt-5 rounded-[16px] bg-sable-100 p-4 sm:p-5">
+    <p class="flex items-start gap-2.5 text-corps text-teal-950">
+      <svg class="w-5 h-5 shrink-0 mt-0.5 text-sable-800" aria-hidden="true"><use href="#i-alerte"/></svg>
+      <span><strong class="font-semibold">Écrire <code class="font-mono text-[15px]">@theme static</code>, pas <code class="font-mono text-[15px]">@theme</code>.</strong>
+      Le build navigateur élague les variables qu'aucun utilitaire n'utilise : avec
+      <code class="font-mono text-[15px]">@theme</code> tout court, <code class="font-mono text-[15px]">var(--color-teal-950)</code>
+      n'existe pas au moment où le CSS ci-dessous le lit, et <code class="font-mono text-[15px]">.cta</code>,
+      <code class="font-mono text-[15px]">.filet</code> et <code class="font-mono text-[15px]">.pastille</code>
+      perdent leurs couleurs <em>en silence</em>. C'est le seul écart avec
+      <code class="font-mono text-[15px]">couleurs.md</code> §8 — les 66 valeurs, elles, sont
+      inchangées.</span>
+    </p>
+  </div>
+
+  <div class="relative min-w-0 mt-5"><pre class="code" data-source="src-css-produit"></pre></div>
+</section>
+
+
+<!-- ╔═══ 07 · le jeu d'icônes ════════════════════════════════════════════════╗ -->
+<section class="bloc carte rounded-[22px] bg-white p-5 sm:p-7" id="b-icones" data-bloc>
+  <p class="text-etiquette font-semibold uppercase text-sauge-800">Fondations</p>
+  <h2 data-court="Le jeu d'icônes" class="ff mt-1.5 text-nom text-teal-900">Le jeu d'icônes</h2>
+  <p class="mt-3 text-corps text-neutre-800 max-w-[72ch]">
+    Un seul tracé : <code class="font-mono text-[15px] text-teal-800">stroke-width 1,7</code>,
+    bouts et jointures ronds, <code class="font-mono text-[15px] text-teal-800">stroke="currentColor"</code>.
+    Défini une fois en <code class="font-mono text-[15px] text-teal-800">&lt;symbol&gt;</code>, appelé
+    partout par <code class="font-mono text-[15px] text-teal-800">&lt;use&gt;</code>. Coller le sprite
+    une fois par page, juste après <code class="font-mono text-[15px] text-teal-800">&lt;body&gt;</code>.
+    <strong class="font-semibold text-neutre-900">Les emoji de <code class="font-mono text-[15px]">members.json</code>
+    ne sont jamais rendus</strong> — ils ne se colorent pas, ne s'alignent pas, et ne se lisent pas
+    de la même façon d'un téléphone à l'autre.
+  </p>
+
+  <div class="mt-6 grid grid-cols-3 sm:grid-cols-5 lg:grid-cols-7 gap-2.5" data-icones></div>
+
+  <details class="mt-6 group">
+    <summary class="inline-flex items-center gap-2 min-h-[44px] cursor-pointer text-corps font-semibold text-teal-700">
+      <svg class="w-4 h-4 transition group-open:rotate-90" aria-hidden="true"><use href="#i-chev"/></svg>
+      Le sprite complet à coller (28 symboles)
+    </summary>
+    <div class="relative min-w-0 mt-3"><pre class="code" data-source="src-sprite"></pre></div>
+  </details>
+</section>
+
+
+<!-- ╔═══ 08 · le motif ventouse ══════════════════════════════════════════════╗ -->
+<section class="bloc carte rounded-[22px] bg-white p-5 sm:p-7" id="b-ventouse" data-bloc>
+  <p class="text-etiquette font-semibold uppercase text-sauge-800">L'identité</p>
+  <h2 data-court="Le motif ventouse" class="ff mt-1.5 text-nom text-teal-900">Le motif ventouse</h2>
+  <p class="mt-3 text-corps text-neutre-800 max-w-[72ch]">
+    Colly grimpe partout grâce à ses ventouses. <strong class="font-semibold text-neutre-900">Trois
+    cercles concentriques</strong> : c'est tout le système graphique. La même figure est le
+    symbole, la puce de liste, le médaillon d'icône et le papier peint du bandeau. Aucun annuaire
+    concurrent ne peut la reprendre sans reprendre le personnage — et si les droits sur Colly
+    n'aboutissent pas, <em>le motif, lui, reste</em> : il est dessiné en CSS, il ne dépend
+    d'aucune image.
+  </p>
+
+  <p class="mt-6 variante">Le symbole, aux quatre tailles où il sert.</p>
+  <p class="mt-2 text-corps text-neutre-800 max-w-[72ch]">
+    <strong class="font-semibold text-neutre-900">La preuve à 24 px</strong> — la taille d'un
+    onglet de navigateur, et la plus petite du système. Le tracé fait
+    <code class="font-mono text-[15px] text-teal-800">2,1</code> sur un
+    <code class="font-mono text-[15px] text-teal-800">viewBox</code> de 32, soit
+    <strong class="font-semibold text-neutre-900">1,58 px rendu</strong> ; les trois cercles ont
+    des rayons de 13,2 / 7,4 / 2,2, ce qui laisse <strong class="font-semibold text-neutre-900">4,4 px
+    de vide</strong> entre l'anneau extérieur et l'anneau intérieur à cette taille. Rien ne se
+    referme, rien ne bave. C'est ce que la première vignette ci-dessous montre en vrai.
+  </p>
+  <div class="mt-3 flex flex-wrap items-end gap-8 rounded-[16px] bg-neutre-100 p-5">
+    <span class="text-center"><svg class="w-6 h-6 text-teal-700 mx-auto" aria-hidden="true"><use href="#i-ventouse"/></svg><span class="mt-2 block regle390">24 px · favicon</span></span>
+    <span class="text-center"><svg class="w-8 h-8 text-teal-700 mx-auto" aria-hidden="true"><use href="#i-ventouse"/></svg><span class="mt-2 block regle390">32 px · en-tête</span></span>
+    <span class="text-center"><svg class="w-12 h-12 text-teal-700 mx-auto" aria-hidden="true"><use href="#i-ventouse"/></svg><span class="mt-2 block regle390">48 px · pied</span></span>
+    <span class="text-center"><svg class="w-24 h-24 text-teal-700 mx-auto" aria-hidden="true"><use href="#i-ventouse"/></svg><span class="mt-2 block regle390">96 px · affiche</span></span>
+  </div>
+
+  <div data-specimen class="mt-8">
+    <p class="variante">La ventouse en médaillon — <code class="font-mono text-[15px] text-teal-800">.pastille</code>. Elle entoure une icône, un numéro d'étape, une initiale d'avis. Deux teintes : sauge (taxonomie) et teal (identité).</p>
+    <template>
+      <div class="flex flex-wrap items-center gap-6 p-5">
+        <span class="pastille w-11 h-11 bg-sauge-100 text-sauge-800">
+          <svg class="w-6 h-6" aria-hidden="true"><use href="#c-sante"/></svg>
+        </span>
+        <span class="pastille pastille--teal w-10 h-10 bg-teal-50 text-teal-700">
+          <svg class="w-5 h-5" aria-hidden="true"><use href="#i-mail"/></svg>
+        </span>
+        <span class="pastille w-9 h-9 bg-white text-teal-800 text-[16px] font-bold">1</span>
+        <span class="pastille w-11 h-11 bg-sauge-100 text-sauge-800 text-[16px] font-bold">HM</span>
+      </div>
+    </template>
+    <div class="duo mt-3">
+      <div class="scene-boite"><div class="scene" data-rendu></div></div>
+      <div class="relative min-w-0"><pre class="code" data-code></pre></div>
+    </div>
+  </div>
+
+  <div data-specimen class="mt-8">
+    <p class="variante">Le papier peint. Tuile de 56 px, <code class="font-mono text-[15px] text-teal-800">sable-600</code> à 26 % — décoratif seul, jamais porteur d'information. Il est <strong class="font-semibold text-neutre-900">masqué en dégradé avant le premier paragraphe</strong> : une décoration qui traverse un texte de 17 px est une décoration ratée.</p>
+    <template>
+      <div class="relative bg-sable-200 p-5 pt-24 overflow-hidden">
+        <div class="ventouses pointer-events-none absolute inset-x-0 top-0 h-[220px]"
+             style="-webkit-mask-image:linear-gradient(to bottom,#000 58%,transparent); mask-image:linear-gradient(to bottom,#000 58%,transparent)"></div>
+        <p class="relative text-corps text-teal-950">
+          Le texte revient sur le sable nu. Le motif s'est éteint au-dessus de lui.
+        </p>
+      </div>
+    </template>
+    <div class="duo mt-3">
+      <div class="scene-boite"><div class="scene" data-rendu></div></div>
+      <div class="relative min-w-0"><pre class="code" data-code></pre></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ╔═══ 09 · l'en-tête ══════════════════════════════════════════════════════╗ -->
+<section class="bloc carte rounded-[22px] bg-white p-5 sm:p-7" id="b-entete" data-bloc>
+  <p class="text-etiquette font-semibold uppercase text-sauge-800">La coque</p>
+  <h2 data-court="L'en-tête" class="ff mt-1.5 text-nom text-teal-900">L'en-tête</h2>
+  <p class="mt-3 text-corps text-neutre-800 max-w-[72ch]">
+    <strong class="font-semibold text-neutre-900">Blanc. Jamais une barre de couleur pleine</strong> —
+    c'est le défaut qu'ont partagé les huit maquettes rejetées, et que personne n'avait demandé.
+    La marque vit dans le mot et dans le symbole ; l'harmonie de la palette est rendue visible par
+    le <strong class="font-semibold text-neutre-900">filet de 3 px</strong> qui court sous
+    l'en-tête. C'est la signature du produit.
+  </p>
+
+  <div data-specimen class="mt-6">
+    <p class="variante">Accueil — le lien d'inscription apparaît à partir de 640 px, la place manque avant.</p>
+    <template>
+      <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-sm">
+        <div class="mx-auto max-w-[1160px] px-5 h-16 flex items-center justify-between gap-3">
+          <a href="index.html" class="flex items-center gap-2.5 -ml-0.5" aria-label="Annuaire de la Cartoucherie, accueil">
+            <svg class="w-8 h-8 text-teal-700 shrink-0" aria-hidden="true"><use href="#i-ventouse"/></svg>
+            <span class="leading-none">
+              <span class="block text-[11.5px] uppercase tracking-[.18em] text-neutre-700 font-semibold">Annuaire de</span>
+              <span class="ff block text-[20px] text-teal-900 leading-tight">la Cartoucherie</span>
+            </span>
+          </a>
+          <a href="#rejoindre" class="hidden sm:inline-flex items-center gap-1.5 min-h-[44px] px-4 rounded-full text-etiquette tracking-normal font-semibold text-teal-700 hover:bg-teal-50">
+            Je veux y figurer
+          </a>
+        </div>
+        <div class="filet h-[3px]"></div>
+      </header>
+    </template>
+    <div class="duo mt-3">
+      <div class="scene-boite"><div class="scene" data-rendu></div></div>
+      <div class="relative min-w-0"><pre class="code" data-code></pre></div>
+    </div>
+  </div>
+
+  <div data-specimen class="mt-8">
+    <p class="variante">Fiche membre — le lien de retour remplace l'inscription, et il est nommé.</p>
+    <template>
+      <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-sm">
+        <div class="mx-auto max-w-[1160px] px-5 h-16 flex items-center justify-between gap-3">
+          <a href="index.html" class="flex items-center gap-2.5 -ml-0.5" aria-label="Annuaire de la Cartoucherie, accueil">
+            <svg class="w-8 h-8 text-teal-700 shrink-0" aria-hidden="true"><use href="#i-ventouse"/></svg>
+            <span class="leading-none">
+              <span class="block text-[11.5px] uppercase tracking-[.18em] text-neutre-700 font-semibold">Annuaire de</span>
+              <span class="ff block text-[20px] text-teal-900 leading-tight">la Cartoucherie</span>
+            </span>
+          </a>
+          <a href="index.html" class="inline-flex items-center gap-2 min-h-[44px] px-3.5 rounded-full text-etiquette tracking-normal font-semibold text-teal-700 hover:bg-teal-50">
+            <svg class="w-5 h-5" aria-hidden="true"><use href="#i-retour"/></svg>
+            <span>Annuaire</span><span class="sr-only">— retour à la liste des voisins</span>
+          </a>
+        </div>
+        <div class="filet h-[3px]"></div>
+      </header>
+    </template>
+    <div class="duo mt-3">
+      <div class="scene-boite"><div class="scene" data-rendu></div></div>
+      <div class="relative min-w-0"><pre class="code" data-code></pre></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ╔═══ 10 · la barre de recherche ══════════════════════════════════════════╗ -->
+<section class="bloc carte rounded-[22px] bg-white p-5 sm:p-7" id="b-recherche" data-bloc>
+  <p class="text-etiquette font-semibold uppercase text-sauge-800">L'accueil</p>
+  <h2 data-court="La barre de recherche" class="ff mt-1.5 text-nom text-teal-900">La barre de recherche</h2>
+  <p class="mt-3 text-corps text-neutre-800 max-w-[72ch]">
+    Colly <strong class="font-semibold text-neutre-900">se hisse sur le rebord</strong> de la
+    carte, elle ne s'assoit pas dedans : le PNG déborde du bloc blanc, ventouses au-dessus du
+    filet. C'est le seul endroit de l'accueil où quelque chose casse la grille, et c'est ce dont
+    on se souvient. L'annotation manuscrite est une <em>consigne d'usage</em>, pas une réplique —
+    Colly ne parle jamais à la première personne dans une phrase fonctionnelle, et il n'y a
+    ni bulle ni appendice de bulle.
+  </p>
+
+  <div data-specimen class="mt-6">
+    <p class="variante">Avec Colly. Réserver 132 px au-dessus de la carte (<code class="font-mono text-[15px] text-teal-800">mt-[132px]</code>) : c'est la place qu'elle occupe.</p>
+    <template>
+      <div class="relative mt-[132px]">
+        <img src="../_shared/colly/colly-couleur.png"
+             alt="Colly, la créature des Halles de la Cartoucherie, agrippée au bord de la barre de recherche"
+             width="400" height="473"
+             class="pointer-events-none select-none absolute h-auto"
+             style="bottom:calc(100% - 34px); right:6px; width:140px">
+        <p class="pointer-events-none absolute left-0 w-[46%] text-right" style="bottom:calc(100% + 18px)">
+          <span class="ff block text-[18px] leading-tight text-teal-800">Dites-lui ce qu'il vous faut.</span>
+          <svg viewBox="0 0 74 46" class="ml-auto mt-1 w-[64px] h-auto text-sauge-500" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+            <path d="M3 5c14 26 36 34 62 33"/>
+            <path d="M56 30.5 65.6 38 57 44.5"/>
+          </svg>
+        </p>
+        <form class="flottant relative rounded-[22px] bg-white p-3.5" role="search" onsubmit="return false">
+          <label for="q" class="block px-1 pb-1.5 text-etiquette tracking-normal font-semibold text-neutre-800">Un métier, un prénom, un besoin</label>
+          <div class="flex gap-2">
+            <div class="relative flex-1 min-w-0">
+              <svg class="w-5 h-5 absolute left-3.5 top-1/2 -translate-y-1/2 text-teal-600 pointer-events-none" aria-hidden="true"><use href="#i-loupe"/></svg>
+              <input id="q" type="search" autocomplete="off" placeholder="électricien, yoga…"
+                     class="w-full min-h-[52px] pl-11 pr-3 rounded-xl bg-white text-corps text-neutre-900 placeholder:text-neutre-600"
+                     style="box-shadow: inset 0 0 0 1.5px var(--color-neutre-500)">
+            </div>
+            <button type="submit" class="cta shrink-0 inline-flex items-center justify-center min-h-[52px] px-5 rounded-xl text-corps font-bold tracking-tight transition">
+              Trouver
+            </button>
+          </div>
+          <p class="mt-3 px-1 text-etiquette tracking-normal text-neutre-700">
+            Rien n'est envoyé à un serveur : le calcul reste sur votre téléphone.
+          </p>
+        </form>
+      </div>
+    </template>
+    <div class="duo mt-3">
+      <div class="scene-boite"><div class="scene p-4" data-rendu></div></div>
+      <div class="relative min-w-0"><pre class="code" data-code></pre></div>
+    </div>
+  </div>
+
+  <div data-specimen class="mt-8">
+    <p class="variante">Sans Colly — en haut d'une page de résultats, d'une catégorie, d'une fiche. Colly n'apparaît qu'une fois par page, et jamais deux écrans de suite.</p>
+    <template>
+      <form class="carte rounded-full bg-white p-1.5 pl-4 flex items-center gap-2" role="search" onsubmit="return false">
+        <label for="q2" class="sr-only">Chercher un métier, un prénom, un besoin</label>
+        <svg class="w-5 h-5 shrink-0 text-teal-600" aria-hidden="true"><use href="#i-loupe"/></svg>
+        <input id="q2" type="search" autocomplete="off" placeholder="électricien, yoga…"
+               class="min-h-[44px] w-full min-w-0 border-0 bg-transparent text-corps text-neutre-900 outline-none placeholder:text-neutre-600">
+        <button type="submit" aria-label="Chercher dans l'annuaire"
+                class="cta shrink-0 grid place-items-center w-12 h-12 rounded-full transition">
+          <svg class="w-6 h-6" aria-hidden="true"><use href="#i-loupe"/></svg>
+        </button>
+      </form>
+    </template>
+    <div class="duo mt-3">
+      <div class="scene-boite"><div class="scene p-4" data-rendu></div></div>
+      <div class="relative min-w-0"><pre class="code" data-code></pre></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ╔═══ 11 · l'index « Je cherche… » ════════════════════════════════════════╗ -->
+<section class="bloc carte rounded-[22px] bg-white p-5 sm:p-7" id="b-index" data-bloc>
+  <p class="text-etiquette font-semibold uppercase text-sauge-800">L'accueil</p>
+  <h2 data-court="L'index «&nbsp;Je cherche…&nbsp;»" class="ff mt-1.5 text-nom text-teal-900">L'index «&nbsp;Je cherche…&nbsp;»</h2>
+  <p class="mt-3 text-corps text-neutre-800 max-w-[72ch]">
+    Dix fins de phrase toutes prêtes, en index numéroté. Ça bat une grille de tuiles sur le fond :
+    ça répond à <em>« je ne connais pas le mot »</em> mieux que n'importe quelle carte, et ça se
+    parcourt plus vite qu'une liste de vignettes. Les comptes sont réels, vérifiés contre
+    <code class="font-mono text-[15px] text-teal-800">members.json</code>, et
+    <strong class="font-semibold text-neutre-900">accordés</strong> — « 1 voisine » pour Nadia.
+    La dixième catégorie est vide : on le dit, on ne la cache pas.
+  </p>
+
+  <div class="mt-5 rounded-[16px] bg-sauge-50 p-4 sm:p-5">
+    <p class="text-corps text-neutre-900">
+      <strong class="font-semibold">La compaction, chiffrée — trois leviers.</strong>
+      Chez <em>typo</em>, l'index faisait ~1 100 px sur un téléphone.
+      <strong class="font-semibold">Un</strong>, le corps du besoin passe de 26 à
+      <strong class="font-semibold">19 px</strong>.
+      <strong class="font-semibold">Deux</strong>, le rythme se resserre :
+      <code class="font-mono text-[15px] text-teal-800">py-4</code> devient
+      <code class="font-mono text-[15px] text-teal-800">py-1.5</code>, la sous-ligne se colle
+      (<code class="font-mono text-[15px] text-teal-800">mt-0.5 leading-[1.15]</code>), et le
+      chevron disparaît — le numéro <em>est</em> l'affordance.
+      <strong class="font-semibold">Trois</strong>, et c'est le vrai gain : la glose de <em>typo</em>
+      quitte la ligne d'affichage. « Retrouver l'équilibre&nbsp;: stress, sommeil, énergie » faisait
+      deux lignes à 19 px ; le besoin garde la phrase courte et les mots-clés descendent en
+      sous-ligne, là où ils servent autant — <strong class="font-semibold">on ne les a pas
+      perdus</strong>, et c'est pour eux que l'index a été choisi : quelqu'un qui ne connaît pas
+      le mot « sophrologue » lit « stress, sommeil, énergie ». Le nom formel de la catégorie, lui,
+      vit dans les pastilles et sur la page de catégorie.
+      Hauteur mesurée dans ce catalogue&nbsp;:
+      <strong class="font-semibold text-teal-800" id="mesure-index">582 px à 390 px de large, soit 47 % de moins</strong>.
+      À partir de 640 px, deux colonnes&nbsp;: la moitié encore.
+      Le corps reste à 16 px sur la sous-ligne&nbsp;: on ne compacte pas en descendant sous le
+      plancher.
+    </p>
+  </div>
+
+  <div data-specimen class="mt-6">
+    <p class="variante">L'index complet, dix besoins, avec la case honnête en 10.</p>
+    <template>
+      <nav aria-labelledby="t-besoins">
+        <h2 id="t-besoins" class="px-5 pt-5 pb-2 text-etiquette font-semibold uppercase text-teal-700">…ou choisissez la fin&nbsp;:</h2>
+        <!-- sur ≥ 640 px, ajouter sm:grid sm:grid-cols-2 sm:gap-x-8 : la hauteur est divisée par deux -->
+        <ul id="index-besoins" class="list-none p-0 m-0">
+          <li><a class="besoin flex items-start gap-3 px-5 py-1.5 min-h-[56px]" href="/annuaire?c=sante-bien-etre">
+            <span class="num tnum mt-1 w-6 shrink-0 text-[16px] font-bold text-neutre-600">01</span>
+            <span class="min-w-0 flex-1">
+              <span class="ff block text-besoin text-teal-800">Retrouver l'équilibre</span>
+              <span class="mt-0.5 block text-[16px] leading-[1.15] text-neutre-700">stress, sommeil, énergie · <span class="font-semibold text-neutre-800">4 voisins</span></span>
+            </span>
+          </a></li>
+          <li><a class="besoin flex items-start gap-3 px-5 py-1.5 min-h-[56px]" href="/annuaire?c=artisanat-travaux">
+            <span class="num tnum mt-1 w-6 shrink-0 text-[16px] font-bold text-neutre-600">02</span>
+            <span class="min-w-0 flex-1">
+              <span class="ff block text-besoin text-teal-800">Réparer, installer chez moi</span>
+              <span class="mt-0.5 block text-[16px] leading-[1.15] text-neutre-700">travaux, dépannage · <span class="font-semibold text-neutre-800">2 voisins</span></span>
+            </span>
+          </a></li>
+          <li><a class="besoin flex items-start gap-3 px-5 py-1.5 min-h-[56px]" href="/annuaire?c=numerique-creation">
+            <span class="num tnum mt-1 w-6 shrink-0 text-[16px] font-bold text-neutre-600">03</span>
+            <span class="min-w-0 flex-1">
+              <span class="ff block text-besoin text-teal-800">Un site, un logo, une image</span>
+              <span class="mt-0.5 block text-[16px] leading-[1.15] text-neutre-700">web, graphisme, photo · <span class="font-semibold text-neutre-800">3 voisins</span></span>
+            </span>
+          </a></li>
+          <li><a class="besoin flex items-start gap-3 px-5 py-1.5 min-h-[56px]" href="/annuaire?c=sport-mouvement">
+            <span class="num tnum mt-1 w-6 shrink-0 text-[16px] font-bold text-neutre-600">04</span>
+            <span class="min-w-0 flex-1">
+              <span class="ff block text-besoin text-teal-800">Me remettre en mouvement</span>
+              <span class="mt-0.5 block text-[16px] leading-[1.15] text-neutre-700">coaching, yoga · <span class="font-semibold text-neutre-800">2 voisins</span></span>
+            </span>
+          </a></li>
+          <li><a class="besoin flex items-start gap-3 px-5 py-1.5 min-h-[56px]" href="/annuaire?c=services-domicile">
+            <span class="num tnum mt-1 w-6 shrink-0 text-[16px] font-bold text-neutre-600">05</span>
+            <span class="min-w-0 flex-1">
+              <span class="ff block text-besoin text-teal-800">Un coup de main chez moi</span>
+              <span class="mt-0.5 block text-[16px] leading-[1.15] text-neutre-700">à domicile, dépannage · <span class="font-semibold text-neutre-800">2 voisins</span></span>
+            </span>
+          </a></li>
+          <li><a class="besoin flex items-start gap-3 px-5 py-1.5 min-h-[56px]" href="/annuaire?c=conseil-entreprise">
+            <span class="num tnum mt-1 w-6 shrink-0 text-[16px] font-bold text-neutre-600">06</span>
+            <span class="min-w-0 flex-1">
+              <span class="ff block text-besoin text-teal-800">Faire tourner mon activité</span>
+              <span class="mt-0.5 block text-[16px] leading-[1.15] text-neutre-700">comptabilité, conseil · <span class="font-semibold text-neutre-800">2 voisins</span></span>
+            </span>
+          </a></li>
+          <li><a class="besoin flex items-start gap-3 px-5 py-1.5 min-h-[56px]" href="/annuaire?c=art-culture">
+            <span class="num tnum mt-1 w-6 shrink-0 text-[16px] font-bold text-neutre-600">07</span>
+            <span class="min-w-0 flex-1">
+              <span class="ff block text-besoin text-teal-800">Un souvenir, une envie de créer</span>
+              <span class="mt-0.5 block text-[16px] leading-[1.15] text-neutre-700">photo, illustration · <span class="font-semibold text-neutre-800">2 voisins</span></span>
+            </span>
+          </a></li>
+          <li><a class="besoin flex items-start gap-3 px-5 py-1.5 min-h-[56px]" href="/annuaire?c=beaute-soins">
+            <span class="num tnum mt-1 w-6 shrink-0 text-[16px] font-bold text-neutre-600">08</span>
+            <span class="min-w-0 flex-1">
+              <span class="ff block text-besoin text-teal-800">Prendre soin de moi</span>
+              <span class="mt-0.5 block text-[16px] leading-[1.15] text-neutre-700">coiffure, couleur, soins · <span class="font-semibold text-neutre-800">1 voisine</span></span>
+            </span>
+          </a></li>
+          <li><a class="besoin flex items-start gap-3 px-5 py-1.5 min-h-[56px]" href="/annuaire?c=alimentation-traiteur">
+            <span class="num tnum mt-1 w-6 shrink-0 text-[16px] font-bold text-neutre-600">09</span>
+            <span class="min-w-0 flex-1">
+              <span class="ff block text-besoin text-teal-800">Manger bon sans cuisiner ce soir</span>
+              <span class="mt-0.5 block text-[16px] leading-[1.15] text-neutre-700">traiteur, plats à emporter · <span class="font-semibold text-neutre-800">1 voisine</span></span>
+            </span>
+          </a></li>
+          <!-- la case honnête : personne encore, et on le dit. Pas de lien : il n'y a rien au bout.
+               Pas de mots-clés non plus : il n'y a aucun métier derrière à décrire. -->
+          <li><div class="flex items-start gap-3 px-5 py-1.5 min-h-[56px]">
+            <span class="tnum mt-1 w-6 shrink-0 text-[16px] font-bold text-neutre-600">10</span>
+            <span class="min-w-0 flex-1">
+              <span class="ff block text-besoin text-neutre-600">S'occuper des enfants</span>
+              <span class="mt-0.5 block text-[16px] leading-[1.3] text-neutre-700">Enfance &amp; éducation · <span class="font-semibold text-neutre-800">personne encore inscrit·e</span> —
+                <a class="font-semibold text-teal-700 underline decoration-teal-300 underline-offset-4 hover:decoration-teal-600" href="mailto:annuaire@cartoucherie.example?subject=Je%20connais%20quelqu'un">vous connaissez quelqu'un&nbsp;?</a>
+              </span>
+            </span>
+          </div></li>
+        </ul>
+      </nav>
+    </template>
+    <div class="duo mt-3">
+      <div class="scene-boite"><div class="scene" data-rendu></div></div>
+      <div class="relative min-w-0"><pre class="code" data-code></pre></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ╔═══════════════════════════════════════════════════════════════════════╗
+     ║  12 · la carte-portrait                                              ║
+     ╚═══════════════════════════════════════════════════════════════════════╝ -->
+<section class="bloc carte rounded-[22px] bg-white p-5 sm:p-7" id="b-carte" data-bloc>
+  <p class="text-etiquette font-semibold uppercase text-sauge-800">L'annuaire</p>
+  <h2 data-court="La carte-portrait" class="ff mt-1.5 text-nom text-teal-900">La carte-portrait</h2>
+  <p class="mt-3 text-corps text-neutre-800 max-w-[72ch]">
+    Les visages sont le produit. Les portraits de
+    <code class="font-mono text-[15px] text-teal-800">members.json</code> font
+    <strong class="font-semibold text-neutre-900">128 × 128 px</strong> : au-delà d'un
+    agrandissement ×1,4 le visage devient mou, et un visage flou détruit exactement la confiance
+    qu'on construit. La contrainte est donc respectée à sa lettre utile — le visage est à fond
+    perdu dans la carte, <strong class="font-semibold text-neutre-900">116 px de large sur
+    152 px de haut</strong>, bien au-dessus du plancher de 88 px, et net. Avec les portraits
+    réels de Sandra, les mêmes cadres se remplissent sans changer une ligne.
+  </p>
+
+  <div class="mt-5 rounded-[16px] bg-sauge-50 p-4 sm:p-5">
+    <p class="text-corps text-neutre-900">
+      <strong class="font-semibold">La forme suit la donnée — et la règle a été resserrée.</strong>
+      <em>photo</em> ouvrait le disque sur <code class="font-mono text-[15px] text-teal-800">surCarte: false</code>,
+      ce qui transformait Nadia en disque alors qu'elle a une adresse de retrait et « 210 m ».
+      Ici la forme suit la seule question que se pose le lecteur&nbsp;: <strong class="font-semibold">y a-t-il
+      un endroit où aller&nbsp;?</strong> → <code class="font-mono text-[15px] text-teal-800">distance !== '—'</code>.
+      Rectangle pour Camille et Nadia ; disque sur <code class="font-mono text-[15px] text-teal-800">--gradient-colly</code>
+      pour Julien et Amandine, qui se déplacent. La grille se casse pour une raison lisible.
+    </p>
+  </div>
+
+  <div data-specimen class="mt-6">
+    <p class="variante">Ligne de liste, avec adresse. Le nom couvre toute la carte (<code class="font-mono text-[15px] text-teal-800">before:inset-0</code>) ; le bouton d'appel remonte en <code class="font-mono text-[15px] text-teal-800">z-10</code> pour rester cliquable.</p>
+    <template>
+      <li>
+        <article class="carte carte-lien relative flex min-h-[152px] rounded-[20px] bg-white overflow-hidden">
+          <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Portrait de Camille Roussel"
+               width="128" height="128" loading="lazy"
+               class="w-[116px] shrink-0 self-stretch object-cover" style="object-position:50% 25%">
+          <div class="flex-1 min-w-0 py-4 pl-4 pr-1 flex flex-col justify-center gap-1">
+            <h3 class="ff text-[20px] leading-tight text-teal-900">
+              <a href="/membre/camille-roussel" class="before:absolute before:inset-0 before:content-['']">Camille Roussel</a>
+            </h3>
+            <p class="text-corps text-neutre-800 leading-snug">Sophrologue</p>
+            <p class="flex flex-wrap items-center gap-x-3 gap-y-1 text-[16px] text-neutre-700 mt-0.5">
+              <span class="inline-flex items-center gap-1"><svg class="w-4 h-4 text-sable-700" aria-hidden="true"><use href="#i-etoile"/></svg>4,8<span class="sr-only"> sur 5,</span> <span class="text-neutre-600">(12)</span></span>
+              <span class="inline-flex items-center gap-1"><svg class="w-4 h-4 text-teal-600" aria-hidden="true"><use href="#i-pin"/></svg>120 m</span>
+            </p>
+          </div>
+          <a href="tel:+33612345678" class="relative z-10 shrink-0 self-center mr-2.5 grid place-items-center w-11 h-11 rounded-full text-teal-700 bg-teal-50 hover:bg-teal-100"
+             aria-label="Appeler Camille Roussel au 06 12 34 56 78">
+            <svg class="w-5 h-5" aria-hidden="true"><use href="#i-tel"/></svg>
+          </a>
+        </article>
+      </li>
+    </template>
+    <div class="duo mt-3">
+      <div class="scene-boite"><ul class="scene list-none m-0 p-4" data-rendu></ul></div>
+      <div class="relative min-w-0"><pre class="code" data-code></pre></div>
+    </div>
+  </div>
+
+  <div data-specimen class="mt-8">
+    <p class="variante">Sans adresse — le disque. « Elle vient chez vous », accordé au genre. Aucune distance n'est inventée.</p>
+    <template>
+      <li>
+        <article class="carte carte-lien colly-fond relative flex flex-col items-center rounded-[20px] px-4 py-5 text-center">
+          <img src="https://randomuser.me/api/portraits/women/12.jpg" alt="Portrait d'Amandine Rey"
+               width="128" height="128" loading="lazy"
+               class="w-[124px] h-[124px] rounded-full object-cover shadow-carte"
+               style="object-position:50% 22%; box-shadow: 0 0 0 3px #fff, var(--shadow-carte)">
+          <h3 class="ff mt-3.5 text-[21px] leading-tight text-teal-900">
+            <a href="/membre/amandine-rey" class="before:absolute before:inset-0 before:content-['']">Amandine Rey</a>
+          </h3>
+          <p class="mt-0.5 text-corps text-neutre-900">Coiffeuse à domicile</p>
+          <p class="mt-2 inline-flex items-center gap-1.5 text-[16px] font-semibold text-teal-800">
+            <svg class="w-4 h-4 shrink-0 text-teal-600" aria-hidden="true"><use href="#c-domicile"/></svg>
+            Elle vient chez vous
+          </p>
+          <p class="mt-1.5 inline-flex items-center gap-1 text-[16px] text-neutre-700">
+            <svg class="w-4 h-4 text-sable-700" aria-hidden="true"><use href="#i-etoile"/></svg>4,8<span class="sr-only"> sur 5,</span> <span class="text-neutre-600">(31)</span>
+          </p>
+        </article>
+      </li>
+    </template>
+    <div class="duo mt-3">
+      <div class="scene-boite"><ul class="scene list-none m-0 p-4" data-rendu></ul></div>
+      <div class="relative min-w-0"><pre class="code" data-code></pre></div>
+    </div>
+  </div>
+
+  <div data-specimen class="mt-8">
+    <p class="variante">La carte pleine — pour une grille, une mise en avant, la page d'une catégorie. Elle ajoute les pastilles et l'accroche. Le nom n'est <strong class="font-semibold text-neutre-900">jamais</strong> tronqué : pas de <code class="font-mono text-[15px] text-teal-800">truncate</code> sur un <code class="font-mono text-[15px] text-teal-800">h3</code>.</p>
+    <template>
+      <li>
+        <article class="carte carte-lien relative rounded-[20px] bg-white overflow-hidden">
+          <img src="https://randomuser.me/api/portraits/men/75.jpg" alt="Portrait de Marc Ollivier"
+               width="128" height="128" loading="lazy"
+               class="w-full h-[190px] object-cover" style="object-position:50% 22%">
+          <div class="p-4">
+            <p class="flex flex-wrap gap-1.5">
+              <span class="chip inline-flex items-center rounded-full px-2.5 py-1 text-[16px] font-semibold leading-tight">Artisanat &amp; travaux</span>
+            </p>
+            <h3 class="ff mt-2.5 text-[25px] leading-[1.05] text-teal-900">
+              <a href="/membre/marc-ollivier" class="before:absolute before:inset-0 before:content-['']">Marc Ollivier</a>
+            </h3>
+            <p class="mt-1 text-corps font-semibold text-neutre-900">Menuisier-ébéniste</p>
+            <p class="mt-1.5 text-[16px] leading-snug text-neutre-700">Meubles sur mesure et agencement pour les petits appartements du quartier.</p>
+            <p class="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1 text-[16px] text-neutre-700">
+              <span class="inline-flex items-center gap-1"><svg class="w-4 h-4 text-sable-700" aria-hidden="true"><use href="#i-etoile"/></svg>4,7<span class="sr-only"> sur 5,</span> <span class="text-neutre-600">(9)</span></span>
+              <span class="inline-flex items-center gap-1"><svg class="w-4 h-4 text-teal-600" aria-hidden="true"><use href="#i-pin"/></svg>800 m</span>
+            </p>
+          </div>
+        </article>
+      </li>
+    </template>
+    <div class="duo mt-3">
+      <div class="scene-boite"><ul class="scene list-none m-0 p-4" data-rendu></ul></div>
+      <div class="relative min-w-0"><pre class="code" data-code></pre></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ╔═══ 13 · le halo ════════════════════════════════════════════════════════╗ -->
+<section class="bloc carte rounded-[22px] bg-white p-5 sm:p-7" id="b-halo" data-bloc>
+  <p class="text-etiquette font-semibold uppercase text-sauge-800">La fiche membre</p>
+  <h2 data-court="Le halo" class="ff mt-1.5 text-nom text-teal-900">Le halo</h2>
+  <p class="mt-3 text-corps text-neutre-800 max-w-[72ch]">
+    L'idée que personne d'autre ne peut copier, et elle est <strong class="font-semibold text-neutre-900">gratuite</strong> :
+    le fond du bandeau est <em>le portrait du membre lui-même</em>, agrandi, flouté à 54 px,
+    saturé, et multiplié sur le lavis. Chaque fiche hérite ainsi de l'ambiance colorée de la
+    personne qu'elle décrit — sans un octet d'illustration supplémentaire, sans lecture de pixels
+    côté serveur, sans dépendance. Trois couches décalées suffisent à faire une atmosphère
+    plutôt qu'une tache.
+  </p>
+  <p class="mt-3 text-corps text-neutre-800 max-w-[72ch]">
+    <strong class="font-semibold text-neutre-900">Aucun texte ne se pose sur un halo.</strong>
+    C'est un fond, pas un support. Le nom et le métier vivent sur la carte d'identité blanche qui
+    grimpe par-dessus le bord du bandeau.
+  </p>
+
+  <div data-specimen class="mt-6">
+    <p class="variante">Les trois couches, sur le portrait de Camille.</p>
+    <template>
+      <div class="relative h-[210px] overflow-hidden">
+        <div class="aube absolute inset-0"></div>
+        <div class="halo-fond" aria-hidden="true">
+          <div class="halo" style="background-image:url('https://randomuser.me/api/portraits/women/44.jpg'); inset:-30% 26% -10% -25%; opacity:.85"></div>
+          <div class="halo" style="background-image:url('https://randomuser.me/api/portraits/women/44.jpg'); inset:-10% -25% -20% 40%; opacity:.75; background-position:20% 70%"></div>
+          <div class="halo" style="background-image:url('https://randomuser.me/api/portraits/women/44.jpg'); inset:38% 8% -34% 12%; opacity:.55; background-position:80% 10%"></div>
+        </div>
+      </div>
+    </template>
+    <div class="duo mt-3">
+      <div class="scene-boite"><div class="scene" data-rendu></div></div>
+      <div class="relative min-w-0"><pre class="code" data-code></pre></div>
+    </div>
+  </div>
+
+  <p class="mt-8 variante">La preuve : trois voisins, trois atmosphères, un seul bloc de code. Ce que ni l'illustration ni la typographie ne savent produire.</p>
+  <div class="mt-3 grid gap-3 sm:grid-cols-3">
+    <div><div class="relative h-[120px] overflow-hidden rounded-[16px]" style="box-shadow: inset 0 0 0 1px var(--color-neutre-300)">
+      <div class="aube absolute inset-0"></div>
+      <div class="halo-fond" aria-hidden="true">
+        <div class="halo" style="background-image:url('https://randomuser.me/api/portraits/women/57.jpg'); inset:-30% 26% -10% -25%; opacity:.85"></div>
+        <div class="halo" style="background-image:url('https://randomuser.me/api/portraits/women/57.jpg'); inset:-10% -25% -20% 40%; opacity:.75; background-position:20% 70%"></div>
+      </div>
+    </div>
+    <p class="mt-2 text-[16px] font-semibold text-teal-900">Nadia Berrada</p></div>
+    <div><div class="relative h-[120px] overflow-hidden rounded-[16px]" style="box-shadow: inset 0 0 0 1px var(--color-neutre-300)">
+      <div class="aube absolute inset-0"></div>
+      <div class="halo-fond" aria-hidden="true">
+        <div class="halo" style="background-image:url('https://randomuser.me/api/portraits/men/83.jpg'); inset:-30% 26% -10% -25%; opacity:.85"></div>
+        <div class="halo" style="background-image:url('https://randomuser.me/api/portraits/men/83.jpg'); inset:-10% -25% -20% 40%; opacity:.75; background-position:20% 70%"></div>
+      </div>
+    </div>
+    <p class="mt-2 text-[16px] font-semibold text-teal-900">Karim Ziani</p></div>
+    <div><div class="relative h-[120px] overflow-hidden rounded-[16px]" style="box-shadow: inset 0 0 0 1px var(--color-neutre-300)">
+      <div class="aube absolute inset-0"></div>
+      <div class="halo-fond" aria-hidden="true">
+        <div class="halo" style="background-image:url('https://randomuser.me/api/portraits/men/46.jpg'); inset:-30% 26% -10% -25%; opacity:.85"></div>
+        <div class="halo" style="background-image:url('https://randomuser.me/api/portraits/men/46.jpg'); inset:-10% -25% -20% 40%; opacity:.75; background-position:20% 70%"></div>
+      </div>
+    </div>
+    <p class="mt-2 text-[16px] font-semibold text-teal-900">Julien Marty</p></div>
+  </div>
+</section>
+
+
+<!-- ╔═══ 14 · l'en-tête de fiche membre ══════════════════════════════════════╗ -->
+<section class="bloc carte rounded-[22px] bg-white p-5 sm:p-7" id="b-fiche" data-bloc>
+  <p class="text-etiquette font-semibold uppercase text-sauge-800">La fiche membre</p>
+  <h2 data-court="L'en-tête de fiche" class="ff mt-1.5 text-nom text-teal-900">L'en-tête de fiche membre</h2>
+  <p class="mt-3 text-corps text-neutre-800 max-w-[72ch]">
+    Le portrait sous une <strong class="font-semibold text-neutre-900">arche</strong> — le geste
+    architectural de la Halle, et le seul hommage autorisé au patrimoine du quartier : jamais la
+    munition. La carte d'identité blanche <strong class="font-semibold text-neutre-900">grimpe
+    par-dessus le bord inférieur du bandeau</strong>, le même geste que Colly sur le rebord de la
+    barre de recherche. C'est le premier écran, celui qui décide d'un appel : il ne contient aucun
+    personnage. Un visage réel, un nom en 40 px, un métier, une note, une distance.
+  </p>
+
+  <div class="mt-5 rounded-[16px] bg-sable-100 p-4 sm:p-5">
+    <p class="flex items-start gap-2.5 text-corps text-teal-950">
+      <svg class="w-5 h-5 shrink-0 mt-0.5 text-sable-800" aria-hidden="true"><use href="#i-alerte"/></svg>
+      <span><strong class="font-semibold">Sable ou halo — l'un ou l'autre, jamais les deux.</strong>
+      Empiler le bandeau sable, le papier peint de ventouses et le halo fait trois atmosphères sur
+      la même bande : le halo multiplie sur le sable, la ventouse disparaît dans la bouillie, et
+      le portrait perd son fond neutre. <em>Sable</em> est le défaut du produit : sobre,
+      identitaire, identique d'une fiche à l'autre. <em>Halo</em> est la variante d'ambiance, pour
+      les fiches mises en avant — et alors <strong class="font-semibold">le sable disparaît</strong>
+      et le motif ventouse passe en teal à 16 % (<code class="font-mono text-[15px]">.ventouses--teal</code>).</span>
+    </p>
+  </div>
+
+  <div data-specimen class="mt-6">
+    <p class="variante">Défaut — bandeau sable, papier peint de ventouses, arche.</p>
+    <template>
+      <section>
+        <div class="ventouses relative bg-sable-200 pt-9 pb-11 rounded-b-[34px] overflow-hidden">
+          <div class="flex justify-center">
+            <img src="https://randomuser.me/api/portraits/women/44.jpg"
+                 alt="Portrait de Camille Roussel, sophrologue à la Cartoucherie"
+                 width="128" height="128"
+                 class="arche block w-[172px] h-[208px] object-cover bg-white"
+                 style="object-position:50% 22%; box-shadow: 0 0 0 6px #fff, var(--shadow-carte)">
+          </div>
+        </div>
+        <div class="px-5 relative -mt-8">
+          <div class="carte rounded-[24px] bg-white p-5">
+            <h1 class="ff text-grand text-teal-900">Camille Roussel</h1>
+            <p class="mt-1.5 text-[20px] text-neutre-800">Sophrologue</p>
+            <p class="mt-3 flex flex-wrap gap-2">
+              <span class="chip inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 text-[16px] font-semibold">
+                <svg class="w-[18px] h-[18px]" aria-hidden="true"><use href="#c-sante"/></svg>Santé &amp; bien-être
+              </span>
+            </p>
+            <p class="mt-4 text-[19px] leading-relaxed text-neutre-900">
+              Gestion du stress, sommeil et préparation aux examens, en cabinet ou en visio.
+            </p>
+            <p class="mt-5 flex flex-wrap items-center gap-x-5 gap-y-2.5 text-[16px] text-neutre-700">
+              <a href="#avis" class="inline-flex items-center gap-1.5 text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">
+                <svg class="w-[18px] h-[18px] text-sable-700" aria-hidden="true"><use href="#i-etoile"/></svg>
+                <strong class="font-semibold text-neutre-900">4,8</strong><span class="sr-only"> sur 5 —</span> 12 avis du quartier
+              </a>
+              <span class="inline-flex items-center gap-1.5">
+                <svg class="w-[18px] h-[18px] text-teal-600" aria-hidden="true"><use href="#i-pin"/></svg>
+                À 120 m de la Halle
+              </span>
+            </p>
+          </div>
+        </div>
+      </section>
+    </template>
+    <div class="duo mt-3">
+      <div class="scene-boite"><div class="scene pb-4" data-rendu></div></div>
+      <div class="relative min-w-0"><pre class="code" data-code></pre></div>
+    </div>
+  </div>
+
+  <div data-specimen class="mt-8">
+    <p class="variante">Variante d'ambiance — le halo remplace le sable. Le motif passe en teal, sinon le sable revient par la fenêtre.</p>
+    <template>
+      <section>
+        <div class="relative pt-9 pb-11 rounded-b-[34px] overflow-hidden">
+          <div class="aube absolute inset-0"></div>
+          <div class="halo-fond" aria-hidden="true">
+            <div class="halo" style="background-image:url('https://randomuser.me/api/portraits/men/75.jpg'); inset:-30% 26% -10% -25%; opacity:.85"></div>
+            <div class="halo" style="background-image:url('https://randomuser.me/api/portraits/men/75.jpg'); inset:-10% -25% -20% 40%; opacity:.75; background-position:20% 70%"></div>
+          </div>
+          <div class="ventouses ventouses--teal pointer-events-none absolute inset-x-0 top-0 h-[160px]"
+               style="-webkit-mask-image:linear-gradient(to bottom,#000 50%,transparent); mask-image:linear-gradient(to bottom,#000 50%,transparent)"></div>
+          <div class="relative flex justify-center">
+            <img src="https://randomuser.me/api/portraits/men/75.jpg"
+                 alt="Portrait de Marc Ollivier, menuisier-ébéniste à la Cartoucherie"
+                 width="128" height="128"
+                 class="arche block w-[172px] h-[208px] object-cover bg-white"
+                 style="object-position:50% 22%; box-shadow: 0 0 0 6px #fff, var(--shadow-carte)">
+          </div>
+        </div>
+        <div class="px-5 relative -mt-8">
+          <div class="carte rounded-[24px] bg-white p-5">
+            <h1 class="ff text-grand text-teal-900">Marc Ollivier</h1>
+            <p class="mt-1.5 text-[20px] text-neutre-800">Menuisier-ébéniste</p>
+          </div>
+        </div>
+      </section>
+    </template>
+    <div class="duo mt-3">
+      <div class="scene-boite"><div class="scene pb-4" data-rendu></div></div>
+      <div class="relative min-w-0"><pre class="code" data-code></pre></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ╔═══ 15 · « La contacter » ═══════════════════════════════════════════════╗ -->
+<section class="bloc carte rounded-[22px] bg-white p-5 sm:p-7" id="b-contact" data-bloc>
+  <p class="text-etiquette font-semibold uppercase text-sauge-800">La fiche membre</p>
+  <h2 data-court="«&nbsp;La contacter&nbsp;»" class="ff mt-1.5 text-nom text-teal-900">«&nbsp;La contacter&nbsp;»</h2>
+  <p class="mt-3 text-corps text-neutre-800 max-w-[72ch]">
+    <strong class="font-semibold text-neutre-900">L'e-mail, le site et l'Instagram s'affichent en
+    toutes lettres.</strong> Sur un annuaire, c'est la bonne décision : on peut les lire, les
+    dicter au téléphone, les recopier sur un papier — sans taper sur une icône pour découvrir ce
+    qu'il y a derrière. Aucune adresse n'est tronquée&nbsp;: <code class="font-mono text-[15px] text-teal-800">break-words</code>,
+    jamais <code class="font-mono text-[15px] text-teal-800">truncate</code>.
+    Le téléphone n'est pas ici — il vit dans la barre d'appel collante, pour qu'il n'y ait
+    <em>qu'un seul</em> « Appeler » par écran.
+  </p>
+  <p class="mt-3 text-corps text-neutre-800 max-w-[72ch]">
+    <strong class="font-semibold text-neutre-900">Un canal absent n'est pas rendu.</strong> Ni
+    ligne grisée, ni « non renseigné », ni tuile vide : la fiche est plus courte, c'est tout.
+    Le titre s'accorde au genre du membre.
+  </p>
+
+  <div data-specimen class="mt-6">
+    <p class="variante">Camille Roussel (f) — trois canaux. Le cas complet.</p>
+    <template>
+      <section class="px-5 py-6" aria-labelledby="t-contact">
+        <h2 id="t-contact" class="ff text-nom text-teal-900">La contacter</h2>
+        <div class="filet h-[3px] w-16 rounded-full mt-2.5 mb-5"></div>
+        <ul class="grid gap-2.5 list-none p-0 m-0">
+          <li><a href="mailto:camille.roussel@example.fr" class="carte carte-lien flex items-center gap-3.5 min-h-[64px] px-4 py-3 rounded-[16px] bg-white">
+            <span class="pastille pastille--teal w-10 h-10 bg-teal-50 text-teal-700 shrink-0"><svg class="w-5 h-5" aria-hidden="true"><use href="#i-mail"/></svg></span>
+            <span class="min-w-0">
+              <span class="block text-[16px] text-neutre-700">E-mail</span>
+              <span class="block text-corps font-semibold text-teal-800 break-words">camille.roussel@example.fr</span>
+            </span>
+          </a></li>
+          <li><a href="https://camille-sophrologie.fr" class="carte carte-lien flex items-center gap-3.5 min-h-[64px] px-4 py-3 rounded-[16px] bg-white">
+            <span class="pastille pastille--teal w-10 h-10 bg-teal-50 text-teal-700 shrink-0"><svg class="w-5 h-5" aria-hidden="true"><use href="#i-globe"/></svg></span>
+            <span class="min-w-0">
+              <span class="block text-[16px] text-neutre-700">Son site</span>
+              <span class="block text-corps font-semibold text-teal-800 break-words">camille-sophrologie.fr</span>
+            </span>
+          </a></li>
+          <li><a href="https://instagram.com/camille_sophro_ctch" class="carte carte-lien flex items-center gap-3.5 min-h-[64px] px-4 py-3 rounded-[16px] bg-white">
+            <span class="pastille pastille--teal w-10 h-10 bg-teal-50 text-teal-700 shrink-0"><svg class="w-5 h-5" aria-hidden="true"><use href="#i-insta"/></svg></span>
+            <span class="min-w-0">
+              <span class="block text-[16px] text-neutre-700">Instagram</span>
+              <span class="block text-corps font-semibold text-teal-800 break-words">@camille_sophro_ctch</span>
+            </span>
+          </a></li>
+        </ul>
+        <p class="mt-3 text-[16px] text-neutre-700">
+          Tarifs non communiqués&nbsp;: demandez-les au téléphone, elle répond elle-même.
+        </p>
+      </section>
+    </template>
+    <div class="duo mt-3">
+      <div class="scene-boite"><div class="scene" data-rendu></div></div>
+      <div class="relative min-w-0"><pre class="code" data-code></pre></div>
+    </div>
+  </div>
+
+  <div data-specimen class="mt-8">
+    <p class="variante">Marc Ollivier (h) — <code class="font-mono text-[15px] text-teal-800">site: null</code>. Deux lignes, pas trois. Titre au masculin.</p>
+    <template>
+      <section class="px-5 py-6" aria-labelledby="t-contact-m">
+        <h2 id="t-contact-m" class="ff text-nom text-teal-900">Le contacter</h2>
+        <div class="filet h-[3px] w-16 rounded-full mt-2.5 mb-5"></div>
+        <ul class="grid gap-2.5 list-none p-0 m-0">
+          <li><a href="mailto:atelier.ollivier@example.fr" class="carte carte-lien flex items-center gap-3.5 min-h-[64px] px-4 py-3 rounded-[16px] bg-white">
+            <span class="pastille pastille--teal w-10 h-10 bg-teal-50 text-teal-700 shrink-0"><svg class="w-5 h-5" aria-hidden="true"><use href="#i-mail"/></svg></span>
+            <span class="min-w-0">
+              <span class="block text-[16px] text-neutre-700">E-mail</span>
+              <span class="block text-corps font-semibold text-teal-800 break-words">atelier.ollivier@example.fr</span>
+            </span>
+          </a></li>
+          <li><a href="https://instagram.com/atelier_ollivier" class="carte carte-lien flex items-center gap-3.5 min-h-[64px] px-4 py-3 rounded-[16px] bg-white">
+            <span class="pastille pastille--teal w-10 h-10 bg-teal-50 text-teal-700 shrink-0"><svg class="w-5 h-5" aria-hidden="true"><use href="#i-insta"/></svg></span>
+            <span class="min-w-0">
+              <span class="block text-[16px] text-neutre-700">Instagram</span>
+              <span class="block text-corps font-semibold text-teal-800 break-words">@atelier_ollivier</span>
+            </span>
+          </a></li>
+        </ul>
+      </section>
+    </template>
+    <div class="duo mt-3">
+      <div class="scene-boite"><div class="scene" data-rendu></div></div>
+      <div class="relative min-w-0"><pre class="code" data-code></pre></div>
+    </div>
+  </div>
+
+  <div data-specimen class="mt-8">
+    <p class="variante">Julien Marty (h) — ni site, ni Instagram. Une seule ligne, et une phrase honnête qui explique pourquoi la section est courte.</p>
+    <template>
+      <section class="px-5 py-6" aria-labelledby="t-contact-j">
+        <h2 id="t-contact-j" class="ff text-nom text-teal-900">Le contacter</h2>
+        <div class="filet h-[3px] w-16 rounded-full mt-2.5 mb-5"></div>
+        <ul class="grid gap-2.5 list-none p-0 m-0">
+          <li><a href="mailto:jmarty.elec@example.fr" class="carte carte-lien flex items-center gap-3.5 min-h-[64px] px-4 py-3 rounded-[16px] bg-white">
+            <span class="pastille pastille--teal w-10 h-10 bg-teal-50 text-teal-700 shrink-0"><svg class="w-5 h-5" aria-hidden="true"><use href="#i-mail"/></svg></span>
+            <span class="min-w-0">
+              <span class="block text-[16px] text-neutre-700">E-mail</span>
+              <span class="block text-corps font-semibold text-teal-800 break-words">jmarty.elec@example.fr</span>
+            </span>
+          </a></li>
+        </ul>
+        <p class="mt-3 text-[16px] text-neutre-700">
+          Julien n'a ni site ni compte Instagram. Le téléphone est le bon canal&nbsp;: il décroche
+          lui-même.
+        </p>
+      </section>
+    </template>
+    <div class="duo mt-3">
+      <div class="scene-boite"><div class="scene" data-rendu></div></div>
+      <div class="relative min-w-0"><pre class="code" data-code></pre></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ╔═══ 16 · « Ce qu'elle propose » ═════════════════════════════════════════╗ -->
+<section class="bloc carte rounded-[22px] bg-white p-5 sm:p-7" id="b-services" data-bloc>
+  <p class="text-etiquette font-semibold uppercase text-sauge-800">La fiche membre</p>
+  <h2 data-court="«&nbsp;Ce qu'elle propose&nbsp;»" class="ff mt-1.5 text-nom text-teal-900">«&nbsp;Ce qu'elle propose&nbsp;»</h2>
+  <p class="mt-3 text-corps text-neutre-800 max-w-[72ch]">
+    Trois prestations maximum, tirées du champ <code class="font-mono text-[15px] text-teal-800">services</code>.
+    Élévation 0 — <code class="font-mono text-[15px] text-teal-800">bg-neutre-100</code>, sans
+    ombre : ces tuiles vivent déjà dans une page qui a des cartes, et on n'imbrique pas une
+    marche 1 dans une marche 1. Le titre, comme « Où la trouver » et « Son portrait », s'accorde au
+    champ <code class="font-mono text-[15px] text-teal-800">genre</code>.
+  </p>
+
+  <div data-specimen class="mt-6">
+    <p class="variante">Camille Roussel (f).</p>
+    <template>
+      <section class="px-5 py-6" aria-labelledby="t-services-f">
+        <h2 id="t-services-f" class="ff text-nom text-teal-900">Ce qu'elle propose</h2>
+        <div class="filet h-[3px] w-16 rounded-full mt-2.5 mb-5"></div>
+        <ul class="grid gap-3 list-none p-0 m-0">
+          <li class="flex items-center gap-3.5 rounded-[16px] bg-neutre-100 px-4 py-4 min-h-[64px]">
+            <span class="pastille w-9 h-9 bg-white text-sauge-700 shrink-0"><svg class="w-[18px] h-[18px]" aria-hidden="true"><use href="#c-sante"/></svg></span>
+            <span class="text-corps font-semibold text-teal-900">Séance individuelle</span>
+          </li>
+          <li class="flex items-center gap-3.5 rounded-[16px] bg-neutre-100 px-4 py-4 min-h-[64px]">
+            <span class="pastille w-9 h-9 bg-white text-sauge-700 shrink-0"><svg class="w-[18px] h-[18px]" aria-hidden="true"><use href="#i-groupe"/></svg></span>
+            <span class="text-corps font-semibold text-teal-900">Atelier collectif</span>
+          </li>
+          <li class="flex items-center gap-3.5 rounded-[16px] bg-neutre-100 px-4 py-4 min-h-[64px]">
+            <span class="pastille w-9 h-9 bg-white text-sauge-700 shrink-0"><svg class="w-[18px] h-[18px]" aria-hidden="true"><use href="#i-visio"/></svg></span>
+            <span class="text-corps font-semibold text-teal-900">Visio</span>
+          </li>
+        </ul>
+      </section>
+    </template>
+    <div class="duo mt-3">
+      <div class="scene-boite"><div class="scene" data-rendu></div></div>
+      <div class="relative min-w-0"><pre class="code" data-code></pre></div>
+    </div>
+  </div>
+
+  <div data-specimen class="mt-8">
+    <p class="variante">Marc Ollivier (h) — « Ce qu'<strong class="font-semibold text-neutre-900">il</strong> propose », et « Où <strong class="font-semibold text-neutre-900">le</strong> trouver » juste en dessous.</p>
+    <template>
+      <section class="px-5 py-6" aria-labelledby="t-services-h">
+        <h2 id="t-services-h" class="ff text-nom text-teal-900">Ce qu'il propose</h2>
+        <div class="filet h-[3px] w-16 rounded-full mt-2.5 mb-5"></div>
+        <ul class="grid gap-3 list-none p-0 m-0">
+          <li class="flex items-center gap-3.5 rounded-[16px] bg-neutre-100 px-4 py-4 min-h-[64px]">
+            <span class="pastille w-9 h-9 bg-white text-sauge-700 shrink-0"><svg class="w-[18px] h-[18px]" aria-hidden="true"><use href="#c-artisanat"/></svg></span>
+            <span class="text-corps font-semibold text-teal-900">Meuble sur mesure</span>
+          </li>
+          <li class="flex items-center gap-3.5 rounded-[16px] bg-neutre-100 px-4 py-4 min-h-[64px]">
+            <span class="pastille w-9 h-9 bg-white text-sauge-700 shrink-0"><svg class="w-[18px] h-[18px]" aria-hidden="true"><use href="#c-domicile"/></svg></span>
+            <span class="text-corps font-semibold text-teal-900">Agencement</span>
+          </li>
+          <li class="flex items-center gap-3.5 rounded-[16px] bg-neutre-100 px-4 py-4 min-h-[64px]">
+            <span class="pastille w-9 h-9 bg-white text-sauge-700 shrink-0"><svg class="w-[18px] h-[18px]" aria-hidden="true"><use href="#c-artisanat"/></svg></span>
+            <span class="text-corps font-semibold text-teal-900">Réparation</span>
+          </li>
+        </ul>
+
+        <h2 class="ff mt-8 text-nom text-teal-900">Où le trouver</h2>
+        <div class="filet h-[3px] w-16 rounded-full mt-2.5 mb-5"></div>
+        <div class="carte rounded-[20px] bg-white p-5 flex items-start gap-4">
+          <span class="pastille pastille--teal w-11 h-11 bg-teal-50 text-teal-700 shrink-0 mt-0.5"><svg class="w-5 h-5" aria-hidden="true"><use href="#i-pin"/></svg></span>
+          <div class="min-w-0">
+            <address class="not-italic text-[18px] leading-snug text-neutre-900 font-semibold">
+              Atelier, route de Bayonne<br>31300 Toulouse
+            </address>
+            <p class="mt-2 text-[16px] text-neutre-700">
+              À 800 m de la Halle · Tram T1, arrêt Arènes Romaines
+            </p>
+            <a href="https://www.openstreetmap.org/search?query=route%20de%20Bayonne%2031300%20Toulouse"
+               class="mt-3 inline-flex items-center gap-2 min-h-[44px] text-corps font-semibold text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">
+              Voir l'itinéraire <svg class="w-4 h-4" aria-hidden="true"><use href="#i-chev"/></svg>
+            </a>
+          </div>
+        </div>
+      </section>
+    </template>
+    <div class="duo mt-3">
+      <div class="scene-boite"><div class="scene" data-rendu></div></div>
+      <div class="relative min-w-0"><pre class="code" data-code></pre></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ╔═══ 17 · « Avis du quartier » ═══════════════════════════════════════════╗ -->
+<section class="bloc carte rounded-[22px] bg-white p-5 sm:p-7" id="b-avis" data-bloc>
+  <p class="text-etiquette font-semibold uppercase text-sauge-800">La fiche membre</p>
+  <h2 data-court="«&nbsp;Avis du quartier&nbsp;»" class="ff mt-1.5 text-nom text-teal-900">«&nbsp;Avis du quartier&nbsp;»</h2>
+  <p class="mt-3 text-corps text-neutre-800 max-w-[72ch]">
+    <em>Avis du quartier</em>, pas « avis clients » : des voisins qui se portent garants, pas des
+    consommateurs qui notent. Chaque avis est daté et signé d'un prénom et d'une initiale.
+    Les étoiles sont en <code class="font-mono text-[15px] text-teal-800">sable-700</code> et non
+    <code class="font-mono text-[15px] text-teal-800">sable-600</code>&nbsp;: 4,42:1 contre 2,90:1,
+    la nuance en dessous passait sous le seuil 1.4.11 pour un objet graphique porteur de sens.
+    Jamais de preuve sociale fabriquée&nbsp;: zéro avis s'affiche comme zéro avis.
+  </p>
+
+  <div data-specimen class="mt-6">
+    <p class="variante">L'agrégat, un avis, l'invitation.</p>
+    <template>
+      <section id="avis" class="px-5 py-6" aria-labelledby="t-avis">
+        <div class="flex flex-wrap items-end justify-between gap-x-4 gap-y-1">
+          <h2 id="t-avis" class="ff text-nom text-teal-900">Avis du quartier</h2>
+          <p class="flex items-center gap-1.5 text-[16px] text-neutre-700">
+            <svg class="w-[18px] h-[18px] text-sable-700" aria-hidden="true"><use href="#i-etoile"/></svg>
+            <strong class="text-neutre-900 font-semibold">4,8</strong> sur 5 · 12 avis
+          </p>
+        </div>
+        <div class="filet h-[3px] w-16 rounded-full mt-2.5 mb-5"></div>
+
+        <ul class="grid gap-3.5 list-none p-0 m-0">
+          <li class="carte rounded-[20px] bg-white p-5">
+            <div class="flex items-center gap-3">
+              <span class="pastille w-11 h-11 bg-sauge-100 text-sauge-800 text-[16px] font-bold shrink-0">HM</span>
+              <span class="min-w-0">
+                <span class="block text-corps font-semibold text-teal-900">Hélène M.</span>
+                <span class="block text-[16px] text-neutre-700">12 août 2026</span>
+              </span>
+            </div>
+            <p class="mt-2.5 flex items-center gap-0.5" aria-label="5 sur 5">
+              <svg class="w-[17px] h-[17px] text-sable-700" aria-hidden="true"><use href="#i-etoile"/></svg>
+              <svg class="w-[17px] h-[17px] text-sable-700" aria-hidden="true"><use href="#i-etoile"/></svg>
+              <svg class="w-[17px] h-[17px] text-sable-700" aria-hidden="true"><use href="#i-etoile"/></svg>
+              <svg class="w-[17px] h-[17px] text-sable-700" aria-hidden="true"><use href="#i-etoile"/></svg>
+              <svg class="w-[17px] h-[17px] text-sable-700" aria-hidden="true"><use href="#i-etoile"/></svg>
+            </p>
+            <p class="mt-2.5 text-corps text-neutre-900">Trois séances et je dors enfin. Camille explique très bien, on n'a jamais l'impression de perdre son temps. Et c'est à deux pas de chez moi.</p>
+          </li>
+          <li class="carte rounded-[20px] bg-white p-5">
+            <div class="flex items-center gap-3">
+              <span class="pastille w-11 h-11 bg-sauge-100 text-sauge-800 text-[16px] font-bold shrink-0">FD</span>
+              <span class="min-w-0">
+                <span class="block text-corps font-semibold text-teal-900">Fatou D.</span>
+                <span class="block text-[16px] text-neutre-700">18 juin 2026</span>
+              </span>
+            </div>
+            <p class="mt-2.5 flex items-center gap-0.5" aria-label="4 sur 5">
+              <svg class="w-[17px] h-[17px] text-sable-700" aria-hidden="true"><use href="#i-etoile"/></svg>
+              <svg class="w-[17px] h-[17px] text-sable-700" aria-hidden="true"><use href="#i-etoile"/></svg>
+              <svg class="w-[17px] h-[17px] text-sable-700" aria-hidden="true"><use href="#i-etoile"/></svg>
+              <svg class="w-[17px] h-[17px] text-sable-700" aria-hidden="true"><use href="#i-etoile"/></svg>
+              <svg class="w-[17px] h-[17px] text-neutre-400" aria-hidden="true"><use href="#i-etoile"/></svg>
+            </p>
+            <p class="mt-2.5 text-corps text-neutre-900">Très bien pour l'atelier du samedi. Un peu difficile d'obtenir un créneau en semaine, c'est le seul bémol.</p>
+          </li>
+        </ul>
+
+        <div class="mt-4 rounded-[22px] bg-sauge-50 p-5">
+          <div class="mx-auto w-[104px] h-[104px] rounded-full bg-sauge-100 overflow-hidden grid place-items-center shrink-0"
+               style="box-shadow: inset 0 0 0 2px var(--color-sauge-200)">
+            <img src="../_shared/colly/colly-joyeux.png" alt="" width="260" height="260" class="croquis w-[104px] h-auto">
+          </div>
+          <div class="mt-4 text-center">
+            <p class="ff text-[22px] leading-snug text-teal-900">Vous la connaissez déjà&nbsp;?</p>
+            <p class="mt-1.5 text-corps text-neutre-800">
+              Un avis de voisin vaut mieux que dix étoiles anonymes. Trois lignes suffisent.
+            </p>
+            <button type="button" class="mt-4 inline-flex items-center gap-2 min-h-[48px] px-5 rounded-full text-corps font-semibold text-white bg-teal-700 hover:bg-teal-600">
+              <svg class="w-[18px] h-[18px]" aria-hidden="true"><use href="#i-plume"/></svg>
+              Laisser un avis
+            </button>
+          </div>
+        </div>
+      </section>
+    </template>
+    <div class="duo mt-3">
+      <div class="scene-boite"><div class="scene" data-rendu></div></div>
+      <div class="relative min-w-0"><pre class="code" data-code></pre></div>
+    </div>
+  </div>
+
+  <div data-specimen class="mt-8">
+    <p class="variante">Zéro avis. On ne montre pas « 0,0 ★ », on ne montre pas d'étoiles vides : on dit qu'il n'y en a pas encore.</p>
+    <template>
+      <section class="px-5 py-6" aria-labelledby="t-avis-0">
+        <h2 id="t-avis-0" class="ff text-nom text-teal-900">Avis du quartier</h2>
+        <div class="filet h-[3px] w-16 rounded-full mt-2.5 mb-5"></div>
+        <div class="rounded-[20px] bg-neutre-100 p-5">
+          <p class="text-corps text-neutre-900">
+            <strong class="font-semibold">Aucun avis pour l'instant.</strong> Pierre est inscrit
+            depuis peu&nbsp;; personne n'a encore écrit.
+          </p>
+          <button type="button" class="mt-4 inline-flex items-center gap-2 min-h-[48px] px-5 rounded-full text-corps font-semibold text-white bg-teal-700 hover:bg-teal-600">
+            <svg class="w-[18px] h-[18px]" aria-hidden="true"><use href="#i-plume"/></svg>
+            Être le premier
+          </button>
+        </div>
+      </section>
+    </template>
+    <div class="duo mt-3">
+      <div class="scene-boite"><div class="scene" data-rendu></div></div>
+      <div class="relative min-w-0"><pre class="code" data-code></pre></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ╔═══ 18 · le bouton « Appeler » ══════════════════════════════════════════╗ -->
+<section class="bloc carte rounded-[22px] bg-white p-5 sm:p-7" id="b-appeler" data-bloc>
+  <p class="text-etiquette font-semibold uppercase text-sauge-800">L'action</p>
+  <h2 data-court="Le bouton «&nbsp;Appeler&nbsp;»" class="ff mt-1.5 text-nom text-teal-900">Le bouton «&nbsp;Appeler&nbsp;»</h2>
+  <p class="mt-3 text-corps text-neutre-800 max-w-[72ch]">
+    Un galet orange vif avec des lettres <strong class="font-semibold text-neutre-900">teal presque
+    noires</strong> — pas blanches. Pour porter du blanc à AA, l'orange devrait tomber à
+    <code class="font-mono text-[15px] text-teal-800">L 56 %</code>, et à cette clarté ce n'est plus
+    de l'orange, c'est de la rouille : la couleur universelle d'un <em>avertissement</em>, pas d'un
+    appel téléphonique. En gardant l'orange vif et en inversant l'étiquette, on obtient
+    <strong class="font-semibold text-neutre-900">7,00:1 — AAA</strong>, un meilleur rapport
+    <em>sur un bouton plus vif</em>. Le survol éclaircit, l'appui assombrit : le bouton se comporte
+    comme un objet physique éclairé d'en haut.
+  </p>
+  <p class="mt-3 text-corps text-neutre-800 max-w-[72ch]">
+    <strong class="font-semibold text-neutre-900">Le numéro est écrit en toutes lettres dans le
+    bouton.</strong> Il se lit sans appuyer, et se recopie sur un papier.
+  </p>
+
+  <div data-specimen class="mt-6">
+    <p class="variante">Mobile — barre collante dans la zone du pouce. <code class="font-mono text-[15px] text-teal-800">position: fixed</code> : la scène ci-contre est son bloc conteneur (<code class="font-mono text-[15px] text-teal-800">contain: layout</code>), dans une vraie page elle se colle au bas de l'écran.</p>
+    <template>
+      <div class="fixed bottom-0 inset-x-0 z-40 bg-white/95 backdrop-blur-sm"
+           style="box-shadow: 0 -4px 8px oklch(17.5% .03 202/.06), 0 -28px 64px -20px oklch(17.5% .03 202/.28)">
+        <div class="mx-auto max-w-[1160px] px-4 py-3 flex items-center gap-4">
+          <p class="hidden sm:block min-w-0 flex-1">
+            <span class="ff block text-[19px] text-teal-900 leading-tight">Camille Roussel</span>
+            <span class="block text-[16px] text-neutre-700">Sophrologue · 120 m</span>
+          </p>
+          <a href="tel:+33612345678"
+             class="cta flex-1 sm:flex-none inline-flex items-center justify-center gap-2.5 min-h-[54px] px-6 rounded-full text-[18px] font-bold tracking-tight transition">
+            <svg class="w-5 h-5" aria-hidden="true"><use href="#i-tel"/></svg>
+            Appeler 06 12 34 56 78
+          </a>
+        </div>
+      </div>
+    </template>
+    <div class="duo mt-3">
+      <div class="scene-boite"><div class="scene h-[220px]" data-rendu></div></div>
+      <div class="relative min-w-0"><pre class="code" data-code></pre></div>
+    </div>
+  </div>
+
+  <div data-specimen class="mt-8">
+    <p class="variante">En ligne — dans le flux, sur une carte, en tête de fiche sur grand écran.</p>
+    <template>
+      <div class="p-5">
+        <a href="tel:+33612345678"
+           class="cta inline-flex items-center gap-2.5 min-h-[52px] px-6 rounded-full text-[17px] font-bold tracking-tight transition">
+          <svg class="w-5 h-5" aria-hidden="true"><use href="#i-tel"/></svg>
+          Appeler 06 12 34 56 78
+        </a>
+      </div>
+    </template>
+    <div class="duo mt-3">
+      <div class="scene-boite"><div class="scene" data-rendu></div></div>
+      <div class="relative min-w-0"><pre class="code" data-code></pre></div>
+    </div>
+  </div>
+
+  <div class="mt-8 grid gap-2.5 sm:grid-cols-2 lg:grid-cols-4 text-[16px]">
+    <p class="rounded-[14px] px-4 py-3 text-teal-950" style="background:var(--color-orange-500)"><strong class="font-semibold">Repos</strong> · orange-500 → 7,00:1 AAA</p>
+    <p class="rounded-[14px] px-4 py-3 text-teal-950" style="background:var(--color-orange-400)"><strong class="font-semibold">Survol</strong> · orange-400 → 8,83:1 AAA</p>
+    <p class="rounded-[14px] px-4 py-3 text-teal-950" style="background:var(--color-orange-600)"><strong class="font-semibold">Enfoncé</strong> · orange-600 → 5,32:1 AA</p>
+    <p class="rounded-[14px] px-4 py-3 text-neutre-600" style="background:var(--color-neutre-200)"><strong class="font-semibold">Désactivé</strong> · 4,16:1 — exempté</p>
+  </div>
+</section>
+
+
+<!-- ╔═══ 19 · les états Colly ════════════════════════════════════════════════╗ -->
+<section class="bloc carte rounded-[22px] bg-white p-5 sm:p-7" id="b-colly" data-bloc>
+  <p class="text-etiquette font-semibold uppercase text-sauge-800">L'hôtesse</p>
+  <h2 data-court="Les états Colly" class="ff mt-1.5 text-nom text-teal-900">Les états Colly</h2>
+  <p class="mt-3 text-corps text-neutre-800 max-w-[72ch]">
+    Quatre images seulement, et une seule en couleur. Les trois autres sont des crayonnés
+    <em>sur papier opaque</em>, donc inutilisables tels quels sur du blanc. La classe
+    <code class="font-mono text-[15px] text-teal-800">.croquis</code> les passe en
+    <code class="font-mono text-[15px] text-teal-800">mix-blend-mode: multiply</code> avec
+    <code class="font-mono text-[15px] text-teal-800">grayscale(1) contrast(1.16) brightness(1.07)</code> :
+    le papier est poussé au blanc puis multiplié, donc il <em>devient</em> la couleur du panneau et
+    le rectangle disparaît. Le graphite, lui, survit. C'est ce qui les fait passer pour des dessins
+    faits sur la page.
+  </p>
+  <div class="mt-4 grid gap-2 sm:grid-cols-2 text-[16px] text-neutre-800">
+    <p><code class="font-mono text-[15px] text-teal-800">colly-couleur.png</code> — la barre de recherche, bloc 10. La seule en couleur.</p>
+    <p><code class="font-mono text-[15px] text-teal-800">colly-salut.png</code> — le panneau d'accueil, sur <code class="font-mono text-[15px] text-teal-800">sable-100</code>.</p>
+    <p><code class="font-mono text-[15px] text-teal-800">colly-triste.png</code> — aucun résultat, sur <code class="font-mono text-[15px] text-teal-800">teal-50</code>. Aussi la 404.</p>
+    <p><code class="font-mono text-[15px] text-teal-800">colly-joyeux.png</code> — l'invitation à laisser un avis, sur <code class="font-mono text-[15px] text-teal-800">sauge-50</code> (bloc 17).</p>
+  </div>
+
+  <div class="mt-5 rounded-[16px] bg-sable-100 p-4 sm:p-5">
+    <p class="text-corps text-teal-950">
+      <strong class="font-semibold">Le rationnement, c'est la direction.</strong> Deux apparitions
+      visibles au maximum sur l'accueil, une sur la fiche — et sur la fiche elle n'arrive qu'après
+      les avis, très bas. Aucune bulle de bande dessinée, aucun appendice de bulle, aucun emoji.
+      Colly ne parle jamais à la première personne dans une phrase fonctionnelle. Il suffit d'une
+      page où quelqu'un la remet deux fois de plus pour que l'équilibre casse et que l'annuaire
+      devienne une application pour enfants — ce qu'un expert-comptable du quartier ne pardonnera
+      pas.
+    </p>
+  </div>
+
+  <div data-specimen class="mt-6">
+    <p class="variante">Accueil — le panneau <code class="font-mono text-[15px] text-teal-800">sable-100</code>, l'unique panneau chaud d'une page.</p>
+    <template>
+      <section class="px-5 py-6" aria-labelledby="t-colly">
+        <div class="relative rounded-[26px] bg-sable-100 px-5 py-8 overflow-hidden">
+          <div class="ventouses pointer-events-none absolute inset-x-0 top-0 h-[250px]"
+               style="-webkit-mask-image:linear-gradient(to bottom,#000 58%,transparent); mask-image:linear-gradient(to bottom,#000 58%,transparent)"></div>
+          <div class="relative">
+            <div class="mx-auto w-[168px] h-[168px] rounded-full bg-sable-200 overflow-hidden grid place-items-center"
+                 style="box-shadow: inset 0 0 0 2px var(--color-sable-300), 0 0 0 8px var(--color-sable-50)">
+              <img src="../_shared/colly/colly-salut.png" alt="" width="320" height="305" class="croquis w-[190px] h-auto">
+            </div>
+            <p class="mt-6 text-etiquette font-semibold uppercase text-sable-800">La mascotte du quartier</p>
+            <h2 id="t-colly" class="ff mt-2 text-[32px] leading-tight text-teal-950">Colly reste collée aux bons endroits.</h2>
+            <p class="mt-3 text-corps text-teal-950">
+              Elle vit dans les poutres de la Halle et connaît tout le monde. Cet annuaire, c'est
+              son carnet d'adresses&nbsp;: uniquement des gens qui habitent ou travaillent ici,
+              ajoutés un par un par l'association.
+            </p>
+          </div>
+        </div>
+      </section>
+    </template>
+    <div class="duo mt-3">
+      <div class="scene-boite"><div class="scene" data-rendu></div></div>
+      <div class="relative min-w-0"><pre class="code" data-code></pre></div>
+    </div>
+  </div>
+
+  <div data-specimen class="mt-8">
+    <p class="variante">Aucun résultat. On dit le nombre réel de membres au lieu de suggérer un catalogue.</p>
+    <template>
+      <div class="px-5 py-6">
+        <div class="rounded-[24px] bg-teal-50 px-6 py-9 text-center">
+          <div class="mx-auto w-[132px] h-[132px] rounded-full bg-teal-50 overflow-hidden grid place-items-center">
+            <img src="../_shared/colly/colly-triste.png" alt="" width="260" height="260" class="croquis w-[150px] h-auto -mt-2">
+          </div>
+          <p class="ff mt-3 text-[26px] text-teal-900">Colly n'a trouvé personne.</p>
+          <p class="mt-2 text-corps text-neutre-800">
+            L'annuaire compte douze voisins pour l'instant. Il grandit à chaque nouvelle
+            inscription — essayez un autre mot, ou dites-nous qui manque.
+          </p>
+          <button type="button" class="mt-5 inline-flex items-center gap-2 min-h-[48px] px-5 rounded-full text-corps font-semibold text-white bg-teal-700 hover:bg-teal-600">
+            Revoir les 12 voisins
+          </button>
+        </div>
+      </div>
+    </template>
+    <div class="duo mt-3">
+      <div class="scene-boite"><div class="scene" data-rendu></div></div>
+      <div class="relative min-w-0"><pre class="code" data-code></pre></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ╔═══ 20 · les petites pièces ═════════════════════════════════════════════╗ -->
+<section class="bloc carte rounded-[22px] bg-white p-5 sm:p-7" id="b-pieces" data-bloc>
+  <p class="text-etiquette font-semibold uppercase text-sauge-800">La quincaillerie</p>
+  <h2 data-court="Les petites pièces" class="ff mt-1.5 text-nom text-teal-900">Boutons, champs, pastilles, filets</h2>
+  <p class="mt-3 text-corps text-neutre-800 max-w-[72ch]">
+    Trois boutons et pas quatre&nbsp;: le CTA orange (un par écran), le bouton teal plein (l'action
+    secondaire), le bouton fantôme (tout le reste). Les bordures de champ sont
+    <code class="font-mono text-[15px] text-teal-800">neutre-500</code> à 3,03:1 — un champ bordé
+    <code class="font-mono text-[15px] text-teal-800">neutre-300</code> est invisible pour une
+    personne de 70 ans sur un téléphone en plein jour.
+  </p>
+
+  <div data-specimen class="mt-6">
+    <p class="variante">Les boutons, y compris désactivé.</p>
+    <template>
+      <div class="p-5 flex flex-col items-start gap-3">
+        <a href="tel:+33612345678" class="cta inline-flex items-center gap-2.5 min-h-[52px] px-6 rounded-full text-corps font-bold tracking-tight transition">
+          <svg class="w-5 h-5" aria-hidden="true"><use href="#i-tel"/></svg>Appeler
+        </a>
+        <button type="button" class="inline-flex items-center gap-2 min-h-[48px] px-5 rounded-full text-corps font-semibold text-white bg-teal-700 hover:bg-teal-600">
+          Demander à figurer
+          <svg class="w-4 h-4" aria-hidden="true"><use href="#i-chev"/></svg>
+        </button>
+        <button type="button" class="inline-flex items-center gap-2 min-h-[44px] px-4 rounded-full text-corps font-semibold text-teal-700 bg-teal-50 hover:bg-teal-100">
+          <svg class="w-5 h-5" aria-hidden="true"><use href="#i-coeur"/></svg>Favori
+        </button>
+        <button type="button" disabled class="inline-flex items-center gap-2 min-h-[44px] px-4 rounded-full text-corps font-semibold text-neutre-600 bg-neutre-200 cursor-not-allowed">
+          Envoyer l'avis
+        </button>
+      </div>
+    </template>
+    <div class="duo mt-3">
+      <div class="scene-boite"><div class="scene" data-rendu></div></div>
+      <div class="relative min-w-0"><pre class="code" data-code></pre></div>
+    </div>
+  </div>
+
+  <div data-specimen class="mt-8">
+    <p class="variante">Les champs — étiquette réelle, aide, et l'état d'erreur. L'erreur n'est jamais une grande pastille pleine : c'est un texte, une icône et un filet de 3 px.</p>
+    <template>
+      <form class="p-5 grid gap-5" onsubmit="return false">
+        <div>
+          <label for="prenom" class="block text-[16px] font-semibold text-neutre-800">Votre prénom</label>
+          <input id="prenom" type="text" autocomplete="given-name"
+                 class="mt-1.5 w-full min-h-[52px] px-3.5 rounded-xl bg-white text-corps text-neutre-900 placeholder:text-neutre-600"
+                 style="box-shadow: inset 0 0 0 1.5px var(--color-neutre-500)" placeholder="Hélène">
+          <p class="mt-1.5 text-[16px] text-neutre-700">Affiché avec l'initiale de votre nom&nbsp;: « Hélène M. »</p>
+        </div>
+        <div>
+          <label for="mail" class="block text-[16px] font-semibold text-neutre-800">Votre e-mail</label>
+          <input id="mail" type="email" value="helene.at.example" aria-invalid="true" aria-describedby="mail-err"
+                 class="mt-1.5 w-full min-h-[52px] px-3.5 rounded-xl bg-rouge-50 text-corps text-neutre-900"
+                 style="box-shadow: inset 0 0 0 1.5px var(--color-rouge-600)">
+          <p id="mail-err" class="mt-1.5 flex items-start gap-1.5 text-[16px] font-semibold text-rouge-700">
+            <svg class="w-[18px] h-[18px] shrink-0 mt-0.5" aria-hidden="true"><use href="#i-alerte"/></svg>
+            Il manque le signe @. Exemple&nbsp;: helene@example.fr
+          </p>
+        </div>
+      </form>
+    </template>
+    <div class="duo mt-3">
+      <div class="scene-boite"><div class="scene" data-rendu></div></div>
+      <div class="relative min-w-0"><pre class="code" data-code></pre></div>
+    </div>
+  </div>
+
+  <div data-specimen class="mt-8">
+    <p class="variante">Les dix pastilles de catégorie, avec leur compte réel. La dixième est vide, et elle est là quand même.</p>
+    <template>
+      <ul class="p-5 flex flex-wrap gap-2 list-none m-0">
+        <li><a href="/annuaire?c=sante-bien-etre" class="chip inline-flex items-center gap-2 rounded-full px-3.5 py-2 min-h-[44px] text-[16px] font-semibold"><svg class="w-[18px] h-[18px]" aria-hidden="true"><use href="#c-sante"/></svg>Santé &amp; bien-être <span class="tnum text-sauge-900">4</span></a></li>
+        <li><a href="/annuaire?c=numerique-creation" class="chip inline-flex items-center gap-2 rounded-full px-3.5 py-2 min-h-[44px] text-[16px] font-semibold"><svg class="w-[18px] h-[18px]" aria-hidden="true"><use href="#c-numerique"/></svg>Numérique &amp; création <span class="tnum text-sauge-900">3</span></a></li>
+        <li><a href="/annuaire?c=artisanat-travaux" class="chip inline-flex items-center gap-2 rounded-full px-3.5 py-2 min-h-[44px] text-[16px] font-semibold"><svg class="w-[18px] h-[18px]" aria-hidden="true"><use href="#c-artisanat"/></svg>Artisanat &amp; travaux <span class="tnum text-sauge-900">2</span></a></li>
+        <li><a href="/annuaire?c=conseil-entreprise" class="chip inline-flex items-center gap-2 rounded-full px-3.5 py-2 min-h-[44px] text-[16px] font-semibold"><svg class="w-[18px] h-[18px]" aria-hidden="true"><use href="#c-conseil"/></svg>Conseil &amp; entreprise <span class="tnum text-sauge-900">2</span></a></li>
+        <li><a href="/annuaire?c=sport-mouvement" class="chip inline-flex items-center gap-2 rounded-full px-3.5 py-2 min-h-[44px] text-[16px] font-semibold"><svg class="w-[18px] h-[18px]" aria-hidden="true"><use href="#c-sport"/></svg>Sport &amp; mouvement <span class="tnum text-sauge-900">2</span></a></li>
+        <li><a href="/annuaire?c=art-culture" class="chip inline-flex items-center gap-2 rounded-full px-3.5 py-2 min-h-[44px] text-[16px] font-semibold"><svg class="w-[18px] h-[18px]" aria-hidden="true"><use href="#c-art"/></svg>Art &amp; culture <span class="tnum text-sauge-900">2</span></a></li>
+        <li><a href="/annuaire?c=services-domicile" class="chip inline-flex items-center gap-2 rounded-full px-3.5 py-2 min-h-[44px] text-[16px] font-semibold"><svg class="w-[18px] h-[18px]" aria-hidden="true"><use href="#c-domicile"/></svg>Services à domicile <span class="tnum text-sauge-900">2</span></a></li>
+        <li><a href="/annuaire?c=beaute-soins" class="chip inline-flex items-center gap-2 rounded-full px-3.5 py-2 min-h-[44px] text-[16px] font-semibold"><svg class="w-[18px] h-[18px]" aria-hidden="true"><use href="#c-beaute"/></svg>Beauté &amp; soins <span class="tnum text-sauge-900">1</span></a></li>
+        <li><a href="/annuaire?c=alimentation-traiteur" class="chip inline-flex items-center gap-2 rounded-full px-3.5 py-2 min-h-[44px] text-[16px] font-semibold"><svg class="w-[18px] h-[18px]" aria-hidden="true"><use href="#c-alimentation"/></svg>Alimentation &amp; traiteur <span class="tnum text-sauge-900">1</span></a></li>
+        <!-- catégorie vide : montrée, désaturée, non cliquable, et elle dit pourquoi -->
+        <li><span class="inline-flex items-center gap-2 rounded-full bg-neutre-100 px-3.5 py-2 min-h-[44px] text-[16px] font-semibold text-neutre-600"><svg class="w-[18px] h-[18px]" aria-hidden="true"><use href="#c-enfance"/></svg>Enfance &amp; éducation <span class="tnum">0</span></span></li>
+      </ul>
+    </template>
+    <div class="duo mt-3">
+      <div class="scene-boite"><div class="scene" data-rendu></div></div>
+      <div class="relative min-w-0"><pre class="code" data-code></pre></div>
+    </div>
+  </div>
+
+  <div data-specimen class="mt-8">
+    <p class="variante">Les filets. Pleine largeur sous l'en-tête ; 64 px sous un titre de section. Il n'y a pas de troisième usage.</p>
+    <template>
+      <div class="p-5">
+        <div class="filet h-[3px]"></div>
+        <h2 class="ff mt-8 text-nom text-teal-900">Vos voisins</h2>
+        <div class="filet h-[3px] w-16 rounded-full mt-2.5"></div>
+        <hr class="mt-8 border-0 border-t border-neutre-300">
+        <p class="mt-2 text-[16px] text-neutre-700">Un séparateur de liste reste <code class="font-mono text-[15px] text-teal-800">neutre-300</code> : il ne porte aucune information.</p>
+      </div>
+    </template>
+    <div class="duo mt-3">
+      <div class="scene-boite"><div class="scene" data-rendu></div></div>
+      <div class="relative min-w-0"><pre class="code" data-code></pre></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ╔═══ 21 · le pied de page ════════════════════════════════════════════════╗ -->
+<section class="bloc carte rounded-[22px] bg-white p-5 sm:p-7" id="b-pied" data-bloc>
+  <p class="text-etiquette font-semibold uppercase text-sauge-800">La coque</p>
+  <h2 data-court="Le pied de page" class="ff mt-1.5 text-nom text-teal-900">Le pied de page</h2>
+  <p class="mt-3 text-corps text-neutre-800 max-w-[72ch]">
+    Quatre liens obligatoires — <strong class="font-semibold text-neutre-900">à propos,
+    confidentialité, mentions légales, avis</strong> — plus les repères du quartier, parce qu'on
+    est fier d'être <em>ici</em> et pas « près de chez vous ». Chaque lien a 44 px de haut : c'est
+    le pied de page, on y arrive avec le pouce fatigué.
+  </p>
+
+  <div data-specimen class="mt-6">
+    <template>
+      <footer class="border-t border-neutre-200 bg-neutre-50">
+        <div class="mx-auto max-w-[1160px] px-5 py-8 grid gap-8 sm:grid-cols-[1fr_auto]">
+          <div>
+            <p class="flex items-center gap-2.5">
+              <svg class="w-7 h-7 text-teal-700" aria-hidden="true"><use href="#i-ventouse"/></svg>
+              <span class="ff text-[20px] text-teal-900">Annuaire de la Cartoucherie</span>
+            </p>
+            <p class="mt-3 text-[16px] text-neutre-700">
+              Fait bénévolement pour l'association de quartier, à partir des portraits réunis par
+              Sandra&nbsp;Carole. Gratuit, sans publicité, sans compte à créer.
+            </p>
+            <p class="mt-3 text-[16px] text-neutre-700">
+              Halle de la Cartoucherie · Tram T1, arrêt Cartoucherie · 31300 Toulouse
+            </p>
+          </div>
+          <nav class="text-[16px]" aria-label="Liens de pied de page">
+            <ul class="space-y-1 list-none p-0 m-0">
+              <li><a class="inline-flex items-center min-h-[44px] text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600" href="/a-propos">À propos</a></li>
+              <li><a class="inline-flex items-center min-h-[44px] text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600" href="/confidentialite">Confidentialité</a></li>
+              <li><a class="inline-flex items-center min-h-[44px] text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600" href="/mentions-legales">Mentions légales</a></li>
+              <li><a class="inline-flex items-center min-h-[44px] text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600" href="/avis">Avis&nbsp;: comment ça marche</a></li>
+            </ul>
+          </nav>
+        </div>
+      </footer>
+    </template>
+    <div class="duo mt-3">
+      <div class="scene-boite"><div class="scene" data-rendu></div></div>
+      <div class="relative min-w-0"><pre class="code" data-code></pre></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ╔═══ 22 · comment composer une page ══════════════════════════════════════╗ -->
+<section class="bloc rounded-[22px] bg-teal-900 text-teal-50 p-5 sm:p-8" id="b-composer" data-bloc>
+  <p class="text-etiquette font-semibold uppercase text-sauge-300">Le mode d'emploi</p>
+  <h2 data-court="Comment composer" class="ff mt-1.5 text-nom text-white">Comment composer une page</h2>
+  <p class="mt-3 text-corps text-teal-100 max-w-[72ch]">
+    Les blocs sont bons ; c'est leur assemblage qui casse. Ces règles se comptent, elles ne se
+    ressentent pas.
+  </p>
+
+  <ol class="mt-7 grid gap-5 sm:grid-cols-2 list-none p-0 m-0">
+    <li class="rounded-[18px] bg-teal-800/70 p-5">
+      <p class="ff text-[21px] text-white">1 · Trois objets orange, maximum</p>
+      <p class="mt-2 text-corps text-teal-100">
+        Pointez chaque chose orange de l'écran. Vous avez droit à&nbsp;: le bouton « Appeler » ;
+        <em>un</em> état sélectionné ; <em>un</em> filet signature de 3 px. Si vous en comptez
+        quatre, supprimez-en un. Si vous en comptez zéro, l'écran n'a pas d'action et quelque
+        chose ne va pas.
+      </p>
+      <p class="mt-2 text-corps text-teal-100">
+        Interdits sans exception&nbsp;: une barre d'en-tête orange, un fond de section, un fond de
+        carte, du texte courant, un lien, une icône hors du CTA.
+      </p>
+    </li>
+    <li class="rounded-[18px] bg-teal-800/70 p-5">
+      <p class="ff text-[21px] text-white">2 · Un seul panneau <span class="font-mono text-[0.85em]">sable</span></p>
+      <p class="mt-2 text-corps text-teal-100">
+        C'est le ventre de Colly, pas le papier de la page. Un panneau
+        <code class="font-mono text-[15px] text-sable-300">sable-100</code> par page — le coin de
+        Colly, un état vide, un aparté d'accueil. La page, elle, est
+        <strong class="font-semibold text-white">blanche</strong>. Il n'existe aucune version de ce
+        système où le fond est crème&nbsp;: c'est ce qui a fait rejeter deux rondes.
+      </p>
+    </li>
+    <li class="rounded-[18px] bg-teal-800/70 p-5">
+      <p class="ff text-[21px] text-white">3 · Colly : deux fois, pas trois</p>
+      <p class="mt-2 text-corps text-teal-100">
+        Deux apparitions visibles au maximum sur l'accueil, <strong class="font-semibold text-white">une seule</strong>
+        sur une fiche membre. Jamais deux écrans de suite. Jamais au-dessus d'un visage réel.
+        Jamais en train de parler à la première personne dans une phrase fonctionnelle.
+      </p>
+      <p class="mt-2 text-corps text-teal-100">
+        Le charme est une porte d'entrée, pas le bâtiment&nbsp;: sous la ligne de flottaison, la
+        page redevient un annuaire professionnel très ordinaire.
+      </p>
+    </li>
+    <li class="rounded-[18px] bg-teal-800/70 p-5">
+      <p class="ff text-[21px] text-white">4 · Au-dessus de la ligne, sur une fiche</p>
+      <p class="mt-2 text-corps text-teal-100">
+        Le premier écran d'une fiche décide d'un appel. Il contient&nbsp;: un visage réel sous
+        l'arche, le nom en 40 px, le métier, la note, la distance. Rien d'autre.
+      </p>
+      <p class="mt-2 text-corps text-teal-100">
+        <strong class="font-semibold text-white">N'y apparaissent jamais</strong>&nbsp;: Colly, un
+        bandeau publicitaire, une invitation à laisser un avis, un QR code, un formulaire, une
+        catégorie dépliée. Et jamais de texte posé sur un halo.
+      </p>
+    </li>
+    <li class="rounded-[18px] bg-teal-800/70 p-5">
+      <p class="ff text-[21px] text-white">5 · Élévation : jamais 1 dans 1</p>
+      <p class="mt-2 text-corps text-teal-100">
+        Une carte dans une carte, c'est le look « boîtes plates dans des boîtes plates » avec une
+        ombre par-dessus. À l'intérieur d'une carte, descendez à l'élévation 0 —
+        <code class="font-mono text-[15px] text-sable-300">bg-neutre-100</code>, sans ombre. C'est
+        ce que fait « Ce qu'elle propose ».
+      </p>
+    </li>
+    <li class="rounded-[18px] bg-teal-800/70 p-5">
+      <p class="ff text-[21px] text-white">6 · L'honnêteté est un bloc, pas une intention</p>
+      <p class="mt-2 text-corps text-teal-100">
+        Un annuaire de 12 membres dit 12. La catégorie vide s'affiche avec son zéro. Un canal de
+        contact absent n'est pas rendu — pas de ligne grisée. Zéro avis s'écrit « aucun avis pour
+        l'instant », jamais « 0,0 ★ ». Aucun compte n'est arrondi vers le haut.
+      </p>
+    </li>
+    <li class="rounded-[18px] bg-teal-800/70 p-5">
+      <p class="ff text-[21px] text-white">7 · Le français s'accorde</p>
+      <p class="mt-2 text-corps text-teal-100">
+        Le champ <code class="font-mono text-[15px] text-sable-300">genre</code> gouverne&nbsp;:
+        « Ce qu'<strong class="font-semibold text-white">elle</strong> propose », « Où
+        <strong class="font-semibold text-white">le</strong> trouver », « <strong class="font-semibold text-white">La</strong> contacter »,
+        « <strong class="font-semibold text-white">Elle</strong> vient chez vous »,
+        « 1 voisin<strong class="font-semibold text-white">e</strong> ». Vouvoiement partout&nbsp;;
+        pas de « solution », pas d'« offre », pas d'« expérience », pas d'« univers ».
+      </p>
+    </li>
+    <li class="rounded-[18px] bg-teal-800/70 p-5">
+      <p class="ff text-[21px] text-white">8 · Les planchers, avant de livrer</p>
+      <p class="mt-2 text-corps text-teal-100">
+        Corps ≥ 16 px · cible tactile ≥ 44 px · visage ≥ 88 px · aucun défilement horizontal à
+        360 px · lisible à 200 % de zoom · un <code class="font-mono text-[15px] text-sable-300">&lt;label&gt;</code>
+        par champ · un <code class="font-mono text-[15px] text-sable-300">alt</code> par portrait ·
+        focus visible <code class="font-mono text-[15px] text-sable-300">teal-600</code> ·
+        <strong class="font-semibold text-white">aucun nom de membre tronqué, jamais</strong>.
+      </p>
+      <p class="mt-2 text-corps text-teal-100">
+        Le contraste est un plancher, pas un objectif. Passer AAA partout en ressemblant à un
+        tableur, c'est l'échec que cette révision existe pour corriger.
+      </p>
+    </li>
+  </ol>
+
+  <div class="mt-6 rounded-[18px] bg-teal-950 p-5">
+    <p class="text-corps text-teal-100">
+      <strong class="font-semibold text-white">Ce catalogue est exempté de la règle 1.</strong>
+      Il montre quinze objets orange parce qu'il les documente. Le comptage s'applique à une
+      <em>page du produit</em>, jamais à la planche qui la décrit. Même exemption pour son fond
+      <code class="font-mono text-[15px] text-sable-300">neutre-100</code> (les spécimens blancs
+      doivent se détacher) et pour les listings de code à 15 px (ce n'est pas du texte de lecture).
+    </p>
+  </div>
+</section>
+
+  </main>
+</div>
+
+<footer class="bg-white border-t border-neutre-200">
+  <div class="mx-auto max-w-[1280px] px-5 lg:px-8 py-10 text-corps text-neutre-700">
+    <p class="max-w-[68ch]">
+      Ce catalogue est un document de travail, pas une page du produit : son fond est
+      <code class="font-mono text-[15px] text-teal-800">neutre-100</code> pour que les
+      spécimens blancs se détachent, et il contient volontairement bien plus de trois objets
+      orange. Les règles de comptage s'appliquent aux <em>pages</em>, jamais à la planche qui
+      les documente. Voir « Comment composer une page », dernier bloc.
+    </p>
+  </div>
+</footer>
+
+<p id="sonde-fonte" class="sr-only"></p>
+
+<script>
+(function(){
+  /* ─────────────────────────────────────────────────────────────────────────
+     Le catalogue n'a qu'une source de vérité par bloc : le <template>.
+     On le clone dans la scène, et on écrit sa sérialisation dans le <pre>.
+     Le code affiché ne peut donc pas diverger du rendu : c'est le même nœud.
+     Ce script est synchrone, en fin de <body> : les clones sont dans le DOM
+     avant le premier passage du build Tailwind navigateur.
+     ───────────────────────────────────────────────────────────────────── */
+  function degauchir(s){
+    var l = s.replace(/\t/g,'  ').split('\n');
+    while(l.length && !l[0].trim()) l.shift();
+    while(l.length && !l[l.length-1].trim()) l.pop();
+    var min = 999;
+    l.forEach(function(x){ if(x.trim()){ min = Math.min(min, x.match(/^ */)[0].length); } });
+    if(min === 999) min = 0;
+    return l.map(function(x){ return x.slice(min); }).join('\n');
+  }
+
+  function boutonCopier(pre){
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'absolute top-2.5 right-2.5 min-h-[36px] px-3 rounded-lg text-[15px] font-semibold ' +
+                  'text-teal-100 bg-teal-800 hover:bg-teal-700 hover:text-white';
+    b.textContent = 'Copier';
+    b.addEventListener('click', function(){
+      navigator.clipboard && navigator.clipboard.writeText(pre.textContent);
+      b.textContent = 'Copié'; setTimeout(function(){ b.textContent = 'Copier'; }, 1600);
+    });
+    return b;
+  }
+
+  document.querySelectorAll('[data-bloc]').forEach(function(bloc){
+    bloc.querySelectorAll('[data-specimen]').forEach(function(spec){
+      var tpl   = spec.querySelector('template');
+      var scene = spec.querySelector('[data-rendu]');
+      var pre   = spec.querySelector('[data-code]');
+      if(tpl && scene) scene.appendChild(tpl.content.cloneNode(true));
+      if(tpl && pre)   pre.textContent = degauchir(tpl.innerHTML);
+    });
+    /* les blocs qui documentent une source déjà présente dans la page */
+    bloc.querySelectorAll('[data-source]').forEach(function(pre){
+      var src = document.getElementById(pre.dataset.source);
+      if(!src) return;
+      pre.textContent = pre.dataset.source === 'src-sprite'
+        ? src.outerHTML.replace(/></g, '>\n<')
+        : degauchir(src.textContent);
+    });
+  });
+
+  document.querySelectorAll('pre.code').forEach(function(pre){
+    var w = pre.parentNode;
+    if(w && w.classList.contains('relative')) w.appendChild(boutonCopier(pre));
+  });
+
+  /* ── les nuanciers, engendrés depuis les valeurs de couleurs.md ───────── */
+  var RAMPES = [
+    ['teal','identité — le mot, les titres, les liens, l’encre',
+      ['#f1fbfb','#e0f5f5','#c4eaea','#9ed7d6','#69bbba','#279b9c','#027c7d','#035f61','#004446','#012d2f','#021819'], 6],
+    ['orange','action — le CTA, et rien d’autre',
+      ['#fff6eb','#ffebd0','#ffd5a7','#fdbb7c','#fa9f4d','#f28318','#e16600','#c24700','#953307','#6d250d','#451407'], 7],
+    ['sauge','taxonomie — les catégories, les métiers',
+      ['#effaf5','#ddf3ea','#bde8d7','#94d4bb','#66bc97','#3aa273','#1c8451','#176737','#134c25','#0a341a','#031d0e'], 6],
+    ['sable','illustration — Colly, les panneaux chauds',
+      ['#fbf9f2','#f7f2e0','#f1e6c6','#e8d6a8','#dcc27f','#d0ad54','#b99235','#977221','#745415','#553c10','#342308'], 7],
+    ['neutre','structure — le blanc, les filets, 90 % du texte',
+      ['#f7fbfb','#f1f7f7','#e7eeee','#d6dfe0','#b3bfbf','#899797','#647474','#455657','#283c3d','#112728','#001416'], 6],
+    ['rouge','erreur — le seul ajout hors mascotte',
+      ['#fff4f2','#ffe6e4','#ffcdc9','#fba7a1','#ed756e','#e24945','#cb1b2c','#a50b25','#7e0a1f','#5d0819','#37040d'], 6]
+  ];
+  var PAS = [50,100,200,300,400,500,600,700,800,900,950];
+  var hote = document.querySelector('[data-rampes]');
+  if(hote) RAMPES.forEach(function(r){
+    var nom = r[0], role = r[1], hex = r[2], premierEncre = r[3];
+    var bloc = document.createElement('div');
+    var cells = hex.map(function(h,i){
+      var encre = i >= premierEncre;
+      return '<div class="min-w-0">' +
+        '<div class="h-11 rounded-[6px]" style="background:' + h + '; box-shadow: inset 0 0 0 1px oklch(17.5% .03 202/.10)"></div>' +
+        '<p class="mt-1 tnum text-[14px] leading-tight text-neutre-700">' + PAS[i] + '</p>' +
+        '<p class="tnum text-[13px] leading-tight ' + (encre ? 'text-teal-800 font-semibold' : 'text-neutre-600') + '">' +
+        (encre ? 'encre' : 'fond') + '</p></div>';
+    }).join('');
+    bloc.innerHTML =
+      '<p class="flex flex-wrap items-baseline gap-x-3"><span class="ff text-[20px] text-teal-900">' + nom +
+      '</span><span class="text-[16px] text-neutre-700">' + role + '</span></p>' +
+      '<div class="mt-2 grid grid-cols-6 sm:grid-cols-11 gap-1.5">' + cells + '</div>';
+    hote.appendChild(bloc);
+  });
+
+  /* ── les paires daisyUI, avec leur ratio mesuré ────────────────────────── */
+  var PAIRES = [
+    ['primary','#035f61','#ffffff','7,46','AAA','le bouton teal, les liens'],
+    ['secondary','#ddf3ea','#021819','15,76','AAA','la pastille de catégorie — fond seul'],
+    ['accent','#f28318','#021819','7,00','AAA','« Appeler ». Lettres teal, jamais blanches'],
+    ['neutral','#112728','#f7fbfb','14,98','AAA','les surfaces sombres'],
+    ['info','#027c7d','#ffffff','5,02','AA','l’information parle avec la voix de la marque'],
+    ['success','#176737','#ffffff','6,93','AA','la sauge, poussée au vert franc'],
+    ['warning','#d0ad54','#021819','8,53','AAA','la crème, poussée à l’ocre — bandeau, jamais pastille'],
+    ['error','#cb1b2c','#ffffff','5,63','AA','crimson, à 11 JND du CTA'],
+    ['base-100','#ffffff','#112728','15,62','AAA','la page. Blanche. Sans exception']
+  ];
+  var hp = document.querySelector('[data-paires]');
+  if(hp) PAIRES.forEach(function(p){
+    var d = document.createElement('div');
+    d.className = 'rounded-[14px] p-4';
+    d.style.cssText = 'background:' + p[1] + '; color:' + p[2] + '; box-shadow: inset 0 0 0 1px oklch(17.5% .03 202/.12)';
+    d.innerHTML = '<p class="font-mono text-[15px] font-semibold">' + p[0] + '</p>' +
+      '<p class="mt-1 text-[16px] leading-snug">' + p[5] + '</p>' +
+      '<p class="mt-2 tnum text-[15px] opacity-90">' + p[3] + ':1 · ' + p[4] + '</p>';
+    hp.appendChild(d);
+  });
+
+  /* ── l'échelle typographique ───────────────────────────────────────────── */
+  var ECHELLE = [
+    ['cri',72,'ff','« Je cherche… ». Une fois par site, sur l’accueil.','Je cherche…'],
+    ['enorme',54,'ff','Les nombres du quartier. « 12 voisins. 10 métiers. »','12 voisins'],
+    ['grand',40,'ff','Le nom sur la fiche membre. Jamais tronqué.','Camille Roussel'],
+    ['nom',30,'ff','Titre de section, nom sur une grande carte.','Avis du quartier'],
+    ['chapo',22,'','Chapô, accroche, sous-titre de bloc.','Dites-le comme vous le diriez à un voisin.'],
+    ['besoin',19,'ff','Une ligne de l’index « Je cherche… ». Compacté depuis 26.','Manger bon sans cuisiner ce soir'],
+    ['corps',17,'','Le corps de texte. Le plancher du produit est 16.','Séances individuelles d’une heure, et un atelier le samedi.'],
+    ['etiquette',16,'','Capitales espacées, méta, comptes, sous-lignes.','La Cartoucherie · Toulouse']
+  ];
+  var he = document.querySelector('[data-echelle]');
+  if(he) ECHELLE.forEach(function(e){
+    var d = document.createElement('div');
+    d.className = 'py-3.5 grid gap-1 sm:grid-cols-[150px_minmax(0,1fr)] sm:gap-5 sm:items-baseline';
+    var ech = e[0] === 'etiquette'
+      ? '<p class="text-etiquette font-semibold uppercase text-teal-800">' + e[4] + '</p>'
+      : '<p class="' + e[2] + ' text-' + e[0] + ' text-teal-800">' + e[4] + '</p>';
+    d.innerHTML =
+      '<p class="tnum text-[16px] text-neutre-700"><code class="font-mono text-[15px] text-teal-800">text-' + e[0] +
+      '</code><br><span class="text-neutre-600">' + e[1] + ' px · ' + (e[2] ? 'Fraunces' : 'Source\u00a0Sans\u00a03') + '</span></p>' +
+      '<div class="min-w-0">' + ech + '<p class="mt-1 text-[16px] text-neutre-700">' + e[3] + '</p></div>';
+    he.appendChild(d);
+  });
+
+  /* ── le rythme d'espacement ────────────────────────────────────────────── */
+  var ESP = [
+    [4,'space-1','le décalage optique d’une icône, jamais une marge'],
+    [8,'space-2','entre deux lignes d’un même objet'],
+    [12,'space-3','entre deux objets frères — deux cartes, deux pastilles'],
+    [16,'space-4','à l’intérieur d’une petite carte'],
+    [20,'space-5','la gouttière mobile, et le rembourrage d’une carte'],
+    [40,'space-10','entre deux sections']
+  ];
+  var hs = document.querySelector('[data-espacement]');
+  if(hs) ESP.forEach(function(s){
+    var d = document.createElement('div');
+    d.className = 'flex items-center gap-3.5 rounded-[14px] bg-neutre-100 px-4 py-3';
+    d.innerHTML = '<span class="shrink-0 rounded-[3px] bg-sauge-400" style="width:' + s[0] + 'px;height:24px"></span>' +
+      '<span class="min-w-0"><span class="tnum block text-[16px] font-semibold text-neutre-900">' + s[0] +
+      ' px <code class="font-mono text-[15px] font-normal text-teal-800">' + s[1] + '</code></span>' +
+      '<span class="block text-[16px] text-neutre-700">' + s[2] + '</span></span>';
+    hs.appendChild(d);
+  });
+
+  /* ── la planche d'icônes ───────────────────────────────────────────────── */
+  var hi = document.querySelector('[data-icones]');
+  if(hi) Array.prototype.forEach.call(document.querySelectorAll('#src-sprite symbol'), function(sym){
+    var d = document.createElement('div');
+    d.className = 'flex flex-col items-center gap-1.5 rounded-[12px] bg-neutre-100 px-2 py-3';
+    d.innerHTML = '<svg class="w-6 h-6 text-teal-700" aria-hidden="true"><use href="#' + sym.id + '"/></svg>' +
+      '<span class="font-mono text-[14px] text-neutre-700 text-center break-all">' + sym.id + '</span>';
+    hi.appendChild(d);
+  });
+
+  /* le sommaire, construit depuis les blocs eux-mêmes */
+  var som = document.getElementById('sommaire');
+  document.querySelectorAll('[data-bloc]').forEach(function(bloc, i){
+    var t = bloc.querySelector('h2');
+    var li = document.createElement('li');
+    var a = document.createElement('a');
+    a.href = '#' + bloc.id;
+    a.className = 'flex gap-2.5 py-1.5 text-teal-800 hover:text-teal-600 rounded';
+    a.innerHTML = '<span class="tnum text-neutre-600 font-semibold w-6 shrink-0">' +
+                  String(i+1).padStart(2,'0') + '</span><span>' + t.dataset.court + '</span>';
+    li.appendChild(a); som.appendChild(li);
+  });
+
+  /* ── contrôle des fontes : largeur rendue contre la pile de repli ──────── */
+  var d = document.getElementById('sonde-fonte');
+  if(d){
+    function larg(f, poids){
+      var s = document.createElement('span');
+      s.style.cssText = 'position:absolute;visibility:hidden;white-space:nowrap;font-size:64px;font-weight:' +
+                        (poids||400) + ';font-family:' + f;
+      s.textContent = 'Annuaire de la Cartoucherie';
+      document.body.appendChild(s);
+      var w = s.getBoundingClientRect().width; s.remove(); return Math.round(w*10)/10;
+    }
+    function rendre(){
+      var idx = document.getElementById('index-besoins');
+      var h = idx ? idx.offsetHeight : 0;
+      d.textContent =
+        'Fraunces ' + larg('"Fraunces",Georgia,serif', 600) +
+        ' | Georgia ' + larg('Georgia,serif', 600) +
+        ' | SourceSans3 ' + larg('"Source Sans 3",Arial', 400) +
+        ' | Arial ' + larg('Arial', 400) +
+        ' | PlexMono ' + larg('"IBM Plex Mono",serif', 400) +
+        ' | monoRepli ' + larg('"Zzz Pas Une Fonte",serif', 400) +
+        ' | index=' + h;
+      var m = document.getElementById('mesure-index');
+      if(m && h) m.textContent = h + ' px à 390 px de large, soit ' +
+        Math.round((1 - h/1100) * 100) + ' % de moins';
+    }
+    rendre();
+    if(document.fonts && document.fonts.ready) document.fonts.ready.then(rendre);
+    setTimeout(rendre, 1200);
+    setTimeout(rendre, 3500);
+  }
+})();
+</script>
+</body>
+</html>

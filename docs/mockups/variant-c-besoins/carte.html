@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="fr" data-theme="autumn">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Carte — Cartoucherie</title>
+  <meta name="description" content="Les membres de l'annuaire positionnés sur la carte du quartier de la Cartoucherie." />
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@5/themes.css" rel="stylesheet" type="text/css" />
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body class="min-h-screen bg-base-200">
+  <div class="drawer">
+    <input id="nav-drawer" type="checkbox" class="drawer-toggle" />
+    <div class="drawer-content min-h-screen flex flex-col bg-base-200">
+
+      <!-- Sticky chrome: navbar + category filter -->
+      <div class="sticky top-0 z-30 bg-base-100 border-b border-base-300">
+        <div class="navbar px-2">
+          <div class="navbar-start">
+            <label for="nav-drawer" class="btn btn-ghost btn-lg min-h-11 px-3" aria-label="Ouvrir les catégories">
+              <span class="text-2xl leading-none">☰</span>
+            </label>
+          </div>
+          <div class="navbar-center">
+            <a href="index.html" class="btn btn-ghost min-h-11 text-lg font-['Baloo_2'] font-bold normal-case gap-1">
+              <span aria-hidden="true">📍</span> Cartoucherie
+            </a>
+          </div>
+          <div class="navbar-end">
+            <a href="annuaire.html#all" class="btn btn-ghost btn-circle btn-lg min-h-11" aria-label="Voir l'annuaire complet">
+              <span class="text-2xl" aria-hidden="true">📖</span>
+            </a>
+          </div>
+        </div>
+        <div class="px-4 pt-2 pb-3 border-t border-base-300">
+          <p class="text-base font-semibold text-base-content/70 mb-2">Filtrer la carte par besoin</p>
+          <div id="map-chip-row" class="flex gap-2 overflow-x-auto pb-1 -mx-4 px-4 snap-x scroll-px-4">
+            <label class="btn btn-primary min-h-11 shrink-0 snap-start has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-primary has-[:focus-visible]:ring-offset-2" data-cat="all">
+              <input type="radio" name="mapcat" value="all" class="sr-only" checked />
+              Tout voir <span class="badge badge-neutral ml-1">9</span>
+            </label>
+            <label class="btn min-h-11 shrink-0 snap-start has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-primary has-[:focus-visible]:ring-offset-2" data-cat="sante-bien-etre">
+              <input type="radio" name="mapcat" value="sante-bien-etre" class="sr-only" />
+              🌿 Santé &amp; bien-être
+            </label>
+            <label class="btn min-h-11 shrink-0 snap-start has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-primary has-[:focus-visible]:ring-offset-2" data-cat="beaute-soins">
+              <input type="radio" name="mapcat" value="beaute-soins" class="sr-only" />
+              ✂️ Beauté &amp; soins
+            </label>
+            <label class="btn min-h-11 shrink-0 snap-start has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-primary has-[:focus-visible]:ring-offset-2" data-cat="artisanat-travaux">
+              <input type="radio" name="mapcat" value="artisanat-travaux" class="sr-only" />
+              🔨 Artisanat &amp; travaux
+            </label>
+            <label class="btn min-h-11 shrink-0 snap-start has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-primary has-[:focus-visible]:ring-offset-2" data-cat="alimentation-traiteur">
+              <input type="radio" name="mapcat" value="alimentation-traiteur" class="sr-only" />
+              🥖 Alimentation &amp; traiteur
+            </label>
+            <label class="btn min-h-11 shrink-0 snap-start has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-primary has-[:focus-visible]:ring-offset-2" data-cat="conseil-entreprise">
+              <input type="radio" name="mapcat" value="conseil-entreprise" class="sr-only" />
+              📊 Conseil &amp; entreprise
+            </label>
+            <label class="btn min-h-11 shrink-0 snap-start has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-primary has-[:focus-visible]:ring-offset-2" data-cat="numerique-creation">
+              <input type="radio" name="mapcat" value="numerique-creation" class="sr-only" />
+              💻 Numérique &amp; création
+            </label>
+            <label class="btn min-h-11 shrink-0 snap-start has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-primary has-[:focus-visible]:ring-offset-2" data-cat="enfance-education">
+              <input type="radio" name="mapcat" value="enfance-education" class="sr-only" />
+              🎒 Enfance &amp; éducation
+            </label>
+            <label class="btn min-h-11 shrink-0 snap-start has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-primary has-[:focus-visible]:ring-offset-2" data-cat="sport-mouvement">
+              <input type="radio" name="mapcat" value="sport-mouvement" class="sr-only" />
+              🏃 Sport &amp; mouvement
+            </label>
+            <label class="btn min-h-11 shrink-0 snap-start has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-primary has-[:focus-visible]:ring-offset-2" data-cat="art-culture">
+              <input type="radio" name="mapcat" value="art-culture" class="sr-only" />
+              🎨 Art &amp; culture
+            </label>
+            <label class="btn min-h-11 shrink-0 snap-start has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-primary has-[:focus-visible]:ring-offset-2" data-cat="services-domicile">
+              <input type="radio" name="mapcat" value="services-domicile" class="sr-only" />
+              🏠 Services à domicile
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main -->
+      <main class="flex-1 px-4 pt-4 pb-10 max-w-2xl w-full mx-auto">
+
+        <h1 id="map-heading" class="font-['Baloo_2'] font-bold text-2xl mb-1">9 membres sur la carte</h1>
+        <p class="text-base text-base-content/70 mb-3">Certains membres préfèrent ne pas apparaître ici — retrouvez-les tous dans <a href="annuaire.html#all" class="link link-primary">l'annuaire</a>.</p>
+
+        <!-- Legend: pin color = category, same code as everywhere else -->
+        <div class="flex flex-wrap gap-x-3 gap-y-1 mb-3 text-sm text-base-content/70">
+          <span class="flex items-center gap-1"><span class="inline-block size-3 rounded-full bg-primary" aria-hidden="true"></span> Santé &amp; bien-être</span>
+          <span class="flex items-center gap-1"><span class="inline-block size-3 rounded-full bg-secondary" aria-hidden="true"></span> Numérique &amp; création</span>
+          <span class="flex items-center gap-1"><span class="inline-block size-3 rounded-full bg-accent" aria-hidden="true"></span> Artisanat &amp; travaux</span>
+          <span class="flex items-center gap-1"><span class="inline-block size-3 rounded-full bg-error" aria-hidden="true"></span> Sport &amp; mouvement</span>
+          <span class="flex items-center gap-1"><span class="inline-block size-3 rounded-full bg-info" aria-hidden="true"></span> Conseil &amp; entreprise</span>
+          <span class="flex items-center gap-1"><span class="inline-block size-3 rounded-full bg-warning" aria-hidden="true"></span> Art &amp; culture</span>
+        </div>
+
+        <!-- Static styled map placeholder -->
+        <div class="relative w-full aspect-[3/4] rounded-box overflow-hidden border-2 border-base-300 shadow-sm">
+          <img src="https://picsum.photos/seed/cartoucherie-plan/800/1067" alt="" aria-hidden="true" class="absolute inset-0 w-full h-full object-cover grayscale contrast-125 opacity-30" />
+          <div class="absolute inset-0 bg-base-100/40"></div>
+
+          <span class="absolute left-[6%] top-[8%] text-xs font-semibold bg-base-100/90 px-2 py-1 rounded-box border border-base-300 whitespace-nowrap">Avenue de Grande-Bretagne</span>
+          <span class="absolute left-[6%] top-[68%] text-xs font-semibold bg-base-100/90 px-2 py-1 rounded-box border border-base-300 whitespace-nowrap">🚊 Tram — Cartoucherie</span>
+          <span class="absolute left-[36%] top-[45%] -translate-x-1/2 text-xs font-semibold bg-neutral text-neutral-content px-2 py-1 rounded-box whitespace-nowrap">La Halle</span>
+
+          <a href="membre.html" data-cats="sante-bien-etre" data-tip="Camille Roussel — Sophrologue" class="pin map-pin tooltip absolute btn btn-circle btn-primary min-h-11 w-11 left-[22%] top-[30%]" aria-label="Camille Roussel, sophrologue">🌿</a>
+          <a href="membre.html" data-cats="numerique-creation conseil-entreprise" data-tip="Yanis Belhadj — Développeur web" class="pin map-pin tooltip absolute btn btn-circle btn-secondary min-h-11 w-11 left-[48%] top-[52%]" aria-label="Yanis Belhadj, développeur web">💻</a>
+          <a href="membre.html" data-cats="numerique-creation art-culture" data-tip="Léa Fontaine — Graphiste" class="pin map-pin tooltip absolute btn btn-circle btn-secondary min-h-11 w-11 left-[78%] top-[18%]" aria-label="Léa Fontaine, graphiste">💻</a>
+          <a href="membre.html" data-cats="artisanat-travaux" data-tip="Marc Ollivier — Menuisier-ébéniste" class="pin map-pin tooltip absolute btn btn-circle btn-accent min-h-11 w-11 left-[12%] top-[85%]" aria-label="Marc Ollivier, menuisier-ébéniste">🔨</a>
+          <a href="membre.html" data-cats="sport-mouvement sante-bien-etre" data-tip="Thomas Vidal — Coach sportif" class="pin map-pin tooltip absolute btn btn-circle btn-error min-h-11 w-11 left-[64%] top-[58%]" aria-label="Thomas Vidal, coach sportif">🏃</a>
+          <a href="membre.html" data-cats="sante-bien-etre" data-tip="Sophie Arnaud — Naturopathe" class="pin map-pin tooltip absolute btn btn-circle btn-primary min-h-11 w-11 left-[88%] top-[66%]" aria-label="Sophie Arnaud, naturopathe">🌿</a>
+          <a href="membre.html" data-cats="sport-mouvement sante-bien-etre" data-tip="Inès Lacombe — Professeure de yoga" class="pin map-pin tooltip absolute btn btn-circle btn-error min-h-11 w-11 left-[38%] top-[70%]" aria-label="Inès Lacombe, professeure de yoga">🏃</a>
+          <a href="membre.html" data-cats="conseil-entreprise" data-tip="Pierre Delmas — Expert-comptable" class="pin map-pin tooltip absolute btn btn-circle btn-info min-h-11 w-11 left-[16%] top-[12%]" aria-label="Pierre Delmas, expert-comptable">📊</a>
+          <a href="membre.html" data-cats="art-culture numerique-creation" data-tip="Karim Ziani — Photographe" class="pin map-pin tooltip absolute btn btn-circle btn-warning min-h-11 w-11 left-[60%] top-[14%]" aria-label="Karim Ziani, photographe">🎨</a>
+        </div>
+
+        <h2 class="font-['Baloo_2'] font-bold text-xl mt-6 mb-2">Sur cette carte</h2>
+        <ul id="map-list" class="flex flex-col gap-2">
+          <li data-cats="sante-bien-etre" class="flex items-center gap-3 bg-base-100 rounded-box p-3 border border-base-300">
+            <span class="text-xl" aria-hidden="true">🌿</span>
+            <a href="membre.html" class="text-base font-semibold link link-hover flex-1">Camille Roussel</a>
+            <span class="text-base text-base-content/60">120 m</span>
+          </li>
+          <li data-cats="numerique-creation conseil-entreprise" class="flex items-center gap-3 bg-base-100 rounded-box p-3 border border-base-300">
+            <span class="text-xl" aria-hidden="true">💻</span>
+            <a href="membre.html" class="text-base font-semibold link link-hover flex-1">Yanis Belhadj</a>
+            <span class="text-base text-base-content/60">60 m</span>
+          </li>
+          <li data-cats="numerique-creation art-culture" class="flex items-center gap-3 bg-base-100 rounded-box p-3 border border-base-300">
+            <span class="text-xl" aria-hidden="true">💻</span>
+            <a href="membre.html" class="text-base font-semibold link link-hover flex-1">Léa Fontaine</a>
+            <span class="text-base text-base-content/60">340 m</span>
+          </li>
+          <li data-cats="artisanat-travaux" class="flex items-center gap-3 bg-base-100 rounded-box p-3 border border-base-300">
+            <span class="text-xl" aria-hidden="true">🔨</span>
+            <a href="membre.html" class="text-base font-semibold link link-hover flex-1">Marc Ollivier</a>
+            <span class="text-base text-base-content/60">800 m</span>
+          </li>
+          <li data-cats="sport-mouvement sante-bien-etre" class="flex items-center gap-3 bg-base-100 rounded-box p-3 border border-base-300">
+            <span class="text-xl" aria-hidden="true">🏃</span>
+            <a href="membre.html" class="text-base font-semibold link link-hover flex-1">Thomas Vidal</a>
+            <span class="text-base text-base-content/60">60 m</span>
+          </li>
+          <li data-cats="sante-bien-etre" class="flex items-center gap-3 bg-base-100 rounded-box p-3 border border-base-300">
+            <span class="text-xl" aria-hidden="true">🌿</span>
+            <a href="membre.html" class="text-base font-semibold link link-hover flex-1">Sophie Arnaud</a>
+            <span class="text-base text-base-content/60">450 m</span>
+          </li>
+          <li data-cats="sport-mouvement sante-bien-etre" class="flex items-center gap-3 bg-base-100 rounded-box p-3 border border-base-300">
+            <span class="text-xl" aria-hidden="true">🏃</span>
+            <a href="membre.html" class="text-base font-semibold link link-hover flex-1">Inès Lacombe</a>
+            <span class="text-base text-base-content/60">60 m</span>
+          </li>
+          <li data-cats="conseil-entreprise" class="flex items-center gap-3 bg-base-100 rounded-box p-3 border border-base-300">
+            <span class="text-xl" aria-hidden="true">📊</span>
+            <a href="membre.html" class="text-base font-semibold link link-hover flex-1">Pierre Delmas</a>
+            <span class="text-base text-base-content/60">150 m</span>
+          </li>
+          <li data-cats="art-culture numerique-creation" class="flex items-center gap-3 bg-base-100 rounded-box p-3 border border-base-300">
+            <span class="text-xl" aria-hidden="true">🎨</span>
+            <a href="membre.html" class="text-base font-semibold link link-hover flex-1">Karim Ziani</a>
+            <span class="text-base text-base-content/60">380 m</span>
+          </li>
+        </ul>
+        <div id="map-empty" hidden class="text-center py-10">
+          <p class="text-base text-base-content/70">Personne dans cette catégorie n'apparaît sur la carte pour l'instant. Ils sont peut-être dans <a href="annuaire.html#all" class="link link-primary">l'annuaire complet</a>.</p>
+        </div>
+      </main>
+
+      <!-- Footer -->
+      <footer class="footer sm:footer-horizontal bg-base-100 text-base-content border-t border-base-300 p-8 mt-auto">
+        <nav>
+          <h6 class="footer-title">Cartoucherie</h6>
+          <a class="link link-hover" href="#">À propos</a>
+          <a class="link link-hover" href="#">Confidentialité</a>
+          <a class="link link-hover" href="#">Mentions légales</a>
+          <a class="link link-hover" href="#">Avis : comment ça marche</a>
+        </nav>
+        <nav>
+          <h6 class="footer-title">Explorer</h6>
+          <a class="link link-hover" href="index.html">Accueil</a>
+          <a class="link link-hover" href="annuaire.html#all">L'annuaire complet</a>
+        </nav>
+        <p class="text-sm text-base-content/60 basis-full">Fait avec 🧡 par et pour le quartier de la Cartoucherie, Toulouse.</p>
+      </footer>
+    </div>
+
+    <!-- Drawer: categories as primary navigation -->
+    <div class="drawer-side z-40">
+      <label for="nav-drawer" aria-label="Fermer le menu" class="drawer-overlay"></label>
+      <div class="menu bg-base-100 min-h-full w-80 max-w-[85vw] p-4 gap-1">
+        <p class="font-['Baloo_2'] font-bold text-xl px-2 pb-2">📍 Cartoucherie</p>
+        <ul class="menu-vertical gap-1">
+          <li><a href="index.html" class="min-h-11 text-base">🏠 Je cherche… (accueil)</a></li>
+          <li><a href="annuaire.html#all" class="min-h-11 text-base">📖 Tout l'annuaire <span class="badge badge-sm ml-auto">12</span></a></li>
+          <li><a href="carte.html" class="min-h-11 text-base font-semibold">🗺️ Carte du quartier</a></li>
+          <li class="menu-title mt-2 text-base">Parcourir par besoin</li>
+          <li><a href="annuaire.html#sante-bien-etre" class="min-h-11 text-base">🌿 Santé &amp; bien-être <span class="badge badge-sm ml-auto">4</span></a></li>
+          <li><a href="annuaire.html#beaute-soins" class="min-h-11 text-base">✂️ Beauté &amp; soins <span class="badge badge-sm ml-auto">1</span></a></li>
+          <li><a href="annuaire.html#artisanat-travaux" class="min-h-11 text-base">🔨 Artisanat &amp; travaux <span class="badge badge-sm ml-auto">2</span></a></li>
+          <li><a href="annuaire.html#alimentation-traiteur" class="min-h-11 text-base">🥖 Alimentation &amp; traiteur <span class="badge badge-sm ml-auto">1</span></a></li>
+          <li><a href="annuaire.html#conseil-entreprise" class="min-h-11 text-base">📊 Conseil &amp; entreprise <span class="badge badge-sm ml-auto">2</span></a></li>
+          <li><a href="annuaire.html#numerique-creation" class="min-h-11 text-base">💻 Numérique &amp; création <span class="badge badge-sm ml-auto">3</span></a></li>
+          <li><a href="annuaire.html#enfance-education" class="min-h-11 text-base">🎒 Enfance &amp; éducation <span class="badge badge-sm badge-ghost ml-auto">0</span></a></li>
+          <li><a href="annuaire.html#sport-mouvement" class="min-h-11 text-base">🏃 Sport &amp; mouvement <span class="badge badge-sm ml-auto">2</span></a></li>
+          <li><a href="annuaire.html#art-culture" class="min-h-11 text-base">🎨 Art &amp; culture <span class="badge badge-sm ml-auto">2</span></a></li>
+          <li><a href="annuaire.html#services-domicile" class="min-h-11 text-base">🏠 Services à domicile <span class="badge badge-sm ml-auto">2</span></a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    var pins = document.querySelectorAll('.map-pin');
+    var listItems = document.querySelectorAll('#map-list li');
+    var chips = document.querySelectorAll('#map-chip-row label');
+    var heading = document.getElementById('map-heading');
+    var mapEmpty = document.getElementById('map-empty');
+    var mapList = document.getElementById('map-list');
+
+    function applyMapFilter(slug) {
+      chips.forEach(function (l) { l.classList.toggle('btn-primary', l.dataset.cat === slug); });
+      var visible = 0;
+      pins.forEach(function (p) {
+        var match = slug === 'all' || p.dataset.cats.split(' ').indexOf(slug) !== -1;
+        p.classList.toggle('opacity-20', !match);
+        p.classList.toggle('pointer-events-none', !match);
+        if (match) visible++;
+      });
+      listItems.forEach(function (li) {
+        var match = slug === 'all' || li.dataset.cats.split(' ').indexOf(slug) !== -1;
+        li.hidden = !match;
+      });
+      heading.textContent = (visible === 0 ? '0' : visible) + (visible === 1 ? ' membre sur la carte' : ' membres sur la carte');
+      mapEmpty.hidden = visible !== 0;
+      mapList.hidden = visible === 0;
+    }
+
+    document.getElementById('map-chip-row').addEventListener('change', function (e) {
+      if (e.target.name === 'mapcat') applyMapFilter(e.target.value);
+    });
+  </script>
+</body>
+</html>

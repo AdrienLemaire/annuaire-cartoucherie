@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="cartoucherie">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Annuaire de la Cartoucherie — je cherche quelqu'un du quartier</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,400..800,0..100&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+<style type="text/tailwindcss">
+@theme {
+  --font-display: "Fraunces", "Iowan Old Style", Georgia, serif;
+  --font-sans: "Source Sans 3", system-ui, sans-serif;
+
+  --color-teal-50:  oklch(98.0% 0.010 198);
+  --color-teal-100: oklch(95.5% 0.022 197);
+  --color-teal-200: oklch(91.0% 0.040 196);
+  --color-teal-300: oklch(84.0% 0.058 195);
+  --color-teal-400: oklch(74.0% 0.080 195);
+  --color-teal-500: oklch(63.0% 0.098 196);
+  --color-teal-600: oklch(53.0% 0.090 196);
+  --color-teal-700: oklch(44.0% 0.074 197);
+  --color-teal-800: oklch(35.0% 0.060 198);
+  --color-teal-900: oklch(27.0% 0.045 199);
+  --color-teal-950: oklch(19.0% 0.030 201);
+
+  --color-orange-50:  oklch(97.8% 0.018 75);
+  --color-orange-100: oklch(95.0% 0.042 72);
+  --color-orange-200: oklch(90.0% 0.078 68);
+  --color-orange-300: oklch(84.0% 0.110 64);
+  --color-orange-400: oklch(78.0% 0.145 60);
+  --color-orange-500: oklch(72.0% 0.170 56);
+  --color-orange-600: oklch(65.0% 0.178 50);
+  --color-orange-700: oklch(56.0% 0.172 44);
+  --color-orange-800: oklch(46.0% 0.140 40);
+  --color-orange-900: oklch(37.0% 0.108 38);
+  --color-orange-950: oklch(27.0% 0.078 36);
+
+  --color-sauge-50:  oklch(97.5% 0.012 170);
+  --color-sauge-100: oklch(94.5% 0.026 170);
+  --color-sauge-200: oklch(89.5% 0.050 170);
+  --color-sauge-300: oklch(82.0% 0.074 168);
+  --color-sauge-400: oklch(73.0% 0.100 164);
+  --color-sauge-500: oklch(64.0% 0.120 160);
+  --color-sauge-600: oklch(54.5% 0.122 156);
+  --color-sauge-700: oklch(45.5% 0.108 152);
+  --color-sauge-800: oklch(37.0% 0.088 150);
+  --color-sauge-900: oklch(29.0% 0.066 152);
+  --color-sauge-950: oklch(20.5% 0.044 156);
+
+  --color-sable-50:  oklch(98.2% 0.010 95);
+  --color-sable-100: oklch(96.0% 0.024 93);
+  --color-sable-200: oklch(92.5% 0.044 91);
+  --color-sable-300: oklch(88.0% 0.064 90);
+  --color-sable-400: oklch(82.0% 0.090 89);
+  --color-sable-500: oklch(76.0% 0.115 88);
+  --color-sable-600: oklch(68.0% 0.118 86);
+  --color-sable-700: oklch(57.5% 0.105 83);
+  --color-sable-800: oklch(47.0% 0.088 80);
+  --color-sable-900: oklch(37.5% 0.068 78);
+  --color-sable-950: oklch(27.0% 0.048 75);
+
+  --color-neutre-50:  oklch(98.6% 0.004 200);
+  --color-neutre-100: oklch(97.2% 0.006 199);
+  --color-neutre-200: oklch(94.4% 0.008 198);
+  --color-neutre-300: oklch(89.8% 0.010 198);
+  --color-neutre-400: oklch(79.5% 0.013 197);
+  --color-neutre-500: oklch(66.5% 0.016 197);
+  --color-neutre-600: oklch(54.5% 0.019 198);
+  --color-neutre-700: oklch(44.0% 0.022 199);
+  --color-neutre-800: oklch(34.0% 0.025 200);
+  --color-neutre-900: oklch(25.5% 0.028 201);
+  --color-neutre-950: oklch(17.5% 0.030 202);
+
+  --color-rouge-50:  oklch(97.6% 0.014 25);
+  --color-rouge-100: oklch(94.6% 0.029 24);
+  --color-rouge-600: oklch(54.0% 0.205 24);
+  --color-rouge-700: oklch(46.0% 0.180 22);
+  --color-rouge-800: oklch(38.0% 0.145 20);
+
+  --shadow-carte:       0 1px 2px oklch(17.5% .03 202/.05), 0 4px 12px -2px oklch(17.5% .03 202/.09);
+  --shadow-carte-hover: 0 2px 4px oklch(17.5% .03 202/.06), 0 14px 32px -8px oklch(17.5% .03 202/.16);
+  --shadow-flottant:    0 4px 8px oklch(17.5% .03 202/.06), 0 28px 64px -20px oklch(17.5% .03 202/.28);
+  --shadow-cta:         0 2px 4px oklch(37% .108 38/.28), 0 10px 24px -8px oklch(37% .108 38/.38);
+  --shadow-cta-press:   0 1px 2px oklch(37% .108 38/.34);
+}
+
+[data-theme="cartoucherie"] {
+  color-scheme: light;
+  --color-base-100: #ffffff;
+  --color-base-200: oklch(97.2% 0.006 199);
+  --color-base-300: oklch(94.4% 0.008 198);
+  --color-base-content: oklch(25.5% 0.028 201);
+  --color-primary: oklch(44.0% 0.074 197);
+  --color-primary-content: #ffffff;
+  --color-secondary: oklch(94.5% 0.026 170);
+  --color-secondary-content: oklch(19.0% 0.030 201);
+  --color-accent: oklch(72.0% 0.170 56);
+  --color-accent-content: oklch(19.0% 0.030 201);
+  --color-neutral: oklch(25.5% 0.028 201);
+  --color-neutral-content: oklch(98.6% 0.004 200);
+  --color-info: oklch(53.0% 0.090 196);
+  --color-info-content: #ffffff;
+  --color-success: oklch(45.5% 0.108 152);
+  --color-success-content: #ffffff;
+  --color-warning: oklch(76.0% 0.115 88);
+  --color-warning-content: oklch(19.0% 0.030 201);
+  --color-error: oklch(54.0% 0.205 24);
+  --color-error-content: #ffffff;
+  --radius-selector: 2rem;
+  --radius-field: 0.75rem;
+  --radius-box: 1.25rem;
+  --size-selector: 0.28125rem;
+  --size-field: 0.28125rem;
+  --border: 1px;
+  --depth: 1;
+  --noise: 0;
+}
+
+/* ─────────── dégradés sanctionnés ─────────── */
+:root{
+  --gradient-aube:   linear-gradient(168deg, var(--color-teal-50) 0%, #ffffff 44%, var(--color-orange-50) 100%);
+  --gradient-colly:  radial-gradient(120% 90% at 30% 15%, var(--color-sable-100), var(--color-sauge-100) 62%, var(--color-teal-100));
+  --gradient-filet:  linear-gradient(90deg, var(--color-teal-600), var(--color-sauge-500) 46%, var(--color-orange-500));
+}
+
+html{ -webkit-text-size-adjust:100%; }
+body{ font-family:var(--font-sans); font-size:17px; line-height:1.55; color:var(--color-neutre-900); background:#fff; }
+h1,h2,h3,.ff{ font-family:var(--font-display); font-variation-settings:"SOFT" 55,"WONK" 0; font-weight:600; letter-spacing:-0.015em; }
+
+:where(a,button,input,summary,[tabindex]):focus-visible{
+  outline:2px solid var(--color-teal-600); outline-offset:2px; border-radius:6px;
+}
+
+.filet{ background-image:var(--gradient-filet); }
+.aube{ background-image:var(--gradient-aube); }
+
+/* la carte : élévation 1 */
+.carte{ box-shadow: var(--shadow-carte), inset 0 0 0 1px oklch(17.5% .03 202/.07); }
+.carte:hover{ box-shadow: var(--shadow-carte-hover), inset 0 0 0 1px oklch(17.5% .03 202/.07); }
+.flottant{ box-shadow: var(--shadow-flottant), inset 0 0 0 1px oklch(17.5% .03 202/.07); }
+
+/* le CTA orange */
+.cta{
+  background-image: linear-gradient(180deg, var(--color-orange-400), var(--color-orange-500) 55%, var(--color-orange-600));
+  color: var(--color-teal-950);
+  box-shadow: var(--shadow-cta), inset 0 0 0 1px oklch(56% .172 44/.6);
+}
+.cta:hover{ background-image: linear-gradient(180deg, var(--color-orange-300), var(--color-orange-400) 55%, var(--color-orange-500)); }
+.cta:active{ background-image: linear-gradient(180deg, var(--color-orange-500), var(--color-orange-600)); transform:translateY(1px); box-shadow:var(--shadow-cta-press), inset 0 0 0 1px oklch(56% .172 44/.6); }
+
+/* ─────────── le motif ventouse : trois cercles concentriques ─────────── */
+.ventouses{
+  background-image:
+    radial-gradient(circle at 50% 50%, transparent 0 12.5px, var(--v) 12.5px 14px, transparent 14px),
+    radial-gradient(circle at 50% 50%, transparent 0 7px,  var(--v) 7px 8.4px,  transparent 8.4px),
+    radial-gradient(circle at 50% 50%, var(--v) 0 2.6px, transparent 2.6px);
+  background-size:56px 56px;
+  background-position:0 0;
+  --v: oklch(68% .118 86 / .26);
+}
+
+/* ─────────── les croquis papier, fondus dans le panneau ─────────── */
+.croquis{ mix-blend-mode:multiply; filter:grayscale(1) contrast(1.16) brightness(1.07); }
+
+/* la pastille ventouse en CSS pur, pour les puces et les numéros */
+.pastille{
+  display:grid; place-items:center; flex:none;
+  border-radius:9999px;
+  box-shadow: inset 0 0 0 1.5px var(--color-sauge-400), 0 0 0 4px var(--color-sauge-50), 0 0 0 5.5px var(--color-sauge-300);
+}
+
+.arche{ border-radius:999px 999px 22px 22px; }
+
+.chip{ background:var(--color-sauge-100); color:var(--color-sauge-800); }
+
+/* la tuile « Je cherche… » */
+.tuile{ background:#fff; box-shadow: inset 0 0 0 1.5px var(--color-neutre-200); transition:.18s; }
+.tuile:hover{ box-shadow: inset 0 0 0 1.5px var(--color-sauge-300), var(--shadow-carte); }
+.tuile[aria-pressed="true"]{ background:var(--color-sauge-50); box-shadow: inset 0 0 0 2px var(--color-orange-500); }
+
+@media (min-width:1024px){
+  [data-colly]{ width:186px !important; right:14px !important; bottom:calc(100% - 42px) !important; }
+}
+@media (prefers-reduced-motion: reduce){ *{ transition:none !important; animation:none !important; } }
+</style>
+</head>
+
+<body class="bg-white antialiased">
+
+<a href="#annuaire" class="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50 focus:bg-white focus:px-4 focus:py-3 focus:rounded-xl focus:shadow-carte-hover">Aller à la liste des voisins</a>
+
+<!-- ─────────── jeu d'icônes ─────────── -->
+<svg width="0" height="0" class="hidden" aria-hidden="true" focusable="false"><defs>
+<g id="ic" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></g>
+<symbol id="i-loupe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m16.6 16.6 4.4 4.4"/></symbol>
+<symbol id="i-tel" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6.6 3.5h2.9l1.5 4-2 1.4a12.4 12.4 0 0 0 6.1 6.1l1.4-2 4 1.5v2.9a2 2 0 0 1-2.2 2A16.6 16.6 0 0 1 4.6 5.7a2 2 0 0 1 2-2.2Z"/></symbol>
+<symbol id="i-mail" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="m3.8 7 8.2 5.8L20.2 7"/></symbol>
+<symbol id="i-globe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="12" r="8.6"/><path d="M3.4 12h17.2M12 3.4c4.4 4.8 4.4 12.4 0 17.2-4.4-4.8-4.4-12.4 0-17.2Z"/></symbol>
+<symbol id="i-insta" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><rect x="3.2" y="3.2" width="17.6" height="17.6" rx="5.2"/><circle cx="12" cy="12" r="4.1"/><circle cx="17.2" cy="6.8" r=".95" fill="currentColor" stroke="none"/></symbol>
+<symbol id="i-coeur" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20.4C10.3 19.2 4.2 15 4.2 10.6A4.4 4.4 0 0 1 12 7.8a4.4 4.4 0 0 1 7.8 2.8c0 4.4-6.1 8.6-7.8 9.8Z"/></symbol>
+<symbol id="i-pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21.2s7.2-6.6 7.2-11.3a7.2 7.2 0 1 0-14.4 0C4.8 14.6 12 21.2 12 21.2Z"/><circle cx="12" cy="9.8" r="2.7"/></symbol>
+<symbol id="i-etoile" viewBox="0 0 24 24"><path fill="currentColor" d="m12 3.4 2.7 5.5 6 .9-4.3 4.2 1 6-5.4-2.8-5.4 2.8 1-6L3.3 9.8l6-.9z"/></symbol>
+<symbol id="i-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9.5 5 7 7-7 7"/></symbol>
+<symbol id="i-retour" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M19.5 12H5M11 6l-6 6 6 6"/></symbol>
+<symbol id="i-dl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.6v11M7.4 10.2 12 14.8l4.6-4.6M4.4 19.6h15.2"/></symbol>
+<symbol id="i-signal" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5.8 21.2V3.4M5.8 4h11.4l-2.3 4.3 2.3 4.3H5.8"/></symbol>
+<symbol id="i-plume" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m4.5 19.5 4.2-.8L20.1 7.4a2.35 2.35 0 0 0-3.3-3.3L5.3 15.3l-.8 4.2Z"/><path d="m15.3 5.5 3.3 3.3"/></symbol>
+<symbol id="i-fermer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="m6.5 6.5 11 11M17.5 6.5l-11 11"/></symbol>
+<!-- catégories -->
+<symbol id="c-sante" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4.6 19.6C3.4 11 9.6 4.4 19.8 3.8c1 10.2-5.4 16.4-14 15.4Z"/><path d="M4.6 19.6 13 11.2"/></symbol>
+<symbol id="c-beaute" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="6.6" cy="17.8" r="2.6"/><circle cx="6.6" cy="6.2" r="2.6"/><path d="M8.6 7.9 20 19.4M8.6 16.1 20 4.6"/></symbol>
+<symbol id="c-artisanat" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m14.6 6.4-11 11 3 3 11-11"/><path d="m13.2 8.2 3 3"/><path d="m15 3.4 5.6 5.6-2.4 2.4-5.6-5.6z"/></symbol>
+<symbol id="c-alimentation" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3.8 14.6c0-4.4 3.7-7.8 8.2-7.8s8.2 3.4 8.2 7.8v1.6a2.4 2.4 0 0 1-2.4 2.4H6.2a2.4 2.4 0 0 1-2.4-2.4Z"/><path d="M9 8.2 8.2 17M12.6 7.4 12 17M16.2 9 15.8 17"/></symbol>
+<symbol id="c-conseil" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3.8 20.2h16.4"/><path d="M6.6 20.2v-6.6M11.4 20.2V8.4M16.2 20.2V4.6"/></symbol>
+<symbol id="c-numerique" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="2.8" y="4" width="18.4" height="12.6" rx="2.4"/><path d="M9.4 20.4h5.2M12 16.6v3.8"/><path d="m10.2 8.4-1.8 1.9 1.8 1.9M13.8 8.4l1.8 1.9-1.8 1.9"/></symbol>
+<symbol id="c-enfance" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M7.4 8.2V6.6a4.6 4.6 0 0 1 9.2 0v1.6"/><rect x="3.8" y="8.2" width="16.4" height="12" rx="3.2"/><path d="M9.4 14.2h5.2"/></symbol>
+<symbol id="c-sport" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="15.4" cy="4.9" r="2.1"/><path d="m12.4 21 2.2-6-3.6-2.6.9-4.8 3 3 3.1 1"/><path d="m8.2 21 2.6-5.2M11.9 8.6 8.4 10"/></symbol>
+<symbol id="c-art" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20.8a8.8 8.8 0 1 1 8.8-8.8c0 2-1.7 2.6-3.1 2.6h-1.3a2.3 2.3 0 0 0-2.3 2.3c0 .8.5 1.2.5 2 0 1.1-.9 1.9-2.6 1.9Z"/><circle cx="8" cy="9.4" r="1.1" fill="currentColor" stroke="none"/><circle cx="12.4" cy="7.4" r="1.1" fill="currentColor" stroke="none"/><circle cx="16.3" cy="9.8" r="1.1" fill="currentColor" stroke="none"/></symbol>
+<symbol id="c-domicile" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m3.4 11.2 8.6-7.4 8.6 7.4"/><path d="M6.2 9.6v10.6h11.6V9.6"/><path d="M10 20.2v-5.2h4v5.2"/></symbol>
+<symbol id="i-ventouse" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.1"><circle cx="16" cy="16" r="13.2"/><circle cx="16" cy="16" r="7.4"/><circle cx="16" cy="16" r="2.2" fill="currentColor" stroke="none"/></symbol>
+</defs></svg>
+
+<!-- ═══════════ en-tête ═══════════ -->
+<header class="sticky top-0 z-40 bg-white/95 backdrop-blur-sm">
+  <div class="mx-auto max-w-[1160px] px-5 h-16 flex items-center justify-between gap-3">
+    <a href="index.html" class="flex items-center gap-2.5 -ml-0.5" aria-label="Annuaire de la Cartoucherie, accueil">
+      <svg class="w-8 h-8 text-teal-700 shrink-0" aria-hidden="true"><use href="#i-ventouse"/></svg>
+      <span class="leading-none">
+        <span class="block text-[11.5px] uppercase tracking-[.18em] text-neutre-700 font-semibold">Annuaire de</span>
+        <span class="ff block text-[20px] text-teal-900 leading-tight">la Cartoucherie</span>
+      </span>
+    </a>
+    <a href="#rejoindre" class="hidden sm:inline-flex items-center gap-1.5 min-h-[44px] px-4 rounded-full text-[16px] font-semibold text-teal-700 hover:bg-teal-50">
+      Je veux y figurer
+    </a>
+  </div>
+  <div class="filet h-[3px]"></div>
+</header>
+
+<main>
+
+<!-- ═══════════ héros ═══════════ -->
+<section class="aube relative overflow-x-clip pt-9 pb-14 lg:pt-32 lg:pb-24">
+  <div class="pointer-events-none absolute inset-x-0 bottom-0 h-16 lg:h-28" style="background:linear-gradient(to bottom, transparent, #fff)"></div>
+  <div class="mx-auto max-w-[1160px] px-5">
+    <div class="lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(0,440px)] lg:gap-16 lg:items-center">
+      <div>
+        <p class="flex items-center gap-2 text-[16px] font-semibold uppercase tracking-[.15em] text-sauge-800">
+          <span class="w-6 h-px bg-sauge-400"></span>Toulouse · 31300
+        </p>
+        <h1 class="ff mt-3 text-[54px] sm:text-[68px] lg:text-[86px] leading-[0.92] text-teal-900">
+          Je&nbsp;cherche<span class="text-orange-800">…</span>
+        </h1>
+        <p class="mt-5 text-[19px] lg:text-[21px] leading-relaxed text-neutre-800 max-w-[31ch] lg:max-w-[38ch]">
+          quelqu'un du quartier qui fait ça. Douze voisins, artisans et
+          indépendants — et le numéro qui va avec.
+        </p>
+      </div>
+
+      <!-- la barre de recherche, et Colly perchée sur son bord -->
+      <div class="relative mt-[132px] lg:mt-0">
+        <img src="../../_shared/colly/colly-couleur.png"
+             alt="Colly, la créature des Halles de la Cartoucherie, agrippée au bord de la barre de recherche"
+             width="400" height="473"
+             class="pointer-events-none select-none absolute h-auto"
+             style="bottom:calc(100% - 34px); right:6px; width:140px"
+             data-colly>
+        <p class="pointer-events-none absolute left-0 w-[46%] text-right" style="bottom:calc(100% + 18px)">
+          <span class="ff block text-[18px] leading-tight text-teal-800">Dites-lui ce qu'il vous faut.</span>
+          <svg viewBox="0 0 74 46" class="ml-auto mt-1 w-[64px] h-auto text-sauge-500" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+            <path d="M3 5c14 26 36 34 62 33" stroke-dasharray="1 0"/>
+            <path d="M56 30.5 65.6 38 57 44.5"/>
+          </svg>
+        </p>
+        <form id="recherche" class="flottant relative rounded-[22px] bg-white p-3.5" role="search" onsubmit="return false">
+          <label for="q" class="block px-1 pb-1.5 text-[16px] font-semibold text-neutre-800">Un métier, un prénom, un besoin</label>
+          <div class="flex gap-2">
+            <div class="relative flex-1 min-w-0">
+              <svg class="w-5 h-5 absolute left-3.5 top-1/2 -translate-y-1/2 text-teal-600 pointer-events-none" aria-hidden="true"><use href="#i-loupe"/></svg>
+              <input id="q" type="search" autocomplete="off" placeholder="électricien, yoga…"
+                     class="w-full min-h-[52px] pl-11 pr-3 rounded-xl bg-white text-[17px] text-neutre-900 placeholder:text-neutre-600"
+                     style="box-shadow: inset 0 0 0 1.5px var(--color-neutre-500)">
+            </div>
+            <button type="submit" class="cta shrink-0 inline-flex items-center justify-center min-h-[52px] px-5 rounded-xl text-[17px] font-bold tracking-tight transition">
+              Trouver
+            </button>
+          </div>
+          <p class="mt-3 px-1 text-[16px] text-neutre-700">
+            Rien n'est envoyé à un serveur : le calcul reste sur votre téléphone.
+          </p>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ les besoins ═══════════ -->
+<section class="mx-auto max-w-[1160px] px-5 pt-2 pb-10" aria-labelledby="t-besoins">
+  <h2 id="t-besoins" class="ff text-[30px] text-teal-900">Ce qu'on cherche le plus</h2>
+  <div class="filet h-[3px] w-16 rounded-full mt-2.5 mb-6"></div>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+    <button type="button" class="tuile group text-left rounded-[18px] p-4 flex items-start gap-3.5 min-h-[88px]" aria-pressed="false" data-cats="sante-bien-etre">
+      <span class="pastille w-11 h-11 bg-sauge-100 text-sauge-800"><svg class="w-6 h-6" aria-hidden="true"><use href="#c-sante"/></svg></span>
+      <span class="min-w-0">
+        <span class="ff block text-[19px] leading-snug text-teal-900">Retrouver l'équilibre</span>
+        <span class="block text-[16px] text-neutre-700">stress, sommeil, énergie · 4 voisins</span>
+      </span>
+    </button>
+
+    <button type="button" class="tuile group text-left rounded-[18px] p-4 flex items-start gap-3.5 min-h-[88px]" aria-pressed="false" data-cats="artisanat-travaux services-domicile">
+      <span class="pastille w-11 h-11 bg-sauge-100 text-sauge-800"><svg class="w-6 h-6" aria-hidden="true"><use href="#c-artisanat"/></svg></span>
+      <span class="min-w-0">
+        <span class="ff block text-[19px] leading-snug text-teal-900">Un coup de main chez moi</span>
+        <span class="block text-[16px] text-neutre-700">travaux, dépannage, à domicile · 3 voisins</span>
+      </span>
+    </button>
+
+    <button type="button" class="tuile group text-left rounded-[18px] p-4 flex items-start gap-3.5 min-h-[88px]" aria-pressed="false" data-cats="alimentation-traiteur">
+      <span class="pastille w-11 h-11 bg-sauge-100 text-sauge-800"><svg class="w-6 h-6" aria-hidden="true"><use href="#c-alimentation"/></svg></span>
+      <span class="min-w-0">
+        <span class="ff block text-[19px] leading-snug text-teal-900">Manger bon sans cuisiner</span>
+        <span class="block text-[16px] text-neutre-700">traiteur, plats à emporter · 1 voisine</span>
+      </span>
+    </button>
+
+    <button type="button" class="tuile group text-left rounded-[18px] p-4 flex items-start gap-3.5 min-h-[88px]" aria-pressed="false" data-cats="sport-mouvement">
+      <span class="pastille w-11 h-11 bg-sauge-100 text-sauge-800"><svg class="w-6 h-6" aria-hidden="true"><use href="#c-sport"/></svg></span>
+      <span class="min-w-0">
+        <span class="ff block text-[19px] leading-snug text-teal-900">Me remettre en mouvement</span>
+        <span class="block text-[16px] text-neutre-700">coaching, yoga · 2 voisins</span>
+      </span>
+    </button>
+
+    <button type="button" class="tuile group text-left rounded-[18px] p-4 flex items-start gap-3.5 min-h-[88px]" aria-pressed="false" data-cats="numerique-creation art-culture">
+      <span class="pastille w-11 h-11 bg-sauge-100 text-sauge-800"><svg class="w-6 h-6" aria-hidden="true"><use href="#c-numerique"/></svg></span>
+      <span class="min-w-0">
+        <span class="ff block text-[19px] leading-snug text-teal-900">Exister sur internet</span>
+        <span class="block text-[16px] text-neutre-700">site, logo, photos · 3 voisins</span>
+      </span>
+    </button>
+
+    <button type="button" class="tuile group text-left rounded-[18px] p-4 flex items-start gap-3.5 min-h-[88px]" aria-pressed="false" data-cats="conseil-entreprise">
+      <span class="pastille w-11 h-11 bg-sauge-100 text-sauge-800"><svg class="w-6 h-6" aria-hidden="true"><use href="#c-conseil"/></svg></span>
+      <span class="min-w-0">
+        <span class="ff block text-[19px] leading-snug text-teal-900">Y voir clair dans mes papiers</span>
+        <span class="block text-[16px] text-neutre-700">comptabilité, conseil · 2 voisins</span>
+      </span>
+    </button>
+  </div>
+</section>
+
+<!-- ═══════════ les voisins ═══════════ -->
+<section id="annuaire" class="mx-auto max-w-[1160px] px-5 pt-4 pb-14" aria-labelledby="t-voisins">
+  <div class="flex flex-wrap items-end justify-between gap-x-4 gap-y-2">
+    <h2 id="t-voisins" class="ff text-[30px] text-teal-900">Vos voisins</h2>
+    <p id="compteur" class="text-[16px] text-neutre-700" aria-live="polite">12 voisins et voisines</p>
+  </div>
+  <div class="filet h-[3px] w-16 rounded-full mt-2.5 mb-6"></div>
+
+  <button type="button" id="raz" class="hidden mb-5 items-center gap-2 min-h-[44px] px-4 rounded-full text-[16px] font-semibold text-teal-700 bg-teal-50 hover:bg-teal-100">
+    <svg class="w-4 h-4" aria-hidden="true"><use href="#i-fermer"/></svg>
+    Voir les 12 voisins
+  </button>
+
+  <ul id="liste" class="grid grid-cols-1 md:grid-cols-2 gap-4 list-none p-0 m-0">
+
+    <li data-m data-cat="sante-bien-etre" data-g="f" data-txt="camille roussel sophrologue stress sommeil examens seance individuelle atelier collectif visio sante bien-etre">
+      <article class="carte relative flex min-h-[152px] rounded-[20px] bg-white overflow-hidden transition">
+        <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Portrait de Camille Roussel" width="128" height="128" loading="eager"
+             class="w-[116px] shrink-0 self-stretch object-cover" style="object-position:50% 25%">
+        <div class="flex-1 min-w-0 py-4 pl-4 pr-1 flex flex-col justify-center gap-1">
+          <h3 class="ff text-[20px] leading-tight text-teal-900"><a href="membre.html" class="before:absolute before:inset-0 before:content-['']">Camille Roussel</a></h3>
+          <p class="text-[17px] text-neutre-800 leading-snug">Sophrologue</p>
+          <p class="flex flex-wrap items-center gap-x-3 gap-y-1 text-[16px] text-neutre-700 mt-0.5">
+            <span class="inline-flex items-center gap-1"><svg class="w-4 h-4 text-sable-700" aria-hidden="true"><use href="#i-etoile"/></svg>4,8 <span class="sr-only">sur 5,</span><span class="text-neutre-600">(12)</span></span>
+            <span class="inline-flex items-center gap-1"><svg class="w-4 h-4 text-teal-600" aria-hidden="true"><use href="#i-pin"/></svg>120 m</span>
+          </p>
+        </div>
+        <a href="tel:+33612345678" class="relative z-10 shrink-0 self-center mr-2.5 grid place-items-center w-11 h-11 rounded-full text-teal-700 bg-teal-50 hover:bg-teal-100" aria-label="Appeler Camille Roussel au 06 12 34 56 78">
+          <svg class="w-5 h-5" aria-hidden="true"><use href="#i-tel"/></svg>
+        </a>
+      </article>
+    </li>
+
+    <li data-m data-cat="numerique-creation conseil-entreprise" data-g="h" data-txt="yanis belhadj developpeur web independant site vitrine boutique en ligne depannage maintenance numerique creation conseil entreprise internet">
+      <article class="carte relative flex min-h-[152px] rounded-[20px] bg-white overflow-hidden transition">
+        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Portrait de Yanis Belhadj" width="128" height="128" loading="eager"
+             class="w-[116px] shrink-0 self-stretch object-cover" style="object-position:50% 25%">
+        <div class="flex-1 min-w-0 py-4 pl-4 pr-1 flex flex-col justify-center gap-1">
+          <h3 class="ff text-[20px] leading-tight text-teal-900"><a href="membre.html" class="before:absolute before:inset-0 before:content-['']">Yanis Belhadj</a></h3>
+          <p class="text-[17px] text-neutre-800 leading-snug">Développeur web indépendant</p>
+          <p class="flex flex-wrap items-center gap-x-3 gap-y-1 text-[16px] text-neutre-700 mt-0.5">
+            <span class="inline-flex items-center gap-1"><svg class="w-4 h-4 text-sable-700" aria-hidden="true"><use href="#i-etoile"/></svg>5,0 <span class="sr-only">sur 5,</span><span class="text-neutre-600">(7)</span></span>
+            <span class="inline-flex items-center gap-1"><svg class="w-4 h-4 text-teal-600" aria-hidden="true"><use href="#i-pin"/></svg>60 m</span>
+          </p>
+        </div>
+        <a href="tel:+33623456789" class="relative z-10 shrink-0 self-center mr-2.5 grid place-items-center w-11 h-11 rounded-full text-teal-700 bg-teal-50 hover:bg-teal-100" aria-label="Appeler Yanis Belhadj au 06 23 45 67 89">
+          <svg class="w-5 h-5" aria-hidden="true"><use href="#i-tel"/></svg>
+        </a>
+      </article>
+    </li>
+
+    <li data-m data-cat="numerique-creation art-culture" data-g="f" data-txt="lea fontaine graphiste illustratrice logo identite affiches illustration numerique creation art culture dessin">
+      <article class="carte relative flex min-h-[152px] rounded-[20px] bg-white overflow-hidden transition">
+        <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Portrait de Léa Fontaine" width="128" height="128" loading="lazy"
+             class="w-[116px] shrink-0 self-stretch object-cover" style="object-position:50% 25%">
+        <div class="flex-1 min-w-0 py-4 pl-4 pr-1 flex flex-col justify-center gap-1">
+          <h3 class="ff text-[20px] leading-tight text-teal-900"><a href="membre.html" class="before:absolute before:inset-0 before:content-['']">Léa Fontaine</a></h3>
+          <p class="text-[17px] text-neutre-800 leading-snug">Graphiste &amp; illustratrice</p>
+          <p class="flex flex-wrap items-center gap-x-3 gap-y-1 text-[16px] text-neutre-700 mt-0.5">
+            <span class="inline-flex items-center gap-1"><svg class="w-4 h-4 text-sable-700" aria-hidden="true"><use href="#i-etoile"/></svg>4,9 <span class="sr-only">sur 5,</span><span class="text-neutre-600">(15)</span></span>
+            <span class="inline-flex items-center gap-1"><svg class="w-4 h-4 text-teal-600" aria-hidden="true"><use href="#i-pin"/></svg>340 m</span>
+          </p>
+        </div>
+        <a href="tel:+33634567890" class="relative z-10 shrink-0 self-center mr-2.5 grid place-items-center w-11 h-11 rounded-full text-teal-700 bg-teal-50 hover:bg-teal-100" aria-label="Appeler Léa Fontaine au 06 34 56 78 90">
+          <svg class="w-5 h-5" aria-hidden="true"><use href="#i-tel"/></svg>
+        </a>
+      </article>
+    </li>
+
+    <li data-m data-cat="artisanat-travaux" data-g="h" data-txt="marc ollivier menuisier ebeniste meuble sur mesure agencement reparation bibliotheque dressing artisanat travaux bois">
+      <article class="carte relative flex min-h-[152px] rounded-[20px] bg-white overflow-hidden transition">
+        <img src="https://randomuser.me/api/portraits/men/75.jpg" alt="Portrait de Marc Ollivier" width="128" height="128" loading="lazy"
+             class="w-[116px] shrink-0 self-stretch object-cover" style="object-position:50% 25%">
+        <div class="flex-1 min-w-0 py-4 pl-4 pr-1 flex flex-col justify-center gap-1">
+          <h3 class="ff text-[20px] leading-tight text-teal-900"><a href="membre.html" class="before:absolute before:inset-0 before:content-['']">Marc Ollivier</a></h3>
+          <p class="text-[17px] text-neutre-800 leading-snug">Menuisier-ébéniste</p>
+          <p class="flex flex-wrap items-center gap-x-3 gap-y-1 text-[16px] text-neutre-700 mt-0.5">
+            <span class="inline-flex items-center gap-1"><svg class="w-4 h-4 text-sable-700" aria-hidden="true"><use href="#i-etoile"/></svg>4,7 <span class="sr-only">sur 5,</span><span class="text-neutre-600">(9)</span></span>
+            <span class="inline-flex items-center gap-1"><svg class="w-4 h-4 text-teal-600" aria-hidden="true"><use href="#i-pin"/></svg>800 m</span>
+          </p>
+        </div>
+        <a href="tel:+33645678901" class="relative z-10 shrink-0 self-center mr-2.5 grid place-items-center w-11 h-11 rounded-full text-teal-700 bg-teal-50 hover:bg-teal-100" aria-label="Appeler Marc Ollivier au 06 45 67 89 01">
+          <svg class="w-5 h-5" aria-hidden="true"><use href="#i-tel"/></svg>
+        </a>
+      </article>
+    </li>
+
+    <li data-m data-cat="alimentation-traiteur" data-g="f" data-txt="nadia berrada traiteur cuisine maison plats marocains a emporter buffet livraison quartier alimentation gateaux manger">
+      <article class="carte relative flex min-h-[152px] rounded-[20px] bg-white overflow-hidden transition">
+        <img src="https://randomuser.me/api/portraits/women/57.jpg" alt="Portrait de Nadia Berrada" width="128" height="128" loading="lazy"
+             class="w-[116px] shrink-0 self-stretch object-cover" style="object-position:50% 25%">
+        <div class="flex-1 min-w-0 py-4 pl-4 pr-1 flex flex-col justify-center gap-1">
+          <h3 class="ff text-[20px] leading-tight text-teal-900"><a href="membre.html" class="before:absolute before:inset-0 before:content-['']">Nadia Berrada</a></h3>
+          <p class="text-[17px] text-neutre-800 leading-snug">Traiteur — cuisine maison</p>
+          <p class="flex flex-wrap items-center gap-x-3 gap-y-1 text-[16px] text-neutre-700 mt-0.5">
+            <span class="inline-flex items-center gap-1"><svg class="w-4 h-4 text-sable-700" aria-hidden="true"><use href="#i-etoile"/></svg>5,0 <span class="sr-only">sur 5,</span><span class="text-neutre-600">(23)</span></span>
+            <span class="inline-flex items-center gap-1"><svg class="w-4 h-4 text-teal-600" aria-hidden="true"><use href="#i-pin"/></svg>210 m</span>
+          </p>
+        </div>
+        <a href="tel:+33656789012" class="relative z-10 shrink-0 self-center mr-2.5 grid place-items-center w-11 h-11 rounded-full text-teal-700 bg-teal-50 hover:bg-teal-100" aria-label="Appeler Nadia Berrada au 06 56 78 90 12">
+          <svg class="w-5 h-5" aria-hidden="true"><use href="#i-tel"/></svg>
+        </a>
+      </article>
+    </li>
+
+    <li data-m data-cat="sport-mouvement sante-bien-etre" data-g="h" data-txt="thomas vidal coach sportif sport mouvement remise en forme seance individuelle collectif exterieur sante">
+      <article class="carte relative flex min-h-[152px] rounded-[20px] bg-white overflow-hidden transition">
+        <img src="https://randomuser.me/api/portraits/men/11.jpg" alt="Portrait de Thomas Vidal" width="128" height="128" loading="lazy"
+             class="w-[116px] shrink-0 self-stretch object-cover" style="object-position:50% 25%">
+        <div class="flex-1 min-w-0 py-4 pl-4 pr-1 flex flex-col justify-center gap-1">
+          <h3 class="ff text-[20px] leading-tight text-teal-900"><a href="membre.html" class="before:absolute before:inset-0 before:content-['']">Thomas Vidal</a></h3>
+          <p class="text-[17px] text-neutre-800 leading-snug">Coach sportif</p>
+          <p class="flex flex-wrap items-center gap-x-3 gap-y-1 text-[16px] text-neutre-700 mt-0.5">
+            <span class="inline-flex items-center gap-1"><svg class="w-4 h-4 text-sable-700" aria-hidden="true"><use href="#i-etoile"/></svg>4,6 <span class="sr-only">sur 5,</span><span class="text-neutre-600">(18)</span></span>
+            <span class="inline-flex items-center gap-1"><svg class="w-4 h-4 text-teal-600" aria-hidden="true"><use href="#i-pin"/></svg>60 m</span>
+          </p>
+        </div>
+        <a href="tel:+33667890123" class="relative z-10 shrink-0 self-center mr-2.5 grid place-items-center w-11 h-11 rounded-full text-teal-700 bg-teal-50 hover:bg-teal-100" aria-label="Appeler Thomas Vidal au 06 67 89 01 23">
+          <svg class="w-5 h-5" aria-hidden="true"><use href="#i-tel"/></svg>
+        </a>
+      </article>
+    </li>
+
+    <li data-m data-cat="sante-bien-etre" data-g="f" data-txt="sophie arnaud naturopathe alimentation sommeil energie sante bien-etre">
+      <article class="carte relative flex min-h-[152px] rounded-[20px] bg-white overflow-hidden transition">
+        <img src="https://randomuser.me/api/portraits/women/26.jpg" alt="Portrait de Sophie Arnaud" width="128" height="128" loading="lazy"
+             class="w-[116px] shrink-0 self-stretch object-cover" style="object-position:50% 25%">
+        <div class="flex-1 min-w-0 py-4 pl-4 pr-1 flex flex-col justify-center gap-1">
+          <h3 class="ff text-[20px] leading-tight text-teal-900"><a href="membre.html" class="before:absolute before:inset-0 before:content-['']">Sophie Arnaud</a></h3>
+          <p class="text-[17px] text-neutre-800 leading-snug">Naturopathe</p>
+          <p class="flex flex-wrap items-center gap-x-3 gap-y-1 text-[16px] text-neutre-700 mt-0.5">
+            <span class="inline-flex items-center gap-1"><svg class="w-4 h-4 text-sable-700" aria-hidden="true"><use href="#i-etoile"/></svg>4,5 <span class="sr-only">sur 5,</span><span class="text-neutre-600">(6)</span></span>
+            <span class="inline-flex items-center gap-1"><svg class="w-4 h-4 text-teal-600" aria-hidden="true"><use href="#i-pin"/></svg>450 m</span>
+          </p>
+        </div>
+        <a href="tel:+33678901234" class="relative z-10 shrink-0 self-center mr-2.5 grid place-items-center w-11 h-11 rounded-full text-teal-700 bg-teal-50 hover:bg-teal-100" aria-label="Appeler Sophie Arnaud au 06 78 90 12 34">
+          <svg class="w-5 h-5" aria-hidden="true"><use href="#i-tel"/></svg>
+        </a>
+      </article>
+    </li>
+
+    <li data-m data-cat="artisanat-travaux services-domicile" data-g="h" data-txt="julien marty electricien depannage tableau electrique renovation artisanat travaux services a domicile coup de main">
+      <article class="carte relative flex min-h-[152px] rounded-[20px] bg-white overflow-hidden transition">
+        <img src="https://randomuser.me/api/portraits/men/46.jpg" alt="Portrait de Julien Marty" width="128" height="128" loading="lazy"
+             class="w-[116px] shrink-0 self-stretch object-cover" style="object-position:50% 25%">
+        <div class="flex-1 min-w-0 py-4 pl-4 pr-1 flex flex-col justify-center gap-1">
+          <h3 class="ff text-[20px] leading-tight text-teal-900"><a href="membre.html" class="before:absolute before:inset-0 before:content-['']">Julien Marty</a></h3>
+          <p class="text-[17px] text-neutre-800 leading-snug">Électricien</p>
+          <p class="flex flex-wrap items-center gap-x-3 gap-y-1 text-[16px] text-neutre-700 mt-0.5">
+            <span class="inline-flex items-center gap-1"><svg class="w-4 h-4 text-sable-700" aria-hidden="true"><use href="#i-etoile"/></svg>4,4 <span class="sr-only">sur 5,</span><span class="text-neutre-600">(11)</span></span>
+            <span class="inline-flex items-center gap-1 text-sauge-800"><svg class="w-4 h-4" aria-hidden="true"><use href="#c-domicile"/></svg>Il vient chez vous</span>
+          </p>
+        </div>
+        <a href="tel:+33689012345" class="relative z-10 shrink-0 self-center mr-2.5 grid place-items-center w-11 h-11 rounded-full text-teal-700 bg-teal-50 hover:bg-teal-100" aria-label="Appeler Julien Marty au 06 89 01 23 45">
+          <svg class="w-5 h-5" aria-hidden="true"><use href="#i-tel"/></svg>
+        </a>
+      </article>
+    </li>
+
+    <li data-m data-cat="sport-mouvement sante-bien-etre" data-g="f" data-txt="ines lacombe professeure de yoga cours collectif halle sport mouvement souplesse sante bien-etre">
+      <article class="carte relative flex min-h-[152px] rounded-[20px] bg-white overflow-hidden transition">
+        <img src="https://randomuser.me/api/portraits/women/90.jpg" alt="Portrait d'Inès Lacombe" width="128" height="128" loading="lazy"
+             class="w-[116px] shrink-0 self-stretch object-cover" style="object-position:50% 25%">
+        <div class="flex-1 min-w-0 py-4 pl-4 pr-1 flex flex-col justify-center gap-1">
+          <h3 class="ff text-[20px] leading-tight text-teal-900"><a href="membre.html" class="before:absolute before:inset-0 before:content-['']">Inès Lacombe</a></h3>
+          <p class="text-[17px] text-neutre-800 leading-snug">Professeure de yoga</p>
+          <p class="flex flex-wrap items-center gap-x-3 gap-y-1 text-[16px] text-neutre-700 mt-0.5">
+            <span class="inline-flex items-center gap-1"><svg class="w-4 h-4 text-sable-700" aria-hidden="true"><use href="#i-etoile"/></svg>4,9 <span class="sr-only">sur 5,</span><span class="text-neutre-600">(27)</span></span>
+            <span class="inline-flex items-center gap-1"><svg class="w-4 h-4 text-teal-600" aria-hidden="true"><use href="#i-pin"/></svg>60 m</span>
+          </p>
+        </div>
+        <a href="tel:+33690123456" class="relative z-10 shrink-0 self-center mr-2.5 grid place-items-center w-11 h-11 rounded-full text-teal-700 bg-teal-50 hover:bg-teal-100" aria-label="Appeler Inès Lacombe au 06 90 12 34 56">
+          <svg class="w-5 h-5" aria-hidden="true"><use href="#i-tel"/></svg>
+        </a>
+      </article>
+    </li>
+
+    <li data-m data-cat="conseil-entreprise" data-g="h" data-txt="pierre delmas expert-comptable comptabilite bilan papiers conseil entreprise auto-entrepreneur">
+      <article class="carte relative flex min-h-[152px] rounded-[20px] bg-white overflow-hidden transition">
+        <img src="https://randomuser.me/api/portraits/men/59.jpg" alt="Portrait de Pierre Delmas" width="128" height="128" loading="lazy"
+             class="w-[116px] shrink-0 self-stretch object-cover" style="object-position:50% 25%">
+        <div class="flex-1 min-w-0 py-4 pl-4 pr-1 flex flex-col justify-center gap-1">
+          <h3 class="ff text-[20px] leading-tight text-teal-900"><a href="membre.html" class="before:absolute before:inset-0 before:content-['']">Pierre Delmas</a></h3>
+          <p class="text-[17px] text-neutre-800 leading-snug">Expert-comptable</p>
+          <p class="flex flex-wrap items-center gap-x-3 gap-y-1 text-[16px] text-neutre-700 mt-0.5">
+            <span class="inline-flex items-center gap-1"><svg class="w-4 h-4 text-sable-700" aria-hidden="true"><use href="#i-etoile"/></svg>4,3 <span class="sr-only">sur 5,</span><span class="text-neutre-600">(5)</span></span>
+            <span class="inline-flex items-center gap-1"><svg class="w-4 h-4 text-teal-600" aria-hidden="true"><use href="#i-pin"/></svg>150 m</span>
+          </p>
+        </div>
+        <a href="tel:+33601234567" class="relative z-10 shrink-0 self-center mr-2.5 grid place-items-center w-11 h-11 rounded-full text-teal-700 bg-teal-50 hover:bg-teal-100" aria-label="Appeler Pierre Delmas au 06 01 23 45 67">
+          <svg class="w-5 h-5" aria-hidden="true"><use href="#i-tel"/></svg>
+        </a>
+      </article>
+    </li>
+
+    <li data-m data-cat="beaute-soins services-domicile" data-g="f" data-txt="amandine rey coiffeuse a domicile coupe couleur beaute soins services a domicile cheveux">
+      <article class="carte relative flex min-h-[152px] rounded-[20px] bg-white overflow-hidden transition">
+        <img src="https://randomuser.me/api/portraits/women/12.jpg" alt="Portrait d'Amandine Rey" width="128" height="128" loading="lazy"
+             class="w-[116px] shrink-0 self-stretch object-cover" style="object-position:50% 25%">
+        <div class="flex-1 min-w-0 py-4 pl-4 pr-1 flex flex-col justify-center gap-1">
+          <h3 class="ff text-[20px] leading-tight text-teal-900"><a href="membre.html" class="before:absolute before:inset-0 before:content-['']">Amandine Rey</a></h3>
+          <p class="text-[17px] text-neutre-800 leading-snug">Coiffeuse à domicile</p>
+          <p class="flex flex-wrap items-center gap-x-3 gap-y-1 text-[16px] text-neutre-700 mt-0.5">
+            <span class="inline-flex items-center gap-1"><svg class="w-4 h-4 text-sable-700" aria-hidden="true"><use href="#i-etoile"/></svg>4,8 <span class="sr-only">sur 5,</span><span class="text-neutre-600">(31)</span></span>
+            <span class="inline-flex items-center gap-1 text-sauge-800"><svg class="w-4 h-4" aria-hidden="true"><use href="#c-domicile"/></svg>Elle vient chez vous</span>
+          </p>
+        </div>
+        <a href="tel:+33612903456" class="relative z-10 shrink-0 self-center mr-2.5 grid place-items-center w-11 h-11 rounded-full text-teal-700 bg-teal-50 hover:bg-teal-100" aria-label="Appeler Amandine Rey au 06 12 90 34 56">
+          <svg class="w-5 h-5" aria-hidden="true"><use href="#i-tel"/></svg>
+        </a>
+      </article>
+    </li>
+
+    <li data-m data-cat="art-culture numerique-creation" data-g="h" data-txt="karim ziani photographe portrait reportage studio art culture numerique creation photos">
+      <article class="carte relative flex min-h-[152px] rounded-[20px] bg-white overflow-hidden transition">
+        <img src="https://randomuser.me/api/portraits/men/83.jpg" alt="Portrait de Karim Ziani" width="128" height="128" loading="lazy"
+             class="w-[116px] shrink-0 self-stretch object-cover" style="object-position:50% 25%">
+        <div class="flex-1 min-w-0 py-4 pl-4 pr-1 flex flex-col justify-center gap-1">
+          <h3 class="ff text-[20px] leading-tight text-teal-900"><a href="membre.html" class="before:absolute before:inset-0 before:content-['']">Karim Ziani</a></h3>
+          <p class="text-[17px] text-neutre-800 leading-snug">Photographe</p>
+          <p class="flex flex-wrap items-center gap-x-3 gap-y-1 text-[16px] text-neutre-700 mt-0.5">
+            <span class="inline-flex items-center gap-1"><svg class="w-4 h-4 text-sable-700" aria-hidden="true"><use href="#i-etoile"/></svg>4,9 <span class="sr-only">sur 5,</span><span class="text-neutre-600">(14)</span></span>
+            <span class="inline-flex items-center gap-1"><svg class="w-4 h-4 text-teal-600" aria-hidden="true"><use href="#i-pin"/></svg>380 m</span>
+          </p>
+        </div>
+        <a href="tel:+33623904567" class="relative z-10 shrink-0 self-center mr-2.5 grid place-items-center w-11 h-11 rounded-full text-teal-700 bg-teal-50 hover:bg-teal-100" aria-label="Appeler Karim Ziani au 06 23 90 45 67">
+          <svg class="w-5 h-5" aria-hidden="true"><use href="#i-tel"/></svg>
+        </a>
+      </article>
+    </li>
+
+  </ul>
+
+  <!-- Colly déçue : aucun résultat -->
+  <div id="vide" class="hidden rounded-[24px] bg-teal-50 px-6 py-9 text-center">
+    <div class="mx-auto w-[132px] h-[132px] rounded-full bg-teal-50 overflow-hidden grid place-items-center">
+      <img src="../../_shared/colly/colly-triste.png" alt="" width="260" height="260" class="croquis w-[150px] h-auto -mt-2">
+    </div>
+    <p class="ff mt-3 text-[26px] text-teal-900">Colly n'a trouvé personne.</p>
+    <p class="mt-2 text-[17px] text-neutre-800 max-w-[42ch] mx-auto">
+      L'annuaire compte douze voisins pour l'instant. Il grandit à chaque nouvelle inscription —
+      essayez un autre mot, ou dites-nous qui manque.
+    </p>
+    <button type="button" class="raz mt-5 inline-flex items-center gap-2 min-h-[48px] px-5 rounded-full text-[17px] font-semibold text-white bg-teal-700 hover:bg-teal-600">
+      Revoir les 12 voisins
+    </button>
+  </div>
+</section>
+
+<!-- ═══════════ le panneau Colly — l'unique panneau sable ═══════════ -->
+<section class="mx-auto max-w-[1160px] px-5 pb-14" aria-labelledby="t-colly">
+  <div class="relative rounded-[26px] bg-sable-100 px-5 py-8 sm:px-9 sm:py-10 overflow-hidden">
+    <div class="ventouses pointer-events-none absolute inset-x-0 top-0 h-[250px] lg:h-full lg:inset-x-auto lg:right-0 lg:w-[44%]"
+         style="-webkit-mask-image:linear-gradient(to bottom,#000 58%,transparent); mask-image:linear-gradient(to bottom,#000 58%,transparent)"></div>
+    <div class="relative lg:flex lg:items-center lg:gap-12">
+      <div class="lg:order-2 lg:shrink-0">
+        <div class="mx-auto w-[168px] h-[168px] rounded-full bg-sable-200 overflow-hidden grid place-items-center"
+             style="box-shadow: inset 0 0 0 2px var(--color-sable-300), 0 0 0 8px var(--color-sable-50)">
+          <img src="../../_shared/colly/colly-salut.png" alt="" width="320" height="305" class="croquis w-[190px] h-auto">
+        </div>
+      </div>
+      <div class="lg:order-1 mt-6 lg:mt-0 max-w-[54ch]">
+        <p class="text-[16px] font-semibold uppercase tracking-[.15em] text-sable-800">La mascotte du quartier</p>
+        <h2 id="t-colly" class="ff mt-2 text-[32px] leading-tight text-teal-950">Colly reste collée aux bons endroits.</h2>
+        <p class="mt-3 text-[17px] leading-relaxed text-teal-950/85">
+          Elle vit dans les poutres de la Halle et connaît tout le monde. Cet annuaire, c'est
+          son carnet d'adresses : uniquement des gens qui habitent ou travaillent ici, ajoutés
+          un par un par l'association.
+        </p>
+        <ol class="mt-6 space-y-4 list-none p-0">
+          <li class="flex gap-3.5 items-start">
+            <span class="pastille w-9 h-9 bg-white text-teal-800 text-[16px] font-bold shrink-0">1</span>
+            <p class="text-[17px] text-teal-950 pt-1"><strong class="font-semibold">Vous cherchez un métier</strong>, pas une marque. Tapez « fuite », « gâteau », « mal de dos ».</p>
+          </li>
+          <li class="flex gap-3.5 items-start">
+            <span class="pastille w-9 h-9 bg-white text-teal-800 text-[16px] font-bold shrink-0">2</span>
+            <p class="text-[17px] text-teal-950 pt-1"><strong class="font-semibold">Vous voyez un visage</strong> et une distance. Douze personnes, pas douze mille résultats.</p>
+          </li>
+          <li class="flex gap-3.5 items-start">
+            <span class="pastille w-9 h-9 bg-white text-teal-800 text-[16px] font-bold shrink-0">3</span>
+            <p class="text-[17px] text-teal-950 pt-1"><strong class="font-semibold">Vous appelez.</strong> C'est un voisin au bout du fil, pas un standard.</p>
+          </li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ rejoindre ═══════════ -->
+<section id="rejoindre" class="mx-auto max-w-[1160px] px-5 pb-16">
+  <div class="carte rounded-[24px] bg-white p-6 sm:p-9 sm:flex sm:items-center sm:justify-between sm:gap-8">
+    <div class="max-w-[46ch]">
+      <h2 class="ff text-[28px] leading-tight text-teal-900">Vous travaillez dans le quartier&nbsp;?</h2>
+      <p class="mt-2 text-[17px] text-neutre-800">
+        L'inscription est gratuite et vérifiée par l'association. Il faut une photo, un métier,
+        et une adresse ou une zone d'intervention à la Cartoucherie.
+      </p>
+    </div>
+    <a href="#rejoindre" class="mt-5 sm:mt-0 shrink-0 inline-flex items-center justify-center gap-2 min-h-[52px] px-6 rounded-full text-[17px] font-semibold text-white bg-teal-700 hover:bg-teal-600">
+      Demander à figurer
+      <svg class="w-4 h-4" aria-hidden="true"><use href="#i-chev"/></svg>
+    </a>
+  </div>
+</section>
+
+</main>
+
+<footer class="border-t border-neutre-200 bg-neutre-50">
+  <div class="mx-auto max-w-[1160px] px-5 py-10 grid gap-8 sm:grid-cols-[1fr_auto]">
+    <div>
+      <p class="flex items-center gap-2.5">
+        <svg class="w-7 h-7 text-teal-700" aria-hidden="true"><use href="#i-ventouse"/></svg>
+        <span class="ff text-[20px] text-teal-900">Annuaire de la Cartoucherie</span>
+      </p>
+      <p class="mt-3 text-[16px] text-neutre-700 max-w-[52ch]">
+        Fait bénévolement pour l'association de quartier, à partir des portraits réunis par
+        Sandra&nbsp;Carole. Gratuit, sans publicité, sans compte à créer.
+      </p>
+      <p class="mt-3 text-[16px] text-neutre-700">
+        Halle de la Cartoucherie · Tram T1, arrêt Cartoucherie · 31300 Toulouse
+      </p>
+    </div>
+    <nav class="text-[16px]" aria-label="Liens de pied de page">
+      <ul class="space-y-2.5 list-none p-0 m-0">
+        <li><a class="inline-block py-2.5 text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600" href="#">Qui sommes-nous</a></li>
+        <li><a class="inline-block py-2.5 text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600" href="#rejoindre">Ajouter un voisin</a></li>
+        <li><a class="inline-block py-2.5 text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600" href="#">Signaler une erreur</a></li>
+        <li><a class="inline-block py-2.5 text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600" href="#">Vie privée</a></li>
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+<script>
+(function(){
+  const norm = s => (s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+  const items   = Array.from(document.querySelectorAll('[data-m]'));
+  const tuiles  = Array.from(document.querySelectorAll('.tuile'));
+  const input   = document.getElementById('q');
+  const vide    = document.getElementById('vide');
+  const liste   = document.getElementById('liste');
+  const compteur= document.getElementById('compteur');
+  const razBtns = Array.from(document.querySelectorAll('#raz, .raz'));
+  let cats = null;
+
+  function libelle(n, seuls){
+    if(n === 0) return 'aucun voisin';
+    if(n === 1) return seuls === 'f' ? '1 voisine' : '1 voisin';
+    return n + ' voisins';
+  }
+
+  function appliquer(){
+    const q = norm(input.value.trim());
+    let visibles = [];
+    items.forEach(li => {
+      const okCat = !cats || cats.some(c => li.dataset.cat.split(' ').includes(c));
+      const okTxt = !q || norm(li.dataset.txt).includes(q);
+      const ok = okCat && okTxt;
+      li.hidden = !ok;
+      if(ok) visibles.push(li);
+    });
+    const n = visibles.length;
+    const genres = new Set(visibles.map(li => li.dataset.g));
+    compteur.textContent = (n === 12)
+      ? '12 voisins et voisines'
+      : libelle(n, genres.size === 1 ? [...genres][0] : null);
+    vide.classList.toggle('hidden', n !== 0);
+    liste.classList.toggle('hidden', n === 0);
+    const filtre = !!cats || !!q;
+    razBtns.forEach(b => { if(b.id === 'raz'){ b.classList.toggle('hidden', !filtre); b.classList.toggle('inline-flex', filtre); } });
+  }
+
+  tuiles.forEach(t => t.addEventListener('click', () => {
+    const on = t.getAttribute('aria-pressed') === 'true';
+    tuiles.forEach(o => o.setAttribute('aria-pressed','false'));
+    t.setAttribute('aria-pressed', on ? 'false' : 'true');
+    cats = on ? null : t.dataset.cats.split(' ');
+    appliquer();
+    if(!on) document.getElementById('annuaire').scrollIntoView({behavior:'smooth', block:'start'});
+  }));
+
+  razBtns.forEach(b => b.addEventListener('click', () => {
+    cats = null; input.value = '';
+    tuiles.forEach(o => o.setAttribute('aria-pressed','false'));
+    appliquer();
+  }));
+
+  input.addEventListener('input', appliquer);
+  document.getElementById('recherche').addEventListener('submit', e => { e.preventDefault(); appliquer(); });
+
+  // crochet de capture d'écran : index.html#q=zzz
+  const m = /(?:^|[#&])q=([^&]*)/.exec(location.hash);
+  if(m){ input.value = decodeURIComponent(m[1]); }
+  appliquer();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,569 @@
+<!doctype html>
+<html lang="fr" data-theme="cartoucherie">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Annuaire de la Cartoucherie — je cherche quelqu'un du quartier</title>
+<meta name="description" content="L'annuaire des artisans, indépendants et thérapeutes qui vivent et travaillent à la Cartoucherie, Toulouse. Douze voisins, une phrase à finir.">
+<link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Archivo:ital,wght@0,400..800;1,400..700&display=swap" rel="stylesheet">
+
+<!-- palette : copiée verbatim de _shared/couleurs.md §8 -->
+<style type="text/tailwindcss">
+@theme {
+  /* ── teal · identité ─────────────────────────────────────── */
+  --color-teal-50:  oklch(98.0% 0.010 198);
+  --color-teal-100: oklch(95.5% 0.022 197);
+  --color-teal-200: oklch(91.0% 0.040 196);
+  --color-teal-300: oklch(84.0% 0.058 195);
+  --color-teal-400: oklch(74.0% 0.080 195);
+  --color-teal-500: oklch(63.0% 0.098 196);
+  --color-teal-600: oklch(53.0% 0.090 196);
+  --color-teal-700: oklch(44.0% 0.074 197);
+  --color-teal-800: oklch(35.0% 0.060 198);
+  --color-teal-900: oklch(27.0% 0.045 199);
+  --color-teal-950: oklch(19.0% 0.030 201);
+
+  /* ── orange · action ─────────────────────────────────────── */
+  --color-orange-50:  oklch(97.8% 0.018 75);
+  --color-orange-100: oklch(95.0% 0.042 72);
+  --color-orange-200: oklch(90.0% 0.078 68);
+  --color-orange-300: oklch(84.0% 0.110 64);
+  --color-orange-400: oklch(78.0% 0.145 60);
+  --color-orange-500: oklch(72.0% 0.170 56);
+  --color-orange-600: oklch(65.0% 0.178 50);
+  --color-orange-700: oklch(56.0% 0.172 44);
+  --color-orange-800: oklch(46.0% 0.140 40);
+  --color-orange-900: oklch(37.0% 0.108 38);
+  --color-orange-950: oklch(27.0% 0.078 36);
+
+  /* ── sauge · taxonomie ───────────────────────────────────── */
+  --color-sauge-50:  oklch(97.5% 0.012 170);
+  --color-sauge-100: oklch(94.5% 0.026 170);
+  --color-sauge-200: oklch(89.5% 0.050 170);
+  --color-sauge-300: oklch(82.0% 0.074 168);
+  --color-sauge-400: oklch(73.0% 0.100 164);
+  --color-sauge-500: oklch(64.0% 0.120 160);
+  --color-sauge-600: oklch(54.5% 0.122 156);
+  --color-sauge-700: oklch(45.5% 0.108 152);
+  --color-sauge-800: oklch(37.0% 0.088 150);
+  --color-sauge-900: oklch(29.0% 0.066 152);
+  --color-sauge-950: oklch(20.5% 0.044 156);
+
+  /* ── sable · illustration (50→600 : remplissage seul) ────── */
+  --color-sable-50:  oklch(98.2% 0.010 95);
+  --color-sable-100: oklch(96.0% 0.024 93);
+  --color-sable-200: oklch(92.5% 0.044 91);
+  --color-sable-300: oklch(88.0% 0.064 90);
+  --color-sable-400: oklch(82.0% 0.090 89);
+  --color-sable-500: oklch(76.0% 0.115 88);
+  --color-sable-600: oklch(68.0% 0.118 86);
+  --color-sable-700: oklch(57.5% 0.105 83);
+  --color-sable-800: oklch(47.0% 0.088 80);
+  --color-sable-900: oklch(37.5% 0.068 78);
+  --color-sable-950: oklch(27.0% 0.048 75);
+
+  /* ── neutre · structure, teintée teal ────────────────────── */
+  --color-neutre-50:  oklch(98.6% 0.004 200);
+  --color-neutre-100: oklch(97.2% 0.006 199);
+  --color-neutre-200: oklch(94.4% 0.008 198);
+  --color-neutre-300: oklch(89.8% 0.010 198);
+  --color-neutre-400: oklch(79.5% 0.013 197);
+  --color-neutre-500: oklch(66.5% 0.016 197);
+  --color-neutre-600: oklch(54.5% 0.019 198);
+  --color-neutre-700: oklch(44.0% 0.022 199);
+  --color-neutre-800: oklch(34.0% 0.025 200);
+  --color-neutre-900: oklch(25.5% 0.028 201);
+  --color-neutre-950: oklch(17.5% 0.030 202);
+
+  /* ── rouge · erreur ──────────────────────────────────────── */
+  --color-rouge-50:  oklch(97.6% 0.014 25);
+  --color-rouge-100: oklch(94.6% 0.029 24);
+  --color-rouge-200: oklch(89.0% 0.057 24);
+  --color-rouge-300: oklch(81.0% 0.100 24);
+  --color-rouge-400: oklch(70.0% 0.150 25);
+  --color-rouge-500: oklch(62.0% 0.190 26);
+  --color-rouge-600: oklch(54.0% 0.205 24);
+  --color-rouge-700: oklch(46.0% 0.180 22);
+  --color-rouge-800: oklch(38.0% 0.145 20);
+  --color-rouge-900: oklch(31.0% 0.115 18);
+  --color-rouge-950: oklch(22.0% 0.080 16);
+
+  /* ── profondeur ──────────────────────────────────────────── */
+  --shadow-carte:       0 1px 2px oklch(17.5% .03 202/.05), 0 4px 12px -2px oklch(17.5% .03 202/.09);
+  --shadow-carte-hover: 0 2px 4px oklch(17.5% .03 202/.06), 0 14px 32px -8px oklch(17.5% .03 202/.16);
+  --shadow-flottant:    0 4px 8px oklch(17.5% .03 202/.06), 0 28px 64px -20px oklch(17.5% .03 202/.28);
+  --shadow-cta:         0 2px 4px oklch(37% .108 38/.28), 0 10px 24px -8px oklch(37% .108 38/.38);
+  --shadow-cta-press:   0 1px 2px oklch(37% .108 38/.34);
+}
+</style>
+
+<style type="text/tailwindcss">
+[data-theme="cartoucherie"] {
+  color-scheme: light;
+
+  --color-base-100:          #ffffff;                 /* la page, blanche  */
+  --color-base-200:          oklch(97.2% 0.006 199);  /* neutre-100        */
+  --color-base-300:          oklch(94.4% 0.008 198);  /* neutre-200        */
+  --color-base-content:      oklch(25.5% 0.028 201);  /* neutre-900        */
+
+  --color-primary:           oklch(44.0% 0.074 197);  /* teal-700          */
+  --color-primary-content:   #ffffff;
+
+  --color-secondary:         oklch(94.5% 0.026 170);  /* sauge-100 teinté  */
+  --color-secondary-content: oklch(19.0% 0.030 201);  /* teal-950          */
+
+  --color-accent:            oklch(72.0% 0.170 56);   /* orange-500 · CTA  */
+  --color-accent-content:    oklch(19.0% 0.030 201);  /* teal-950          */
+
+  --color-neutral:           oklch(25.5% 0.028 201);  /* neutre-900        */
+  --color-neutral-content:   oklch(98.6% 0.004 200);  /* neutre-50         */
+
+  --color-info:              oklch(53.0% 0.090 196);  /* teal-600          */
+  --color-info-content:      #ffffff;
+
+  --color-success:           oklch(45.5% 0.108 152);  /* sauge-700         */
+  --color-success-content:   #ffffff;
+
+  --color-warning:           oklch(76.0% 0.115 88);   /* sable-500         */
+  --color-warning-content:   oklch(19.0% 0.030 201);  /* teal-950          */
+
+  --color-error:             oklch(54.0% 0.205 24);   /* rouge-600         */
+  --color-error-content:     #ffffff;
+
+  --radius-selector: 2rem;      /* pastilles, bascules, badges */
+  --radius-field:    0.75rem;   /* champs, boutons             */
+  --radius-box:      1.25rem;   /* cartes, modales, feuilles   */
+  --size-selector:   0.28125rem;
+  --size-field:      0.28125rem;
+  --border:          1px;
+  --depth:           1;
+  --noise:           0;
+}
+</style>
+
+<style type="text/tailwindcss">
+@theme {
+  /* ── les deux fontes ─────────────────────────────────────── */
+  --font-sans:    "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --font-display: "Young Serif", "Iowan Old Style", Georgia, "Times New Roman", serif;
+
+  /* ── l'échelle · quarte juste 1.333 depuis 17 px ─────────── */
+  --text-etiquette: 1rem;                      /* 16 — étiquettes capitales */
+  --text-etiquette--line-height: 1.25;
+  --text-etiquette--letter-spacing: 0.14em;
+
+  --text-corps: 1.0625rem;                     /* 17 — le corps */
+  --text-corps--line-height: 1.6;
+
+  --text-chapo: 1.375rem;                      /* 22 — chapô, citations */
+  --text-chapo--line-height: 1.4;
+  --text-chapo--letter-spacing: -0.005em;
+
+  --text-besoin: 1.625rem;                     /* 26 — les besoins, les services */
+  --text-besoin--line-height: 1.15;
+  --text-besoin--letter-spacing: -0.012em;
+
+  --text-nom: 1.875rem;                        /* 30 — noms, titres de section */
+  --text-nom--line-height: 1.08;
+  --text-nom--letter-spacing: -0.018em;
+
+  --text-grand: 2.5rem;                        /* 40 — le nom de la fiche, les nombres */
+  --text-grand--line-height: 1.0;
+  --text-grand--letter-spacing: -0.022em;
+
+  --text-enorme: 3.375rem;                     /* 54 — les nombres du quartier */
+  --text-enorme--line-height: 0.94;
+  --text-enorme--letter-spacing: -0.028em;
+
+  --text-cri: 4.5rem;                          /* 72 — « Je cherche… » */
+  --text-cri--line-height: 0.9;
+  --text-cri--letter-spacing: -0.032em;
+}
+</style>
+
+<style>
+  html { -webkit-text-size-adjust: 100%; }
+  body { text-rendering: optimizeLegibility; -webkit-font-smoothing: antialiased; }
+
+  /* Young Serif n'a qu'un seul gras et aucune italique :
+     on interdit au navigateur d'en fabriquer de faux. */
+  .font-display { font-synthesis: none; font-weight: 400; font-style: normal; }
+
+  /* Les dégradés et filets sanctionnés (§7 de couleurs.md).
+     Les valeurs sont injectées à la construction depuis le bloc @theme
+     ci-dessus : aucune couleur n'est retapée à la main, et rien ne dépend
+     de l'ordre d'injection de la feuille générée par le build navigateur. */
+  .filet { height: 3px;
+    background-image: linear-gradient(90deg, oklch(53.0% 0.090 196), oklch(64.0% 0.120 160) 46%, oklch(72.0% 0.170 56)); }
+  .aube {
+    background-image: linear-gradient(168deg, oklch(98.0% 0.010 198) 0%, #ffffff 44%, oklch(97.8% 0.018 75) 100%); }
+  .lueur {
+    background-image: radial-gradient(120% 90% at 30% 15%, oklch(96.0% 0.024 93), oklch(94.5% 0.026 170) 62%, oklch(95.5% 0.022 197)); }
+
+  /* un seul anneau de focus, partout, sans exception (§7) */
+  .foc:focus-visible { outline: 2px solid oklch(53.0% 0.090 196); outline-offset: 2px; }
+  :focus-visible { outline: 2px solid oklch(53.0% 0.090 196); outline-offset: 2px; }
+
+  /* le filet de séparation : la seule « boîte » de la page */
+  .regle { border-top: 1px solid oklch(89.8% 0.010 198); }
+
+
+  #liste > li:first-child { border-top: 0; }
+  @media (min-width: 1024px) { #liste > li:nth-child(2) { border-top: 0; } }
+
+  /* chiffres tabulaires pour les numéros et les notes */
+  .tnum { font-variant-numeric: tabular-nums; }
+
+  /* la ligne de besoin : le survol allume le numéro, pas une boîte */
+  .besoin { transition: background-color .18s ease; }
+  .besoin:hover, .besoin:focus-visible { background-color: oklch(98.0% 0.010 198); }
+  .besoin:hover .num, .besoin:focus-visible .num { color: oklch(46.0% 0.140 40); }
+  .num { transition: color .18s ease; }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; animation: none !important; }
+  }
+</style>
+
+</head>
+
+<body class="bg-base-100 text-neutre-900 font-sans text-corps antialiased">
+
+<a href="#besoins" class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:m-3 focus:rounded-xl focus:bg-white focus:px-4 focus:py-3 focus:text-corps focus:font-semibold focus:text-teal-800 focus:shadow-flottant">Aller à la liste des besoins</a>
+
+<!-- ══════════════ EN-TÊTE ══════════════ -->
+<header class="sticky top-0 z-40 bg-white/95 backdrop-blur-sm">
+  <div class="mx-auto flex w-full max-w-[1100px] flex-wrap items-center justify-between gap-x-3 gap-y-1 px-5 py-3">
+    <a href="index.html" class="foc -m-1 rounded-lg p-1" aria-label="Annuaire de la Cartoucherie, accueil">
+      <span class="block font-display text-[1.375rem] leading-none text-teal-800">Annuaire</span>
+      <span class="mt-1 block text-[1rem] font-medium leading-none text-neutre-700">de la Cartoucherie</span>
+    </a>
+    <nav class="flex items-center gap-1" aria-label="Principal">
+      <a href="#voisins" class="foc flex min-h-[44px] items-center rounded-full px-3 text-[1rem] font-semibold text-teal-700 hover:bg-teal-50">Les voisins</a>
+      <a href="#" class="foc flex size-11 items-center justify-center rounded-full text-teal-700 hover:bg-teal-50" aria-label="La carte du quartier">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" class="size-6" aria-hidden="true"><path d="M9 20l-5.4 2.2A1 1 0 0 1 2 21.3V6.6a1 1 0 0 1 .6-.9L9 3m0 17l6-2.6M9 20V3m6 14.4l5.4 2.2a1 1 0 0 0 1.6-.9V4a1 1 0 0 0-.6-.9L15 .9m0 16.5V.9M9 3l6-2.1"/></svg>
+      </a>
+    </nav>
+  </div>
+  <div class="filet" role="presentation"></div>
+</header>
+
+<main>
+
+<!-- ══════════════ LA PHRASE ══════════════ -->
+<section class="aube">
+  <div class="mx-auto w-full max-w-[1100px] px-5 pb-8 pt-6 lg:grid lg:grid-cols-[1.15fr_.85fr] lg:items-end lg:gap-12 lg:pb-14 lg:pt-14">
+    <div>
+      <p class="text-etiquette font-semibold uppercase text-teal-700">La&nbsp;Cartoucherie · Toulouse</p>
+
+      <h1 class="mt-3 font-display text-[clamp(1.875rem,15.5vw,4.5rem)] leading-[0.9] tracking-[-0.032em] text-teal-800">
+        Je&nbsp;cherche…
+      </h1>
+
+      <p class="mt-4 max-w-[34ch] text-chapo text-neutre-800">
+        Dites-le comme vous le diriez à un voisin. On s'occupe de trouver le bon mot.
+      </p>
+
+      <!-- le champ EST le blanc de la phrase · élévation 1 -->
+      <form class="mt-5" role="search" onsubmit="return false;">
+        <label for="q" class="sr-only">Je cherche… tapez ce dont vous avez besoin</label>
+        <div class="flex items-center gap-2 rounded-full bg-white p-1.5 pl-5 shadow-carte ring-1 ring-neutre-950/[.07] focus-within:ring-2 focus-within:ring-teal-600">
+          <input id="q" name="q" type="search" autocomplete="off"
+                 class="min-h-[44px] w-full min-w-0 border-0 bg-transparent text-corps text-neutre-900 outline-none placeholder:text-neutre-600"
+                 placeholder="un électricien, un traiteur…">
+          <button type="submit" aria-label="Chercher dans l'annuaire"
+                  class="foc flex size-12 shrink-0 items-center justify-center rounded-full bg-gradient-to-b from-orange-400 via-orange-500 to-orange-600 text-teal-950 shadow-cta ring-1 ring-inset ring-orange-700/60 transition hover:from-orange-300 hover:via-orange-400 hover:to-orange-500 active:translate-y-px active:shadow-cta-press">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" class="size-6" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.9-3.9"/></svg>
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- le compte, en toutes lettres · desktop -->
+    <p class="mt-9 hidden text-neutre-800 lg:block">
+      <span class="font-display text-enorme text-teal-800 tnum">12</span>
+      <span class="ml-1 text-chapo">voisins inscrits, tous rencontrés en vrai par&nbsp;Sandra.</span>
+    </p>
+  </div>
+
+  <!-- l'amorce de la liste vit encore dans le lavis : l'arête du dégradé
+       tombe alors sur le premier filet, jamais en plein blanc -->
+  <h2 id="besoins" class="mx-auto w-full max-w-[1100px] scroll-mt-24 px-5 pb-4 text-etiquette font-semibold uppercase text-teal-700">…ou choisissez la fin&nbsp;:</h2>
+</section>
+
+<ul id="liste" class="mx-auto w-full max-w-[1100px] lg:grid lg:grid-cols-2 lg:gap-x-10">
+
+  <li class="regle">
+    <a class="besoin foc flex items-start gap-4 px-5 py-4 lg:px-0" href="#" data-k="sante bien-etre equilibre stress sommeil energie sophrologue naturopathe yoga coach camille roussel sophie arnaud ines lacombe thomas vidal">
+      <span class="num mt-1.5 w-8 shrink-0 text-[1.0625rem] font-bold text-neutre-600 tnum">01</span>
+      <span class="min-w-0 flex-1">
+        <span class="block font-display text-besoin text-teal-800">Retrouver l'équilibre&nbsp;: stress, sommeil, énergie</span>
+        <span class="mt-2 block text-[1rem] text-neutre-700">Santé &amp; bien-être · <span class="font-semibold text-neutre-800">4 voisins</span></span>
+      </span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" class="mt-2 size-6 shrink-0 text-teal-600" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg>
+    </a>
+  </li>
+
+  <li class="regle">
+    <a class="besoin foc flex items-start gap-4 px-5 py-4 lg:px-0" href="#" data-k="artisanat travaux reparer construire installer electricien menuisier ebeniste meuble borne recharge marc ollivier julien marty">
+      <span class="num mt-1.5 w-8 shrink-0 text-[1.0625rem] font-bold text-neutre-600 tnum">02</span>
+      <span class="min-w-0 flex-1">
+        <span class="block font-display text-besoin text-teal-800">Réparer, construire, installer chez moi</span>
+        <span class="mt-2 block text-[1rem] text-neutre-700">Artisanat &amp; travaux · <span class="font-semibold text-neutre-800">2 voisins</span></span>
+      </span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" class="mt-2 size-6 shrink-0 text-teal-600" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg>
+    </a>
+  </li>
+
+  <li class="regle">
+    <a class="besoin foc flex items-start gap-4 px-5 py-4 lg:px-0" href="#" data-k="numerique creation site logo image web developpeur graphiste illustratrice photographe yanis belhadj lea fontaine karim ziani">
+      <span class="num mt-1.5 w-8 shrink-0 text-[1.0625rem] font-bold text-neutre-600 tnum">03</span>
+      <span class="min-w-0 flex-1">
+        <span class="block font-display text-besoin text-teal-800">Un site, un logo, une image de moi</span>
+        <span class="mt-2 block text-[1rem] text-neutre-700">Numérique &amp; création · <span class="font-semibold text-neutre-800">3 voisins</span></span>
+      </span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" class="mt-2 size-6 shrink-0 text-teal-600" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg>
+    </a>
+  </li>
+
+  <li class="regle">
+    <a class="besoin foc flex items-start gap-4 px-5 py-4 lg:px-0" href="#" data-k="sport mouvement bouger forme coach sportif yoga prenatal hatha thomas vidal ines lacombe">
+      <span class="num mt-1.5 w-8 shrink-0 text-[1.0625rem] font-bold text-neutre-600 tnum">04</span>
+      <span class="min-w-0 flex-1">
+        <span class="block font-display text-besoin text-teal-800">Bouger, me remettre en forme</span>
+        <span class="mt-2 block text-[1rem] text-neutre-700">Sport &amp; mouvement · <span class="font-semibold text-neutre-800">2 voisins</span></span>
+      </span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" class="mt-2 size-6 shrink-0 text-teal-600" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg>
+    </a>
+  </li>
+
+  <li class="regle">
+    <a class="besoin foc flex items-start gap-4 px-5 py-4 lg:px-0" href="#" data-k="services domicile coup de main electricien depannage coiffeuse a domicile julien marty amandine rey">
+      <span class="num mt-1.5 w-8 shrink-0 text-[1.0625rem] font-bold text-neutre-600 tnum">05</span>
+      <span class="min-w-0 flex-1">
+        <span class="block font-display text-besoin text-teal-800">Un coup de main chez moi</span>
+        <span class="mt-2 block text-[1rem] text-neutre-700">Services à domicile · <span class="font-semibold text-neutre-800">2 voisins</span></span>
+      </span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" class="mt-2 size-6 shrink-0 text-teal-600" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg>
+    </a>
+  </li>
+
+  <li class="regle">
+    <a class="besoin foc flex items-start gap-4 px-5 py-4 lg:px-0" href="#" data-k="conseil entreprise monter activite comptable comptabilite association micro-entreprise developpeur pierre delmas yanis belhadj">
+      <span class="num mt-1.5 w-8 shrink-0 text-[1.0625rem] font-bold text-neutre-600 tnum">06</span>
+      <span class="min-w-0 flex-1">
+        <span class="block font-display text-besoin text-teal-800">Monter ou faire tourner mon activité</span>
+        <span class="mt-2 block text-[1rem] text-neutre-700">Conseil &amp; entreprise · <span class="font-semibold text-neutre-800">2 voisins</span></span>
+      </span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" class="mt-2 size-6 shrink-0 text-teal-600" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg>
+    </a>
+  </li>
+
+  <li class="regle">
+    <a class="besoin foc flex items-start gap-4 px-5 py-4 lg:px-0" href="#" data-k="art culture souvenir photo creer photographe portrait famille reportage illustration affiche karim ziani lea fontaine">
+      <span class="num mt-1.5 w-8 shrink-0 text-[1.0625rem] font-bold text-neutre-600 tnum">07</span>
+      <span class="min-w-0 flex-1">
+        <span class="block font-display text-besoin text-teal-800">Un souvenir en photo, une envie de créer</span>
+        <span class="mt-2 block text-[1rem] text-neutre-700">Art &amp; culture · <span class="font-semibold text-neutre-800">2 voisins</span></span>
+      </span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" class="mt-2 size-6 shrink-0 text-teal-600" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg>
+    </a>
+  </li>
+
+  <li class="regle">
+    <a class="besoin foc flex items-start gap-4 px-5 py-4 lg:px-0" href="#" data-k="beaute soins coiffure coupe couleur coiffeuse a domicile amandine rey">
+      <span class="num mt-1.5 w-8 shrink-0 text-[1.0625rem] font-bold text-neutre-600 tnum">08</span>
+      <span class="min-w-0 flex-1">
+        <span class="block font-display text-besoin text-teal-800">Prendre soin de moi&nbsp;: coiffure, soins</span>
+        <span class="mt-2 block text-[1rem] text-neutre-700">Beauté &amp; soins · <span class="font-semibold text-neutre-800">1 voisine</span></span>
+      </span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" class="mt-2 size-6 shrink-0 text-teal-600" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg>
+    </a>
+  </li>
+
+  <li class="regle">
+    <a class="besoin foc flex items-start gap-4 px-5 py-4 lg:px-0" href="#" data-k="alimentation traiteur manger cuisiner plats a emporter buffet marocain livraison nadia berrada">
+      <span class="num mt-1.5 w-8 shrink-0 text-[1.0625rem] font-bold text-neutre-600 tnum">09</span>
+      <span class="min-w-0 flex-1">
+        <span class="block font-display text-besoin text-teal-800">Manger bon sans cuisiner ce soir</span>
+        <span class="mt-2 block text-[1rem] text-neutre-700">Alimentation &amp; traiteur · <span class="font-semibold text-neutre-800">1 voisine</span></span>
+      </span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" class="mt-2 size-6 shrink-0 text-teal-600" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg>
+    </a>
+  </li>
+
+  <!-- la case honnête : personne, et on le dit -->
+  <li class="regle">
+    <div class="besoin flex items-start gap-4 px-5 py-4 lg:px-0" data-k="enfance education enfants apprendre soutien scolaire garde">
+      <span class="mt-1.5 w-8 shrink-0 text-[1.0625rem] font-bold text-neutre-600 tnum">10</span>
+      <span class="min-w-0 flex-1">
+        <span class="block font-display text-besoin text-neutre-600">S'occuper des enfants, apprendre</span>
+        <span class="mt-2 block text-[1rem] text-neutre-700">Enfance &amp; éducation ·
+          <span class="font-semibold text-neutre-800">personne encore inscrit·e</span> —
+          <a class="foc rounded font-semibold text-teal-700 underline decoration-teal-300 underline-offset-4 hover:text-teal-600" href="mailto:annuaire@cartoucherie.example?subject=Je%20connais%20quelqu'un">vous connaissez quelqu'un&nbsp;?</a>
+        </span>
+      </span>
+    </div>
+  </li>
+</ul>
+
+<!-- l'état vide, où vit Colly quand la recherche ne donne rien -->
+<div id="vide" hidden class="mx-auto mt-6 w-full max-w-[1100px] px-5">
+  <div class="lueur rounded-[1.25rem] p-5 ring-1 ring-neutre-950/[.07] sm:p-7">
+    <div class="flex items-start gap-5">
+      <!-- le croquis au crayon vit sur une plaque blanche, comme une photo posée -->
+      <div class="shrink-0 rounded-2xl bg-white p-2 shadow-carte">
+        <img src="../../_shared/colly/colly-triste.png" alt="Colly, la créature des Halles, l'air déçu" width="260" height="260" class="size-[88px] object-contain grayscale">
+      </div>
+      <p class="font-display text-besoin text-teal-800">Personne pour ça… pour l'instant.</p>
+    </div>
+    <p class="mt-4 max-w-[44ch] text-corps text-neutre-800">L'annuaire n'a que douze voisins. Dites-nous le métier qui manque, on ira le chercher.</p>
+    <a href="mailto:annuaire@cartoucherie.example?subject=Un%20m%C3%A9tier%20manque" class="foc -ml-4 mt-2 inline-flex min-h-[44px] items-center rounded-full px-4 text-corps font-semibold text-teal-700 underline decoration-teal-300 underline-offset-4 hover:bg-white/60">Proposer un métier</a>
+  </div>
+</div>
+
+<!-- ══════════════ LE QUARTIER, EN CHIFFRES ══════════════ -->
+<section aria-label="Le quartier en chiffres" class="mx-auto mt-10 w-full max-w-[1100px] px-5">
+  <div class="regle pt-8">
+    <p class="max-w-[24ch] text-chapo text-neutre-800 lg:max-w-none">
+      <span class="whitespace-nowrap"><span class="font-display text-enorme text-teal-800 tnum">12</span> voisins.</span>
+      <span class="whitespace-nowrap"><span class="font-display text-enorme text-teal-800 tnum">10</span> métiers.</span>
+      <span class="whitespace-nowrap"><span class="font-display text-enorme text-teal-800 tnum">1</span> quartier</span> qu'on traverse à pied en dix minutes.
+    </p>
+    <p class="mt-5 max-w-[46ch] text-corps text-neutre-700">
+      Chaque personne de cette liste a été rencontrée par Sandra, à la Halle ou chez elle. Rien n'est envoyé à un serveur&nbsp;: le calcul reste sur votre téléphone.
+    </p>
+  </div>
+</section>
+
+<!-- ══════════════ LES VISAGES ══════════════ -->
+<section id="voisins" class="mx-auto mt-12 w-full max-w-[1100px] scroll-mt-24 px-5">
+  <h2 class="font-display text-nom text-teal-800">Les derniers portraits</h2>
+  <p class="mt-2 max-w-[46ch] text-corps text-neutre-700">Chaque semaine, Sandra rencontre quelqu'un du quartier et publie son portrait ici.</p>
+
+  <!-- le portrait en vedette : la photo en grand, le nom sur toute la ligne -->
+  <a href="#" class="foc mt-7 block max-w-[26rem]">
+    <img src="https://randomuser.me/api/portraits/women/57.jpg" alt="Portrait de Nadia Berrada" width="336" height="336"
+         class="size-[168px] rounded-full object-cover shadow-carte-hover ring-4 ring-white">
+    <p class="mt-5 font-display text-grand text-teal-800">Nadia Berrada</p>
+    <p class="mt-2 text-chapo text-neutre-800">Traiteur — cuisine maison</p>
+    <p class="mt-2 flex items-center gap-1.5 text-[1rem] text-neutre-700">
+      <svg viewBox="0 0 24 24" fill="currentColor" class="size-[18px] text-sable-700" aria-hidden="true"><path d="m12 2.6 2.7 5.9 6.4.7-4.8 4.3 1.3 6.3L12 16.6l-5.6 3.2 1.3-6.3-4.8-4.3 6.4-.7z"/></svg>
+      <span><span class="tnum font-semibold text-neutre-800">5,0</span> · 23 avis · à 210 m</span>
+    </p>
+  </a>
+
+  <ul class="mt-8">
+    <li class="regle">
+      <a href="membre.html" class="besoin foc flex items-center gap-4 py-4">
+        <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Portrait de Camille Roussel" width="176" height="176" class="size-[88px] shrink-0 rounded-full object-cover shadow-carte ring-2 ring-white">
+        <span class="min-w-0 flex-1">
+          <span class="block font-display text-nom text-teal-800">Camille Roussel</span>
+          <span class="mt-1.5 block text-corps text-neutre-800">Sophrologue</span>
+          <span class="mt-1 block text-[1rem] text-neutre-700"><span class="tnum">4,8</span> · 12 avis · 120 m</span>
+        </span>
+      </a>
+    </li>
+    <li class="regle">
+      <a href="#" class="besoin foc flex items-center gap-4 py-4">
+        <img src="https://randomuser.me/api/portraits/men/46.jpg" alt="Portrait de Julien Marty" width="176" height="176" class="size-[88px] shrink-0 rounded-full object-cover shadow-carte ring-2 ring-white">
+        <span class="min-w-0 flex-1">
+          <span class="block font-display text-nom text-teal-800">Julien Marty</span>
+          <span class="mt-1.5 block text-corps text-neutre-800">Électricien</span>
+          <span class="mt-1 block text-[1rem] text-neutre-700"><span class="tnum">4,4</span> · 11 avis · tout le quartier</span>
+        </span>
+      </a>
+    </li>
+    <li class="regle">
+      <a href="#" class="besoin foc flex items-center gap-4 py-4">
+        <img src="https://randomuser.me/api/portraits/women/90.jpg" alt="Portrait d'Inès Lacombe" width="176" height="176" class="size-[88px] shrink-0 rounded-full object-cover shadow-carte ring-2 ring-white">
+        <span class="min-w-0 flex-1">
+          <span class="block font-display text-nom text-teal-800">Inès Lacombe</span>
+          <span class="mt-1.5 block text-corps text-neutre-800">Professeure de yoga</span>
+          <span class="mt-1 block text-[1rem] text-neutre-700"><span class="tnum">4,9</span> · 27 avis · 60 m</span>
+        </span>
+      </a>
+    </li>
+    <li class="regle">
+      <a href="#" class="besoin foc flex items-center gap-4 py-4">
+        <img src="https://randomuser.me/api/portraits/men/75.jpg" alt="Portrait de Marc Ollivier" width="176" height="176" class="size-[88px] shrink-0 rounded-full object-cover shadow-carte ring-2 ring-white">
+        <span class="min-w-0 flex-1">
+          <span class="block font-display text-nom text-teal-800">Marc Ollivier</span>
+          <span class="mt-1.5 block text-corps text-neutre-800">Menuisier-ébéniste</span>
+          <span class="mt-1 block text-[1rem] text-neutre-700"><span class="tnum">4,7</span> · 9 avis · 800 m</span>
+        </span>
+      </a>
+    </li>
+  </ul>
+
+  <a href="#" class="foc mt-6 inline-flex min-h-[48px] items-center gap-2.5 rounded-full bg-white px-5 text-corps font-semibold text-teal-800 shadow-carte ring-1 ring-neutre-950/[.07] transition hover:shadow-carte-hover">
+    Voir les 12 voisins
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" class="size-5" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg>
+  </a>
+</section>
+
+<!-- ══════════════ COLLY ══════════════ -->
+<section class="mx-auto mt-14 w-full max-w-[1100px] scroll-mt-24 px-5">
+  <div class="lueur overflow-hidden rounded-[1.25rem] ring-1 ring-neutre-950/[.07]">
+    <div class="flex flex-col gap-4 p-6 sm:flex-row sm:items-center sm:gap-8 sm:p-8">
+      <img src="../../_shared/colly/colly-couleur.png" alt="Colly, la créature des Halles de la Cartoucherie, qui fait signe" width="400" height="460"
+           class="h-[168px] w-auto shrink-0 self-start object-contain sm:h-[220px]">
+      <div class="min-w-0">
+        <p class="text-etiquette font-semibold uppercase text-teal-700">Bonjour, moi c'est Colly</p>
+        <p class="mt-3 max-w-[20ch] font-display text-grand text-teal-800">Je grimpe partout dans les Halles.</p>
+        <p class="mt-3 max-w-[42ch] text-corps text-neutre-800">
+          Je connais tout le monde ici. Si le voisin qu'il vous faut n'est pas encore dans la liste, dites-le-moi&nbsp;: j'irai frapper à sa porte.
+        </p>
+        <a href="mailto:annuaire@cartoucherie.example?subject=Un%20voisin%20%C3%A0%20ajouter" class="foc mt-4 inline-flex min-h-[44px] items-center gap-2 rounded-full bg-white px-5 text-corps font-semibold text-teal-800 shadow-carte ring-1 ring-neutre-950/[.07] transition hover:shadow-carte-hover">
+          Ajouter un voisin
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" class="size-5" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ══════════════ PIED ══════════════ -->
+<footer class="mx-auto mt-14 w-full max-w-[1100px] px-5 pb-12">
+  <div class="filet mb-6 rounded-full" role="presentation"></div>
+  <nav class="flex flex-wrap gap-x-6 text-[1rem] font-semibold text-teal-700" aria-label="Pied de page">
+    <a href="#" class="foc inline-flex min-h-[44px] items-center rounded underline decoration-teal-300 underline-offset-4">À propos</a>
+    <a href="#" class="foc inline-flex min-h-[44px] items-center rounded underline decoration-teal-300 underline-offset-4">Confidentialité</a>
+    <a href="#" class="foc inline-flex min-h-[44px] items-center rounded underline decoration-teal-300 underline-offset-4">Mentions légales</a>
+    <a href="#" class="foc inline-flex min-h-[44px] items-center rounded underline decoration-teal-300 underline-offset-4">Devenir membre</a>
+  </nav>
+  <p class="mt-4 max-w-[52ch] text-[1rem] text-neutre-700">
+    Annuaire associatif du quartier de la Cartoucherie · Toulouse 31300. Fait par des voisins, gratuitement, sans publicité.
+  </p>
+</footer>
+
+<script>
+(function () {
+  var champ = document.getElementById('q');
+  var items = Array.prototype.slice.call(document.querySelectorAll('#liste > li'));
+  var vide  = document.getElementById('vide');
+  function sansAccents(s) {
+    return s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  }
+  champ.addEventListener('input', function () {
+    var q = sansAccents(champ.value.trim());
+    var visibles = 0;
+    items.forEach(function (li) {
+      var cible = sansAccents((li.querySelector('[data-k]') || li).getAttribute('data-k') + ' ' + li.textContent);
+      var ok = q === '' || cible.indexOf(q) !== -1;
+      li.hidden = !ok;
+      if (ok) visibles++;
+    });
+    vide.hidden = visibles !== 0;
+  });
+})();
+</script>
+
+</body>
+</html>

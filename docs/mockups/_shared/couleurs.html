@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="cartoucherie">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Le nuancier — Annuaire de la Cartoucherie</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,400;0,600;0,700;0,800;0,900;1,600&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+<style type="text/tailwindcss">
+@theme {
+  --font-display: "Nunito", ui-rounded, system-ui, sans-serif;
+  --font-sans: "Source Sans 3", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+
+  /* ── teal · identité ─────────────────────────────── */
+  --color-teal-50:  oklch(98.0% 0.010 198);
+  --color-teal-100: oklch(95.5% 0.022 197);
+  --color-teal-200: oklch(91.0% 0.040 196);
+  --color-teal-300: oklch(84.0% 0.058 195);
+  --color-teal-400: oklch(74.0% 0.080 195);
+  --color-teal-500: oklch(63.0% 0.098 196);
+  --color-teal-600: oklch(53.0% 0.090 196);
+  --color-teal-700: oklch(44.0% 0.074 197);
+  --color-teal-800: oklch(35.0% 0.060 198);
+  --color-teal-900: oklch(27.0% 0.045 199);
+  --color-teal-950: oklch(19.0% 0.030 201);
+
+  /* ── orange · action ─────────────────────────────── */
+  --color-orange-50:  oklch(97.8% 0.018 75);
+  --color-orange-100: oklch(95.0% 0.042 72);
+  --color-orange-200: oklch(90.0% 0.078 68);
+  --color-orange-300: oklch(84.0% 0.110 64);
+  --color-orange-400: oklch(78.0% 0.145 60);
+  --color-orange-500: oklch(72.0% 0.170 56);
+  --color-orange-600: oklch(65.0% 0.178 50);
+  --color-orange-700: oklch(56.0% 0.172 44);
+  --color-orange-800: oklch(46.0% 0.140 40);
+  --color-orange-900: oklch(37.0% 0.108 38);
+  --color-orange-950: oklch(27.0% 0.078 36);
+
+  /* ── sauge · taxonomie ───────────────────────────── */
+  --color-sauge-50:  oklch(97.5% 0.012 170);
+  --color-sauge-100: oklch(94.5% 0.026 170);
+  --color-sauge-200: oklch(89.5% 0.050 170);
+  --color-sauge-300: oklch(82.0% 0.074 168);
+  --color-sauge-400: oklch(73.0% 0.100 164);
+  --color-sauge-500: oklch(64.0% 0.120 160);
+  --color-sauge-600: oklch(54.5% 0.122 156);
+  --color-sauge-700: oklch(45.5% 0.108 152);
+  --color-sauge-800: oklch(37.0% 0.088 150);
+  --color-sauge-900: oklch(29.0% 0.066 152);
+  --color-sauge-950: oklch(20.5% 0.044 156);
+
+  /* ── sable · illustration ────────────────────────── */
+  --color-sable-50:  oklch(98.2% 0.010 95);
+  --color-sable-100: oklch(96.0% 0.024 93);
+  --color-sable-200: oklch(92.5% 0.044 91);
+  --color-sable-300: oklch(88.0% 0.064 90);
+  --color-sable-400: oklch(82.0% 0.090 89);
+  --color-sable-500: oklch(76.0% 0.115 88);
+  --color-sable-600: oklch(68.0% 0.118 86);
+  --color-sable-700: oklch(57.5% 0.105 83);
+  --color-sable-800: oklch(47.0% 0.088 80);
+  --color-sable-900: oklch(37.5% 0.068 78);
+  --color-sable-950: oklch(27.0% 0.048 75);
+
+  /* ── neutre · structure ──────────────────────────── */
+  --color-neutre-50:  oklch(98.6% 0.004 200);
+  --color-neutre-100: oklch(97.2% 0.006 199);
+  --color-neutre-200: oklch(94.4% 0.008 198);
+  --color-neutre-300: oklch(89.8% 0.010 198);
+  --color-neutre-400: oklch(79.5% 0.013 197);
+  --color-neutre-500: oklch(66.5% 0.016 197);
+  --color-neutre-600: oklch(54.5% 0.019 198);
+  --color-neutre-700: oklch(44.0% 0.022 199);
+  --color-neutre-800: oklch(34.0% 0.025 200);
+  --color-neutre-900: oklch(25.5% 0.028 201);
+  --color-neutre-950: oklch(17.5% 0.030 202);
+
+  /* ── rouge · erreur ──────────────────────────────── */
+  --color-rouge-50:  oklch(97.6% 0.014 25);
+  --color-rouge-100: oklch(94.6% 0.029 24);
+  --color-rouge-200: oklch(89.0% 0.057 24);
+  --color-rouge-300: oklch(81.0% 0.100 24);
+  --color-rouge-400: oklch(70.0% 0.150 25);
+  --color-rouge-500: oklch(62.0% 0.190 26);
+  --color-rouge-600: oklch(54.0% 0.205 24);
+  --color-rouge-700: oklch(46.0% 0.180 22);
+  --color-rouge-800: oklch(38.0% 0.145 20);
+  --color-rouge-900: oklch(31.0% 0.115 18);
+  --color-rouge-950: oklch(22.0% 0.080 16);
+
+  /* ── profondeur ──────────────────────────────────── */
+  --shadow-carte:       0 1px 2px oklch(17.5% .03 202/.05), 0 4px 12px -2px oklch(17.5% .03 202/.09);
+  --shadow-carte-hover: 0 2px 4px oklch(17.5% .03 202/.06), 0 14px 32px -8px oklch(17.5% .03 202/.16);
+  --shadow-flottant:    0 4px 8px oklch(17.5% .03 202/.06), 0 28px 64px -20px oklch(17.5% .03 202/.28);
+  --shadow-cta:         0 2px 4px oklch(37% .108 38/.28), 0 10px 24px -8px oklch(37% .108 38/.38);
+  --shadow-cta-press:   0 1px 2px oklch(37% .108 38/.34);
+}
+
+[data-theme="cartoucherie"] {
+  color-scheme: light;
+  --color-base-100:          #ffffff;
+  --color-base-200:          oklch(97.2% 0.006 199);
+  --color-base-300:          oklch(94.4% 0.008 198);
+  --color-base-content:      oklch(25.5% 0.028 201);
+  --color-primary:           oklch(44.0% 0.074 197);
+  --color-primary-content:   #ffffff;
+  --color-secondary:         oklch(94.5% 0.026 170);
+  --color-secondary-content: oklch(19.0% 0.030 201);
+  --color-accent:            oklch(72.0% 0.170 56);
+  --color-accent-content:    oklch(19.0% 0.030 201);
+  --color-neutral:           oklch(25.5% 0.028 201);
+  --color-neutral-content:   oklch(98.6% 0.004 200);
+  --color-info:              oklch(53.0% 0.090 196);
+  --color-info-content:      #ffffff;
+  --color-success:           oklch(45.5% 0.108 152);
+  --color-success-content:   #ffffff;
+  --color-warning:           oklch(76.0% 0.115 88);
+  --color-warning-content:   oklch(19.0% 0.030 201);
+  --color-error:             oklch(54.0% 0.205 24);
+  --color-error-content:     #ffffff;
+  --radius-selector: 2rem;
+  --radius-field:    0.75rem;
+  --radius-box:      1.25rem;
+  --size-selector:   0.28125rem;
+  --size-field:      0.28125rem;
+  --border:          1px;
+  --depth:           1;
+  --noise:           0;
+}
+</style>
+
+<style>
+  body { background: #fff; }
+  .filet { height: 3px; background: linear-gradient(90deg,
+      oklch(53% .090 196), oklch(64% .120 160) 46%, oklch(72% .170 56)); }
+  .aube  { background: linear-gradient(168deg, oklch(98% .010 198) 0%, #ffffff 44%, oklch(97.8% .018 75) 100%); }
+  .colly-bg { background: radial-gradient(120% 90% at 30% 15%,
+      oklch(96% .024 93), oklch(94.5% .026 170) 62%, oklch(95.5% .022 197)); }
+  .cta { background: linear-gradient(180deg, oklch(78% .145 60), oklch(72% .170 56) 55%, oklch(65% .178 50)); }
+  .roue {
+    background: conic-gradient(from 0deg,
+      oklch(72% .15 90) 0deg,  oklch(72% .15 60) 30deg,  oklch(72% .15 30) 60deg,
+      oklch(72% .15 0) 90deg,  oklch(72% .15 330) 120deg, oklch(72% .15 300) 150deg,
+      oklch(72% .15 270) 180deg, oklch(72% .15 240) 210deg, oklch(72% .15 210) 240deg,
+      oklch(72% .15 180) 270deg, oklch(72% .15 150) 300deg, oklch(72% .15 120) 330deg,
+      oklch(72% .15 90) 360deg);
+  }
+  .num { font-variant-numeric: tabular-nums; }
+  .grain::after {
+    content:""; position:absolute; inset:0; pointer-events:none; opacity:.5;
+    background-image: radial-gradient(oklch(17.5% .03 202/.045) 1px, transparent 1px);
+    background-size: 4px 4px;
+  }
+</style>
+</head>
+
+<body class="font-sans text-[16px] text-neutre-900 antialiased">
+
+<!-- ══════════ HÉROS ══════════ -->
+<header class="relative overflow-hidden aube">
+  <div class="mx-auto max-w-[1120px] px-5 md:px-8 pt-16 pb-20 grid grid-cols-1 md:grid-cols-12 gap-10 items-end">
+    <div class="md:col-span-7">
+      <p class="font-mono text-[12px] uppercase tracking-[.22em] text-teal-700 mb-5">
+        Annuaire&nbsp;de&nbsp;la&nbsp;Cartoucherie · système de couleur · v1
+      </p>
+      <h1 class="font-display font-black text-teal-900 leading-[0.92] tracking-[-0.03em]
+                 text-[52px] md:text-[86px]">
+        Le nuancier
+      </h1>
+      <div class="filet w-[420px] rounded-full mt-6 mb-7"></div>
+      <p class="text-[19px] leading-[1.55] text-neutre-700 max-w-[30rem]">
+        Quatre teintes relevées sur Colly, remontées à la saturation d'un écran,
+        posées sur du <strong class="text-teal-800 font-semibold">blanc</strong>.
+        Un seul système. La teal porte l'identité, l'orange porte l'action.
+      </p>
+      <div class="mt-8 flex items-center gap-3 flex-wrap">
+        <span class="inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-[13px] font-semibold text-teal-800 shadow-carte ring-1 ring-inset ring-neutre-950/[.07]">
+          <span class="size-2.5 rounded-full bg-teal-600"></span> base-100 = #ffffff
+        </span>
+        <span class="inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-[13px] font-semibold text-teal-800 shadow-carte ring-1 ring-inset ring-neutre-950/[.07]">
+          <span class="size-2.5 rounded-full bg-orange-500"></span> CTA 7.00:1 AAA
+        </span>
+        <span class="inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-[13px] font-semibold text-teal-800 shadow-carte ring-1 ring-inset ring-neutre-950/[.07]">
+          <span class="size-2.5 rounded-full bg-sauge-500"></span> --depth : 1
+        </span>
+      </div>
+    </div>
+
+    <div class="md:col-span-5 relative">
+      <div class="relative colly-bg rounded-[2rem] p-6 shadow-flottant ring-1 ring-inset ring-neutre-950/[.06] grain overflow-hidden">
+        <img src="colly/colly-couleur.png" alt="Colly, la créature des Halles de la Cartoucherie"
+             class="relative z-10 w-full max-w-[280px] mx-auto drop-shadow-[0_18px_28px_oklch(17.5%_.03_202/.22)]" />
+        <p class="relative z-10 text-center font-display font-bold text-[15px] text-teal-900 mt-2">
+          Colly — corps teal, ventre crème, <span class="text-orange-800">crête orange</span>
+        </p>
+      </div>
+      <div class="relative -mt-4 -ml-8 inline-block rotate-[-3deg] bg-white rounded-2xl px-5 py-3.5 shadow-flottant ring-1 ring-inset ring-neutre-950/[.07]">
+        <p class="font-mono text-[11.5px] text-neutre-600 leading-[1.8]">
+          l'interface est la même image :<br>
+          <span class="text-teal-800 font-semibold">le corps = la page</span> ·
+          <span class="text-orange-800 font-semibold">la crête = « Appeler »</span>
+        </p>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="mx-auto max-w-[1120px] px-5 md:px-8">
+
+<!-- ══════════ 01 · L'HARMONIE ══════════ -->
+<section class="pt-24">
+  <div class="flex items-baseline gap-5 mb-3">
+    <span class="font-display font-black text-[13px] tracking-[.2em] text-orange-700">01</span>
+    <h2 class="font-display font-extrabold text-[30px] md:text-[40px] tracking-[-.025em] text-teal-900">L'harmonie</h2>
+  </div>
+  <div class="filet w-[180px] rounded-full mb-10"></div>
+
+  <div class="grid grid-cols-1 md:grid-cols-12 gap-12 items-center">
+    <!-- roue -->
+    <div class="md:col-span-5">
+      <div class="relative mx-auto size-[340px]">
+        <div class="roue absolute inset-[6px] rounded-full" style="mask:radial-gradient(circle closest-side, transparent 0 57%, #000 57.5% 100%); -webkit-mask:radial-gradient(circle closest-side, transparent 0 57%, #000 57.5% 100%);"></div>
+        <svg class="absolute inset-0" viewBox="0 0 340 340" aria-label="Roue des teintes : teal 196° et orange 56°, 140° d'écart">
+          <!-- corde 140° : teal 196° ↔ orange 56°, rayon mi-anneau 133 -->
+          <line x1="170" y1="170" x2="42.2"  y2="206.7" stroke="#035f61" stroke-width="1.8" stroke-dasharray="5 5"/>
+          <line x1="170" y1="170" x2="244.4" y2="59.7"  stroke="#c24700" stroke-width="1.8" stroke-dasharray="5 5"/>
+          <circle cx="170" cy="170" r="52" fill="#fff"/>
+          <text x="170" y="166" text-anchor="middle" font-family="Nunito" font-size="34" font-weight="900" fill="#004446">140°</text>
+          <text x="170" y="184" text-anchor="middle" font-size="10" font-family="IBM Plex Mono" fill="#647474">complémentaire</text>
+          <text x="170" y="196" text-anchor="middle" font-size="10" font-family="IBM Plex Mono" fill="#647474">scindée</text>
+          <!-- marqueurs : x = 170 + 133·cos(−h), y = 170 + 133·sin(−h) -->
+          <circle cx="42.2"  cy="206.7" r="15" fill="#035f61" stroke="#fff" stroke-width="5"/>
+          <circle cx="38.9"  cy="146.9" r="12" fill="#3aa273" stroke="#fff" stroke-width="5"/>
+          <circle cx="244.4" cy="59.7"  r="15" fill="#f28318" stroke="#fff" stroke-width="5"/>
+          <circle cx="174.6" cy="37.1"  r="12" fill="#dcc27f" stroke="#fff" stroke-width="5"/>
+        </svg>
+      </div>
+
+      <!-- légende -->
+      <div class="mt-6 grid grid-cols-2 gap-x-5 gap-y-3">
+        <div class="flex items-center gap-2.5"><span class="size-4 rounded-full bg-teal-700 shrink-0"></span>
+          <span class="font-mono text-[11.5px] text-neutre-700 leading-tight">teal <strong class="text-teal-800">196°</strong><br>identité</span></div>
+        <div class="flex items-center gap-2.5"><span class="size-4 rounded-full bg-orange-500 shrink-0"></span>
+          <span class="font-mono text-[11.5px] text-neutre-700 leading-tight">orange <strong class="text-orange-800">56°</strong><br>action</span></div>
+        <div class="flex items-center gap-2.5"><span class="size-4 rounded-full bg-sauge-500 shrink-0"></span>
+          <span class="font-mono text-[11.5px] text-neutre-700 leading-tight">sauge <strong class="text-sauge-800">173°</strong><br>taxonomie</span></div>
+        <div class="flex items-center gap-2.5"><span class="size-4 rounded-full bg-sable-400 shrink-0"></span>
+          <span class="font-mono text-[11.5px] text-neutre-700 leading-tight">sable <strong class="text-sable-800">88°</strong><br>illustration</span></div>
+      </div>
+    </div>
+
+    <!-- explication -->
+    <div class="md:col-span-7">
+      <p class="text-[19px] leading-[1.6] text-neutre-800">
+        La planche de Colly n'est pas quatre pigments sans lien : ce sont
+        <strong class="text-teal-800">deux paires analogues qui se font face</strong>.
+        Le côté froid — teal 196°, sauge 173° — peut couvrir un écran entier sans fatiguer.
+        Le côté chaud — orange 56°, sable 88° — reste assez brûlant pour vouloir dire
+        « agissez ici ».
+      </p>
+      <div class="mt-7 grid grid-cols-2 gap-4">
+        <div class="rounded-2xl bg-teal-50 p-5 ring-1 ring-inset ring-teal-200">
+          <p class="font-display font-extrabold text-[15px] text-teal-900 mb-2">Le côté froid — 30 %</p>
+          <p class="text-[14.5px] leading-[1.5] text-teal-900/85">Encre, titres, liens, pastilles de métier, filets, ombres. Il est partout et ne crie jamais.</p>
+        </div>
+        <div class="rounded-2xl bg-orange-50 p-5 ring-1 ring-inset ring-orange-200">
+          <p class="font-display font-extrabold text-[15px] text-orange-900 mb-2">Le côté chaud — 10 %</p>
+          <p class="text-[14.5px] leading-[1.5] text-orange-950/85">Le bouton « Appeler », un état actif, un filet signature, un panneau sable. Sa rareté <em>est</em> son sens.</p>
+        </div>
+      </div>
+      <div class="mt-6 rounded-2xl bg-neutre-100 p-6">
+        <p class="font-mono text-[11px] uppercase tracking-[.16em] text-neutre-600 mb-4">
+          De la planche à l'écran — le chroma, remonté
+        </p>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div>
+            <div class="flex rounded-xl overflow-hidden h-16 ring-1 ring-inset ring-neutre-950/10">
+              <div class="flex-1" style="background:#325656"></div>
+              <div class="flex-1 bg-teal-700"></div>
+            </div>
+            <p class="mt-2 font-mono text-[11px] leading-tight text-neutre-700">teal<br>
+              C 0.042 → <strong class="text-teal-800">0.074</strong><br>
+              <span class="text-neutre-500">×1.8 · plafond sRGB</span></p>
+          </div>
+          <div>
+            <div class="flex rounded-xl overflow-hidden h-16 ring-1 ring-inset ring-neutre-950/10">
+              <div class="flex-1" style="background:#86a79c"></div>
+              <div class="flex-1 bg-sauge-400"></div>
+            </div>
+            <p class="mt-2 font-mono text-[11px] leading-tight text-neutre-700">sauge<br>
+              C 0.040 → <strong class="text-sauge-800">0.100</strong><br>
+              <span class="text-neutre-500">×2.5</span></p>
+          </div>
+          <div>
+            <div class="flex rounded-xl overflow-hidden h-16 ring-1 ring-inset ring-neutre-950/10">
+              <div class="flex-1" style="background:#df8d4f"></div>
+              <div class="flex-1 bg-orange-500"></div>
+            </div>
+            <p class="mt-2 font-mono text-[11px] leading-tight text-neutre-700">orange<br>
+              C 0.127 → <strong class="text-orange-800">0.170</strong><br>
+              <span class="text-neutre-500">×1.3</span></p>
+          </div>
+          <div>
+            <div class="flex rounded-xl overflow-hidden h-16 ring-1 ring-inset ring-neutre-950/10">
+              <div class="flex-1" style="background:#e3d9c1"></div>
+              <div class="flex-1 bg-sable-300"></div>
+            </div>
+            <p class="mt-2 font-mono text-[11px] leading-tight text-neutre-700">crème<br>
+              C 0.034 → <strong class="text-sable-800">0.064</strong><br>
+              <span class="text-neutre-500">×1.9 · jamais le fond</span></p>
+          </div>
+        </div>
+        <p class="mt-4 text-[14px] leading-snug text-neutre-700">
+          À gauche le pigment de la planche, à droite la version d'écran. Même teinte, même
+          famille — de quoi reconnaître Colly et l'application comme une seule chose.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ 02 · LES RAMPES ══════════ -->
+<section class="pt-24">
+  <div class="flex items-baseline gap-5 mb-3">
+    <span class="font-display font-black text-[13px] tracking-[.2em] text-orange-700">02</span>
+    <h2 class="font-display font-extrabold text-[30px] md:text-[40px] tracking-[-.025em] text-teal-900">Les rampes</h2>
+  </div>
+  <div class="filet w-[180px] rounded-full mb-4"></div>
+  <p class="text-[17px] text-neutre-700 max-w-[46rem] mb-10">
+    Le chroma suit un sommet, pas une droite : il monte jusqu'au 500–600 puis redescend dans
+    les foncés. La teinte pivote — l'orange court de 75° à 36°, la sauge de 170° à 150°.
+    Une rampe interpolée naïvement tient sa teinte et meurt dans les clairs.
+  </p>
+
+  <div id="rampes" class="space-y-9 overflow-x-auto"></div>
+</section>
+
+<!-- ══════════ 03 · LES NEUTRES ══════════ -->
+<section class="pt-24">
+  <div class="flex items-baseline gap-5 mb-3">
+    <span class="font-display font-black text-[13px] tracking-[.2em] text-orange-700">03</span>
+    <h2 class="font-display font-extrabold text-[30px] md:text-[40px] tracking-[-.025em] text-teal-900">Les neutres</h2>
+  </div>
+  <div class="filet w-[180px] rounded-full mb-10"></div>
+
+  <div class="grid grid-cols-1 md:grid-cols-12 gap-10 items-start">
+    <div class="md:col-span-5">
+      <p class="text-[19px] leading-[1.6] text-neutre-800">
+        Le fond est <strong class="text-teal-800">#ffffff</strong>. Pas « presque blanc ». Blanc.
+      </p>
+      <p class="mt-4 text-[16px] leading-[1.6] text-neutre-700">
+        Les gris sont teintés <strong>teal, 197–202°</strong>, à un vingtième du chroma de la
+        primaire dans les clairs et un quart dans l'encre. Un gris pur posé à côté d'une teal
+        saturée paraît sale : l'œil lui induit son complémentaire rose. Teinter le gris dans
+        la teinte de la marque supprime l'induction.
+      </p>
+      <p class="mt-4 text-[16px] leading-[1.6] text-neutre-700">
+        Et froid, pas chaud — c'est la correction de la révision 2. Un gris chaud, à
+        <em>n'importe quel</em> chroma, est une page crème en miniature.
+      </p>
+      <p class="mt-4 text-[16px] leading-[1.6] text-neutre-700">
+        Le chroma <strong>monte</strong> quand le ton fonce : l'encre <span class="font-mono text-[14px] text-neutre-900">#112728</span>
+        se lit noire par un lecteur et teal par un designer. C'est tout le tour de main.
+      </p>
+    </div>
+
+    <div class="md:col-span-7">
+      <p class="font-mono text-[11px] uppercase tracking-[.16em] text-neutre-600 mb-3">La démonstration</p>
+      <div class="rounded-[1.25rem] overflow-hidden shadow-carte ring-1 ring-inset ring-neutre-950/[.07]">
+        <div class="grid grid-cols-2">
+          <div class="p-6" style="background: oklch(94.4% 0 0)">
+            <p class="font-mono text-[11px] text-neutre-950/70 mb-3">gris pur · oklch(94.4% 0 0)</p>
+            <div class="h-20 rounded-xl bg-teal-600"></div>
+            <p class="mt-3 text-[13.5px] leading-snug text-neutre-950/80">Le gris tire au rose, la teal paraît terne.</p>
+          </div>
+          <div class="p-6 bg-neutre-200">
+            <p class="font-mono text-[11px] text-neutre-800 mb-3">gris teinté · oklch(94.4% 0.008 198)</p>
+            <div class="h-20 rounded-xl bg-teal-600"></div>
+            <p class="mt-3 text-[13.5px] leading-snug text-neutre-800">Le gris appartient à la marque, la teal respire.</p>
+          </div>
+        </div>
+      </div>
+
+      <p class="font-mono text-[11px] uppercase tracking-[.16em] text-neutre-600 mt-8 mb-3">Le mur de neutres, du blanc à l'encre</p>
+      <div id="neutres" class="flex rounded-2xl overflow-hidden shadow-carte ring-1 ring-inset ring-neutre-950/[.07]"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ 04 · 60 / 30 / 10 ══════════ -->
+<section class="pt-24">
+  <div class="flex items-baseline gap-5 mb-3">
+    <span class="font-display font-black text-[13px] tracking-[.2em] text-orange-700">04</span>
+    <h2 class="font-display font-extrabold text-[30px] md:text-[40px] tracking-[-.025em] text-teal-900">60 / 30 / 10</h2>
+  </div>
+  <div class="filet w-[180px] rounded-full mb-8"></div>
+
+  <div class="flex h-[92px] rounded-2xl overflow-hidden shadow-carte ring-1 ring-inset ring-neutre-950/[.07] mb-4">
+    <div class="w-[60%] bg-white flex items-center px-6">
+      <div>
+        <p class="font-display font-black text-[22px] text-teal-900 leading-none">60 <span class="text-[13px] font-bold text-neutre-600">blanc</span></p>
+        <p class="text-[13px] text-neutre-600 mt-1">page, cartes, gouttières, photographie</p>
+      </div>
+    </div>
+    <div class="w-[30%] bg-teal-800 flex items-center px-6">
+      <div>
+        <p class="font-display font-black text-[22px] text-white leading-none">30 <span class="text-[13px] font-bold text-teal-200">famille froide</span></p>
+        <p class="text-[13px] text-teal-100 mt-1">encre, titres, liens, pastilles, filets</p>
+      </div>
+    </div>
+    <div class="w-[10%] bg-orange-500 flex items-center px-4">
+      <p class="font-display font-black text-[22px] text-teal-950 leading-none">10</p>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-12 gap-10 items-start mt-10">
+    <!-- la règle -->
+    <div class="md:col-span-6">
+      <p class="text-[17px] leading-[1.6] text-neutre-800 mb-5">
+        Sur un écran donné, le côté chaud a droit à <strong class="text-orange-800">exactement</strong> :
+      </p>
+      <ol class="space-y-3">
+        <li class="flex gap-4 items-start rounded-2xl bg-neutre-100 p-4">
+          <span class="shrink-0 grid place-items-center size-7 rounded-full bg-orange-500 text-teal-950 font-display font-black text-[13px]">1</span>
+          <p class="text-[15.5px] leading-snug text-neutre-800"><strong>le bouton « Appeler »</strong>, plein <span class="font-mono text-[13.5px] text-orange-800">orange-500</span></p>
+        </li>
+        <li class="flex gap-4 items-start rounded-2xl bg-neutre-100 p-4">
+          <span class="shrink-0 grid place-items-center size-7 rounded-full bg-orange-500 text-teal-950 font-display font-black text-[13px]">2</span>
+          <p class="text-[15.5px] leading-snug text-neutre-800"><strong>un seul état sélectionné</strong> — filtre actif, onglet courant</p>
+        </li>
+        <li class="flex gap-4 items-start rounded-2xl bg-neutre-100 p-4">
+          <span class="shrink-0 grid place-items-center size-7 rounded-full bg-orange-500 text-teal-950 font-display font-black text-[13px]">3</span>
+          <p class="text-[15.5px] leading-snug text-neutre-800"><strong>un filet signature</strong> de 3 px — il remplace la barre d'en-tête colorée qui a fait échouer les révisions 1 et 2</p>
+        </li>
+        <li class="flex gap-4 items-start rounded-2xl bg-sable-100 p-4">
+          <span class="shrink-0 grid place-items-center size-7 rounded-full bg-sable-500 text-teal-950 font-display font-black text-[13px]">+</span>
+          <p class="text-[15.5px] leading-snug text-sable-950">et <strong>au plus un panneau <span class="font-mono text-[13.5px]">sable-100</span></strong> par page : le coin de Colly</p>
+        </li>
+      </ol>
+      <div class="mt-5 rounded-2xl border-l-[3px] border-orange-500 bg-orange-50 px-5 py-4">
+        <p class="font-display font-extrabold text-[15px] text-orange-900 mb-1">Le test</p>
+        <p class="text-[15px] leading-snug text-orange-950/90">
+          Pointez chaque objet orange de l'écran. Si vous en comptez quatre, supprimez-en un.
+          Si vous en comptez zéro, l'écran n'a pas d'action et quelque chose ne va pas.
+        </p>
+      </div>
+    </div>
+
+    <!-- le fragment 390px -->
+    <div class="md:col-span-6">
+      <p class="font-mono text-[11px] uppercase tracking-[.16em] text-neutre-600 mb-3">La règle, sur un vrai fragment — 390 px</p>
+      <div class="w-full max-w-[390px] rounded-[2rem] bg-white shadow-flottant ring-1 ring-inset ring-neutre-950/[.08] overflow-hidden">
+        <!-- en-tête blanc + filet signature -->
+        <div class="bg-white px-5 pt-5 pb-3 flex items-center justify-between">
+          <p class="font-display font-black text-[19px] tracking-[-.02em] text-teal-900">
+            la<span class="text-sauge-500">.</span>cartoucherie
+          </p>
+          <div class="flex gap-2">
+            <span class="size-9 grid place-items-center rounded-full bg-neutre-100">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="size-[18px] text-teal-700"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5" stroke-linecap="round"/></svg>
+            </span>
+          </div>
+        </div>
+        <div class="filet"></div>
+
+        <!-- filtres : un seul actif, en orange -->
+        <div class="px-5 py-4 flex gap-2 overflow-hidden">
+          <span class="shrink-0 rounded-full bg-orange-500 text-teal-950 px-4 py-2 text-[14px] font-bold ring-1 ring-inset ring-orange-700/60">Tous</span>
+          <span class="shrink-0 rounded-full bg-sauge-100 text-sauge-800 px-4 py-2 text-[14px] font-semibold">Santé</span>
+          <span class="shrink-0 rounded-full bg-sauge-100 text-sauge-800 px-4 py-2 text-[14px] font-semibold">Maison</span>
+          <span class="shrink-0 rounded-full bg-sauge-100 text-sauge-800 px-4 py-2 text-[14px] font-semibold">Manger</span>
+        </div>
+
+        <!-- carte membre -->
+        <div class="px-5 pb-5">
+          <div class="rounded-[1.25rem] bg-white p-4 shadow-carte ring-1 ring-inset ring-neutre-950/[.07]">
+            <div class="flex gap-4">
+              <div class="shrink-0 size-[104px] rounded-2xl overflow-hidden bg-sable-200 ring-1 ring-inset ring-neutre-950/[.08]">
+                <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Camille Roussel" class="size-full object-cover" />
+              </div>
+              <div class="min-w-0 pt-0.5">
+                <h3 class="font-display font-extrabold text-[21px] leading-tight tracking-[-.015em] text-teal-900">Camille Roussel</h3>
+                <p class="text-[15px] text-neutre-700 mt-0.5">Sophrologue</p>
+                <div class="flex gap-1.5 mt-2 flex-wrap">
+                  <span class="rounded-full bg-sauge-100 text-sauge-800 px-2.5 py-1 text-[12.5px] font-semibold">Santé &amp; bien-être</span>
+                  <span class="rounded-full bg-teal-50 text-teal-800 px-2.5 py-1 text-[12.5px] font-semibold">120 m</span>
+                </div>
+              </div>
+            </div>
+            <p class="text-[15.5px] leading-[1.45] text-neutre-800 mt-3.5">
+              Gestion du stress, sommeil et préparation aux examens, en cabinet ou en visio.
+            </p>
+            <div class="flex gap-2.5 mt-4">
+              <a href="#" class="cta flex-1 inline-flex items-center justify-center gap-2 rounded-full px-5 py-3.5 min-h-[52px]
+                        text-[17px] font-extrabold tracking-tight text-teal-950
+                        ring-1 ring-inset ring-orange-700/60 shadow-cta">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="size-5"><path d="M6.5 3h3l1.5 4-2 1.5a12 12 0 0 0 6.5 6.5L17 13l4 1.5v3a2 2 0 0 1-2.2 2A17 17 0 0 1 4 5.2 2 2 0 0 1 6 3Z" stroke-linejoin="round"/></svg>
+                Appeler
+              </a>
+              <button class="grid place-items-center size-[52px] rounded-full bg-white text-teal-700 ring-1 ring-inset ring-neutre-300 shadow-carte">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" class="size-5"><path d="M12 20s-7-4.4-7-9.2A4 4 0 0 1 12 8a4 4 0 0 1 7 2.8C19 15.6 12 20 12 20Z" stroke-linejoin="round"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- panneau Colly -->
+        <div class="mx-5 mb-5 colly-bg rounded-[1.25rem] p-4 flex items-center gap-4 ring-1 ring-inset ring-neutre-950/[.05]">
+          <img src="colly/colly-salut.png" alt="" class="w-[74px] shrink-0 opacity-90" />
+          <div>
+            <p class="font-display font-extrabold text-[16px] text-teal-900 leading-tight">Bonjour, moi c'est Colly.</p>
+            <p class="text-[14.5px] leading-snug text-neutre-800 mt-1">12 voisins font quelque chose ici. Dites-moi ce que vous cherchez.</p>
+          </div>
+        </div>
+      </div>
+      <p class="mt-3 font-mono text-[11.5px] text-neutre-600 leading-relaxed">
+        Objets orange comptés : <span class="text-orange-800 font-semibold">3</span> — le filet, le filtre actif, le bouton.<br>
+        Panneau sable : <span class="text-sable-800 font-semibold">1</span>. En-tête : <span class="text-teal-800 font-semibold">blanc</span>.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ 05 · LE CTA ══════════ -->
+<section class="pt-24">
+  <div class="flex items-baseline gap-5 mb-3">
+    <span class="font-display font-black text-[13px] tracking-[.2em] text-orange-700">05</span>
+    <h2 class="font-display font-extrabold text-[30px] md:text-[40px] tracking-[-.025em] text-teal-900">Le CTA</h2>
+  </div>
+  <div class="filet w-[180px] rounded-full mb-10"></div>
+
+  <div class="rounded-[2rem] bg-white p-12 shadow-flottant ring-1 ring-inset ring-neutre-950/[.07]">
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-12 items-center">
+      <div class="md:col-span-5 text-center">
+        <a href="#" class="cta inline-flex items-center justify-center gap-3 rounded-full px-9 py-5
+                  text-[24px] font-display font-extrabold tracking-tight text-teal-950
+                  ring-1 ring-inset ring-orange-700/60 shadow-cta">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="size-6"><path d="M6.5 3h3l1.5 4-2 1.5a12 12 0 0 0 6.5 6.5L17 13l4 1.5v3a2 2 0 0 1-2.2 2A17 17 0 0 1 4 5.2 2 2 0 0 1 6 3Z" stroke-linejoin="round"/></svg>
+          Appeler Camille
+        </a>
+        <p class="mt-6 font-mono text-[13px] leading-[1.9] text-neutre-700">
+          fond&nbsp;&nbsp;<span class="text-orange-800 font-semibold">orange-500</span> oklch(72% .170 56)<br>
+          texte <span class="text-teal-800 font-semibold">teal-950</span> oklch(19% .030 201)<br>
+          <span class="inline-block mt-2 rounded-full bg-sauge-100 text-sauge-800 px-3 py-1 font-semibold">7.00 : 1 — AAA</span>
+        </p>
+      </div>
+
+      <div class="md:col-span-7">
+        <p class="text-[19px] leading-[1.6] text-neutre-800">
+          Un galet orange brûlant, lettré en <strong class="text-teal-800">teal presque noire</strong>.
+          Pas en blanc.
+        </p>
+        <p class="mt-4 text-[16px] leading-[1.6] text-neutre-700">
+          Pour porter du texte blanc au niveau AA, un orange doit tomber à L 56 % — et à cette
+          clarté, ce n'est plus de l'orange, c'est de la <span class="font-mono text-[14.5px] text-orange-900" style="background:oklch(56% .172 44); color:#fff; padding:1px 6px; border-radius:5px">rouille</span>.
+          La rouille sur blanc est la couleur universelle d'un <em>avertissement</em>, pas d'un appel
+          téléphonique — et ce n'est plus la crête de Colly.
+        </p>
+        <p class="mt-4 text-[16px] leading-[1.6] text-neutre-700">
+          En gardant l'orange à sa vivacité d'écran et en inversant le label, on obtient
+          <strong>7.00:1, AAA</strong> — un meilleur ratio que le blanc-sur-rouille (5.01), sur un
+          bouton bien plus vif. La beauté et la conformité tombent sur la même réponse dès qu'on
+          cesse de supposer que le label doit être blanc.
+        </p>
+
+        <div class="mt-7 grid grid-cols-2 md:grid-cols-4 gap-3">
+          <div class="rounded-xl overflow-hidden ring-1 ring-inset ring-neutre-950/[.08]">
+            <div class="h-14 grid place-items-center font-display font-extrabold text-[15px] text-teal-950" style="background:oklch(78% .145 60)">Appeler</div>
+            <p class="px-2 py-2 text-center font-mono text-[10.5px] text-neutre-700 bg-white">survol<br><span class="text-sauge-800 font-semibold">8.83</span></p>
+          </div>
+          <div class="rounded-xl overflow-hidden ring-1 ring-inset ring-neutre-950/[.08]">
+            <div class="h-14 grid place-items-center font-display font-extrabold text-[15px] text-teal-950" style="background:oklch(72% .170 56)">Appeler</div>
+            <p class="px-2 py-2 text-center font-mono text-[10.5px] text-neutre-700 bg-white">repos<br><span class="text-sauge-800 font-semibold">7.00</span></p>
+          </div>
+          <div class="rounded-xl overflow-hidden ring-1 ring-inset ring-neutre-950/[.08]">
+            <div class="h-14 grid place-items-center font-display font-extrabold text-[15px] text-teal-950" style="background:oklch(65% .178 50)">Appeler</div>
+            <p class="px-2 py-2 text-center font-mono text-[10.5px] text-neutre-700 bg-white">enfoncé<br><span class="text-sauge-800 font-semibold">5.32</span></p>
+          </div>
+          <div class="rounded-xl overflow-hidden ring-1 ring-inset ring-neutre-950/[.08]">
+            <div class="h-14 grid place-items-center font-display font-extrabold text-[15px] text-neutre-600 bg-neutre-200">Appeler</div>
+            <p class="px-2 py-2 text-center font-mono text-[10.5px] text-neutre-700 bg-white">désactivé<br><span class="text-sauge-800 font-semibold">4.16</span></p>
+          </div>
+        </div>
+        <p class="mt-4 text-[15px] text-neutre-700">
+          Le survol <strong>éclaircit</strong>, l'appui <strong>assombrit</strong> : le bouton se
+          comporte comme un objet physique éclairé, ce qui vaut mieux qu'un changement d'opacité.
+          Le liseré intérieur <span class="font-mono text-[14px] text-orange-800">orange-700</span>
+          (5.01 sur blanc) donne au galet sa silhouette nette et satisfait le seuil 1.4.11 —
+          l'aire orange seule ne fait que 2.61.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ 06 · SÉMANTIQUE ══════════ -->
+<section class="pt-24">
+  <div class="flex items-baseline gap-5 mb-3">
+    <span class="font-display font-black text-[13px] tracking-[.2em] text-orange-700">06</span>
+    <h2 class="font-display font-extrabold text-[30px] md:text-[40px] tracking-[-.025em] text-teal-900">Les sémantiques</h2>
+  </div>
+  <div class="filet w-[180px] rounded-full mb-4"></div>
+  <p class="text-[17px] text-neutre-700 max-w-[46rem] mb-9">
+    Elles ne sont pas rapportées : trois des quatre sont des rampes de marque qui font un
+    second métier. Le rouge est le seul ajout hors mascotte — il n'existe pas de couleur
+    d'erreur honnête dans une palette 56°/196°.
+  </p>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-5">
+    <div class="rounded-[1.25rem] overflow-hidden shadow-carte ring-1 ring-inset ring-neutre-950/[.07] bg-white">
+      <div class="h-24 grid place-items-center bg-teal-600 text-white font-display font-extrabold text-[17px]">info</div>
+      <div class="p-4">
+        <p class="font-mono text-[12px] text-neutre-700 leading-relaxed">teal-600 · #027c7d<br>contenu #ffffff · <span class="text-sauge-800 font-semibold">5.02</span></p>
+        <p class="mt-2 text-[14px] leading-snug text-neutre-700">La teal. <em>L'information parle avec la voix de la marque.</em></p>
+      </div>
+    </div>
+    <div class="rounded-[1.25rem] overflow-hidden shadow-carte ring-1 ring-inset ring-neutre-950/[.07] bg-white">
+      <div class="h-24 grid place-items-center bg-sauge-700 text-white font-display font-extrabold text-[17px]">success</div>
+      <div class="p-4">
+        <p class="font-mono text-[12px] text-neutre-700 leading-relaxed">sauge-700 · #176737<br>contenu #ffffff · <span class="text-sauge-800 font-semibold">6.93</span></p>
+        <p class="mt-2 text-[14px] leading-snug text-neutre-700">La sauge, poussée au vert franc. Toujours pleine.</p>
+      </div>
+    </div>
+    <div class="rounded-[1.25rem] overflow-hidden shadow-carte ring-1 ring-inset ring-neutre-950/[.07] bg-white">
+      <div class="h-24 grid place-items-center bg-sable-500 text-teal-950 font-display font-extrabold text-[17px]">warning</div>
+      <div class="p-4">
+        <p class="font-mono text-[12px] text-neutre-700 leading-relaxed">sable-500 · #d0ad54<br>contenu teal-950 · <span class="text-sauge-800 font-semibold">8.53</span></p>
+        <p class="mt-2 text-[14px] leading-snug text-neutre-700">La crème, poussée à l'ocre. Bandeau teinté, jamais un galet.</p>
+      </div>
+    </div>
+    <div class="rounded-[1.25rem] overflow-hidden shadow-carte ring-1 ring-inset ring-neutre-950/[.07] bg-white">
+      <div class="h-24 grid place-items-center bg-rouge-600 text-white font-display font-extrabold text-[17px]">error</div>
+      <div class="p-4">
+        <p class="font-mono text-[12px] text-neutre-700 leading-relaxed">rouge-600 · #cb1b2c<br>contenu #ffffff · <span class="text-sauge-800 font-semibold">5.63</span></p>
+        <p class="mt-2 text-[14px] leading-snug text-neutre-700">Un carmin, pas une tomate — le plus loin possible du CTA.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- les composants daisyUI, tels que le thème les rend -->
+  <div class="mt-8 rounded-[1.25rem] bg-white p-7 shadow-carte ring-1 ring-inset ring-neutre-950/[.07]">
+    <p class="font-mono text-[11px] uppercase tracking-[.16em] text-neutre-600 mb-5">
+      Le bloc <span class="text-teal-800">[data-theme="cartoucherie"]</span>, exercé par de vrais composants daisyUI
+    </p>
+    <div class="flex flex-wrap items-center gap-3">
+      <button class="btn btn-accent">Appeler</button>
+      <button class="btn btn-primary">Voir le portrait</button>
+      <button class="btn btn-ghost">Plus tard</button>
+      <button class="btn btn-accent" disabled>Appeler</button>
+      <span class="badge badge-secondary">Santé &amp; bien-être</span>
+      <span class="badge badge-success">Ouvert</span>
+      <span class="badge badge-warning">À confirmer</span>
+      <span class="badge badge-error">Fiche incorrecte</span>
+    </div>
+    <p class="mt-5 text-[14.5px] leading-snug text-neutre-700 max-w-[46rem]">
+      <code class="font-mono text-[13.5px] text-teal-800">btn-accent</code> est le bouton
+      « Appeler » ; <code class="font-mono text-[13.5px] text-teal-800">btn-primary</code> est la
+      teal. <code class="font-mono text-[13.5px] text-teal-800">badge-secondary</code> est une
+      pastille <em>teintée</em> : <code class="font-mono text-[13.5px]">secondary</code> est un
+      fond, jamais un avant-plan — <code class="font-mono text-[13.5px] text-rouge-700">text-secondary</code>
+      et <code class="font-mono text-[13.5px] text-rouge-700">checkbox-secondary</code> font 1.16:1.
+    </p>
+  </div>
+
+  <!-- preuve de séparation -->
+  <div class="mt-8 rounded-[1.25rem] bg-neutre-100 p-8">
+    <p class="font-display font-extrabold text-[20px] text-teal-900 mb-5">Preuve : le CTA et l'erreur ne peuvent pas être confondus</p>
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+      <div class="md:col-span-5 flex items-center gap-4">
+        <div class="flex-1 rounded-2xl h-[100px] grid place-items-center bg-orange-500 text-teal-950 font-display font-extrabold text-[15px] shadow-carte">Appeler</div>
+        <div class="font-display font-black text-[24px] text-neutre-500">≠</div>
+        <div class="flex-1 rounded-2xl h-[100px] grid place-items-center bg-rouge-600 text-white font-display font-extrabold text-[15px] shadow-carte">Erreur</div>
+      </div>
+      <div class="md:col-span-7">
+        <p class="font-mono text-[13px] leading-[2] text-neutre-800">
+          orange-500 &nbsp;L <span class="num">72.0</span>%&nbsp; C 0.170&nbsp; h <span class="num">56</span>°<br>
+          rouge-600 &nbsp;&nbsp;L <span class="num">54.0</span>%&nbsp; C 0.205&nbsp; h <span class="num">24</span>°<br>
+          <span class="text-neutre-500">──────────────────────────────</span><br>
+          ΔL = <strong class="text-teal-800">18.0 points</strong> · Δh = <strong class="text-teal-800">32°</strong> · ΔC = 0.035<br>
+          ΔE<sub>OKLab</sub> = <strong class="text-orange-800">0.210</strong> ≈ <strong class="text-orange-800">11 JND</strong>
+          <span class="text-neutre-500">(seuil ≈ 0.02)</span>
+        </p>
+        <p class="mt-4 text-[15px] leading-snug text-neutre-700">
+          Ils diffèrent surtout sur l'axe qui survit à la protanopie et à la deutéranopie — la
+          clarté. Et structurellement : l'erreur n'apparaît <em>jamais</em> en grand aplat. Le CTA
+          est le seul grand objet chaud plein de l'interface.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ 07 · LA PROFONDEUR ══════════ -->
+<section class="pt-24">
+  <div class="flex items-baseline gap-5 mb-3">
+    <span class="font-display font-black text-[13px] tracking-[.2em] text-orange-700">07</span>
+    <h2 class="font-display font-extrabold text-[30px] md:text-[40px] tracking-[-.025em] text-teal-900">La profondeur</h2>
+  </div>
+  <div class="filet w-[180px] rounded-full mb-4"></div>
+  <p class="text-[17px] text-neutre-700 max-w-[46rem] mb-9">
+    <span class="font-mono text-[15px]">--depth&nbsp;:&nbsp;1</span> — les ombres reviennent, et elles sont
+    <strong>teintées, jamais noires</strong> : une ombre noire sous une carte posée sur un blanc
+    teinté teal est une bavure grise ; une ombre teintée <span class="font-mono text-[15px]">neutre-950</span>
+    se lit comme de l'ombre, exactement comme une ombre dehors est bleue. La teinte d'une ombre
+    vient toujours de l'objet au-dessus, jamais de la surface en dessous.
+  </p>
+
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+    <div class="rounded-[1.25rem] bg-neutre-100 p-6">
+      <p class="font-mono text-[11px] uppercase tracking-[.16em] text-neutre-600 mb-4">0 · plat</p>
+      <div class="h-24 rounded-2xl bg-neutre-200"></div>
+      <p class="mt-4 text-[14.5px] leading-snug text-neutre-700">Bande de section. La couleur seule sépare.</p>
+    </div>
+    <div class="rounded-[1.25rem] bg-neutre-100 p-6">
+      <p class="font-mono text-[11px] uppercase tracking-[.16em] text-neutre-600 mb-4">1 · carte</p>
+      <div class="h-24 rounded-2xl bg-white shadow-carte ring-1 ring-inset ring-neutre-950/[.07]"></div>
+      <p class="mt-4 text-[14.5px] leading-snug text-neutre-700"><span class="font-mono text-[13.5px]">--shadow-carte</span> + <span class="font-mono text-[13.5px]">--ring-carte</span>. Le défaut. Jamais imbriquée.</p>
+    </div>
+    <div class="rounded-[1.25rem] bg-neutre-100 p-6">
+      <p class="font-mono text-[11px] uppercase tracking-[.16em] text-neutre-600 mb-4">2 · flottant</p>
+      <div class="h-24 rounded-2xl bg-white shadow-flottant"></div>
+      <p class="mt-4 text-[14.5px] leading-snug text-neutre-700"><span class="font-mono text-[13.5px]">--shadow-flottant</span>. Feuilles, modales, barre d'appel collante.</p>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+    <!-- dégradés -->
+    <div class="md:col-span-8">
+      <p class="font-mono text-[11px] uppercase tracking-[.16em] text-neutre-600 mb-3">Les quatre dégradés sanctionnés — pas cinq</p>
+      <div class="grid grid-cols-2 gap-4 rounded-[1.25rem] bg-neutre-100 p-5">
+        <div class="rounded-2xl overflow-hidden bg-white shadow-carte ring-1 ring-inset ring-neutre-950/[.07]">
+          <div class="h-24 aube border-b border-neutre-200"></div>
+          <p class="bg-white px-4 py-3 min-h-[58px] font-mono text-[12px] text-neutre-700">--gradient-aube <span class="text-neutre-500">· le lavis du héros, 2 pts de L</span></p>
+        </div>
+        <div class="rounded-2xl overflow-hidden bg-white shadow-carte ring-1 ring-inset ring-neutre-950/[.07]">
+          <div class="h-24 cta border-b border-orange-700/30"></div>
+          <p class="bg-white px-4 py-3 min-h-[58px] font-mono text-[12px] text-neutre-700">--gradient-cta <span class="text-neutre-500">· la lumière du haut du galet</span></p>
+        </div>
+        <div class="rounded-2xl overflow-hidden bg-white shadow-carte ring-1 ring-inset ring-neutre-950/[.07]">
+          <div class="h-24 colly-bg border-b border-neutre-200"></div>
+          <p class="bg-white px-4 py-3 min-h-[58px] font-mono text-[12px] text-neutre-700">--gradient-colly <span class="text-neutre-500">· le panneau d'illustration</span></p>
+        </div>
+        <div class="rounded-2xl overflow-hidden bg-white shadow-carte ring-1 ring-inset ring-neutre-950/[.07]">
+          <div class="h-24 grid place-items-center bg-white border-b border-neutre-200">
+            <div class="filet w-[80%] rounded-full"></div>
+          </div>
+          <p class="bg-white px-4 py-3 min-h-[58px] font-mono text-[12px] text-neutre-700">--gradient-filet <span class="text-neutre-500">· le dispositif signature</span></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- anneaux -->
+    <div class="md:col-span-4">
+      <p class="font-mono text-[11px] uppercase tracking-[.16em] text-neutre-600 mb-3">Les anneaux</p>
+      <div class="rounded-[1.25rem] bg-white p-6 shadow-carte ring-1 ring-inset ring-neutre-950/[.07] space-y-5">
+        <div>
+          <button class="rounded-full bg-white px-5 py-3 text-[15px] font-bold text-teal-800 ring-1 ring-inset ring-neutre-300
+                         outline-2 outline-offset-2 outline-teal-600">Focus</button>
+          <p class="mt-2 font-mono text-[11.5px] text-neutre-700">--ring-focus · teal-600 2 px, offset blanc.<br><span class="text-neutre-500">Toujours. Sans exception.</span></p>
+        </div>
+        <div class="border-t border-neutre-200 pt-5">
+          <span class="inline-block rounded-full bg-white px-5 py-3 text-[15px] font-bold text-orange-900 ring-2 ring-inset ring-orange-500">Sélectionné</span>
+          <p class="mt-2 font-mono text-[11.5px] text-neutre-700">--ring-actif · orange-500.<br><span class="text-neutre-500">Le seul état orange autorisé.</span></p>
+        </div>
+        <div class="border-t border-neutre-200 pt-5">
+          <input type="text" value="Je cherche…" readonly aria-label="Exemple de champ"
+                 class="w-full rounded-xl bg-white px-4 py-3 text-[15px] text-neutre-800 ring-1 ring-inset ring-neutre-500" />
+          <p class="mt-2 font-mono text-[11.5px] text-neutre-700">bordure de champ · neutre-500, 3.03:1.<br><span class="text-neutre-500">neutre-300 est invisible à 70 ans, en plein soleil.</span></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ 08 · CONTRASTES ══════════ -->
+<section class="pt-24">
+  <div class="flex items-baseline gap-5 mb-3">
+    <span class="font-display font-black text-[13px] tracking-[.2em] text-orange-700">08</span>
+    <h2 class="font-display font-extrabold text-[30px] md:text-[40px] tracking-[-.025em] text-teal-900">Les contrastes</h2>
+  </div>
+  <div class="filet w-[180px] rounded-full mb-4"></div>
+  <p class="text-[17px] text-neutre-700 max-w-[46rem] mb-9">
+    Calculés avec <span class="font-mono text-[15px]">_shared/tools/palette.py</span>. Le tableau
+    complet est dans <span class="font-mono text-[15px]">couleurs.md</span> ; voici ce qu'un
+    designer tape vraiment.
+  </p>
+
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <div class="rounded-[1.25rem] bg-white shadow-carte ring-1 ring-inset ring-neutre-950/[.07] overflow-hidden">
+      <p class="px-6 py-4 font-display font-extrabold text-[16px] text-teal-900 border-b border-neutre-200">Texte sur blanc</p>
+      <table class="w-full text-[14px]" id="t-blanc"></table>
+    </div>
+    <div class="rounded-[1.25rem] bg-white shadow-carte ring-1 ring-inset ring-neutre-950/[.07] overflow-hidden">
+      <p class="px-6 py-4 font-display font-extrabold text-[16px] text-teal-900 border-b border-neutre-200">Paires daisyUI <span class="font-mono text-[14px] font-normal text-neutre-600">X / X-content</span></p>
+      <table class="w-full text-[14px]" id="t-daisy"></table>
+    </div>
+  </div>
+
+  <!-- fill-only -->
+  <div class="mt-8 rounded-[1.25rem] overflow-hidden ring-1 ring-inset ring-rouge-200">
+    <div class="bg-rouge-100 border-l-[4px] border-rouge-600 px-8 py-6">
+      <div class="flex items-start gap-4">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="size-7 shrink-0 text-rouge-700 mt-0.5"><path d="M12 8v5" stroke-linecap="round"/><circle cx="12" cy="16.5" r="1.1" fill="currentColor" stroke="none"/><path d="M10.3 3.9 2.6 17.4A2 2 0 0 0 4.3 20.4h15.4a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z" stroke-linejoin="round"/></svg>
+        <div>
+          <p class="font-display font-extrabold text-[20px] text-rouge-800 mb-2">Remplissage seul — ne jamais utiliser en texte</p>
+          <p class="text-[15.5px] leading-snug text-rouge-900/90 max-w-[52rem]">
+            C'est le piège qui a déjà mordu ce projet une fois. Règle qui tient pour toutes les
+            rampes : <strong>50 → 500 sont des aplats, 700 → 950 sont de l'encre.</strong> Le 600
+            n'est de l'encre que pour <span class="font-mono text-[14.5px]">teal</span>,
+            <span class="font-mono text-[14.5px]">sauge</span>,
+            <span class="font-mono text-[14.5px]">neutre</span> et
+            <span class="font-mono text-[14.5px]">rouge</span> — jamais pour
+            <span class="font-mono text-[14.5px]">orange</span> ni
+            <span class="font-mono text-[14.5px]">sable</span>.
+          </p>
+        </div>
+      </div>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mt-6" id="interdits"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ 09 · EN DIX LIGNES ══════════ -->
+<section class="pt-24 pb-28">
+  <div class="flex items-baseline gap-5 mb-3">
+    <span class="font-display font-black text-[13px] tracking-[.2em] text-orange-700">09</span>
+    <h2 class="font-display font-extrabold text-[30px] md:text-[40px] tracking-[-.025em] text-teal-900">Pour un designer, en dix lignes</h2>
+  </div>
+  <div class="filet w-[180px] rounded-full mb-10"></div>
+
+  <div class="rounded-[2rem] bg-teal-900 p-10 shadow-flottant relative overflow-hidden">
+    <img src="colly/colly-couleur.png" alt="" class="absolute -right-10 -bottom-16 w-[280px] opacity-[.13] pointer-events-none" />
+    <ol class="relative grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-4 text-[16.5px] leading-snug text-teal-50">
+      <li class="flex gap-3"><span class="font-mono text-[13px] text-orange-400 pt-1 w-5 shrink-0">01</span><span>Page blanche. <span class="font-mono text-[15px] text-teal-200">bg-base-100</span>. Aucune exception, aucune crème.</span></li>
+      <li class="flex gap-3"><span class="font-mono text-[13px] text-orange-400 pt-1 w-5 shrink-0">06</span><span>Trois objets orange par écran, maximum. Comptez-les.</span></li>
+      <li class="flex gap-3"><span class="font-mono text-[13px] text-orange-400 pt-1 w-5 shrink-0">02</span><span>Encre <span class="font-mono text-[15px] text-teal-200">neutre-900</span>. Titres <span class="font-mono text-[15px] text-teal-200">teal-800</span>. Liens <span class="font-mono text-[15px] text-teal-200">teal-700</span>.</span></li>
+      <li class="flex gap-3"><span class="font-mono text-[13px] text-orange-400 pt-1 w-5 shrink-0">07</span><span>Un panneau <span class="font-mono text-[15px] text-teal-200">sable-100</span> par page — c'est là que vit Colly.</span></li>
+      <li class="flex gap-3"><span class="font-mono text-[13px] text-orange-400 pt-1 w-5 shrink-0">03</span><span>Pastilles de métier <span class="font-mono text-[15px] text-teal-200">bg-sauge-100 text-sauge-800</span>.</span></li>
+      <li class="flex gap-3"><span class="font-mono text-[13px] text-orange-400 pt-1 w-5 shrink-0">08</span><span>Le filet de 3 px sous l'en-tête blanc remplace la barre colorée.</span></li>
+      <li class="flex gap-3"><span class="font-mono text-[13px] text-orange-400 pt-1 w-5 shrink-0">04</span><span>Cartes : blanc, <span class="font-mono text-[15px] text-teal-200">ring-carte</span>, <span class="font-mono text-[15px] text-teal-200">shadow-carte</span>. Jamais imbriquées.</span></li>
+      <li class="flex gap-3"><span class="font-mono text-[13px] text-orange-400 pt-1 w-5 shrink-0">09</span><span>Le focus est toujours <span class="font-mono text-[15px] text-teal-200">ring-2 ring-teal-600 ring-offset-2</span>.</span></li>
+      <li class="flex gap-3"><span class="font-mono text-[13px] text-orange-400 pt-1 w-5 shrink-0">05</span><span>« Appeler » = <span class="font-mono text-[15px] text-orange-300">orange-500</span> lettré <span class="font-mono text-[15px] text-teal-200">teal-950</span>. Le seul grand objet orange.</span></li>
+      <li class="flex gap-3"><span class="font-mono text-[13px] text-orange-400 pt-1 w-5 shrink-0">10</span><span>Aplats 50–500, encre 700–950. Dans le doute, lancez <span class="font-mono text-[15px] text-teal-200">palette.py</span>.</span></li>
+    </ol>
+  </div>
+
+  <p class="mt-8 text-center font-mono text-[12px] text-neutre-600">
+    Annuaire de la Cartoucherie · système de couleur v1 · dérivé de la planche de Colly ·
+    valeurs calculées avec <span class="text-teal-800">_shared/tools/palette.py</span>
+  </p>
+</section>
+
+</main>
+
+<script>
+const STEPS=[50,100,200,300,400,500,600,700,800,900,950];
+const RAMPS=[
+ {n:"teal",  t:"identité", d:"Wordmark, titres, liens, icônes, encre. 30 % de chaque écran.",
+  v:[[98.0,.010,198],[95.5,.022,197],[91.0,.040,196],[84.0,.058,195],[74.0,.080,195],[63.0,.098,196],[53.0,.090,196],[44.0,.074,197],[35.0,.060,198],[27.0,.045,199],[19.0,.030,201]], key:700},
+ {n:"orange",t:"action", d:"Un seul métier : l'action. 10 % d'un écran, jamais plus.",
+  v:[[97.8,.018,75],[95.0,.042,72],[90.0,.078,68],[84.0,.110,64],[78.0,.145,60],[72.0,.170,56],[65.0,.178,50],[56.0,.172,44],[46.0,.140,40],[37.0,.108,38],[27.0,.078,36]], key:500},
+ {n:"sauge", t:"taxonomie", d:"Catégories, métiers, « ouvert maintenant ». <code class='font-mono text-[13px]'>sauge-100</code> est le <code class='font-mono text-[13px]'>secondary</code> daisyUI ; <code class='font-mono text-[13px]'>sauge-700</code> le <code class='font-mono text-[13px]'>success</code>.",
+  v:[[97.5,.012,170],[94.5,.026,170],[89.5,.050,170],[82.0,.074,168],[73.0,.100,164],[64.0,.120,160],[54.5,.122,156],[45.5,.108,152],[37.0,.088,150],[29.0,.066,152],[20.5,.044,156]], key:700},
+ {n:"sable", t:"illustration", d:"La crème. Panneaux de Colly, états vides. Aplat seul jusqu'au 600.",
+  v:[[98.2,.010,95],[96.0,.024,93],[92.5,.044,91],[88.0,.064,90],[82.0,.090,89],[76.0,.115,88],[68.0,.118,86],[57.5,.105,83],[47.0,.088,80],[37.5,.068,78],[27.0,.048,75]], key:500},
+ {n:"neutre",t:"structure", d:"Teintée teal 197–202°. Surfaces, filets, et 90 % du texte.",
+  v:[[98.6,.004,200],[97.2,.006,199],[94.4,.008,198],[89.8,.010,198],[79.5,.013,197],[66.5,.016,197],[54.5,.019,198],[44.0,.022,199],[34.0,.025,200],[25.5,.028,201],[17.5,.030,202]], key:900},
+ {n:"rouge", t:"erreur", d:"Le seul ajout hors mascotte. Un carmin, hue 24°, aussi loin du CTA qu'un rouge peut l'être.",
+  v:[[97.6,.014,25],[94.6,.029,24],[89.0,.057,24],[81.0,.100,24],[70.0,.150,25],[62.0,.190,26],[54.0,.205,24],[46.0,.180,22],[38.0,.145,20],[31.0,.115,18],[22.0,.080,16]], key:600},
+];
+
+// ── OKLCH → hex (même maths que palette.py) ──
+const f=c=>c<=.0031308?12.92*c:1.055*Math.pow(c,1/2.4)-.055;
+function ok2hex(L,C,H){
+  const a=C*Math.cos(H*Math.PI/180), b=C*Math.sin(H*Math.PI/180);
+  const l=(L+.3963377774*a+.2158037573*b)**3, m=(L-.1055613458*a-.0638541728*b)**3, s=(L-.0894841775*a-1.291485548*b)**3;
+  const r=4.0767416621*l-3.3077115913*m+.2309699292*s,
+        g=-1.2684380046*l+2.6097574011*m-.3413193965*s,
+        bl=-.0041960863*l-.7034186147*m+1.707614701*s;
+  return "#"+[r,g,bl].map(x=>Math.max(0,Math.min(255,Math.round(f(Math.max(0,Math.min(1,x)))*255))).toString(16).padStart(2,"0")).join("");
+}
+const lum=h=>{const [r,g,b]=[1,3,5].map(i=>parseInt(h.substr(i,2),16)/255).map(c=>c<=.04045?c/12.92:((c+.055)/1.055)**2.4);return .2126*r+.7152*g+.0722*b;};
+const ratio=(a,b)=>{const x=lum(a),y=lum(b);return (Math.max(x,y)+.05)/(Math.min(x,y)+.05);};
+
+// ── rampes ──
+document.getElementById("rampes").innerHTML = RAMPS.map(R=>{
+  const chips = R.v.map((c,i)=>{
+    const hex=ok2hex(c[0]/100,c[1],c[2]);
+    const step=STEPS[i], isKey=step===R.key;
+    const ink = c[0] >= 60 ? "#021819" : "#ffffff";
+    return `<div class="flex-1 min-w-0">
+      <div class="relative rounded-xl ${isKey?'ring-2 ring-offset-2 ring-offset-white ring-teal-950/25 z-10':''}"
+           style="background:${hex}; height:${isKey?86:70}px; box-shadow:${isKey?'0 6px 18px -6px oklch(17.5% .03 202/.35)':'none'};">
+        ${isKey?`<span class="absolute top-2 left-2.5 font-mono text-[10px] font-semibold" style="color:${ink};opacity:.85">★</span>`:''}
+        <span class="absolute bottom-2 left-2.5 font-display font-extrabold text-[12px]" style="color:${ink};opacity:.9">${step}</span>
+      </div>
+      <p class="mt-1.5 font-mono text-[10.5px] text-neutre-600 text-center leading-tight">${hex}</p>
+    </div>`;
+  }).join("");
+  const k=R.v[STEPS.indexOf(R.key)];
+  return `<div>
+    <div class="flex items-baseline justify-between mb-2.5">
+      <p class="font-display font-extrabold text-[19px] text-teal-900">${R.n}
+        <span class="font-sans font-normal text-[14px] text-neutre-600 ml-1.5">· ${R.t}</span></p>
+      <p class="font-mono text-[12px] text-neutre-600">★ ${R.n}-${R.key} = oklch(${k[0].toFixed(1)}% ${k[1].toFixed(3)} ${k[2]})</p>
+    </div>
+    <div class="flex gap-1.5 items-end">${chips}</div>
+    <p class="mt-2 text-[14.5px] text-neutre-700">${R.d}</p>
+  </div>`;
+}).join("");
+
+// ── mur de neutres ──
+const N=RAMPS.find(r=>r.n==="neutre");
+document.getElementById("neutres").innerHTML =
+  [[100,0,0]].concat(N.v).map((c,i)=>{
+    const hex = i===0 ? "#ffffff" : ok2hex(c[0]/100,c[1],c[2]);
+    const lbl = i===0 ? "base-100" : STEPS[i-1];
+    const ink = c[0] >= 60 ? "oklch(25.5% .028 201)" : "#ffffff";
+    return `<div class="flex-1 h-[112px] relative" style="background:${hex}">
+      <span class="absolute bottom-2 left-0 right-0 text-center font-mono text-[9.5px] font-semibold" style="color:${ink}">${lbl}</span>
+    </div>`;
+  }).join("");
+
+// ── tableaux ──
+function table(id, rows){
+  document.getElementById(id).innerHTML = rows.map(([sw,label,r,swBg])=>{
+    const g = r>=7?"AAA":r>=4.5?"AA":r>=3?"AA-lg":"—";
+    const gc = r>=7?"bg-sauge-100 text-sauge-800":r>=4.5?"bg-teal-50 text-teal-800":"bg-sable-200 text-sable-900";
+    return `<tr class="border-b border-neutre-200 last:border-0">
+      <td class="pl-6 pr-3 py-2.5 w-10">
+        <span class="inline-block size-6 rounded-lg align-middle ring-1 ring-inset ring-neutre-950/10" style="background:${swBg||sw}"></span>
+      </td>
+      <td class="py-2.5 pr-3 text-neutre-800">${label}</td>
+      <td class="py-2.5 pr-3 text-right font-mono font-semibold num text-neutre-900">${r.toFixed(2)}</td>
+      <td class="py-2.5 pr-6 text-right"><span class="inline-block rounded-full px-2 py-0.5 text-[11.5px] font-bold ${gc}">${g}</span></td>
+    </tr>`;
+  }).join("");
+}
+const H=(n,s)=>{const R=RAMPS.find(r=>r.n===n),c=R.v[STEPS.indexOf(s)];return ok2hex(c[0]/100,c[1],c[2]);};
+table("t-blanc",[
+ [H("neutre",900),"<code class='font-mono text-[13px]'>neutre-900</code> · corps de texte",ratio(H("neutre",900),"#ffffff")],
+ [H("teal",800),"<code class='font-mono text-[13px]'>teal-800</code> · titres",ratio(H("teal",800),"#ffffff")],
+ [H("teal",700),"<code class='font-mono text-[13px]'>teal-700</code> · liens, text-primary",ratio(H("teal",700),"#ffffff")],
+ [H("neutre",700),"<code class='font-mono text-[13px]'>neutre-700</code> · texte secondaire",ratio(H("neutre",700),"#ffffff")],
+ [H("rouge",700),"<code class='font-mono text-[13px]'>rouge-700</code> · text-error",ratio(H("rouge",700),"#ffffff")],
+ [H("orange",800),"<code class='font-mono text-[13px]'>orange-800</code> · orange lisible",ratio(H("orange",800),"#ffffff")],
+ [H("sauge",700),"<code class='font-mono text-[13px]'>sauge-700</code> · text-success",ratio(H("sauge",700),"#ffffff")],
+ [H("sable",800),"<code class='font-mono text-[13px]'>sable-800</code> · ocre lisible",ratio(H("sable",800),"#ffffff")],
+ [H("neutre",600),"<code class='font-mono text-[13px]'>neutre-600</code> · métadonnées ≥ 16 px",ratio(H("neutre",600),"#ffffff")],
+ [H("neutre",500),"<code class='font-mono text-[13px]'>neutre-500</code> · bordure de champ",ratio(H("neutre",500),"#ffffff")],
+]);
+table("t-daisy",[
+ [H("teal",700),"<code class='font-mono text-[13px]'>primary</code> ← #ffffff",ratio(H("teal",700),"#ffffff")],
+ [H("sauge",100),"<code class='font-mono text-[13px]'>secondary</code> ← teal-950",ratio(H("sauge",100),H("teal",950))],
+ [H("orange",500),"<strong><code class='font-mono text-[13px]'>accent</code> ← teal-950 · le CTA</strong>",ratio(H("orange",500),H("teal",950))],
+ [H("neutre",900),"<code class='font-mono text-[13px]'>neutral</code> ← neutre-50",ratio(H("neutre",900),H("neutre",50))],
+ ["#ffffff","<code class='font-mono text-[13px]'>base-100</code> ← base-content",ratio("#ffffff",H("neutre",900))],
+ [H("neutre",100),"<code class='font-mono text-[13px]'>base-200</code> ← base-content",ratio(H("neutre",100),H("neutre",900))],
+ [H("neutre",200),"<code class='font-mono text-[13px]'>base-300</code> ← base-content",ratio(H("neutre",200),H("neutre",900))],
+ [H("teal",600),"<code class='font-mono text-[13px]'>info</code> ← #ffffff",ratio(H("teal",600),"#ffffff")],
+ [H("sauge",700),"<code class='font-mono text-[13px]'>success</code> ← #ffffff",ratio(H("sauge",700),"#ffffff")],
+ [H("sable",500),"<code class='font-mono text-[13px]'>warning</code> ← teal-950",ratio(H("sable",500),H("teal",950))],
+ [H("rouge",600),"<code class='font-mono text-[13px]'>error</code> ← #ffffff",ratio(H("rouge",600),"#ffffff")],
+]);
+
+// ── interdits ──
+const BAD=[["text-accent","orange",500],["text-warning","sable",500],["text-teal-500","teal",500],["text-sauge-500","sauge",500]];
+document.getElementById("interdits").innerHTML = BAD.map(([u,n,s])=>{
+  const hex=H(n,s), r=ratio(hex,"#ffffff");
+  return `<div class="rounded-xl bg-white p-4 ring-1 ring-inset ring-rouge-200">
+    <p class="font-mono text-[13px] font-semibold mb-2" style="color:${hex}">${u}</p>
+    <p class="text-[12.5px] text-neutre-700 leading-tight">${hex} sur blanc<br>
+      <span class="font-mono font-semibold text-rouge-700">${r.toFixed(2)} : 1</span> — illisible</p>
+  </div>`;
+}).join("");
+</script>
+</body>
+</html>

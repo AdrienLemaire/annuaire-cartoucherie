@@ -1,0 +1,389 @@
+<!doctype html>
+<html lang="fr" data-theme="cartoucherie">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Planche de marque — Colly</title>
+<link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
+<style>
+[data-theme="cartoucherie"] {
+  color-scheme: light;
+  --color-base-100: oklch(98.5% 0.008 88);
+  --color-base-200: oklch(95.0% 0.018 88);
+  --color-base-300: oklch(88.7% 0.034 88);
+  --color-base-content: oklch(19.0% 0.022 198);
+  --color-primary: oklch(42.0% 0.055 196);
+  --color-primary-content: oklch(98.5% 0.008 88);
+  --color-secondary: oklch(70.0% 0.040 173);
+  --color-secondary-content: oklch(19.0% 0.022 198);
+  --color-accent: oklch(71.6% 0.127 56);
+  --color-accent-content: oklch(19.0% 0.022 198);
+  --color-neutral: oklch(32.0% 0.028 198);
+  --color-neutral-content: oklch(98.5% 0.008 88);
+  --color-info: oklch(44.0% 0.100 245);
+  --color-info-content: oklch(98.5% 0.008 88);
+  --color-success: oklch(43.0% 0.100 150);
+  --color-success-content: oklch(98.5% 0.008 88);
+  --color-warning: oklch(82.0% 0.150 92);
+  --color-warning-content: oklch(19.0% 0.022 198);
+  --color-error: oklch(46.5% 0.185 25);
+  --color-error-content: oklch(98.5% 0.008 88);
+  --radius-selector: 2rem;
+  --radius-field: 0.75rem;
+  --radius-box: 1.25rem;
+  --size-selector: 0.28rem;
+  --size-field: 0.28rem;
+  --border: 1px;
+  --depth: 0;
+  --noise: 0;
+}
+:root { font-family: "Source Sans 3", ui-sans-serif, system-ui, sans-serif; }
+.font-display { font-family: "Nunito", ui-sans-serif, system-ui, sans-serif; }
+</style>
+</head>
+<body class="bg-base-200 text-base-content">
+
+<svg class="hidden" aria-hidden="true">
+  <symbol id="i-ventouse" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+    <circle cx="12" cy="12" r="9.25"/><circle cx="12" cy="12" r="5.5"/><circle cx="12" cy="12" r="1.9" fill="currentColor" stroke="none"/>
+  </symbol>
+  <symbol id="i-phone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M6.6 3.5 4.2 4.4a2 2 0 0 0-1.2 2.3c.9 4 2.9 7.3 5.6 9.9 2.6 2.5 5.7 4.2 9.2 5a2 2 0 0 0 2.3-1.2l.9-2.4a1.4 1.4 0 0 0-.7-1.7l-3.3-1.6a1.4 1.4 0 0 0-1.6.3l-1.2 1.3a13.6 13.6 0 0 1-5.7-5.7l1.3-1.2a1.4 1.4 0 0 0 .3-1.6L8.4 4.2a1.4 1.4 0 0 0-1.8-.7Z"/>
+  </symbol>
+  <symbol id="i-mail" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="2.75" y="4.75" width="18.5" height="14.5" rx="2.5"/><path d="m3.5 7 7.4 5.2a2 2 0 0 0 2.2 0L20.5 7"/>
+  </symbol>
+  <symbol id="i-globe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="12" r="9.25"/><path d="M2.9 12h18.2M12 2.8c2.4 2.5 3.7 5.8 3.7 9.2s-1.3 6.7-3.7 9.2c-2.4-2.5-3.7-5.8-3.7-9.2S9.6 5.3 12 2.8Z"/>
+  </symbol>
+  <symbol id="i-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+    <circle cx="11" cy="11" r="6.75"/><path d="m16 16 4.5 4.5"/>
+  </symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M4.5 12h14m-5.5-5.5L18.5 12 13 17.5"/>
+  </symbol>
+  <symbol id="i-pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M12 21.5s7-5.6 7-11a7 7 0 1 0-14 0c0 5.4 7 11 7 11Z"/><circle cx="12" cy="10.5" r="2.6"/>
+  </symbol>
+  <symbol id="i-star" viewBox="0 0 24 24" fill="currentColor">
+    <path d="m12 3.6 2.6 5.2 5.8.85-4.2 4.1 1 5.75L12 16.8l-5.2 2.7 1-5.75-4.2-4.1 5.8-.85Z"/>
+  </symbol>
+</svg>
+
+<div class="mx-auto max-w-5xl px-6 py-12 space-y-14">
+
+  <header class="space-y-3">
+    <p class="text-xs font-semibold uppercase tracking-[0.18em] text-base-content/70">Planche de marque · direction 4</p>
+    <h1 class="font-display text-5xl font-extrabold">Colly</h1>
+    <p class="max-w-2xl text-lg leading-relaxed">
+      La palette n'est pas inventée : elle est relevée sur la planche de la mascotte
+      <strong>Colly, la créature des Halles de la Cartoucherie</strong>. Teal profond,
+      sauge, crème, orange. Le quartier a déjà une identité — l'application s'y range
+      au lieu d'en proposer une autre.
+    </p>
+  </header>
+
+  <!-- 1 · MOT-SYMBOLE -->
+  <section class="space-y-4">
+    <h2 class="text-xs font-semibold uppercase tracking-[0.18em] text-base-content/70">1 · Le mot-symbole</h2>
+    <div class="rounded-box bg-base-100 p-10">
+      <div class="flex flex-wrap items-center gap-5">
+        <span class="inline-flex size-16 items-center justify-center rounded-[1.4rem] bg-primary text-primary-content">
+          <svg class="size-10"><use href="#i-ventouse"/></svg>
+        </span>
+        <div class="font-display leading-[1.05]">
+          <div class="text-4xl font-extrabold text-primary">annuaire<span class="font-semibold text-base-content/70"> de la</span></div>
+          <div class="text-4xl font-extrabold text-primary">cartoucherie</div>
+        </div>
+      </div>
+      <div class="mt-8 flex flex-wrap items-center gap-8 border-t border-base-300 pt-6">
+        <div class="flex items-center gap-2">
+          <span class="inline-flex size-6 items-center justify-center rounded-lg bg-primary text-primary-content">
+            <svg class="size-4"><use href="#i-ventouse"/></svg>
+          </span>
+          <span class="font-display text-base font-bold text-primary">la cartoucherie</span>
+          <span class="ml-2 text-sm text-base-content/70">— forme courte, 24 px</span>
+        </div>
+      </div>
+      <p class="mt-6 max-w-xl text-sm leading-relaxed text-base-content/80">
+        Le symbole est la <strong>ventouse de Colly</strong> — sa caractéristique première
+        sur la planche, et la seule forme de la mascotte qui reste lisible à 24 px.
+        Elle raconte déjà l'application : « Colly reste collé aux bons endroits ».
+        Aucune référence à la munition, conformément à la règle de marque.
+      </p>
+    </div>
+  </section>
+
+  <!-- 2 · PALETTE -->
+  <section class="space-y-4">
+    <h2 class="text-xs font-semibold uppercase tracking-[0.18em] text-base-content/70">2 · La palette, relevée sur la mascotte</h2>
+
+    <div class="rounded-box bg-base-100 p-6">
+      <p class="mb-5 text-sm text-base-content/80">Les quatre pastilles de la planche, échantillonnées au pixel :</p>
+      <div class="grid grid-cols-2 gap-4 sm:grid-cols-4">
+        <div><div class="h-20 rounded-box" style="background:#325656"></div><p class="mt-2 text-sm font-semibold">Teal foncé</p><p class="text-xs text-base-content/70">#325656 · oklch(42.6% .042 196)</p></div>
+        <div><div class="h-20 rounded-box" style="background:#86a79c"></div><p class="mt-2 text-sm font-semibold">Sauge</p><p class="text-xs text-base-content/70">#86a79c · oklch(70% .040 173)</p></div>
+        <div><div class="h-20 rounded-box border border-base-300" style="background:#e3d9c1"></div><p class="mt-2 text-sm font-semibold">Crème</p><p class="text-xs text-base-content/70">#e3d9c1 · oklch(88.7% .034 88)</p></div>
+        <div><div class="h-20 rounded-box" style="background:#df8d4f"></div><p class="mt-2 text-sm font-semibold">Orange</p><p class="text-xs text-base-content/70">#df8d4f · oklch(71.6% .127 56)</p></div>
+      </div>
+    </div>
+
+    <div class="overflow-x-auto rounded-box bg-base-100 p-6">
+      <table class="table table-sm">
+        <thead><tr class="text-base-content">
+          <th>Rôle</th><th>Variable daisyUI</th><th>OKLCH</th><th>Hex</th><th>Contraste avec son <code>-content</code></th>
+        </tr></thead>
+        <tbody class="text-base-content/90">
+          <tr><td><span class="inline-block size-4 rounded align-middle bg-base-100 border border-base-300"></span> Fond</td><td><code>--color-base-100</code></td><td>oklch(98.5% .008 88)</td><td>#fcfaf4</td><td class="font-semibold text-success">17,60:1 · AAA</td></tr>
+          <tr><td><span class="inline-block size-4 rounded align-middle bg-base-200"></span> Fond secondaire</td><td><code>--color-base-200</code></td><td>oklch(95% .018 88)</td><td>#f3eee1</td><td class="font-semibold text-success">15,89:1 · AAA</td></tr>
+          <tr><td><span class="inline-block size-4 rounded align-middle bg-base-300"></span> Bordures — le crème</td><td><code>--color-base-300</code></td><td>oklch(88.7% .034 88)</td><td>#e3d9c1</td><td class="font-semibold text-success">13,09:1 · AAA</td></tr>
+          <tr><td><span class="inline-block size-4 rounded align-middle bg-primary"></span> Primaire — le teal</td><td><code>--color-primary</code></td><td>oklch(42% .055 196)</td><td>#225657</td><td class="font-semibold text-success">7,89:1 · AAA</td></tr>
+          <tr><td><span class="inline-block size-4 rounded align-middle bg-secondary"></span> Secondaire — la sauge</td><td><code>--color-secondary</code></td><td>oklch(70% .040 173)</td><td>#86a79c</td><td class="font-semibold text-success">7,01:1 · AAA</td></tr>
+          <tr><td><span class="inline-block size-4 rounded align-middle bg-accent"></span> Accent — l'orange</td><td><code>--color-accent</code></td><td>oklch(71.6% .127 56)</td><td>#df8d4f</td><td class="font-semibold text-success">7,05:1 · AAA</td></tr>
+          <tr><td><span class="inline-block size-4 rounded align-middle bg-neutral"></span> Neutre</td><td><code>--color-neutral</code></td><td>oklch(32% .028 198)</td><td>#213738</td><td class="font-semibold text-success">12,01:1 · AAA</td></tr>
+          <tr><td><span class="inline-block size-4 rounded align-middle bg-info"></span> Info</td><td><code>--color-info</code></td><td>oklch(44% .100 245)</td><td>#145786</td><td class="font-semibold text-success">7,38:1 · AAA</td></tr>
+          <tr><td><span class="inline-block size-4 rounded align-middle bg-success"></span> Succès</td><td><code>--color-success</code></td><td>oklch(43% .100 150)</td><td>#1c5f31</td><td class="font-semibold text-success">7,41:1 · AAA</td></tr>
+          <tr><td><span class="inline-block size-4 rounded align-middle bg-warning"></span> Alerte</td><td><code>--color-warning</code></td><td>oklch(82% .150 92)</td><td>#e7c03a</td><td class="font-semibold text-success">10,51:1 · AAA</td></tr>
+          <tr><td><span class="inline-block size-4 rounded align-middle bg-error"></span> Erreur</td><td><code>--color-error</code></td><td>oklch(46.5% .185 25)</td><td>#a9071b</td><td class="font-semibold text-success">7,37:1 · AAA</td></tr>
+        </tbody>
+      </table>
+      <p class="mt-4 text-sm leading-relaxed text-base-content/80">
+        Les onze couples passent <strong>AAA (7:1)</strong>, calculés en luminance relative
+        sRGB et non estimés à l'œil. Une seule encre sombre
+        (<code>oklch(19% .022 198)</code>) et un seul crème servent tous les
+        <code>-content</code> : deux valeurs au lieu de dix variantes de presque-noir.
+      </p>
+    </div>
+
+    <div class="rounded-box border-2 border-error/40 bg-base-100 p-6">
+      <p class="font-display text-lg font-bold">La règle qui va avec la palette</p>
+      <p class="mt-2 max-w-3xl text-sm leading-relaxed text-base-content/90">
+        L'orange et la sauge sont des couleurs <strong>de remplissage uniquement</strong>.
+        En texte ou en icône sur fond clair elles tombent à <strong>2,50:1</strong> et
+        <strong>2,51:1</strong> — très en dessous du seuil. Un texte orange sur crème est
+        exactement le défaut « pâle sur pâle » relevé à la révision 1. En pastille pleine
+        avec l'encre sombre par-dessus, elles passent AAA.
+      </p>
+      <div class="mt-4 flex flex-wrap items-center gap-3">
+        <span class="inline-flex h-11 items-center gap-2 rounded-field bg-accent px-4 font-semibold text-accent-content">
+          <svg class="size-5"><use href="#i-phone"/></svg> Correct — 7,05:1
+        </span>
+        <span class="inline-flex h-11 items-center rounded-field border border-base-300 px-4 font-semibold text-accent">
+          À proscrire — 2,50:1
+        </span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 · TYPOGRAPHIE -->
+  <section class="space-y-4">
+    <h2 class="text-xs font-semibold uppercase tracking-[0.18em] text-base-content/70">3 · Typographie — Nunito + Source Sans 3</h2>
+    <div class="grid gap-4 md:grid-cols-2">
+      <div class="rounded-box bg-base-100 p-6">
+        <div class="space-y-4">
+          <div class="border-b border-base-300 pb-3">
+            <p class="font-display text-[34px] font-extrabold leading-tight">Je cherche…</p>
+            <p class="mt-1 text-xs text-base-content/70">34 px · Nunito 800 · titre d'accueil, mot-symbole</p>
+          </div>
+          <div class="border-b border-base-300 pb-3">
+            <p class="font-display text-[24px] font-bold leading-tight">Camille Roussel</p>
+            <p class="mt-1 text-xs text-base-content/70">24 px · Nunito 700 · nom de membre, titres de section</p>
+          </div>
+          <div class="border-b border-base-300 pb-3">
+            <p class="font-display text-[18px] font-bold leading-snug">Retrouver l'équilibre</p>
+            <p class="mt-1 text-xs text-base-content/70">18 px · Nunito 700 · tuiles, sous-titres</p>
+          </div>
+          <div class="border-b border-base-300 pb-3">
+            <p class="text-[16px] leading-relaxed">Gestion du stress, sommeil et préparation aux examens.</p>
+            <p class="mt-1 text-xs text-base-content/70">16 px · Source Sans 3 400 · corps de texte — jamais plus petit</p>
+          </div>
+          <div>
+            <p class="text-[13px] font-semibold uppercase tracking-[0.14em] text-base-content/80">Santé &amp; bien-être</p>
+            <p class="mt-1 text-xs text-base-content/70">13 px · Source Sans 3 600 · libellés, métadonnées</p>
+          </div>
+        </div>
+      </div>
+      <div class="rounded-box bg-base-100 p-6">
+        <p class="text-[16px] leading-relaxed">
+          L'Annuaire de la Cartoucherie rassemble les artisans, soignants et indépendants
+          du quartier, présentés par les voisins qui les connaissent. Besoin d'un coup de
+          main, d'un soin ou d'un bon plat ce soir ? Commencez par « Je cherche… », et
+          laissez le quartier vous répondre. Rien n'est envoyé à un serveur : le calcul
+          reste sur votre téléphone.
+        </p>
+        <p class="mt-5 text-xs uppercase tracking-[0.14em] text-base-content/70">Paragraphe réel · 16 px · Source Sans 3</p>
+        <p class="mt-5 text-sm leading-relaxed text-base-content/80">
+          Nunito est ronde sans être enfantine — elle reprend la douceur de Colly tout en
+          restant l'annuaire de professionnels adultes. Source Sans 3 tient les accents
+          français proprement et reste lisible à 16 px sur un écran de téléphone en plein
+          soleil.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 · BLOCS -->
+  <section class="space-y-4">
+    <h2 class="text-xs font-semibold uppercase tracking-[0.18em] text-base-content/70">4 · Les trois blocs</h2>
+    <div class="grid gap-6 lg:grid-cols-2">
+
+      <div class="space-y-3">
+        <p class="text-sm font-semibold">La carte-portrait</p>
+        <article class="rounded-box bg-base-100 p-4">
+          <div class="flex gap-4">
+            <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Portrait de Camille Roussel"
+                 class="size-[86px] shrink-0 rounded-box object-cover" width="86" height="86">
+            <div class="min-w-0 flex-1">
+              <h3 class="font-display text-xl font-bold leading-tight">Camille Roussel</h3>
+              <p class="text-base text-base-content/90">Sophrologue</p>
+              <p class="mt-1 flex items-center gap-1.5 text-sm text-base-content/80">
+                <svg class="size-4 text-warning"><use href="#i-star"/></svg>
+                <span class="font-semibold text-base-content">4,8</span>
+                <span>· 12 avis du quartier</span>
+              </p>
+              <p class="mt-0.5 flex items-center gap-1.5 text-sm text-base-content/80">
+                <svg class="size-4"><use href="#i-pin"/></svg> à 120 m — rue Paul Mesplé
+              </p>
+            </div>
+          </div>
+          <p class="mt-3 text-base leading-relaxed text-base-content/90">
+            Gestion du stress, sommeil et préparation aux examens, en cabinet ou en visio.
+          </p>
+          <div class="mt-3 flex flex-wrap gap-2">
+            <span class="inline-flex h-8 items-center rounded-selector bg-secondary px-3 text-sm font-semibold text-secondary-content">Santé &amp; bien-être</span>
+          </div>
+          <div class="mt-4 flex items-center gap-2">
+            <a href="tel:+33612345678" class="inline-flex h-11 flex-1 items-center justify-center gap-2 rounded-field bg-accent px-4 font-semibold text-accent-content">
+              <svg class="size-5"><use href="#i-phone"/></svg> 06 12 34 56 78
+            </a>
+            <a href="#" aria-label="Écrire à Camille Roussel" class="inline-flex size-11 items-center justify-center rounded-field border border-base-300 text-base-content">
+              <svg class="size-5"><use href="#i-mail"/></svg>
+            </a>
+            <a href="#" aria-label="Site web de Camille Roussel" class="inline-flex size-11 items-center justify-center rounded-field border border-base-300 text-base-content">
+              <svg class="size-5"><use href="#i-globe"/></svg>
+            </a>
+          </div>
+        </article>
+      </div>
+
+      <div class="space-y-6">
+        <div class="space-y-3">
+          <p class="text-sm font-semibold">Le jeu de boutons</p>
+          <div class="rounded-box bg-base-100 p-5">
+            <div class="flex flex-wrap items-center gap-3">
+              <button class="btn btn-primary">Voir son portrait</button>
+              <button class="btn btn-accent"><svg class="size-5"><use href="#i-phone"/></svg> Appeler</button>
+              <button class="btn btn-outline">Envoyer un message</button>
+              <button class="btn btn-ghost">En savoir plus</button>
+              <button class="btn" disabled>Rendez-vous — bientôt</button>
+            </div>
+            <p class="mt-4 text-sm leading-relaxed text-base-content/80">
+              L'orange ne sert qu'à une chose : appeler. C'est la seule couleur chaude de
+              l'écran, donc l'œil y va sans qu'on ait à l'expliquer.
+            </p>
+          </div>
+        </div>
+
+        <div class="space-y-3">
+          <p class="text-sm font-semibold">La tuile « Je cherche… »</p>
+          <a href="#" class="flex items-center gap-4 rounded-box bg-primary p-5 text-primary-content">
+            <span class="inline-flex size-11 shrink-0 items-center justify-center rounded-field bg-primary-content/15">
+              <svg class="size-6"><use href="#i-ventouse"/></svg>
+            </span>
+            <span class="min-w-0 flex-1">
+              <span class="block font-display text-lg font-bold leading-snug">Retrouver l'équilibre : stress, sommeil, énergie</span>
+              <span class="mt-1 block text-sm text-primary-content/85">Santé &amp; bien-être · 4 voisins</span>
+            </span>
+            <svg class="size-6 shrink-0"><use href="#i-arrow"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5 · FRAGMENT -->
+  <section class="space-y-4">
+    <h2 class="text-xs font-semibold uppercase tracking-[0.18em] text-base-content/70">5 · L'application, en situation — 390 px</h2>
+    <div class="w-[390px] overflow-hidden rounded-box border border-base-300 bg-base-100">
+      <header class="flex items-center gap-2.5 bg-primary px-4 py-3 text-primary-content">
+        <span class="inline-flex size-8 items-center justify-center rounded-xl bg-primary-content/15">
+          <svg class="size-5"><use href="#i-ventouse"/></svg>
+        </span>
+        <span class="font-display text-lg font-extrabold">la cartoucherie</span>
+      </header>
+      <div class="space-y-4 p-4">
+        <label class="flex h-12 items-center gap-2 rounded-field border border-base-300 bg-base-200 px-3">
+          <svg class="size-5 text-base-content/70"><use href="#i-search"/></svg>
+          <span class="sr-only">Rechercher un métier ou un nom</span>
+          <input type="search" placeholder="Un métier, un nom, un besoin…" class="w-full appearance-none bg-transparent text-base outline-none placeholder:text-base-content/60">
+        </label>
+
+        <div>
+          <p class="font-display text-[26px] font-extrabold leading-tight">Je cherche…</p>
+          <a href="#" class="mt-2 flex items-center gap-3 rounded-box bg-primary p-4 text-primary-content">
+            <span class="min-w-0 flex-1">
+              <span class="block font-display text-[17px] font-bold leading-snug">Retrouver l'équilibre : stress, sommeil, énergie</span>
+              <span class="mt-1 block text-sm text-primary-content/85">Santé &amp; bien-être · 4 voisins</span>
+            </span>
+            <svg class="size-5 shrink-0"><use href="#i-arrow"/></svg>
+          </a>
+        </div>
+
+        <div class="space-y-2">
+          <p class="text-[13px] font-semibold uppercase tracking-[0.14em] text-base-content/80">4 voisins peuvent vous aider</p>
+
+          <div class="flex items-center gap-3 rounded-box bg-base-200 p-2.5">
+            <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="" class="size-14 shrink-0 rounded-field object-cover" width="56" height="56">
+            <div class="min-w-0 flex-1">
+              <p class="font-display text-[17px] font-bold leading-tight">Camille Roussel</p>
+              <p class="text-[15px] text-base-content/90">Sophrologue · 120 m</p>
+            </div>
+            <a href="tel:+33612345678" aria-label="Appeler Camille Roussel"
+               class="inline-flex size-11 shrink-0 items-center justify-center rounded-selector bg-accent text-accent-content">
+              <svg class="size-5"><use href="#i-phone"/></svg>
+            </a>
+          </div>
+
+          <div class="flex items-center gap-3 rounded-box bg-base-200 p-2.5">
+            <img src="https://randomuser.me/api/portraits/women/26.jpg" alt="" class="size-14 shrink-0 rounded-field object-cover" width="56" height="56">
+            <div class="min-w-0 flex-1">
+              <p class="font-display text-[17px] font-bold leading-tight">Sophie Arnaud</p>
+              <p class="text-[15px] text-base-content/90">Naturopathe · 450 m</p>
+            </div>
+            <a href="tel:+33678901234" aria-label="Appeler Sophie Arnaud"
+               class="inline-flex size-11 shrink-0 items-center justify-center rounded-selector bg-accent text-accent-content">
+              <svg class="size-5"><use href="#i-phone"/></svg>
+            </a>
+          </div>
+
+          <div class="flex items-center gap-3 rounded-box bg-base-200 p-2.5">
+            <img src="https://randomuser.me/api/portraits/men/11.jpg" alt="" class="size-14 shrink-0 rounded-field object-cover" width="56" height="56">
+            <div class="min-w-0 flex-1">
+              <p class="font-display text-[17px] font-bold leading-tight">Thomas Vidal</p>
+              <p class="text-[15px] text-base-content/90">Coach sportif · 60 m</p>
+            </div>
+            <a href="tel:+33667890123" aria-label="Appeler Thomas Vidal"
+               class="inline-flex size-11 shrink-0 items-center justify-center rounded-selector bg-accent text-accent-content">
+              <svg class="size-5"><use href="#i-phone"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <a href="#" class="flex h-12 items-center justify-center rounded-field border border-primary font-semibold text-primary">
+          Voir tout le quartier
+        </a>
+      </div>
+    </div>
+    <p class="max-w-2xl text-sm leading-relaxed text-base-content/80">
+      Trois voisins et l'action « tout voir » tiennent dans un écran, à 95 px par personne.
+      La pastille orange est la seule couleur chaude : elle dit « appeler » sans légende.
+    </p>
+  </section>
+
+</div>
+</body>
+</html>

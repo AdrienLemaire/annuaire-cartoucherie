@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="retro">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>La Cartoucherie à deux pas</title>
+<meta name="description" content="L'annuaire du quartier de la Cartoucherie, classé par distance depuis là où vous êtes." />
+<link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
+<link href="https://cdn.jsdelivr.net/npm/daisyui@5/themes.css" rel="stylesheet" type="text/css" />
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,600;0,700;1,500&family=DM+Mono:wght@500&display=swap" rel="stylesheet" />
+</head>
+<body class="bg-base-100 text-base-content pb-24 md:pb-6">
+
+<div class="navbar bg-base-200 sticky top-0 z-40 px-3 sm:px-4 gap-2 border-b border-base-300">
+  <div class="navbar-start">
+    <a href="index.html" class="btn btn-ghost min-h-11 px-2 text-lg font-[Fraunces] font-bold normal-case gap-1">
+      <span aria-hidden="true">📍</span> Cartoucherie
+    </a>
+  </div>
+  <div class="navbar-end gap-2">
+    <span id="geo-pill" class="badge badge-outline badge-lg hidden sm:inline-flex">point de départ : la Halle</span>
+    <div class="hidden md:flex gap-1">
+      <a href="index.html" class="btn btn-ghost min-h-11">Accueil</a>
+      <a href="annuaire.html" class="btn btn-ghost min-h-11">Annuaire</a>
+      <a href="carte.html" class="btn btn-ghost min-h-11">Carte</a>
+    </div>
+  </div>
+</div>
+
+<main class="max-w-2xl mx-auto">
+
+  <section class="px-4 pt-8 pb-6 text-center">
+    <p class="badge badge-primary badge-lg mb-4">La Cartoucherie · Toulouse 31300</p>
+    <h1 class="font-[Fraunces] text-4xl sm:text-5xl font-bold leading-tight text-balance">Qui est à deux pas&nbsp;?</h1>
+    <p class="mt-4 text-base opacity-80 max-w-md mx-auto text-balance">
+      L'annuaire des artisans, thérapeutes et commerçants du quartier, classé par distance depuis là où vous êtes — pas par catégorie.
+    </p>
+  </section>
+
+  <section class="px-4 pb-2">
+    <div class="card bg-base-200 border border-base-300 shadow-sm">
+      <div class="card-body gap-3">
+        <h2 class="card-title font-[Fraunces] text-xl">🛰️ Activez votre position</h2>
+        <p class="text-sm opacity-80">
+          Pour l'instant, la liste ci-dessous est classée à vol d'oiseau depuis <strong>la Halle de la Cartoucherie</strong>, le repère central du quartier — parce que c'est probablement là que vous avez scanné le QR code. Activez votre position pour un classement encore plus précis, depuis vous.
+        </p>
+        <div id="geo-status" class="empty:hidden"></div>
+        <div class="card-actions flex-col sm:flex-row">
+          <button type="button" onclick="ctchActiverPosition(this)" class="btn btn-primary btn-lg w-full sm:w-auto">
+            📍 Activer ma position
+          </button>
+          <button type="button" onclick="ctchGeoResult(false)" class="btn btn-ghost btn-lg w-full sm:w-auto">
+            Non merci, je reste sur la Halle
+          </button>
+        </div>
+        <p class="text-xs opacity-60">Rien n'est envoyé à un serveur : le calcul reste sur votre téléphone.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="px-4 py-6">
+    <div class="flex items-center justify-between mb-3">
+      <h2 class="font-[Fraunces] text-2xl font-bold">Les plus proches</h2>
+      <a href="annuaire.html" class="link link-primary text-sm font-semibold whitespace-nowrap">Voir les 12 →</a>
+    </div>
+
+    <div class="flex flex-wrap gap-2 mb-4" role="group" aria-label="Filtrer par repère">
+      <button type="button" onclick="ctchFiltrerRepere('tous', this)" class="btn min-h-11 btn-primary landmark-chip" data-landmark="tous">Tous</button>
+      <button type="button" onclick="ctchFiltrerRepere('halle', this)" class="btn min-h-11 btn-outline landmark-chip" data-landmark="halle">🏛️ Près de la Halle</button>
+      <button type="button" onclick="ctchFiltrerRepere('mesple', this)" class="btn min-h-11 btn-outline landmark-chip" data-landmark="mesple">🛣️ Rue Paul Mesplé</button>
+    </div>
+
+    <ul class="flex flex-col gap-3">
+
+      <li class="landmark-item" data-landmark="halle">
+        <a href="membre.html" class="flex items-center gap-3 bg-base-200 hover:bg-base-300 rounded-box p-3 border border-base-300 transition">
+          <img src="https://picsum.photos/seed/yanis-belhadj/600/600" alt="Yanis Belhadj" class="w-16 h-16 rounded-box object-cover shrink-0" />
+          <div class="min-w-0 grow">
+            <p class="font-semibold truncate">Yanis Belhadj <span class="font-normal opacity-60">· Développeur web</span></p>
+            <p class="text-sm opacity-70 truncate">Sites vitrines et boutiques en ligne pour les commerces du quartier.</p>
+            <p class="text-xs opacity-60 mt-0.5">🏛️ à la Halle · ★ 5,0 (7 avis)</p>
+          </div>
+          <div class="flex flex-col items-end shrink-0 gap-1">
+            <span class="font-[DM_Mono] text-xl font-bold text-primary leading-none">60 m</span>
+            <span class="text-[11px] opacity-60">🚶 1 min</span>
+          </div>
+        </a>
+      </li>
+
+      <li class="landmark-item" data-landmark="halle">
+        <a href="membre.html" class="flex items-center gap-3 bg-base-200 hover:bg-base-300 rounded-box p-3 border border-base-300 transition">
+          <img src="https://picsum.photos/seed/thomas-vidal/600/600" alt="Thomas Vidal" class="w-16 h-16 rounded-box object-cover shrink-0" />
+          <div class="min-w-0 grow">
+            <p class="font-semibold truncate">Thomas Vidal <span class="font-normal opacity-60">· Coach sportif</span></p>
+            <p class="text-sm opacity-70 truncate">Petits groupes en extérieur, tous niveaux, premier cours offert.</p>
+            <p class="text-xs opacity-60 mt-0.5">🏛️ parvis de la Halle · ★ 4,6 (18 avis)</p>
+          </div>
+          <div class="flex flex-col items-end shrink-0 gap-1">
+            <span class="font-[DM_Mono] text-xl font-bold text-primary leading-none">60 m</span>
+            <span class="text-[11px] opacity-60">🚶 1 min</span>
+          </div>
+        </a>
+      </li>
+
+      <li class="landmark-item" data-landmark="halle">
+        <a href="membre.html" class="flex items-center gap-3 bg-base-200 hover:bg-base-300 rounded-box p-3 border border-base-300 transition">
+          <img src="https://picsum.photos/seed/ines-lacombe/600/600" alt="Inès Lacombe" class="w-16 h-16 rounded-box object-cover shrink-0" />
+          <div class="min-w-0 grow">
+            <p class="font-semibold truncate">Inès Lacombe <span class="font-normal opacity-60">· Professeure de yoga</span></p>
+            <p class="text-sm opacity-70 truncate">Hatha et yoga prénatal, à la Halle et en petits groupes.</p>
+            <p class="text-xs opacity-60 mt-0.5">🏛️ à la Halle · ★ 4,9 (27 avis)</p>
+          </div>
+          <div class="flex flex-col items-end shrink-0 gap-1">
+            <span class="font-[DM_Mono] text-xl font-bold text-primary leading-none">60 m</span>
+            <span class="text-[11px] opacity-60">🚶 1 min</span>
+          </div>
+        </a>
+      </li>
+
+      <li class="landmark-item" data-landmark="mesple">
+        <a href="membre.html" class="flex items-center gap-3 bg-base-200 hover:bg-base-300 rounded-box p-3 border border-base-300 transition">
+          <img src="https://picsum.photos/seed/camille-roussel/600/600" alt="Camille Roussel" class="w-16 h-16 rounded-box object-cover shrink-0" />
+          <div class="min-w-0 grow">
+            <p class="font-semibold truncate">Camille Roussel <span class="font-normal opacity-60">· Sophrologue</span></p>
+            <p class="text-sm opacity-70 truncate">Gestion du stress, sommeil et préparation aux examens.</p>
+            <p class="text-xs opacity-60 mt-0.5">🛣️ rue Paul Mesplé · ★ 4,8 (12 avis)</p>
+          </div>
+          <div class="flex flex-col items-end shrink-0 gap-1">
+            <span class="font-[DM_Mono] text-xl font-bold text-primary leading-none">120 m</span>
+            <span class="text-[11px] opacity-60">🚶 2 min</span>
+          </div>
+        </a>
+      </li>
+
+      <li class="landmark-item" data-landmark="mesple">
+        <a href="membre.html" class="flex items-center gap-3 bg-base-200 hover:bg-base-300 rounded-box p-3 border border-base-300 transition">
+          <img src="https://picsum.photos/seed/pierre-delmas/600/600" alt="Pierre Delmas" class="w-16 h-16 rounded-box object-cover shrink-0" />
+          <div class="min-w-0 grow">
+            <p class="font-semibold truncate">Pierre Delmas <span class="font-normal opacity-60">· Expert-comptable</span></p>
+            <p class="text-sm opacity-70 truncate">Indépendants et petites associations, premier rendez-vous gratuit.</p>
+            <p class="text-xs opacity-60 mt-0.5">🛣️ rue Paul Mesplé · ★ 4,3 (5 avis)</p>
+          </div>
+          <div class="flex flex-col items-end shrink-0 gap-1">
+            <span class="font-[DM_Mono] text-xl font-bold text-primary leading-none">150 m</span>
+            <span class="text-[11px] opacity-60">🚶 2 min</span>
+          </div>
+        </a>
+      </li>
+
+    </ul>
+  </section>
+
+  <section class="px-4 py-6 border-t border-base-300">
+    <h2 class="font-[Fraunces] text-2xl font-bold mb-1">Ils viennent chez vous</h2>
+    <p class="text-sm opacity-70 mb-4">Pas d'adresse fixe : ce sont eux qui se déplacent. La distance n'a pas de sens pour eux — ce n'est pas un oubli.</p>
+    <ul class="flex flex-col gap-3">
+
+      <li>
+        <a href="membre.html" class="flex items-center gap-3 bg-base-200 hover:bg-base-300 rounded-box p-3 border border-base-300 transition">
+          <img src="https://picsum.photos/seed/julien-marty/600/600" alt="Julien Marty" class="w-16 h-16 rounded-box object-cover shrink-0" />
+          <div class="min-w-0 grow">
+            <p class="font-semibold truncate">Julien Marty <span class="font-normal opacity-60">· Électricien</span></p>
+            <p class="text-sm opacity-70 truncate">Dépannage rapide, mise aux normes, bornes de recharge.</p>
+          </div>
+          <span class="badge badge-secondary gap-1 shrink-0 whitespace-nowrap">🚗 chez vous</span>
+        </a>
+      </li>
+
+      <li>
+        <a href="membre.html" class="flex items-center gap-3 bg-base-200 hover:bg-base-300 rounded-box p-3 border border-base-300 transition">
+          <img src="https://picsum.photos/seed/amandine-rey/600/600" alt="Amandine Rey" class="w-16 h-16 rounded-box object-cover shrink-0" />
+          <div class="min-w-0 grow">
+            <p class="font-semibold truncate">Amandine Rey <span class="font-normal opacity-60">· Coiffeuse à domicile</span></p>
+            <p class="text-sm opacity-70 truncate">Coupe, couleur et soins chez vous, du mardi au samedi.</p>
+          </div>
+          <span class="badge badge-secondary gap-1 shrink-0 whitespace-nowrap">🚗 chez vous</span>
+        </a>
+      </li>
+
+    </ul>
+  </section>
+
+  <section class="px-4 py-6 border-t border-base-300">
+    <div class="card bg-primary text-primary-content shadow-sm">
+      <div class="card-body items-center text-center gap-2">
+        <h2 class="card-title font-[Fraunces]">🗺️ Voir tout sur la carte</h2>
+        <p class="text-sm opacity-90">La Halle, les arrêts de tram, l'avenue de Grande-Bretagne — repérez qui est où, d'un coup d'œil.</p>
+        <a href="carte.html" class="btn btn-lg bg-base-100 text-base-content border-none mt-2">Ouvrir la carte</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer footer-center bg-base-200 text-base-content p-6 border-t border-base-300 mb-16 md:mb-0">
+  <nav class="flex flex-wrap justify-center gap-x-4 gap-y-2">
+    <a href="#" class="link link-hover">À propos</a>
+    <a href="#" class="link link-hover">Confidentialité</a>
+    <a href="#" class="link link-hover">Mentions légales</a>
+    <a href="#" class="link link-hover">Avis</a>
+  </nav>
+  <aside>
+    <p class="text-xs opacity-70">La Cartoucherie · 31300 Toulouse — annuaire associatif du quartier</p>
+  </aside>
+</footer>
+
+<div class="dock md:hidden">
+  <a href="index.html" class="dock-active" aria-label="Accueil"><span class="text-xl" aria-hidden="true">🏠</span><span class="dock-label">Accueil</span></a>
+  <a href="annuaire.html" aria-label="Annuaire"><span class="text-xl" aria-hidden="true">📖</span><span class="dock-label">Annuaire</span></a>
+  <a href="carte.html" aria-label="Carte"><span class="text-xl" aria-hidden="true">🗺️</span><span class="dock-label">Carte</span></a>
+</div>
+
+<script>
+  function ctchGeoResult(ok){
+    var pill = document.getElementById('geo-pill');
+    var status = document.getElementById('geo-status');
+    if(ok){
+      if(pill){ pill.textContent = '📍 depuis votre position'; }
+      if(status){ status.innerHTML = '<div role="alert" class="alert alert-success"><span>Position activée — le classement ci-dessous part maintenant de vous.</span></div>'; }
+      try{ localStorage.setItem('ctch_geo','granted'); }catch(e){}
+    } else {
+      if(pill){ pill.textContent = '📍 point de départ : la Halle'; }
+      if(status){ status.innerHTML = '<div role="alert" class="alert alert-warning"><span>Pas de souci : le classement reste à vol d\'oiseau depuis la Halle. Filtrez par repère ci-dessous si besoin.</span></div>'; }
+      try{ localStorage.setItem('ctch_geo','denied'); }catch(e){}
+    }
+  }
+  function ctchActiverPosition(btn){
+    btn.disabled = true;
+    btn.textContent = 'Localisation…';
+    if(!navigator.geolocation){ ctchGeoResult(false); return; }
+    navigator.geolocation.getCurrentPosition(
+      function(){ ctchGeoResult(true); btn.disabled = false; btn.textContent = '📍 Activer ma position'; },
+      function(){ ctchGeoResult(false); btn.disabled = false; btn.textContent = '📍 Activer ma position'; },
+      { timeout: 6000 }
+    );
+  }
+  function ctchFiltrerRepere(repere, btn){
+    document.querySelectorAll('.landmark-chip').forEach(function(el){
+      el.classList.remove('btn-primary');
+      el.classList.add('btn-outline');
+    });
+    btn.classList.remove('btn-outline');
+    btn.classList.add('btn-primary');
+    document.querySelectorAll('.landmark-item').forEach(function(el){
+      el.hidden = (repere !== 'tous' && el.getAttribute('data-landmark') !== repere);
+    });
+  }
+  (function(){
+    try{
+      if(localStorage.getItem('ctch_geo') === 'granted'){ ctchGeoResult(true); }
+    }catch(e){}
+  })();
+</script>
+</body>
+</html>

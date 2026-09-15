@@ -1,0 +1,539 @@
+<!doctype html>
+<html lang="fr" data-theme="autumn">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>La Cartoucherie — Les portraits du quartier</title>
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@5/themes.css" rel="stylesheet" type="text/css" />
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,340;0,9..144,560;0,9..144,650;1,9..144,500&display=swap" rel="stylesheet" />
+</head>
+<body class="min-h-screen bg-base-200 text-base-content">
+
+  <!-- ===== Header ===== -->
+  <header class="navbar bg-base-100/90 backdrop-blur-md border-b border-base-300 sticky top-0 z-40 px-4 sm:px-6">
+    <div class="navbar-start">
+      <a href="index.html" class="flex items-baseline gap-2">
+        <span class="font-[family-name:Fraunces] font-semibold text-2xl text-primary">Cartoucherie</span>
+        <span class="hidden sm:inline text-xs uppercase tracking-[0.2em] text-base-content/50">portraits du quartier</span>
+      </a>
+    </div>
+    <div class="navbar-center hidden md:flex">
+      <ul class="menu menu-horizontal gap-1 text-sm">
+        <li><a href="index.html" class="menu-active">Accueil</a></li>
+        <li><a href="annuaire.html">Annuaire</a></li>
+        <li><a href="carte.html">Carte</a></li>
+      </ul>
+    </div>
+    <div class="navbar-end">
+      <button class="btn btn-ghost btn-circle w-11 h-11 min-h-11" onclick="modalRecherche.showModal()" aria-label="Rechercher un commerce">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="w-5 h-5"><circle cx="11" cy="11" r="7"/><path stroke-linecap="round" d="m21 21-4.3-4.3"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- ===== Search dialog (secondary) ===== -->
+  <dialog id="modalRecherche" class="modal modal-top sm:modal-middle">
+    <div class="modal-box">
+      <h3 class="font-[family-name:Fraunces] text-xl">Chercher un portrait</h3>
+      <p class="text-sm text-base-content/60 mt-1">Un métier, un nom, un service…</p>
+      <form action="annuaire.html" method="get" class="flex gap-2 mt-3">
+        <label class="input w-full">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="w-5 h-5 opacity-60"><circle cx="11" cy="11" r="7"/><path stroke-linecap="round" d="m21 21-4.3-4.3"/></svg>
+          <input type="search" name="q" placeholder="ex. électricien, yoga, comptable…" aria-label="Recherche" />
+        </label>
+        <button type="submit" class="btn btn-primary min-h-11">OK</button>
+      </form>
+      <p class="text-xs text-base-content/50 mt-3">Ou laissez-vous surprendre : les portraits défilent juste en dessous.</p>
+      <div class="modal-action"><form method="dialog"><button class="btn btn-ghost btn-sm min-h-11">Fermer</button></form></div>
+    </div>
+    <form method="dialog" class="modal-backdrop"><button>fermer</button></form>
+  </dialog>
+
+  <!-- ===== Main feed ===== -->
+  <main class="max-w-lg mx-auto px-4 pt-6 pb-28 md:pb-16 space-y-7">
+
+    <section class="space-y-2 pb-1">
+      <p class="text-xs uppercase tracking-[0.25em] text-primary font-semibold">La Cartoucherie · Toulouse</p>
+      <h1 class="font-[family-name:Fraunces] text-3xl sm:text-4xl leading-[1.1]">Les visages qui font vivre le quartier.</h1>
+      <p class="text-base-content/70">Chaque semaine, Sandra rencontre un commerçant, un artisan, un indépendant d'ici. Découvrez son portrait — et son numéro, à portée de pouce.</p>
+      <div class="flex items-center gap-2 pt-1">
+        <div class="avatar-group -space-x-4">
+          <div class="avatar"><div class="w-7"><img src="https://picsum.photos/seed/karim-ziani/80/80" alt="" /></div></div>
+          <div class="avatar"><div class="w-7"><img src="https://picsum.photos/seed/amandine-rey/80/80" alt="" /></div></div>
+          <div class="avatar"><div class="w-7"><img src="https://picsum.photos/seed/ines-lacombe/80/80" alt="" /></div></div>
+        </div>
+        <span class="text-xs text-base-content/60">12 portraits publiés jusqu'ici</span>
+      </div>
+    </section>
+
+    <!-- CARD 1 — karim-ziani — NOUVEAU -->
+    <article class="relative rounded-[2rem] overflow-hidden bg-base-100 shadow-xl border border-base-300/60">
+      <div class="relative aspect-[4/5] min-h-72">
+        <img src="https://picsum.photos/seed/karim-ziani/600/600" alt="Portrait de Karim Ziani, photographe" class="absolute inset-0 w-full h-full object-cover" />
+        <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/15 to-transparent"></div>
+        <span class="badge badge-secondary badge-lg absolute top-4 left-4 shadow-md font-semibold">✦ Nouveau portrait</span>
+        <label class="swap absolute top-4 right-4 btn btn-circle btn-ghost w-11 h-11 min-h-11 bg-black/30 hover:bg-black/50 border-none text-white">
+          <input type="checkbox" aria-label="Ajouter Karim Ziani aux favoris" />
+          <svg class="swap-off w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M12 20.5s-7.5-4.6-9.8-9.4C.6 7.6 2 4 5.6 3.4c2-.3 3.7.6 4.9 2.2C11.7 4 13.4 3.1 15.4 3.4 19 4 20.4 7.6 18.8 11.1 16.5 15.9 12 20.5 12 20.5Z"/></svg>
+          <svg class="swap-on w-5 h-5 text-error" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 20.5s-7.5-4.6-9.8-9.4C.6 7.6 2 4 5.6 3.4c2-.3 3.7.6 4.9 2.2C11.7 4 13.4 3.1 15.4 3.4 19 4 20.4 7.6 18.8 11.1 16.5 15.9 12 20.5 12 20.5Z"/></svg>
+        </label>
+        <div class="absolute inset-x-0 bottom-0 p-5 text-white">
+          <div class="flex flex-wrap gap-1.5 mb-2">
+            <span class="badge badge-sm bg-white/15 text-white border-white/25">🎨 Art &amp; culture</span>
+            <span class="badge badge-sm bg-white/15 text-white border-white/25">💻 Numérique &amp; création</span>
+          </div>
+          <h2 class="font-[family-name:Fraunces] text-3xl leading-tight">Karim Ziani</h2>
+          <p class="text-white/90 font-medium">Photographe</p>
+        </div>
+      </div>
+      <div class="p-5 space-y-4">
+        <p class="text-base-content/80 leading-relaxed">Portraits, familles et reportages d'événements de quartier — c'est lui qui réalise une partie des portraits publiés sur le compte Instagram du collectif.</p>
+        <div class="flex items-center flex-wrap justify-between gap-3 gap-y-2">
+          <div class="flex gap-2">
+            <a href="tel:0623904567" class="btn btn-circle btn-ghost w-11 h-11 min-h-11" aria-label="Appeler Karim Ziani">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M4 5c0-.6.4-1 1-1h2.7c.5 0 .9.3 1 .8l.8 3.3c.1.4 0 .9-.3 1.2L7.9 10.6a12 12 0 0 0 5.5 5.5l1.3-1.3c.3-.3.8-.4 1.2-.3l3.3.8c.5.1.8.5.8 1V19c0 .6-.4 1-1 1h-1C10.5 20 4 13.5 4 6V5Z"/></svg>
+            </a>
+            <a href="https://karimziani-photo.fr" class="btn btn-circle btn-ghost w-11 h-11 min-h-11" aria-label="Site de Karim Ziani">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="w-5 h-5"><circle cx="12" cy="12" r="9"/><path stroke-linecap="round" d="M3 12h18M12 3c2.5 2.5 3.8 5.7 3.8 9s-1.3 6.5-3.8 9c-2.5-2.5-3.8-5.7-3.8-9S9.5 5.5 12 3Z"/></svg>
+            </a>
+            <a href="https://instagram.com/karim_ziani_photo" class="btn btn-circle btn-ghost w-11 h-11 min-h-11" aria-label="Instagram de Karim Ziani">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="w-5 h-5"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17" cy="7" r="0.8" fill="currentColor" stroke="none"/></svg>
+            </a>
+          </div>
+          <a href="membre.html" class="btn btn-primary btn-sm min-h-11 rounded-full">Voir le portrait →</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- CARD 2 — amandine-rey — NOUVEAU -->
+    <article class="relative rounded-[2rem] overflow-hidden bg-base-100 shadow-xl border border-base-300/60">
+      <div class="relative aspect-[4/5] min-h-72">
+        <img src="https://picsum.photos/seed/amandine-rey/600/600" alt="Portrait d'Amandine Rey, coiffeuse à domicile" class="absolute inset-0 w-full h-full object-cover" />
+        <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/15 to-transparent"></div>
+        <span class="badge badge-secondary badge-lg absolute top-4 left-4 shadow-md font-semibold">✦ Nouveau portrait</span>
+        <label class="swap absolute top-4 right-4 btn btn-circle btn-ghost w-11 h-11 min-h-11 bg-black/30 hover:bg-black/50 border-none text-white">
+          <input type="checkbox" aria-label="Ajouter Amandine Rey aux favoris" />
+          <svg class="swap-off w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M12 20.5s-7.5-4.6-9.8-9.4C.6 7.6 2 4 5.6 3.4c2-.3 3.7.6 4.9 2.2C11.7 4 13.4 3.1 15.4 3.4 19 4 20.4 7.6 18.8 11.1 16.5 15.9 12 20.5 12 20.5Z"/></svg>
+          <svg class="swap-on w-5 h-5 text-error" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 20.5s-7.5-4.6-9.8-9.4C.6 7.6 2 4 5.6 3.4c2-.3 3.7.6 4.9 2.2C11.7 4 13.4 3.1 15.4 3.4 19 4 20.4 7.6 18.8 11.1 16.5 15.9 12 20.5 12 20.5Z"/></svg>
+        </label>
+        <div class="absolute inset-x-0 bottom-0 p-5 text-white">
+          <div class="flex flex-wrap gap-1.5 mb-2">
+            <span class="badge badge-sm bg-white/15 text-white border-white/25">✂️ Beauté &amp; soins</span>
+            <span class="badge badge-sm bg-white/15 text-white border-white/25">🏠 Services à domicile</span>
+          </div>
+          <h2 class="font-[family-name:Fraunces] text-3xl leading-tight">Amandine Rey</h2>
+          <p class="text-white/90 font-medium">Coiffeuse à domicile</p>
+        </div>
+      </div>
+      <div class="p-5 space-y-4">
+        <p class="text-base-content/80 leading-relaxed">Coupe, couleur et soins chez vous, du mardi au samedi. Tarifs affichés, sans surprise — beaucoup de familles et de personnes âgées qui préfèrent rester chez elles.</p>
+        <div class="flex items-center flex-wrap justify-between gap-3 gap-y-2">
+          <div class="flex gap-2">
+            <a href="tel:0612903456" class="btn btn-circle btn-ghost w-11 h-11 min-h-11" aria-label="Appeler Amandine Rey">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M4 5c0-.6.4-1 1-1h2.7c.5 0 .9.3 1 .8l.8 3.3c.1.4 0 .9-.3 1.2L7.9 10.6a12 12 0 0 0 5.5 5.5l1.3-1.3c.3-.3.8-.4 1.2-.3l3.3.8c.5.1.8.5.8 1V19c0 .6-.4 1-1 1h-1C10.5 20 4 13.5 4 6V5Z"/></svg>
+            </a>
+            <a href="https://instagram.com/amandine_coiffure_dom" class="btn btn-circle btn-ghost w-11 h-11 min-h-11" aria-label="Instagram d'Amandine Rey">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="w-5 h-5"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17" cy="7" r="0.8" fill="currentColor" stroke="none"/></svg>
+            </a>
+          </div>
+          <a href="membre.html" class="btn btn-primary btn-sm min-h-11 rounded-full">Voir le portrait →</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- CARD 3 — pierre-delmas — NOUVEAU -->
+    <article class="relative rounded-[2rem] overflow-hidden bg-base-100 shadow-xl border border-base-300/60">
+      <div class="relative aspect-[4/5] min-h-72">
+        <img src="https://picsum.photos/seed/pierre-delmas/600/600" alt="Portrait de Pierre Delmas, expert-comptable" class="absolute inset-0 w-full h-full object-cover" />
+        <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/15 to-transparent"></div>
+        <span class="badge badge-secondary badge-lg absolute top-4 left-4 shadow-md font-semibold">✦ Nouveau portrait</span>
+        <label class="swap absolute top-4 right-4 btn btn-circle btn-ghost w-11 h-11 min-h-11 bg-black/30 hover:bg-black/50 border-none text-white">
+          <input type="checkbox" aria-label="Ajouter Pierre Delmas aux favoris" />
+          <svg class="swap-off w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M12 20.5s-7.5-4.6-9.8-9.4C.6 7.6 2 4 5.6 3.4c2-.3 3.7.6 4.9 2.2C11.7 4 13.4 3.1 15.4 3.4 19 4 20.4 7.6 18.8 11.1 16.5 15.9 12 20.5 12 20.5Z"/></svg>
+          <svg class="swap-on w-5 h-5 text-error" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 20.5s-7.5-4.6-9.8-9.4C.6 7.6 2 4 5.6 3.4c2-.3 3.7.6 4.9 2.2C11.7 4 13.4 3.1 15.4 3.4 19 4 20.4 7.6 18.8 11.1 16.5 15.9 12 20.5 12 20.5Z"/></svg>
+        </label>
+        <div class="absolute inset-x-0 bottom-0 p-5 text-white">
+          <div class="flex flex-wrap gap-1.5 mb-2">
+            <span class="badge badge-sm bg-white/15 text-white border-white/25">📊 Conseil &amp; entreprise</span>
+          </div>
+          <h2 class="font-[family-name:Fraunces] text-3xl leading-tight">Pierre Delmas</h2>
+          <p class="text-white/90 font-medium">Expert-comptable</p>
+        </div>
+      </div>
+      <div class="p-5 space-y-4">
+        <p class="text-base-content/80 leading-relaxed">Accompagnement des indépendants et des petites associations du quartier. Premier rendez-vous gratuit, souvent autour d'un café à la Halle.</p>
+        <div class="flex items-center flex-wrap justify-between gap-3 gap-y-2">
+          <div class="flex gap-2">
+            <a href="tel:0601234567" class="btn btn-circle btn-ghost w-11 h-11 min-h-11" aria-label="Appeler Pierre Delmas">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M4 5c0-.6.4-1 1-1h2.7c.5 0 .9.3 1 .8l.8 3.3c.1.4 0 .9-.3 1.2L7.9 10.6a12 12 0 0 0 5.5 5.5l1.3-1.3c.3-.3.8-.4 1.2-.3l3.3.8c.5.1.8.5.8 1V19c0 .6-.4 1-1 1h-1C10.5 20 4 13.5 4 6V5Z"/></svg>
+            </a>
+            <a href="https://delmas-conseil.fr" class="btn btn-circle btn-ghost w-11 h-11 min-h-11" aria-label="Site de Pierre Delmas">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="w-5 h-5"><circle cx="12" cy="12" r="9"/><path stroke-linecap="round" d="M3 12h18M12 3c2.5 2.5 3.8 5.7 3.8 9s-1.3 6.5-3.8 9c-2.5-2.5-3.8-5.7-3.8-9S9.5 5.5 12 3Z"/></svg>
+            </a>
+          </div>
+          <a href="membre.html" class="btn btn-primary btn-sm min-h-11 rounded-full">Voir le portrait →</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- CARD 4 — ines-lacombe -->
+    <article class="relative rounded-[2rem] overflow-hidden bg-base-100 shadow-xl border border-base-300/60">
+      <div class="relative aspect-[4/5] min-h-72">
+        <img src="https://picsum.photos/seed/ines-lacombe/600/600" alt="Portrait d'Inès Lacombe, professeure de yoga" class="absolute inset-0 w-full h-full object-cover" />
+        <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/15 to-transparent"></div>
+        <label class="swap absolute top-4 right-4 btn btn-circle btn-ghost w-11 h-11 min-h-11 bg-black/30 hover:bg-black/50 border-none text-white">
+          <input type="checkbox" aria-label="Ajouter Inès Lacombe aux favoris" />
+          <svg class="swap-off w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M12 20.5s-7.5-4.6-9.8-9.4C.6 7.6 2 4 5.6 3.4c2-.3 3.7.6 4.9 2.2C11.7 4 13.4 3.1 15.4 3.4 19 4 20.4 7.6 18.8 11.1 16.5 15.9 12 20.5 12 20.5Z"/></svg>
+          <svg class="swap-on w-5 h-5 text-error" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 20.5s-7.5-4.6-9.8-9.4C.6 7.6 2 4 5.6 3.4c2-.3 3.7.6 4.9 2.2C11.7 4 13.4 3.1 15.4 3.4 19 4 20.4 7.6 18.8 11.1 16.5 15.9 12 20.5 12 20.5Z"/></svg>
+        </label>
+        <div class="absolute inset-x-0 bottom-0 p-5 text-white">
+          <div class="flex flex-wrap gap-1.5 mb-2">
+            <span class="badge badge-sm bg-white/15 text-white border-white/25">🏃 Sport &amp; mouvement</span>
+            <span class="badge badge-sm bg-white/15 text-white border-white/25">🌿 Santé &amp; bien-être</span>
+          </div>
+          <h2 class="font-[family-name:Fraunces] text-3xl leading-tight">Inès Lacombe</h2>
+          <p class="text-white/90 font-medium">Professeure de yoga</p>
+        </div>
+      </div>
+      <div class="p-5 space-y-4">
+        <p class="text-base-content/80 leading-relaxed">Hatha et yoga prénatal, à la Halle et en petits groupes chez l'habitant. Cours doux, accessibles aux débutants et aux corps fatigués.</p>
+        <div class="flex items-center flex-wrap justify-between gap-3 gap-y-2">
+          <div class="flex gap-2">
+            <a href="tel:0690123456" class="btn btn-circle btn-ghost w-11 h-11 min-h-11" aria-label="Appeler Inès Lacombe">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M4 5c0-.6.4-1 1-1h2.7c.5 0 .9.3 1 .8l.8 3.3c.1.4 0 .9-.3 1.2L7.9 10.6a12 12 0 0 0 5.5 5.5l1.3-1.3c.3-.3.8-.4 1.2-.3l3.3.8c.5.1.8.5.8 1V19c0 .6-.4 1-1 1h-1C10.5 20 4 13.5 4 6V5Z"/></svg>
+            </a>
+            <a href="https://instagram.com/ines_yoga_toulouse" class="btn btn-circle btn-ghost w-11 h-11 min-h-11" aria-label="Instagram d'Inès Lacombe">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="w-5 h-5"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17" cy="7" r="0.8" fill="currentColor" stroke="none"/></svg>
+            </a>
+          </div>
+          <a href="membre.html" class="btn btn-primary btn-sm min-h-11 rounded-full">Voir le portrait →</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- CARD 5 — julien-marty -->
+    <article class="relative rounded-[2rem] overflow-hidden bg-base-100 shadow-xl border border-base-300/60">
+      <div class="relative aspect-[4/5] min-h-72">
+        <img src="https://picsum.photos/seed/julien-marty/600/600" alt="Portrait de Julien Marty, électricien" class="absolute inset-0 w-full h-full object-cover" />
+        <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/15 to-transparent"></div>
+        <label class="swap absolute top-4 right-4 btn btn-circle btn-ghost w-11 h-11 min-h-11 bg-black/30 hover:bg-black/50 border-none text-white">
+          <input type="checkbox" aria-label="Ajouter Julien Marty aux favoris" />
+          <svg class="swap-off w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M12 20.5s-7.5-4.6-9.8-9.4C.6 7.6 2 4 5.6 3.4c2-.3 3.7.6 4.9 2.2C11.7 4 13.4 3.1 15.4 3.4 19 4 20.4 7.6 18.8 11.1 16.5 15.9 12 20.5 12 20.5Z"/></svg>
+          <svg class="swap-on w-5 h-5 text-error" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 20.5s-7.5-4.6-9.8-9.4C.6 7.6 2 4 5.6 3.4c2-.3 3.7.6 4.9 2.2C11.7 4 13.4 3.1 15.4 3.4 19 4 20.4 7.6 18.8 11.1 16.5 15.9 12 20.5 12 20.5Z"/></svg>
+        </label>
+        <div class="absolute inset-x-0 bottom-0 p-5 text-white">
+          <div class="flex flex-wrap gap-1.5 mb-2">
+            <span class="badge badge-sm bg-white/15 text-white border-white/25">🔨 Artisanat &amp; travaux</span>
+            <span class="badge badge-sm bg-white/15 text-white border-white/25">🏠 Services à domicile</span>
+          </div>
+          <h2 class="font-[family-name:Fraunces] text-3xl leading-tight">Julien Marty</h2>
+          <p class="text-white/90 font-medium">Électricien</p>
+        </div>
+      </div>
+      <div class="p-5 space-y-4">
+        <p class="text-base-content/80 leading-relaxed">Dépannage rapide, mise aux normes et installation de bornes de recharge. Intervient dans tout le quartier, dépannage sous 48 h.</p>
+        <div class="flex items-center flex-wrap justify-between gap-3 gap-y-2">
+          <div class="flex gap-2">
+            <a href="tel:0689012345" class="btn btn-circle btn-ghost w-11 h-11 min-h-11" aria-label="Appeler Julien Marty">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M4 5c0-.6.4-1 1-1h2.7c.5 0 .9.3 1 .8l.8 3.3c.1.4 0 .9-.3 1.2L7.9 10.6a12 12 0 0 0 5.5 5.5l1.3-1.3c.3-.3.8-.4 1.2-.3l3.3.8c.5.1.8.5.8 1V19c0 .6-.4 1-1 1h-1C10.5 20 4 13.5 4 6V5Z"/></svg>
+            </a>
+          </div>
+          <a href="membre.html" class="btn btn-primary btn-sm min-h-11 rounded-full">Voir le portrait →</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- CARD 6 — sophie-arnaud -->
+    <article class="relative rounded-[2rem] overflow-hidden bg-base-100 shadow-xl border border-base-300/60">
+      <div class="relative aspect-[4/5] min-h-72">
+        <img src="https://picsum.photos/seed/sophie-arnaud/600/600" alt="Portrait de Sophie Arnaud, naturopathe" class="absolute inset-0 w-full h-full object-cover" />
+        <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/15 to-transparent"></div>
+        <label class="swap absolute top-4 right-4 btn btn-circle btn-ghost w-11 h-11 min-h-11 bg-black/30 hover:bg-black/50 border-none text-white">
+          <input type="checkbox" aria-label="Ajouter Sophie Arnaud aux favoris" />
+          <svg class="swap-off w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M12 20.5s-7.5-4.6-9.8-9.4C.6 7.6 2 4 5.6 3.4c2-.3 3.7.6 4.9 2.2C11.7 4 13.4 3.1 15.4 3.4 19 4 20.4 7.6 18.8 11.1 16.5 15.9 12 20.5 12 20.5Z"/></svg>
+          <svg class="swap-on w-5 h-5 text-error" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 20.5s-7.5-4.6-9.8-9.4C.6 7.6 2 4 5.6 3.4c2-.3 3.7.6 4.9 2.2C11.7 4 13.4 3.1 15.4 3.4 19 4 20.4 7.6 18.8 11.1 16.5 15.9 12 20.5 12 20.5Z"/></svg>
+        </label>
+        <div class="absolute inset-x-0 bottom-0 p-5 text-white">
+          <div class="flex flex-wrap gap-1.5 mb-2">
+            <span class="badge badge-sm bg-white/15 text-white border-white/25">🌿 Santé &amp; bien-être</span>
+          </div>
+          <h2 class="font-[family-name:Fraunces] text-3xl leading-tight">Sophie Arnaud</h2>
+          <p class="text-white/90 font-medium">Naturopathe</p>
+        </div>
+      </div>
+      <div class="p-5 space-y-4">
+        <p class="text-base-content/80 leading-relaxed">Alimentation, digestion et fatigue chronique. Bilan complet à la première séance, puis suivi tous les mois.</p>
+        <div class="flex items-center flex-wrap justify-between gap-3 gap-y-2">
+          <div class="flex gap-2">
+            <a href="tel:0678901234" class="btn btn-circle btn-ghost w-11 h-11 min-h-11" aria-label="Appeler Sophie Arnaud">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M4 5c0-.6.4-1 1-1h2.7c.5 0 .9.3 1 .8l.8 3.3c.1.4 0 .9-.3 1.2L7.9 10.6a12 12 0 0 0 5.5 5.5l1.3-1.3c.3-.3.8-.4 1.2-.3l3.3.8c.5.1.8.5.8 1V19c0 .6-.4 1-1 1h-1C10.5 20 4 13.5 4 6V5Z"/></svg>
+            </a>
+            <a href="https://sophiearnaud-naturo.fr" class="btn btn-circle btn-ghost w-11 h-11 min-h-11" aria-label="Site de Sophie Arnaud">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="w-5 h-5"><circle cx="12" cy="12" r="9"/><path stroke-linecap="round" d="M3 12h18M12 3c2.5 2.5 3.8 5.7 3.8 9s-1.3 6.5-3.8 9c-2.5-2.5-3.8-5.7-3.8-9S9.5 5.5 12 3Z"/></svg>
+            </a>
+          </div>
+          <a href="membre.html" class="btn btn-primary btn-sm min-h-11 rounded-full">Voir le portrait →</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- CARD 7 — thomas-vidal -->
+    <article class="relative rounded-[2rem] overflow-hidden bg-base-100 shadow-xl border border-base-300/60">
+      <div class="relative aspect-[4/5] min-h-72">
+        <img src="https://picsum.photos/seed/thomas-vidal/600/600" alt="Portrait de Thomas Vidal, coach sportif" class="absolute inset-0 w-full h-full object-cover" />
+        <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/15 to-transparent"></div>
+        <label class="swap absolute top-4 right-4 btn btn-circle btn-ghost w-11 h-11 min-h-11 bg-black/30 hover:bg-black/50 border-none text-white">
+          <input type="checkbox" aria-label="Ajouter Thomas Vidal aux favoris" />
+          <svg class="swap-off w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M12 20.5s-7.5-4.6-9.8-9.4C.6 7.6 2 4 5.6 3.4c2-.3 3.7.6 4.9 2.2C11.7 4 13.4 3.1 15.4 3.4 19 4 20.4 7.6 18.8 11.1 16.5 15.9 12 20.5 12 20.5Z"/></svg>
+          <svg class="swap-on w-5 h-5 text-error" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 20.5s-7.5-4.6-9.8-9.4C.6 7.6 2 4 5.6 3.4c2-.3 3.7.6 4.9 2.2C11.7 4 13.4 3.1 15.4 3.4 19 4 20.4 7.6 18.8 11.1 16.5 15.9 12 20.5 12 20.5Z"/></svg>
+        </label>
+        <div class="absolute inset-x-0 bottom-0 p-5 text-white">
+          <div class="flex flex-wrap gap-1.5 mb-2">
+            <span class="badge badge-sm bg-white/15 text-white border-white/25">🏃 Sport &amp; mouvement</span>
+            <span class="badge badge-sm bg-white/15 text-white border-white/25">🌿 Santé &amp; bien-être</span>
+          </div>
+          <h2 class="font-[family-name:Fraunces] text-3xl leading-tight">Thomas Vidal</h2>
+          <p class="text-white/90 font-medium">Coach sportif</p>
+        </div>
+      </div>
+      <div class="p-5 space-y-4">
+        <p class="text-base-content/80 leading-relaxed">Petits groupes en extérieur, tous niveaux, y compris reprise après blessure. Premier cours d'essai offert.</p>
+        <div class="flex items-center flex-wrap justify-between gap-3 gap-y-2">
+          <div class="flex gap-2">
+            <a href="tel:0667890123" class="btn btn-circle btn-ghost w-11 h-11 min-h-11" aria-label="Appeler Thomas Vidal">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M4 5c0-.6.4-1 1-1h2.7c.5 0 .9.3 1 .8l.8 3.3c.1.4 0 .9-.3 1.2L7.9 10.6a12 12 0 0 0 5.5 5.5l1.3-1.3c.3-.3.8-.4 1.2-.3l3.3.8c.5.1.8.5.8 1V19c0 .6-.4 1-1 1h-1C10.5 20 4 13.5 4 6V5Z"/></svg>
+            </a>
+            <a href="https://vidal-coaching.fr" class="btn btn-circle btn-ghost w-11 h-11 min-h-11" aria-label="Site de Thomas Vidal">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="w-5 h-5"><circle cx="12" cy="12" r="9"/><path stroke-linecap="round" d="M3 12h18M12 3c2.5 2.5 3.8 5.7 3.8 9s-1.3 6.5-3.8 9c-2.5-2.5-3.8-5.7-3.8-9S9.5 5.5 12 3Z"/></svg>
+            </a>
+            <a href="https://instagram.com/tvidal_coach" class="btn btn-circle btn-ghost w-11 h-11 min-h-11" aria-label="Instagram de Thomas Vidal">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="w-5 h-5"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17" cy="7" r="0.8" fill="currentColor" stroke="none"/></svg>
+            </a>
+          </div>
+          <a href="membre.html" class="btn btn-primary btn-sm min-h-11 rounded-full">Voir le portrait →</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- CARD 8 — nadia-berrada -->
+    <article class="relative rounded-[2rem] overflow-hidden bg-base-100 shadow-xl border border-base-300/60">
+      <div class="relative aspect-[4/5] min-h-72">
+        <img src="https://picsum.photos/seed/nadia-berrada/600/600" alt="Portrait de Nadia Berrada, traiteur" class="absolute inset-0 w-full h-full object-cover" />
+        <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/15 to-transparent"></div>
+        <label class="swap absolute top-4 right-4 btn btn-circle btn-ghost w-11 h-11 min-h-11 bg-black/30 hover:bg-black/50 border-none text-white">
+          <input type="checkbox" aria-label="Ajouter Nadia Berrada aux favoris" />
+          <svg class="swap-off w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M12 20.5s-7.5-4.6-9.8-9.4C.6 7.6 2 4 5.6 3.4c2-.3 3.7.6 4.9 2.2C11.7 4 13.4 3.1 15.4 3.4 19 4 20.4 7.6 18.8 11.1 16.5 15.9 12 20.5 12 20.5Z"/></svg>
+          <svg class="swap-on w-5 h-5 text-error" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 20.5s-7.5-4.6-9.8-9.4C.6 7.6 2 4 5.6 3.4c2-.3 3.7.6 4.9 2.2C11.7 4 13.4 3.1 15.4 3.4 19 4 20.4 7.6 18.8 11.1 16.5 15.9 12 20.5 12 20.5Z"/></svg>
+        </label>
+        <div class="absolute inset-x-0 bottom-0 p-5 text-white">
+          <div class="flex flex-wrap gap-1.5 mb-2">
+            <span class="badge badge-sm bg-white/15 text-white border-white/25">🥖 Alimentation &amp; traiteur</span>
+          </div>
+          <h2 class="font-[family-name:Fraunces] text-3xl leading-tight">Nadia Berrada</h2>
+          <p class="text-white/90 font-medium">Traiteur — cuisine maison</p>
+        </div>
+      </div>
+      <div class="p-5 space-y-4">
+        <p class="text-base-content/80 leading-relaxed">Plats marocains à emporter et buffets pour les fêtes de quartier. Je cuisine chez moi, comme à la maison.</p>
+        <div class="flex items-center flex-wrap justify-between gap-3 gap-y-2">
+          <div class="flex gap-2">
+            <a href="tel:0656789012" class="btn btn-circle btn-ghost w-11 h-11 min-h-11" aria-label="Appeler Nadia Berrada">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M4 5c0-.6.4-1 1-1h2.7c.5 0 .9.3 1 .8l.8 3.3c.1.4 0 .9-.3 1.2L7.9 10.6a12 12 0 0 0 5.5 5.5l1.3-1.3c.3-.3.8-.4 1.2-.3l3.3.8c.5.1.8.5.8 1V19c0 .6-.4 1-1 1h-1C10.5 20 4 13.5 4 6V5Z"/></svg>
+            </a>
+            <a href="https://instagram.com/chez_nadia_ctch" class="btn btn-circle btn-ghost w-11 h-11 min-h-11" aria-label="Instagram de Nadia Berrada">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="w-5 h-5"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17" cy="7" r="0.8" fill="currentColor" stroke="none"/></svg>
+            </a>
+          </div>
+          <a href="membre.html" class="btn btn-primary btn-sm min-h-11 rounded-full">Voir le portrait →</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- CARD 9 — marc-ollivier -->
+    <article class="relative rounded-[2rem] overflow-hidden bg-base-100 shadow-xl border border-base-300/60">
+      <div class="relative aspect-[4/5] min-h-72">
+        <img src="https://picsum.photos/seed/marc-ollivier/600/600" alt="Portrait de Marc Ollivier, menuisier-ébéniste" class="absolute inset-0 w-full h-full object-cover" />
+        <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/15 to-transparent"></div>
+        <label class="swap absolute top-4 right-4 btn btn-circle btn-ghost w-11 h-11 min-h-11 bg-black/30 hover:bg-black/50 border-none text-white">
+          <input type="checkbox" aria-label="Ajouter Marc Ollivier aux favoris" />
+          <svg class="swap-off w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M12 20.5s-7.5-4.6-9.8-9.4C.6 7.6 2 4 5.6 3.4c2-.3 3.7.6 4.9 2.2C11.7 4 13.4 3.1 15.4 3.4 19 4 20.4 7.6 18.8 11.1 16.5 15.9 12 20.5 12 20.5Z"/></svg>
+          <svg class="swap-on w-5 h-5 text-error" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 20.5s-7.5-4.6-9.8-9.4C.6 7.6 2 4 5.6 3.4c2-.3 3.7.6 4.9 2.2C11.7 4 13.4 3.1 15.4 3.4 19 4 20.4 7.6 18.8 11.1 16.5 15.9 12 20.5 12 20.5Z"/></svg>
+        </label>
+        <div class="absolute inset-x-0 bottom-0 p-5 text-white">
+          <div class="flex flex-wrap gap-1.5 mb-2">
+            <span class="badge badge-sm bg-white/15 text-white border-white/25">🔨 Artisanat &amp; travaux</span>
+          </div>
+          <h2 class="font-[family-name:Fraunces] text-3xl leading-tight">Marc Ollivier</h2>
+          <p class="text-white/90 font-medium">Menuisier-ébéniste</p>
+        </div>
+      </div>
+      <div class="p-5 space-y-4">
+        <p class="text-base-content/80 leading-relaxed">Meubles sur mesure et agencement pour les petits appartements du quartier. Devis gratuit après visite.</p>
+        <div class="flex items-center flex-wrap justify-between gap-3 gap-y-2">
+          <div class="flex gap-2">
+            <a href="tel:0645678901" class="btn btn-circle btn-ghost w-11 h-11 min-h-11" aria-label="Appeler Marc Ollivier">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M4 5c0-.6.4-1 1-1h2.7c.5 0 .9.3 1 .8l.8 3.3c.1.4 0 .9-.3 1.2L7.9 10.6a12 12 0 0 0 5.5 5.5l1.3-1.3c.3-.3.8-.4 1.2-.3l3.3.8c.5.1.8.5.8 1V19c0 .6-.4 1-1 1h-1C10.5 20 4 13.5 4 6V5Z"/></svg>
+            </a>
+            <a href="https://instagram.com/atelier_ollivier" class="btn btn-circle btn-ghost w-11 h-11 min-h-11" aria-label="Instagram de Marc Ollivier">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="w-5 h-5"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17" cy="7" r="0.8" fill="currentColor" stroke="none"/></svg>
+            </a>
+          </div>
+          <a href="membre.html" class="btn btn-primary btn-sm min-h-11 rounded-full">Voir le portrait →</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- CARD 10 — lea-fontaine -->
+    <article class="relative rounded-[2rem] overflow-hidden bg-base-100 shadow-xl border border-base-300/60">
+      <div class="relative aspect-[4/5] min-h-72">
+        <img src="https://picsum.photos/seed/lea-fontaine/600/600" alt="Portrait de Léa Fontaine, graphiste et illustratrice" class="absolute inset-0 w-full h-full object-cover" />
+        <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/15 to-transparent"></div>
+        <label class="swap absolute top-4 right-4 btn btn-circle btn-ghost w-11 h-11 min-h-11 bg-black/30 hover:bg-black/50 border-none text-white">
+          <input type="checkbox" aria-label="Ajouter Léa Fontaine aux favoris" />
+          <svg class="swap-off w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M12 20.5s-7.5-4.6-9.8-9.4C.6 7.6 2 4 5.6 3.4c2-.3 3.7.6 4.9 2.2C11.7 4 13.4 3.1 15.4 3.4 19 4 20.4 7.6 18.8 11.1 16.5 15.9 12 20.5 12 20.5Z"/></svg>
+          <svg class="swap-on w-5 h-5 text-error" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 20.5s-7.5-4.6-9.8-9.4C.6 7.6 2 4 5.6 3.4c2-.3 3.7.6 4.9 2.2C11.7 4 13.4 3.1 15.4 3.4 19 4 20.4 7.6 18.8 11.1 16.5 15.9 12 20.5 12 20.5Z"/></svg>
+        </label>
+        <div class="absolute inset-x-0 bottom-0 p-5 text-white">
+          <div class="flex flex-wrap gap-1.5 mb-2">
+            <span class="badge badge-sm bg-white/15 text-white border-white/25">💻 Numérique &amp; création</span>
+            <span class="badge badge-sm bg-white/15 text-white border-white/25">🎨 Art &amp; culture</span>
+          </div>
+          <h2 class="font-[family-name:Fraunces] text-3xl leading-tight">Léa Fontaine</h2>
+          <p class="text-white/90 font-medium">Graphiste &amp; illustratrice</p>
+        </div>
+      </div>
+      <div class="p-5 space-y-4">
+        <p class="text-base-content/80 leading-relaxed">Identité visuelle, affiches et illustrations sur mesure. Beaucoup d'affiches pour les événements du quartier, dont la fête des voisins.</p>
+        <div class="flex items-center flex-wrap justify-between gap-3 gap-y-2">
+          <div class="flex gap-2">
+            <a href="tel:0634567890" class="btn btn-circle btn-ghost w-11 h-11 min-h-11" aria-label="Appeler Léa Fontaine">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M4 5c0-.6.4-1 1-1h2.7c.5 0 .9.3 1 .8l.8 3.3c.1.4 0 .9-.3 1.2L7.9 10.6a12 12 0 0 0 5.5 5.5l1.3-1.3c.3-.3.8-.4 1.2-.3l3.3.8c.5.1.8.5.8 1V19c0 .6-.4 1-1 1h-1C10.5 20 4 13.5 4 6V5Z"/></svg>
+            </a>
+            <a href="https://leafontaine-studio.fr" class="btn btn-circle btn-ghost w-11 h-11 min-h-11" aria-label="Site de Léa Fontaine">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="w-5 h-5"><circle cx="12" cy="12" r="9"/><path stroke-linecap="round" d="M3 12h18M12 3c2.5 2.5 3.8 5.7 3.8 9s-1.3 6.5-3.8 9c-2.5-2.5-3.8-5.7-3.8-9S9.5 5.5 12 3Z"/></svg>
+            </a>
+            <a href="https://instagram.com/lea_dessine" class="btn btn-circle btn-ghost w-11 h-11 min-h-11" aria-label="Instagram de Léa Fontaine">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="w-5 h-5"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17" cy="7" r="0.8" fill="currentColor" stroke="none"/></svg>
+            </a>
+          </div>
+          <a href="membre.html" class="btn btn-primary btn-sm min-h-11 rounded-full">Voir le portrait →</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- CARD 11 — yanis-belhadj -->
+    <article class="relative rounded-[2rem] overflow-hidden bg-base-100 shadow-xl border border-base-300/60">
+      <div class="relative aspect-[4/5] min-h-72">
+        <img src="https://picsum.photos/seed/yanis-belhadj/600/600" alt="Portrait de Yanis Belhadj, développeur web indépendant" class="absolute inset-0 w-full h-full object-cover" />
+        <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/15 to-transparent"></div>
+        <label class="swap absolute top-4 right-4 btn btn-circle btn-ghost w-11 h-11 min-h-11 bg-black/30 hover:bg-black/50 border-none text-white">
+          <input type="checkbox" aria-label="Ajouter Yanis Belhadj aux favoris" />
+          <svg class="swap-off w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M12 20.5s-7.5-4.6-9.8-9.4C.6 7.6 2 4 5.6 3.4c2-.3 3.7.6 4.9 2.2C11.7 4 13.4 3.1 15.4 3.4 19 4 20.4 7.6 18.8 11.1 16.5 15.9 12 20.5 12 20.5Z"/></svg>
+          <svg class="swap-on w-5 h-5 text-error" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 20.5s-7.5-4.6-9.8-9.4C.6 7.6 2 4 5.6 3.4c2-.3 3.7.6 4.9 2.2C11.7 4 13.4 3.1 15.4 3.4 19 4 20.4 7.6 18.8 11.1 16.5 15.9 12 20.5 12 20.5Z"/></svg>
+        </label>
+        <div class="absolute inset-x-0 bottom-0 p-5 text-white">
+          <div class="flex flex-wrap gap-1.5 mb-2">
+            <span class="badge badge-sm bg-white/15 text-white border-white/25">💻 Numérique &amp; création</span>
+            <span class="badge badge-sm bg-white/15 text-white border-white/25">📊 Conseil &amp; entreprise</span>
+          </div>
+          <h2 class="font-[family-name:Fraunces] text-3xl leading-tight">Yanis Belhadj</h2>
+          <p class="text-white/90 font-medium">Développeur web indépendant</p>
+        </div>
+      </div>
+      <div class="p-5 space-y-4">
+        <p class="text-base-content/80 leading-relaxed">Sites vitrines et boutiques en ligne pour les commerces et associations du quartier. Simples, rapides, faciles à mettre à jour soi-même.</p>
+        <div class="flex items-center flex-wrap justify-between gap-3 gap-y-2">
+          <div class="flex gap-2">
+            <a href="tel:0623456789" class="btn btn-circle btn-ghost w-11 h-11 min-h-11" aria-label="Appeler Yanis Belhadj">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M4 5c0-.6.4-1 1-1h2.7c.5 0 .9.3 1 .8l.8 3.3c.1.4 0 .9-.3 1.2L7.9 10.6a12 12 0 0 0 5.5 5.5l1.3-1.3c.3-.3.8-.4 1.2-.3l3.3.8c.5.1.8.5.8 1V19c0 .6-.4 1-1 1h-1C10.5 20 4 13.5 4 6V5Z"/></svg>
+            </a>
+            <a href="https://yanisbelhadj.fr" class="btn btn-circle btn-ghost w-11 h-11 min-h-11" aria-label="Site de Yanis Belhadj">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="w-5 h-5"><circle cx="12" cy="12" r="9"/><path stroke-linecap="round" d="M3 12h18M12 3c2.5 2.5 3.8 5.7 3.8 9s-1.3 6.5-3.8 9c-2.5-2.5-3.8-5.7-3.8-9S9.5 5.5 12 3Z"/></svg>
+            </a>
+          </div>
+          <a href="membre.html" class="btn btn-primary btn-sm min-h-11 rounded-full">Voir le portrait →</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- CARD 12 — camille-roussel -->
+    <article class="relative rounded-[2rem] overflow-hidden bg-base-100 shadow-xl border border-base-300/60">
+      <div class="relative aspect-[4/5] min-h-72">
+        <img src="https://picsum.photos/seed/camille-roussel/600/600" alt="Portrait de Camille Roussel, sophrologue" class="absolute inset-0 w-full h-full object-cover" />
+        <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/15 to-transparent"></div>
+        <label class="swap absolute top-4 right-4 btn btn-circle btn-ghost w-11 h-11 min-h-11 bg-black/30 hover:bg-black/50 border-none text-white">
+          <input type="checkbox" aria-label="Ajouter Camille Roussel aux favoris" />
+          <svg class="swap-off w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M12 20.5s-7.5-4.6-9.8-9.4C.6 7.6 2 4 5.6 3.4c2-.3 3.7.6 4.9 2.2C11.7 4 13.4 3.1 15.4 3.4 19 4 20.4 7.6 18.8 11.1 16.5 15.9 12 20.5 12 20.5Z"/></svg>
+          <svg class="swap-on w-5 h-5 text-error" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 20.5s-7.5-4.6-9.8-9.4C.6 7.6 2 4 5.6 3.4c2-.3 3.7.6 4.9 2.2C11.7 4 13.4 3.1 15.4 3.4 19 4 20.4 7.6 18.8 11.1 16.5 15.9 12 20.5 12 20.5Z"/></svg>
+        </label>
+        <div class="absolute inset-x-0 bottom-0 p-5 text-white">
+          <div class="flex flex-wrap gap-1.5 mb-2">
+            <span class="badge badge-sm bg-white/15 text-white border-white/25">🌿 Santé &amp; bien-être</span>
+          </div>
+          <h2 class="font-[family-name:Fraunces] text-3xl leading-tight">Camille Roussel</h2>
+          <p class="text-white/90 font-medium">Sophrologue</p>
+        </div>
+      </div>
+      <div class="p-5 space-y-4">
+        <p class="text-base-content/80 leading-relaxed">Gestion du stress, sommeil et préparation aux examens, en cabinet ou en visio. Installée à la Cartoucherie depuis 2022.</p>
+        <div class="flex items-center flex-wrap justify-between gap-3 gap-y-2">
+          <div class="flex gap-2">
+            <a href="tel:0612345678" class="btn btn-circle btn-ghost w-11 h-11 min-h-11" aria-label="Appeler Camille Roussel">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M4 5c0-.6.4-1 1-1h2.7c.5 0 .9.3 1 .8l.8 3.3c.1.4 0 .9-.3 1.2L7.9 10.6a12 12 0 0 0 5.5 5.5l1.3-1.3c.3-.3.8-.4 1.2-.3l3.3.8c.5.1.8.5.8 1V19c0 .6-.4 1-1 1h-1C10.5 20 4 13.5 4 6V5Z"/></svg>
+            </a>
+            <a href="https://camille-sophrologie.fr" class="btn btn-circle btn-ghost w-11 h-11 min-h-11" aria-label="Site de Camille Roussel">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="w-5 h-5"><circle cx="12" cy="12" r="9"/><path stroke-linecap="round" d="M3 12h18M12 3c2.5 2.5 3.8 5.7 3.8 9s-1.3 6.5-3.8 9c-2.5-2.5-3.8-5.7-3.8-9S9.5 5.5 12 3Z"/></svg>
+            </a>
+            <a href="https://instagram.com/camille_sophro_ctch" class="btn btn-circle btn-ghost w-11 h-11 min-h-11" aria-label="Instagram de Camille Roussel">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="w-5 h-5"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17" cy="7" r="0.8" fill="currentColor" stroke="none"/></svg>
+            </a>
+          </div>
+          <a href="membre.html" class="btn btn-primary btn-sm min-h-11 rounded-full">Voir le portrait →</a>
+        </div>
+      </div>
+    </article>
+
+    <div class="pt-2 pb-2 text-center space-y-2">
+      <p class="text-sm text-base-content/60">C'est tout pour l'instant — 12 portraits sur 12.</p>
+      <a href="annuaire.html" class="btn btn-outline btn-primary min-h-11 rounded-full">Voir en grille, filtrer par métier →</a>
+    </div>
+
+  </main>
+
+  <!-- ===== Mobile dock ===== -->
+  <div class="dock md:hidden">
+    <a href="index.html" class="dock-active">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M4 11.5 12 4l8 7.5M6 10v9a1 1 0 0 0 1 1h3v-5.5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1V20h3a1 1 0 0 0 1-1v-9"/></svg>
+      <span class="dock-label">Accueil</span>
+    </a>
+    <a href="annuaire.html">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="w-5 h-5"><rect x="3.5" y="3.5" width="7" height="7" rx="1.3"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.3"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.3"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.3"/></svg>
+      <span class="dock-label">Annuaire</span>
+    </a>
+    <a href="carte.html">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 21s7-6.5 7-12a7 7 0 1 0-14 0c0 5.5 7 12 7 12Z"/><circle cx="12" cy="9" r="2.3"/></svg>
+      <span class="dock-label">Carte</span>
+    </a>
+  </div>
+
+  <!-- ===== Footer ===== -->
+  <footer class="footer sm:footer-horizontal bg-base-200 text-base-content p-10 border-t border-base-300 pb-28 md:pb-10">
+    <nav>
+      <h6 class="footer-title">La Cartoucherie</h6>
+      <a class="link link-hover" href="#">À propos</a>
+      <a class="link link-hover" href="#">Confidentialité</a>
+      <a class="link link-hover" href="#">Mentions légales</a>
+      <a class="link link-hover" href="#">Avis : comment ça marche</a>
+    </nav>
+    <nav>
+      <h6 class="footer-title">Le quartier</h6>
+      <span class="text-sm opacity-70">Toulouse 31300</span>
+      <span class="text-sm opacity-70">Portraits par Sandra Carole</span>
+    </nav>
+  </footer>
+
+</body>
+</html>

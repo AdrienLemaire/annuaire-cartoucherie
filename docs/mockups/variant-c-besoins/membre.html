@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="fr" data-theme="autumn">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Camille Roussel — Cartoucherie</title>
+  <meta name="description" content="Camille Roussel, sophrologue à la Cartoucherie : contact, avis et rendez-vous." />
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@5/themes.css" rel="stylesheet" type="text/css" />
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body class="min-h-screen bg-base-200">
+  <div class="drawer">
+    <input id="nav-drawer" type="checkbox" class="drawer-toggle" />
+    <div class="drawer-content min-h-screen flex flex-col bg-base-200">
+
+      <!-- Sticky chrome: navbar + current-category context -->
+      <div class="sticky top-0 z-30 bg-base-100 border-b border-base-300">
+        <div class="navbar px-2">
+          <div class="navbar-start">
+            <label for="nav-drawer" class="btn btn-ghost btn-lg min-h-11 px-3" aria-label="Ouvrir les catégories">
+              <span class="text-2xl leading-none">☰</span>
+            </label>
+          </div>
+          <div class="navbar-center">
+            <a href="index.html" class="btn btn-ghost min-h-11 text-lg font-['Baloo_2'] font-bold normal-case gap-1">
+              <span aria-hidden="true">📍</span> Cartoucherie
+            </a>
+          </div>
+          <div class="navbar-end">
+            <a href="carte.html" class="btn btn-ghost btn-circle btn-lg min-h-11" aria-label="Voir la carte du quartier">
+              <span class="text-2xl" aria-hidden="true">🗺️</span>
+            </a>
+          </div>
+        </div>
+        <div class="px-4 py-2 flex items-center border-t border-base-300 bg-primary/10">
+          <a href="annuaire.html#sante-bien-etre" class="flex items-center gap-2 min-h-11 text-base font-semibold link link-hover">
+            <span aria-hidden="true">←</span><span aria-hidden="true">🌿</span> Retour à Santé &amp; bien-être (4)
+          </a>
+        </div>
+      </div>
+
+      <!-- Main -->
+      <main class="flex-1 px-4 pt-4 pb-10 max-w-2xl w-full mx-auto">
+
+        <div class="relative">
+          <img src="https://picsum.photos/seed/camille-roussel/600/600" alt="Portrait de Camille Roussel" class="w-full aspect-square object-cover rounded-box" />
+          <label class="swap swap-rotate btn btn-circle btn-lg min-h-11 bg-base-100/90 border border-base-300 shadow absolute top-3 right-3">
+            <input type="checkbox" aria-label="Ajouter Camille Roussel à mes favoris" />
+            <span class="swap-on text-2xl" aria-hidden="true">❤️</span>
+            <span class="swap-off text-2xl" aria-hidden="true">🤍</span>
+          </label>
+        </div>
+
+        <div class="mt-4">
+          <h1 class="font-['Baloo_2'] font-extrabold text-3xl leading-tight">Camille Roussel</h1>
+          <p class="text-lg text-primary font-semibold mt-1">Sophrologue</p>
+          <p class="text-base text-base-content/80 mt-2">Gestion du stress, sommeil et préparation aux examens, en cabinet ou en visio.</p>
+          <div class="flex flex-wrap gap-2 mt-3">
+            <a href="annuaire.html#sante-bien-etre" class="badge badge-outline badge-primary badge-lg py-3">🌿 Santé &amp; bien-être</a>
+          </div>
+        </div>
+
+        <!-- Primary contact actions -->
+        <div class="grid grid-cols-2 gap-3 mt-5">
+          <a href="tel:0612345678" class="btn btn-primary btn-lg min-h-11 gap-2">📞 Appeler</a>
+          <a href="mailto:camille.roussel@example.fr" class="btn btn-outline btn-primary btn-lg min-h-11 gap-2">✉️ Écrire</a>
+          <a href="https://camille-sophrologie.fr" target="_blank" rel="noopener" class="btn btn-outline btn-lg min-h-11 gap-2">🌐 Site</a>
+          <a href="https://instagram.com/camille_sophro_ctch" target="_blank" rel="noopener" class="btn btn-outline btn-lg min-h-11 gap-2">📸 Instagram</a>
+        </div>
+
+        <!-- Address -->
+        <div class="mt-6 flex items-start gap-3 bg-base-100 rounded-box p-4 border border-base-300">
+          <span class="text-2xl" aria-hidden="true">📍</span>
+          <div>
+            <p class="text-base">14 rue Paul Mesplé, 31300 Toulouse</p>
+            <p class="text-base text-base-content/70 mt-0.5">à 120 m de vous · <a href="carte.html#camille-roussel" class="link link-primary">voir sur la carte</a></p>
+          </div>
+        </div>
+
+        <!-- Bio -->
+        <h2 class="font-['Baloo_2'] font-bold text-xl mt-7 mb-2">À propos</h2>
+        <p class="text-base leading-relaxed">Installée à la Cartoucherie depuis 2022, j'accompagne adultes et adolescents sur le stress, le sommeil et la confiance en soi. Séances individuelles d'une heure, et un atelier collectif le samedi matin à la Halle.</p>
+
+        <!-- Services -->
+        <h2 class="font-['Baloo_2'] font-bold text-xl mt-7 mb-2">Services</h2>
+        <div class="flex flex-wrap gap-2">
+          <span class="badge badge-lg py-3">Séance individuelle</span>
+          <span class="badge badge-lg py-3">Atelier collectif</span>
+          <span class="badge badge-lg py-3">Visio</span>
+        </div>
+
+        <!-- Reviews -->
+        <h2 class="font-['Baloo_2'] font-bold text-xl mt-8 mb-3">Avis</h2>
+        <div class="flex items-center gap-3 mb-4 flex-wrap">
+          <span class="text-4xl font-bold leading-none">4,8</span>
+          <div>
+            <p class="text-warning text-xl leading-none" aria-hidden="true">★★★★★</p>
+            <p class="text-base text-base-content/70">12 avis</p>
+          </div>
+          <button type="button" class="btn btn-outline btn-lg min-h-11 ml-auto" onclick="review_dialog.showModal()">Laisser un avis</button>
+        </div>
+        <ul class="flex flex-col gap-3">
+          <li class="bg-base-100 rounded-box p-4 border border-base-300">
+            <div class="flex items-center justify-between gap-2">
+              <p class="font-semibold text-base">Hélène M.</p>
+              <p class="text-warning" aria-label="5 étoiles sur 5">★★★★★</p>
+            </div>
+            <p class="text-sm text-base-content/60 mb-1">12 août 2026</p>
+            <p class="text-base">Trois séances et je dors enfin. Camille explique très bien, on n'a jamais l'impression de perdre son temps. Et c'est à deux pas de chez moi.</p>
+          </li>
+          <li class="bg-base-100 rounded-box p-4 border border-base-300">
+            <div class="flex items-center justify-between gap-2">
+              <p class="font-semibold text-base">Damien L.</p>
+              <p class="text-warning" aria-label="5 étoiles sur 5">★★★★★</p>
+            </div>
+            <p class="text-sm text-base-content/60 mb-1">3 juillet 2026</p>
+            <p class="text-base">J'y suis allé pour le stress au travail. Accueil très simple, aucun jargon. Je recommande sans réserve.</p>
+          </li>
+          <li class="bg-base-100 rounded-box p-4 border border-base-300">
+            <div class="flex items-center justify-between gap-2">
+              <p class="font-semibold text-base">Fatou D.</p>
+              <p class="text-warning" aria-label="4 étoiles sur 5">★★★★☆</p>
+            </div>
+            <p class="text-sm text-base-content/60 mb-1">18 juin 2026</p>
+            <p class="text-base">Très bien pour l'atelier du samedi. Un peu difficile d'obtenir un créneau en semaine, c'est le seul bémol.</p>
+          </li>
+        </ul>
+
+        <!-- QR code -->
+        <h2 class="font-['Baloo_2'] font-bold text-xl mt-8 mb-2">Votre fiche, imprimable</h2>
+        <div class="bg-base-100 rounded-box p-4 border border-base-300 flex items-center gap-4 flex-wrap">
+          <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://annuaire-cartoucherie.fr/membre/camille-roussel" alt="QR code vers la fiche de Camille Roussel" class="w-24 h-24 rounded-box border border-base-300" />
+          <div class="flex-1 min-w-[10rem]">
+            <p class="text-base text-base-content/80 mb-2">À coller sur votre comptoir ou vos cartes de visite.</p>
+            <a href="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://annuaire-cartoucherie.fr/membre/camille-roussel" download="qr-camille-roussel.png" class="btn btn-outline btn-lg min-h-11">⬇️ Télécharger le QR code</a>
+          </div>
+        </div>
+
+        <!-- Correction -->
+        <p class="text-center mt-8">
+          <a href="mailto:contact@cartoucherie-annuaire.fr?subject=Correction%20fiche%20Camille%20Roussel" class="link link-hover text-base text-base-content/60">Cette fiche n'est pas correcte ? Signalez-le à l'association</a>
+        </p>
+      </main>
+
+      <!-- Footer -->
+      <footer class="footer sm:footer-horizontal bg-base-100 text-base-content border-t border-base-300 p-8 mt-auto">
+        <nav>
+          <h6 class="footer-title">Cartoucherie</h6>
+          <a class="link link-hover" href="#">À propos</a>
+          <a class="link link-hover" href="#">Confidentialité</a>
+          <a class="link link-hover" href="#">Mentions légales</a>
+          <a class="link link-hover" href="#">Avis : comment ça marche</a>
+        </nav>
+        <nav>
+          <h6 class="footer-title">Explorer</h6>
+          <a class="link link-hover" href="index.html">Accueil</a>
+          <a class="link link-hover" href="annuaire.html#all">L'annuaire complet</a>
+          <a class="link link-hover" href="carte.html">La carte du quartier</a>
+        </nav>
+        <p class="text-sm text-base-content/60 basis-full">Fait avec 🧡 par et pour le quartier de la Cartoucherie, Toulouse.</p>
+      </footer>
+    </div>
+
+    <!-- Drawer: categories as primary navigation -->
+    <div class="drawer-side z-40">
+      <label for="nav-drawer" aria-label="Fermer le menu" class="drawer-overlay"></label>
+      <div class="menu bg-base-100 min-h-full w-80 max-w-[85vw] p-4 gap-1">
+        <p class="font-['Baloo_2'] font-bold text-xl px-2 pb-2">📍 Cartoucherie</p>
+        <ul class="menu-vertical gap-1">
+          <li><a href="index.html" class="min-h-11 text-base">🏠 Je cherche… (accueil)</a></li>
+          <li><a href="annuaire.html#all" class="min-h-11 text-base">📖 Tout l'annuaire <span class="badge badge-sm ml-auto">12</span></a></li>
+          <li><a href="carte.html" class="min-h-11 text-base">🗺️ Carte du quartier</a></li>
+          <li class="menu-title mt-2 text-base">Parcourir par besoin</li>
+          <li><a href="annuaire.html#sante-bien-etre" class="min-h-11 text-base menu-active">🌿 Santé &amp; bien-être <span class="badge badge-sm ml-auto">4</span></a></li>
+          <li><a href="annuaire.html#beaute-soins" class="min-h-11 text-base">✂️ Beauté &amp; soins <span class="badge badge-sm ml-auto">1</span></a></li>
+          <li><a href="annuaire.html#artisanat-travaux" class="min-h-11 text-base">🔨 Artisanat &amp; travaux <span class="badge badge-sm ml-auto">2</span></a></li>
+          <li><a href="annuaire.html#alimentation-traiteur" class="min-h-11 text-base">🥖 Alimentation &amp; traiteur <span class="badge badge-sm ml-auto">1</span></a></li>
+          <li><a href="annuaire.html#conseil-entreprise" class="min-h-11 text-base">📊 Conseil &amp; entreprise <span class="badge badge-sm ml-auto">2</span></a></li>
+          <li><a href="annuaire.html#numerique-creation" class="min-h-11 text-base">💻 Numérique &amp; création <span class="badge badge-sm ml-auto">3</span></a></li>
+          <li><a href="annuaire.html#enfance-education" class="min-h-11 text-base">🎒 Enfance &amp; éducation <span class="badge badge-sm badge-ghost ml-auto">0</span></a></li>
+          <li><a href="annuaire.html#sport-mouvement" class="min-h-11 text-base">🏃 Sport &amp; mouvement <span class="badge badge-sm ml-auto">2</span></a></li>
+          <li><a href="annuaire.html#art-culture" class="min-h-11 text-base">🎨 Art &amp; culture <span class="badge badge-sm ml-auto">2</span></a></li>
+          <li><a href="annuaire.html#services-domicile" class="min-h-11 text-base">🏠 Services à domicile <span class="badge badge-sm ml-auto">2</span></a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sign-in dialog: magic link or passkey, only required to review -->
+  <dialog id="review_dialog" class="modal">
+    <div class="modal-box">
+      <h3 class="font-['Baloo_2'] font-bold text-xl">Se connecter pour laisser un avis</h3>
+      <p class="text-base text-base-content/70 mt-1 mb-4">Aucun compte n'est nécessaire pour parcourir l'annuaire — seulement pour donner votre avis.</p>
+      <div class="flex flex-col gap-3">
+        <div>
+          <label for="magic-email" class="label text-base">Recevoir un lien magique par email</label>
+          <div class="join w-full">
+            <input id="magic-email" type="email" required placeholder="vous@exemple.fr" class="input input-bordered join-item w-full min-h-11 text-base" />
+            <button type="button" class="btn btn-primary join-item min-h-11">Envoyer</button>
+          </div>
+        </div>
+        <div class="divider text-base-content/60">ou</div>
+        <button type="button" class="btn btn-outline btn-lg min-h-11">🔑 Utiliser ma clé d'accès (passkey)</button>
+      </div>
+      <div class="modal-action">
+        <form method="dialog"><button class="btn btn-lg min-h-11">Fermer</button></form>
+      </div>
+    </div>
+    <form method="dialog" class="modal-backdrop"><button>Fermer</button></form>
+  </dialog>
+</body>
+</html>

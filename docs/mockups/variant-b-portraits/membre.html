@@ -1,0 +1,295 @@
+<!doctype html>
+<html lang="fr" data-theme="autumn">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Camille Roussel — Sophrologue — La Cartoucherie</title>
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@5/themes.css" rel="stylesheet" type="text/css" />
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,340;0,9..144,560;0,9..144,650;1,9..144,500&display=swap" rel="stylesheet" />
+</head>
+<body class="min-h-screen bg-base-200 text-base-content">
+
+  <!-- ===== Header ===== -->
+  <header class="navbar bg-base-100/90 backdrop-blur-md border-b border-base-300 sticky top-0 z-40 px-4 sm:px-6">
+    <div class="navbar-start">
+      <a href="index.html" class="flex items-baseline gap-2">
+        <span class="font-[family-name:Fraunces] font-semibold text-2xl text-primary">Cartoucherie</span>
+        <span class="hidden sm:inline text-xs uppercase tracking-[0.2em] text-base-content/50">portraits du quartier</span>
+      </a>
+    </div>
+    <div class="navbar-center hidden md:flex">
+      <ul class="menu menu-horizontal gap-1 text-sm">
+        <li><a href="index.html">Accueil</a></li>
+        <li><a href="annuaire.html">Annuaire</a></li>
+        <li><a href="carte.html">Carte</a></li>
+      </ul>
+    </div>
+    <div class="navbar-end">
+      <button class="btn btn-ghost btn-circle w-11 h-11 min-h-11" onclick="modalRecherche.showModal()" aria-label="Rechercher un commerce">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="w-5 h-5"><circle cx="11" cy="11" r="7"/><path stroke-linecap="round" d="m21 21-4.3-4.3"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <dialog id="modalRecherche" class="modal modal-top sm:modal-middle">
+    <div class="modal-box">
+      <h3 class="font-[family-name:Fraunces] text-xl">Chercher un portrait</h3>
+      <form action="annuaire.html" method="get" class="flex gap-2 mt-3">
+        <label class="input w-full">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="w-5 h-5 opacity-60"><circle cx="11" cy="11" r="7"/><path stroke-linecap="round" d="m21 21-4.3-4.3"/></svg>
+          <input type="search" name="q" placeholder="ex. électricien, yoga, comptable…" aria-label="Recherche" />
+        </label>
+        <button type="submit" class="btn btn-primary min-h-11">OK</button>
+      </form>
+      <div class="modal-action"><form method="dialog"><button class="btn btn-ghost btn-sm min-h-11">Fermer</button></form></div>
+    </div>
+    <form method="dialog" class="modal-backdrop"><button>fermer</button></form>
+  </dialog>
+
+  <main class="max-w-lg mx-auto pb-28 md:pb-16">
+
+    <!-- Breadcrumb -->
+    <div class="breadcrumbs text-xs px-4 pt-4 text-base-content/60">
+      <ul>
+        <li><a href="index.html">Accueil</a></li>
+        <li><a href="annuaire.html">Annuaire</a></li>
+        <li>Camille Roussel</li>
+      </ul>
+    </div>
+
+    <!-- ===== The full portrait ===== -->
+    <div class="relative mt-2">
+      <div class="relative aspect-[3/4] sm:rounded-b-[2.5rem] overflow-hidden">
+        <img src="https://picsum.photos/seed/camille-roussel/600/600" alt="Portrait de Camille Roussel, sophrologue, dans son cabinet à la Cartoucherie" class="absolute inset-0 w-full h-full object-cover" />
+        <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/10 to-transparent"></div>
+
+        <label class="swap absolute top-4 right-4 btn btn-circle btn-ghost w-12 h-12 min-h-12 bg-black/30 hover:bg-black/50 border-none text-white">
+          <input type="checkbox" aria-label="Ajouter Camille Roussel à mes favoris" />
+          <svg class="swap-off w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M12 20.5s-7.5-4.6-9.8-9.4C.6 7.6 2 4 5.6 3.4c2-.3 3.7.6 4.9 2.2C11.7 4 13.4 3.1 15.4 3.4 19 4 20.4 7.6 18.8 11.1 16.5 15.9 12 20.5 12 20.5Z"/></svg>
+          <svg class="swap-on w-6 h-6 text-error" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 20.5s-7.5-4.6-9.8-9.4C.6 7.6 2 4 5.6 3.4c2-.3 3.7.6 4.9 2.2C11.7 4 13.4 3.1 15.4 3.4 19 4 20.4 7.6 18.8 11.1 16.5 15.9 12 20.5 12 20.5Z"/></svg>
+        </label>
+
+        <div class="absolute inset-x-0 bottom-0 p-5 text-white">
+          <div class="flex flex-wrap gap-1.5 mb-2">
+            <span class="badge badge-sm bg-white/15 text-white border-white/25">🌿 Santé &amp; bien-être</span>
+          </div>
+          <h1 class="font-[family-name:Fraunces] text-4xl leading-tight">Camille Roussel</h1>
+          <p class="text-white/90 font-medium text-lg">Sophrologue</p>
+          <div class="flex items-center gap-1.5 mt-1.5 text-sm text-white/90">
+            <div class="rating rating-xs rating-half pointer-events-none">
+              <div class="mask mask-star-2 bg-orange-400 mask-half-1"></div><div class="mask mask-star-2 bg-orange-400 mask-half-2"></div>
+              <div class="mask mask-star-2 bg-orange-400 mask-half-1"></div><div class="mask mask-star-2 bg-orange-400 mask-half-2"></div>
+              <div class="mask mask-star-2 bg-orange-400 mask-half-1"></div><div class="mask mask-star-2 bg-orange-400 mask-half-2"></div>
+              <div class="mask mask-star-2 bg-orange-400 mask-half-1"></div><div class="mask mask-star-2 bg-orange-400 mask-half-2"></div>
+              <div class="mask mask-star-2 bg-orange-400 mask-half-1"></div><div class="mask mask-star-2 bg-orange-400 mask-half-2 bg-white/30"></div>
+            </div>
+            <span>4,8 · 12 avis</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="px-4 space-y-6 pt-5">
+
+      <!-- Tagline, like an Instagram caption -->
+      <p class="font-[family-name:Fraunces] italic text-xl leading-snug text-primary">« Gestion du stress, sommeil et préparation aux examens, en cabinet ou en visio. »</p>
+
+      <!-- Primary contact actions — thumb-reachable, real tel:/mailto: links -->
+      <div class="grid grid-cols-2 gap-3">
+        <a href="tel:0612345678" class="btn btn-primary min-h-11 justify-start gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="w-5 h-5 shrink-0"><path stroke-linecap="round" stroke-linejoin="round" d="M4 5c0-.6.4-1 1-1h2.7c.5 0 .9.3 1 .8l.8 3.3c.1.4 0 .9-.3 1.2L7.9 10.6a12 12 0 0 0 5.5 5.5l1.3-1.3c.3-.3.8-.4 1.2-.3l3.3.8c.5.1.8.5.8 1V19c0 .6-.4 1-1 1h-1C10.5 20 4 13.5 4 6V5Z"/></svg>
+          <span class="truncate">06 12 34 56 78</span>
+        </a>
+        <a href="mailto:camille.roussel@example.fr" class="btn btn-outline min-h-11 justify-start gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="w-5 h-5 shrink-0"><rect x="3" y="5" width="18" height="14" rx="2"/><path stroke-linecap="round" stroke-linejoin="round" d="m4 7 8 6 8-6"/></svg>
+          <span class="truncate">E-mail</span>
+        </a>
+        <a href="https://camille-sophrologie.fr" class="btn btn-outline min-h-11 justify-start gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="w-5 h-5 shrink-0"><circle cx="12" cy="12" r="9"/><path stroke-linecap="round" d="M3 12h18M12 3c2.5 2.5 3.8 5.7 3.8 9s-1.3 6.5-3.8 9c-2.5-2.5-3.8-5.7-3.8-9S9.5 5.5 12 3Z"/></svg>
+          <span class="truncate">Site web</span>
+        </a>
+        <a href="https://instagram.com/camille_sophro_ctch" class="btn btn-outline min-h-11 justify-start gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="w-5 h-5 shrink-0"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17" cy="7" r="0.8" fill="currentColor" stroke="none"/></svg>
+          <span class="truncate">Instagram</span>
+        </a>
+      </div>
+
+      <!-- Full bio -->
+      <div class="space-y-2">
+        <h2 class="font-[family-name:Fraunces] text-xl">Son portrait</h2>
+        <p class="leading-relaxed text-base-content/85">Installée à la Cartoucherie depuis 2022, j'accompagne adultes et adolescents sur le stress, le sommeil et la confiance en soi. Séances individuelles d'une heure, et un atelier collectif le samedi matin à la Halle.</p>
+      </div>
+
+      <!-- Services -->
+      <div class="space-y-2">
+        <h2 class="font-[family-name:Fraunces] text-xl">Ce qu'elle propose</h2>
+        <ul class="flex flex-wrap gap-2">
+          <li class="badge badge-lg badge-outline">Séance individuelle</li>
+          <li class="badge badge-lg badge-outline">Atelier collectif</li>
+          <li class="badge badge-lg badge-outline">Visio</li>
+        </ul>
+      </div>
+
+      <!-- Address / area served -->
+      <div class="flex items-start gap-3 rounded-2xl bg-base-100 border border-base-300/70 p-4">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="w-5 h-5 mt-0.5 shrink-0 text-primary"><path stroke-linecap="round" stroke-linejoin="round" d="M12 21s7-6.5 7-12a7 7 0 1 0-14 0c0 5.5 7 12 7 12Z"/><circle cx="12" cy="9" r="2.3"/></svg>
+        <div class="flex-1">
+          <p class="font-medium">14 rue Paul Mesplé, 31300 Toulouse</p>
+          <p class="text-sm text-base-content/60">À 120 m de la Halle</p>
+        </div>
+        <a href="carte.html" class="btn btn-ghost btn-sm min-h-11 self-center">Voir la carte</a>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- Reviews -->
+      <div class="space-y-4">
+        <div class="flex items-center justify-between">
+          <div>
+            <h2 class="font-[family-name:Fraunces] text-xl">Avis du quartier</h2>
+            <p class="text-sm text-base-content/60">4,8 sur 5 · 12 avis</p>
+          </div>
+          <button class="btn btn-primary btn-sm min-h-11 rounded-full" onclick="modalAvis.showModal()">Laisser un avis</button>
+        </div>
+
+        <ul class="space-y-3">
+          <li class="rounded-2xl bg-base-100 border border-base-300/70 p-4">
+            <div class="flex items-center justify-between">
+              <p class="font-medium">Hélène M.</p>
+              <p class="text-xs text-base-content/50">12 août 2026</p>
+            </div>
+            <div class="rating rating-xs pointer-events-none my-1">
+              <div class="mask mask-star-2 bg-orange-400"></div><div class="mask mask-star-2 bg-orange-400"></div><div class="mask mask-star-2 bg-orange-400"></div><div class="mask mask-star-2 bg-orange-400"></div><div class="mask mask-star-2 bg-orange-400"></div>
+            </div>
+            <p class="text-sm text-base-content/80 leading-relaxed">Trois séances et je dors enfin. Camille explique très bien, on n'a jamais l'impression de perdre son temps. Et c'est à deux pas de chez moi.</p>
+          </li>
+          <li class="rounded-2xl bg-base-100 border border-base-300/70 p-4">
+            <div class="flex items-center justify-between">
+              <p class="font-medium">Damien L.</p>
+              <p class="text-xs text-base-content/50">3 juillet 2026</p>
+            </div>
+            <div class="rating rating-xs pointer-events-none my-1">
+              <div class="mask mask-star-2 bg-orange-400"></div><div class="mask mask-star-2 bg-orange-400"></div><div class="mask mask-star-2 bg-orange-400"></div><div class="mask mask-star-2 bg-orange-400"></div><div class="mask mask-star-2 bg-orange-400"></div>
+            </div>
+            <p class="text-sm text-base-content/80 leading-relaxed">J'y suis allé pour le stress au travail. Accueil très simple, aucun jargon. Je recommande sans réserve.</p>
+          </li>
+          <li class="rounded-2xl bg-base-100 border border-base-300/70 p-4">
+            <div class="flex items-center justify-between">
+              <p class="font-medium">Fatou D.</p>
+              <p class="text-xs text-base-content/50">18 juin 2026</p>
+            </div>
+            <div class="rating rating-xs pointer-events-none my-1">
+              <div class="mask mask-star-2 bg-orange-400"></div><div class="mask mask-star-2 bg-orange-400"></div><div class="mask mask-star-2 bg-orange-400"></div><div class="mask mask-star-2 bg-orange-400"></div><div class="mask mask-star-2 bg-base-300"></div>
+            </div>
+            <p class="text-sm text-base-content/80 leading-relaxed">Très bien pour l'atelier du samedi. Un peu difficile d'obtenir un créneau en semaine, c'est le seul bémol.</p>
+          </li>
+        </ul>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- QR code download -->
+      <div class="rounded-2xl bg-base-100 border border-base-300/70 p-4 flex items-center gap-4">
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https%3A%2F%2Flacartoucherie.fr%2Fmembre%2Fcamille-roussel" alt="QR code vers la fiche de Camille Roussel" class="w-20 h-20 rounded-lg border border-base-300" />
+        <div class="flex-1">
+          <p class="font-medium">Votre fiche, sur votre comptoir</p>
+          <p class="text-sm text-base-content/60">Un QR à imprimer pour vos clients.</p>
+        </div>
+        <a href="https://api.qrserver.com/v1/create-qr-code/?size=600x600&data=https%3A%2F%2Flacartoucherie.fr%2Fmembre%2Fcamille-roussel" download class="btn btn-ghost btn-circle w-11 h-11 min-h-11" aria-label="Télécharger le QR code">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v13m0 0-4-4m4 4 4-4M5 21h14"/></svg>
+        </a>
+      </div>
+
+      <!-- Related members strip — the atom, mini variant -->
+      <div class="space-y-2">
+        <h2 class="font-[family-name:Fraunces] text-xl">D'autres portraits du quartier</h2>
+        <div class="carousel carousel-center gap-3 -mx-4 px-4">
+          <a href="membre.html" class="carousel-item w-36 rounded-2xl overflow-hidden border border-base-300/70 bg-base-100">
+            <div class="aspect-square"><img src="https://picsum.photos/seed/thomas-vidal/300/300" alt="Portrait de Thomas Vidal" class="w-full h-full object-cover" /></div>
+            <div class="p-2"><p class="text-sm font-medium truncate">Thomas Vidal</p><p class="text-xs text-base-content/60 truncate">Coach sportif</p></div>
+          </a>
+          <a href="membre.html" class="carousel-item w-36 rounded-2xl overflow-hidden border border-base-300/70 bg-base-100">
+            <div class="aspect-square"><img src="https://picsum.photos/seed/sophie-arnaud/300/300" alt="Portrait de Sophie Arnaud" class="w-full h-full object-cover" /></div>
+            <div class="p-2"><p class="text-sm font-medium truncate">Sophie Arnaud</p><p class="text-xs text-base-content/60 truncate">Naturopathe</p></div>
+          </a>
+          <a href="membre.html" class="carousel-item w-36 rounded-2xl overflow-hidden border border-base-300/70 bg-base-100">
+            <div class="aspect-square"><img src="https://picsum.photos/seed/ines-lacombe/300/300" alt="Portrait d'Inès Lacombe" class="w-full h-full object-cover" /></div>
+            <div class="p-2"><p class="text-sm font-medium truncate">Inès Lacombe</p><p class="text-xs text-base-content/60 truncate">Prof. de yoga</p></div>
+          </a>
+        </div>
+      </div>
+
+      <!-- Discreet correction link -->
+      <p class="text-center pt-2">
+        <a href="mailto:contact@lacartoucherie-assos.fr?subject=Correction%20fiche%20Camille%20Roussel" class="link link-hover text-xs text-base-content/50">Cette fiche n'est pas correcte ?</a>
+      </p>
+    </div>
+  </main>
+
+  <!-- ===== Sign-in dialog for reviews (per spec §7) ===== -->
+  <dialog id="modalAvis" class="modal modal-bottom sm:modal-middle">
+    <div class="modal-box">
+      <h3 class="font-[family-name:Fraunces] text-2xl">Laisser un avis</h3>
+      <p class="text-sm text-base-content/70 mt-1">Pas besoin de mot de passe. Choisissez comment vous identifier :</p>
+
+      <form class="mt-4" onsubmit="event.preventDefault();">
+        <fieldset class="fieldset">
+          <legend class="fieldset-legend">Lien magique par e-mail</legend>
+          <label class="input w-full">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="w-5 h-5 opacity-60"><rect x="3" y="5" width="18" height="14" rx="2"/><path stroke-linecap="round" stroke-linejoin="round" d="m4 7 8 6 8-6"/></svg>
+            <input type="email" required placeholder="vous@exemple.fr" aria-label="Adresse e-mail" />
+          </label>
+          <button type="submit" class="btn btn-primary w-full mt-3 min-h-11">Recevoir le lien magique</button>
+        </fieldset>
+      </form>
+
+      <div class="divider text-xs text-base-content/50">ou</div>
+
+      <button class="btn btn-outline w-full min-h-11">🔑 Continuer avec une clé d'accès (passkey)</button>
+
+      <p class="text-xs text-base-content/50 mt-4">Aucun compte n'est nécessaire pour parcourir l'annuaire — seulement pour écrire un avis.</p>
+
+      <div class="modal-action">
+        <form method="dialog"><button class="btn btn-ghost min-h-11">Annuler</button></form>
+      </div>
+    </div>
+    <form method="dialog" class="modal-backdrop"><button>fermer</button></form>
+  </dialog>
+
+  <!-- ===== Mobile dock ===== -->
+  <div class="dock md:hidden">
+    <a href="index.html">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M4 11.5 12 4l8 7.5M6 10v9a1 1 0 0 0 1 1h3v-5.5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1V20h3a1 1 0 0 0 1-1v-9"/></svg>
+      <span class="dock-label">Accueil</span>
+    </a>
+    <a href="annuaire.html" class="dock-active">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="w-5 h-5"><rect x="3.5" y="3.5" width="7" height="7" rx="1.3"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.3"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.3"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.3"/></svg>
+      <span class="dock-label">Annuaire</span>
+    </a>
+    <a href="carte.html">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 21s7-6.5 7-12a7 7 0 1 0-14 0c0 5.5 7 12 7 12Z"/><circle cx="12" cy="9" r="2.3"/></svg>
+      <span class="dock-label">Carte</span>
+    </a>
+  </div>
+
+  <!-- ===== Footer ===== -->
+  <footer class="footer sm:footer-horizontal bg-base-200 text-base-content p-10 border-t border-base-300 pb-28 md:pb-10">
+    <nav>
+      <h6 class="footer-title">La Cartoucherie</h6>
+      <a class="link link-hover" href="#">À propos</a>
+      <a class="link link-hover" href="#">Confidentialité</a>
+      <a class="link link-hover" href="#">Mentions légales</a>
+      <a class="link link-hover" href="#">Avis : comment ça marche</a>
+    </nav>
+    <nav>
+      <h6 class="footer-title">Le quartier</h6>
+      <span class="text-sm opacity-70">Toulouse 31300</span>
+      <span class="text-sm opacity-70">Portraits par Sandra Carole</span>
+    </nav>
+  </footer>
+
+</body>
+</html>

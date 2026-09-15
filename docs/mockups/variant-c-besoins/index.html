@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="fr" data-theme="autumn">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cartoucherie — Je cherche…</title>
+  <meta name="description" content="L'annuaire des artisans, commerçants et indépendants de la Cartoucherie à Toulouse, classé par besoin." />
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@5/themes.css" rel="stylesheet" type="text/css" />
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body class="min-h-screen bg-base-200">
+  <div class="drawer">
+    <input id="nav-drawer" type="checkbox" class="drawer-toggle" />
+    <div class="drawer-content min-h-screen flex flex-col bg-base-200">
+
+      <!-- Navbar -->
+      <div class="navbar bg-base-100 border-b border-base-300 sticky top-0 z-30 px-2">
+        <div class="navbar-start">
+          <label for="nav-drawer" class="btn btn-ghost btn-lg min-h-11 px-3" aria-label="Ouvrir les catégories">
+            <span class="text-2xl leading-none">☰</span>
+          </label>
+        </div>
+        <div class="navbar-center">
+          <a href="index.html" class="btn btn-ghost min-h-11 text-lg font-['Baloo_2'] font-bold normal-case gap-1">
+            <span aria-hidden="true">📍</span> Cartoucherie
+          </a>
+        </div>
+        <div class="navbar-end">
+          <a href="carte.html" class="btn btn-ghost btn-circle btn-lg min-h-11" aria-label="Voir la carte du quartier">
+            <span class="text-2xl" aria-hidden="true">🗺️</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Main -->
+      <main class="flex-1 px-4 pt-6 pb-10 max-w-2xl w-full mx-auto">
+        <p class="text-sm font-semibold uppercase tracking-wide text-primary mb-1">La Cartoucherie · Toulouse</p>
+        <h1 class="font-['Baloo_2'] font-extrabold text-4xl leading-tight text-base-content mb-2">Je cherche…</h1>
+        <p class="text-lg text-base-content/80 mb-6 max-w-md">Touchez ce qui vous correspond. Pas besoin de connaître le bon mot — on s'occupe de le retrouver.</p>
+
+        <h2 class="sr-only">Catégories de besoins</h2>
+        <div class="grid grid-cols-2 gap-3">
+
+          <a href="annuaire.html#sante-bien-etre" class="card bg-base-100 border-2 border-base-300 hover:border-primary active:scale-[0.98] transition rounded-box p-4 min-h-40 flex flex-col shadow-sm">
+            <span class="text-3xl mb-1" aria-hidden="true">🌿</span>
+            <span class="font-['Baloo_2'] font-bold text-lg leading-snug text-base-content">Retrouver l'équilibre : stress, sommeil, énergie</span>
+            <span class="mt-auto pt-2 flex flex-col items-start gap-1.5">
+              <span class="text-base text-base-content/80">Santé &amp; bien-être</span>
+              <span class="badge badge-primary badge-lg">4 membres</span>
+            </span>
+          </a>
+
+          <a href="annuaire.html#artisanat-travaux" class="card bg-base-100 border-2 border-base-300 hover:border-primary active:scale-[0.98] transition rounded-box p-4 min-h-40 flex flex-col shadow-sm">
+            <span class="text-3xl mb-1" aria-hidden="true">🔨</span>
+            <span class="font-['Baloo_2'] font-bold text-lg leading-snug text-base-content">Réparer, construire, installer chez moi</span>
+            <span class="mt-auto pt-2 flex flex-col items-start gap-1.5">
+              <span class="text-base text-base-content/80">Artisanat &amp; travaux</span>
+              <span class="badge badge-primary badge-lg">2 membres</span>
+            </span>
+          </a>
+
+          <a href="annuaire.html#numerique-creation" class="card bg-base-100 border-2 border-base-300 hover:border-primary active:scale-[0.98] transition rounded-box p-4 min-h-40 flex flex-col shadow-sm">
+            <span class="text-3xl mb-1" aria-hidden="true">💻</span>
+            <span class="font-['Baloo_2'] font-bold text-lg leading-snug text-base-content">Un site, un logo, une image de moi</span>
+            <span class="mt-auto pt-2 flex flex-col items-start gap-1.5">
+              <span class="text-base text-base-content/80">Numérique &amp; création</span>
+              <span class="badge badge-primary badge-lg">3 membres</span>
+            </span>
+          </a>
+
+          <a href="annuaire.html#sport-mouvement" class="card bg-base-100 border-2 border-base-300 hover:border-primary active:scale-[0.98] transition rounded-box p-4 min-h-40 flex flex-col shadow-sm">
+            <span class="text-3xl mb-1" aria-hidden="true">🏃</span>
+            <span class="font-['Baloo_2'] font-bold text-lg leading-snug text-base-content">Bouger, me remettre en forme</span>
+            <span class="mt-auto pt-2 flex flex-col items-start gap-1.5">
+              <span class="text-base text-base-content/80">Sport &amp; mouvement</span>
+              <span class="badge badge-primary badge-lg">2 membres</span>
+            </span>
+          </a>
+
+          <a href="annuaire.html#services-domicile" class="card bg-base-100 border-2 border-base-300 hover:border-primary active:scale-[0.98] transition rounded-box p-4 min-h-40 flex flex-col shadow-sm">
+            <span class="text-3xl mb-1" aria-hidden="true">🏠</span>
+            <span class="font-['Baloo_2'] font-bold text-lg leading-snug text-base-content">Un coup de main chez moi</span>
+            <span class="mt-auto pt-2 flex flex-col items-start gap-1.5">
+              <span class="text-base text-base-content/80">Services à domicile</span>
+              <span class="badge badge-primary badge-lg">2 membres</span>
+            </span>
+          </a>
+
+          <a href="annuaire.html#conseil-entreprise" class="card bg-base-100 border-2 border-base-300 hover:border-primary active:scale-[0.98] transition rounded-box p-4 min-h-40 flex flex-col shadow-sm">
+            <span class="text-3xl mb-1" aria-hidden="true">📊</span>
+            <span class="font-['Baloo_2'] font-bold text-lg leading-snug text-base-content">Monter ou faire tourner mon activité</span>
+            <span class="mt-auto pt-2 flex flex-col items-start gap-1.5">
+              <span class="text-base text-base-content/80">Conseil &amp; entreprise</span>
+              <span class="badge badge-primary badge-lg">2 membres</span>
+            </span>
+          </a>
+
+          <a href="annuaire.html#art-culture" class="card bg-base-100 border-2 border-base-300 hover:border-primary active:scale-[0.98] transition rounded-box p-4 min-h-40 flex flex-col shadow-sm">
+            <span class="text-3xl mb-1" aria-hidden="true">🎨</span>
+            <span class="font-['Baloo_2'] font-bold text-lg leading-snug text-base-content">Un souvenir en photo, une envie de créer</span>
+            <span class="mt-auto pt-2 flex flex-col items-start gap-1.5">
+              <span class="text-base text-base-content/80">Art &amp; culture</span>
+              <span class="badge badge-primary badge-lg">2 membres</span>
+            </span>
+          </a>
+
+          <a href="annuaire.html#beaute-soins" class="card bg-base-100 border-2 border-base-300 hover:border-primary active:scale-[0.98] transition rounded-box p-4 min-h-40 flex flex-col shadow-sm">
+            <span class="text-3xl mb-1" aria-hidden="true">✂️</span>
+            <span class="font-['Baloo_2'] font-bold text-lg leading-snug text-base-content">Prendre soin de moi : coiffure, soins</span>
+            <span class="mt-auto pt-2 flex flex-col items-start gap-1.5">
+              <span class="text-base text-base-content/80">Beauté &amp; soins</span>
+              <span class="badge badge-primary badge-lg">1 membre</span>
+            </span>
+          </a>
+
+          <a href="annuaire.html#alimentation-traiteur" class="card bg-base-100 border-2 border-base-300 hover:border-primary active:scale-[0.98] transition rounded-box p-4 min-h-40 flex flex-col shadow-sm">
+            <span class="text-3xl mb-1" aria-hidden="true">🥖</span>
+            <span class="font-['Baloo_2'] font-bold text-lg leading-snug text-base-content">Manger bon sans cuisiner ce soir</span>
+            <span class="mt-auto pt-2 flex flex-col items-start gap-1.5">
+              <span class="text-base text-base-content/80">Alimentation &amp; traiteur</span>
+              <span class="badge badge-primary badge-lg">1 membre</span>
+            </span>
+          </a>
+
+          <a href="annuaire.html#enfance-education" class="card bg-base-100 border-2 border-dashed border-base-300 hover:border-primary active:scale-[0.98] transition rounded-box p-4 min-h-40 flex flex-col shadow-sm opacity-90">
+            <span class="text-3xl mb-1" aria-hidden="true">🎒</span>
+            <span class="font-['Baloo_2'] font-bold text-lg leading-snug text-base-content">S'occuper des enfants, apprendre</span>
+            <span class="mt-auto pt-2 flex flex-col items-start gap-1.5">
+              <span class="text-base text-base-content/80">Enfance &amp; éducation</span>
+              <span class="badge badge-ghost badge-lg">bientôt</span>
+            </span>
+          </a>
+
+        </div>
+
+        <details class="mt-8 rounded-box bg-base-100 border border-base-300">
+          <summary class="btn btn-ghost btn-lg min-h-12 w-full justify-start gap-2 text-base font-normal normal-case">
+            <span aria-hidden="true">🔎</span> Vous connaissez déjà le nom ou le métier ?
+          </summary>
+          <form action="annuaire.html" method="get" class="p-4 pt-1 flex flex-col gap-3">
+            <label for="q" class="label text-base-content/70">Recherche directe dans l'annuaire</label>
+            <div class="join">
+              <input id="q" name="q" type="search" placeholder="ex : Camille, sophrologue, électricien…" class="input input-bordered join-item w-full min-h-11 text-base" />
+              <button type="submit" class="btn btn-neutral join-item min-h-11">Chercher</button>
+            </div>
+          </form>
+        </details>
+
+        <p class="text-center mt-8">
+          <a href="annuaire.html#all" class="link link-primary text-base font-semibold">Ou parcourir les 12 membres, sans filtre →</a>
+        </p>
+      </main>
+
+      <!-- Footer -->
+      <footer class="footer sm:footer-horizontal bg-base-100 text-base-content border-t border-base-300 p-8 mt-auto">
+        <nav>
+          <h6 class="footer-title">Cartoucherie</h6>
+          <a class="link link-hover" href="#">À propos</a>
+          <a class="link link-hover" href="#">Confidentialité</a>
+          <a class="link link-hover" href="#">Mentions légales</a>
+          <a class="link link-hover" href="#">Avis : comment ça marche</a>
+        </nav>
+        <nav>
+          <h6 class="footer-title">Explorer</h6>
+          <a class="link link-hover" href="annuaire.html#all">L'annuaire complet</a>
+          <a class="link link-hover" href="carte.html">La carte du quartier</a>
+        </nav>
+        <p class="text-sm text-base-content/60 basis-full">Fait avec 🧡 par et pour le quartier de la Cartoucherie, Toulouse.</p>
+      </footer>
+    </div>
+
+    <!-- Drawer: categories as primary navigation -->
+    <div class="drawer-side z-40">
+      <label for="nav-drawer" aria-label="Fermer le menu" class="drawer-overlay"></label>
+      <div class="menu bg-base-100 min-h-full w-80 max-w-[85vw] p-4 gap-1">
+        <p class="font-['Baloo_2'] font-bold text-xl px-2 pb-2">📍 Cartoucherie</p>
+        <ul class="menu-vertical gap-1">
+          <li><a href="index.html" class="min-h-11 text-base font-semibold">🏠 Je cherche… (accueil)</a></li>
+          <li><a href="annuaire.html#all" class="min-h-11 text-base">📖 Tout l'annuaire <span class="badge badge-sm ml-auto">12</span></a></li>
+          <li><a href="carte.html" class="min-h-11 text-base">🗺️ Carte du quartier</a></li>
+          <li class="menu-title mt-2 text-base">Parcourir par besoin</li>
+          <li><a href="annuaire.html#sante-bien-etre" class="min-h-11 text-base">🌿 Santé &amp; bien-être <span class="badge badge-sm ml-auto">4</span></a></li>
+          <li><a href="annuaire.html#beaute-soins" class="min-h-11 text-base">✂️ Beauté &amp; soins <span class="badge badge-sm ml-auto">1</span></a></li>
+          <li><a href="annuaire.html#artisanat-travaux" class="min-h-11 text-base">🔨 Artisanat &amp; travaux <span class="badge badge-sm ml-auto">2</span></a></li>
+          <li><a href="annuaire.html#alimentation-traiteur" class="min-h-11 text-base">🥖 Alimentation &amp; traiteur <span class="badge badge-sm ml-auto">1</span></a></li>
+          <li><a href="annuaire.html#conseil-entreprise" class="min-h-11 text-base">📊 Conseil &amp; entreprise <span class="badge badge-sm ml-auto">2</span></a></li>
+          <li><a href="annuaire.html#numerique-creation" class="min-h-11 text-base">💻 Numérique &amp; création <span class="badge badge-sm ml-auto">3</span></a></li>
+          <li><a href="annuaire.html#enfance-education" class="min-h-11 text-base">🎒 Enfance &amp; éducation <span class="badge badge-sm badge-ghost ml-auto">0</span></a></li>
+          <li><a href="annuaire.html#sport-mouvement" class="min-h-11 text-base">🏃 Sport &amp; mouvement <span class="badge badge-sm ml-auto">2</span></a></li>
+          <li><a href="annuaire.html#art-culture" class="min-h-11 text-base">🎨 Art &amp; culture <span class="badge badge-sm ml-auto">2</span></a></li>
+          <li><a href="annuaire.html#services-domicile" class="min-h-11 text-base">🏠 Services à domicile <span class="badge badge-sm ml-auto">2</span></a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
