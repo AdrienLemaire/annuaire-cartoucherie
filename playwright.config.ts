@@ -6,10 +6,19 @@ import { defineConfig, devices } from "@playwright/test";
 const MATRIX = process.env.MATRIX === "1";
 const LAYOUT_SPECS = /(landing|profile|carte|a11y)\.spec\.ts$/;
 
+// Playwright's own Chromium download does not link on NixOS (no FHS /usr/lib for
+// its shared libraries). CI installs the real thing via `playwright install
+// --with-deps` and is unaffected; a NixOS developer instead exports
+// PLAYWRIGHT_CHROMIUM_PATH to point at the system browser (see CLAUDE.md).
+const CHROMIUM_PATH = process.env.PLAYWRIGHT_CHROMIUM_PATH;
+
 export default defineConfig({
   testDir: "tests/e2e",
   retries: 0,          // flaky tests are deleted, never retried or quarantined
-  use: { baseURL: "http://localhost:4321" },
+  use: {
+    baseURL: "http://localhost:4321",
+    ...(CHROMIUM_PATH ? { launchOptions: { executablePath: CHROMIUM_PATH } } : {}),
+  },
   // No local server when the target is production: the smoke job checks out and
   // runs `playwright test tests/e2e/production.spec.ts` with no dist/ to serve,
   // and an unconditional webServer aborts the run before the skip guard fires.

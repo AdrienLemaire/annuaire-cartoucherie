@@ -84,6 +84,6 @@ npm run dev          # Astro dev server
 npm run build        # static build to dist/
 npm run lint         # eslint + tsc + astro check + no-barrels + jscpd
 npm test             # Vitest units
-npm run test:e2e     # Playwright
+npm run test:e2e     # Playwright — on NixOS: export PLAYWRIGHT_CHROMIUM_PATH=$(command -v google-chrome-stable) first
 npm run budgets      # byte budgets over dist/ (~2 s)
 ```
