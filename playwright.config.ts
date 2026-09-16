@@ -24,7 +24,18 @@ export default defineConfig({
   // and an unconditional webServer aborts the run before the skip guard fires.
   webServer: process.env.URL_PROD
     ? undefined
-    : { command: "npx astro preview --port 4321", port: 4321, reuseExistingServer: true },
+    : {
+        command: "npx astro preview --port 4321",
+        port: 4321,
+        reuseExistingServer: true,
+        // Astro detects a coding agent driving the terminal and auto-detaches
+        // `preview` into a background daemon, which makes Playwright see the
+        // launched process exit immediately ("Process from config.webServer
+        // exited early."). Despite its name, setting this to any non-empty
+        // value SUPPRESSES that auto-detach and keeps preview in the
+        // foreground, which is what webServer needs.
+        env: { ASTRO_PREVIEW_BACKGROUND: "1" },
+      },
   projects: [
     { name: "Galaxy S9+", use: { ...devices["Galaxy S9+"] } },
     ...(MATRIX
