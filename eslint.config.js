@@ -29,6 +29,13 @@ export default [
     },
   },
 
+  {
+    files: ["scripts/**/*.mjs"],
+    languageOptions: {
+      globals: { console: "readonly", process: "readonly", Buffer: "readonly" },
+    },
+  },
+
   // Layering: lib -> components -> layouts -> pages, one direction only.
   {
     files: ["src/lib/**/*.ts"],
