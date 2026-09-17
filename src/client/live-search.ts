@@ -43,9 +43,16 @@ if (input && results) {
     results.innerHTML = "";
 
     if (query.trim().length > 0 && found.length === 0) {
+      // Same two class lists as annuaire.astro's own [data-empty-for] block
+      // (its categoryNobody/searchSuggest pair) — already emitted by that
+      // page, so reusing them here adds no CSS, and the suggest link keeps
+      // its 44px tap target instead of rendering as a bare default link.
       const empty = document.createElement("p");
+      empty.className = "text-corps text-teal-950";
       empty.textContent = COPY.searchEmpty;
       const suggest = document.createElement("a");
+      suggest.className =
+        "mt-3 inline-flex min-h-[44px] items-center font-semibold text-teal-800 underline decoration-teal-400 underline-offset-4";
       suggest.href = `mailto:${COPY.contactEmail}`;
       suggest.textContent = COPY.searchSuggest;
       results.append(empty, suggest);
