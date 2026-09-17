@@ -6,12 +6,16 @@
     "node": ">=22"
   },
   "scripts": {
+    "predev": "node scripts/sync-content.mjs",
     "dev": "astro dev",
+    "prebuild": "node scripts/sync-content.mjs",
     "build": "astro build",
     "preview": "astro preview --port 4321",
+    "pretest": "node scripts/sync-content.mjs",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:e2e": "playwright test",
+    "prelint": "node scripts/sync-content.mjs",
     "lint": "astro check && eslint . && tsc --noEmit && test -z \"$(find src -name index.ts)\" && jscpd src",
     "guard": "node scripts/forbidden.mjs",
     "budgets": "node scripts/budgets.mjs",

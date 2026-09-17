@@ -1,0 +1,123 @@
+{
+  "categories": [
+    {
+      "slug": "sante-bien-etre",
+      "nom": "Santé & bien-être",
+      "besoin": "Retrouver l'équilibre",
+      "motsCles": [
+        "stress",
+        "sommeil",
+        "énergie",
+        "équilibre",
+        "fatigue",
+        "détente"
+      ]
+    },
+    {
+      "slug": "beaute-soins",
+      "nom": "Beauté & soins",
+      "besoin": "Prendre soin de moi",
+      "motsCles": [
+        "coiffure",
+        "couleur",
+        "soins",
+        "beauté"
+      ]
+    },
+    {
+      "slug": "artisanat-travaux",
+      "nom": "Artisanat & travaux",
+      "besoin": "Réparer, installer chez moi",
+      "motsCles": [
+        "travaux",
+        "dépannage",
+        "réparation",
+        "meuble",
+        "électricité",
+        "bricolage"
+      ]
+    },
+    {
+      "slug": "alimentation-traiteur",
+      "nom": "Alimentation & traiteur",
+      "besoin": "Manger bon sans cuisiner ce soir",
+      "motsCles": [
+        "traiteur",
+        "plats à emporter",
+        "cuisine",
+        "buffet"
+      ]
+    },
+    {
+      "slug": "conseil-entreprise",
+      "nom": "Conseil & entreprise",
+      "besoin": "Faire tourner mon activité",
+      "motsCles": [
+        "comptabilité",
+        "conseil",
+        "gestion",
+        "entreprise",
+        "association"
+      ]
+    },
+    {
+      "slug": "numerique-creation",
+      "nom": "Numérique & création",
+      "besoin": "Un site, un logo, une image",
+      "motsCles": [
+        "web",
+        "site",
+        "graphisme",
+        "logo",
+        "photo",
+        "internet"
+      ]
+    },
+    {
+      "slug": "enfance-education",
+      "nom": "Enfance & éducation",
+      "besoin": "S'occuper des enfants, apprendre",
+      "motsCles": [
+        "enfants",
+        "soutien scolaire",
+        "éducation",
+        "garde"
+      ]
+    },
+    {
+      "slug": "sport-mouvement",
+      "nom": "Sport & mouvement",
+      "besoin": "Me remettre en mouvement",
+      "motsCles": [
+        "coaching",
+        "yoga",
+        "sport",
+        "forme",
+        "souplesse"
+      ]
+    },
+    {
+      "slug": "art-culture",
+      "nom": "Art & culture",
+      "besoin": "Un souvenir, une envie de créer",
+      "motsCles": [
+        "photo",
+        "illustration",
+        "art",
+        "portrait",
+        "dessin"
+      ]
+    },
+    {
+      "slug": "services-domicile",
+      "nom": "Services à domicile",
+      "besoin": "Un coup de main chez moi",
+      "motsCles": [
+        "à domicile",
+        "dépannage",
+        "ménage",
+        "aide"
+      ]
+    }
+  ]
+}
