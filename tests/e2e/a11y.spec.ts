@@ -3,7 +3,18 @@ import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "@playwright/test";
 import { feminine } from "./fixture";
 
-const PAGES = ["/", "/annuaire", `/membre/${feminine.slug}`, "/carte", "/categorie/sante-bien-etre"];
+// A nonexistent slug, not the literal "/404": a real visitor never types that
+// path, they land on one that doesn't exist (a stale printed QR, a mistyped
+// share link), and this is what actually exercises the not-found route
+// rather than a page that happens to also be reachable directly.
+const PAGES = [
+  "/",
+  "/annuaire",
+  `/membre/${feminine.slug}`,
+  "/carte",
+  "/categorie/sante-bien-etre",
+  "/ce-slug-n-existe-pas",
+];
 
 for (const path of PAGES) {
   test(`${path} has no serious or critical axe violation`, async ({ page }) => {
