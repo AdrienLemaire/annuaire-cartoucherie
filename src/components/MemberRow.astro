@@ -1,12 +1,18 @@
 ---
 // src/components/MemberRow.astro
-// Styleguide block 12 ("la carte-portrait"), list-row specimen: the dense
-// variant for a search results list. The row's own link covers the portrait,
-// name and trade; the category chips sit outside that link — as real routes,
-// which the styleguide's row specimen shipped without — so no link nests
-// inside another.
+// Composition authority for the list row: docs/mockups/final/annuaire.html
+// lines 402-425 (Camille Roussel's row) — not styleguide.html block 12's own
+// row specimen, which matches no row that exists in the approved design. A
+// stretched link (before:absolute before:inset-0, positioned against the
+// portrait+info wrapper's own `relative`) covers the portrait, name, trade,
+// rating and distance; the chips and the call chip sit in a footer bar below,
+// outside that link, so no link nests inside another.
 import CategoryChip from "./CategoryChip.astro";
+import Icon from "./Icon.astro";
 import { COPY } from "../lib/copy";
+import { agree } from "../lib/gender";
+import { formatNote, hasAddress } from "../lib/members";
+import { formatTelDisplay, formatTelHref } from "../lib/phone";
 import type { Category, Member } from "../content/schemas";
 
 interface Props {
@@ -15,10 +21,13 @@ interface Props {
 }
 const { member, categories = [] } = Astro.props;
 const chips = categories.filter((c) => member.categories.includes(c.slug));
+const fixed = hasAddress(member);
+const telHref = member.tel ? formatTelHref(member.tel) : null;
+const telDisplay = member.tel ? formatTelDisplay(member.tel) : null;
 ---
 
-<div class="carte rounded-box bg-white p-3 shadow-carte">
-  <a href={`/membre/${member.slug}`} class="flex items-center gap-3">
+<article class="carte carte-lien rounded-[20px] bg-white overflow-hidden">
+  <div class="relative flex min-h-[152px]">
     <img
       src={`/portraits/${member.photo}`}
       alt={COPY.portraitAlt(member.nom)}
@@ -26,20 +35,59 @@ const chips = categories.filter((c) => member.categories.includes(c.slug));
       height="128"
       loading="lazy"
       decoding="async"
-      class="size-[72px] shrink-0 rounded-box object-cover"
+      class="w-[116px] shrink-0 self-stretch object-cover"
     />
-    <span class="min-w-0">
-      <span class="ff block text-nom text-teal-900">{member.nom}</span>
-      <span class="block text-corps text-neutre-700">{member.metier}</span>
-    </span>
-  </a>
+    <div class="flex-1 min-w-0 py-4 px-4 flex flex-col justify-center gap-1">
+      <h3 class="ff text-[20px] leading-tight text-teal-900">
+        <a href={`/membre/${member.slug}`} class="before:absolute before:inset-0 before:content-['']">
+          {member.nom}
+        </a>
+      </h3>
+      <p class="text-corps text-neutre-800 leading-snug">{member.metier}</p>
+      <p class="flex flex-wrap items-center gap-x-3 gap-y-1 text-[16px] text-neutre-700 mt-0.5">
+        <span class="inline-flex items-center gap-1">
+          <Icon name="etoile" class="w-4 h-4 text-sable-700" />
+          {formatNote(member.note)}
+          <span class="sr-only"> {COPY.ratingOutOf}</span> <span class="text-neutre-600">({member.nbAvis})</span>
+        </span>
+        {
+          fixed ? (
+            <span class="inline-flex items-center gap-1">
+              <Icon name="pin" class="w-4 h-4 text-teal-600" />
+              {member.distance}
+            </span>
+          ) : (
+            <span class="inline-flex items-center gap-1 font-semibold text-teal-800">
+              {COPY.comesToYou(agree(member.genre, "elle"))}
+            </span>
+          )
+        }
+      </p>
+    </div>
+  </div>
   {
-    chips.length > 0 && (
-      <div class="mt-2 flex flex-wrap gap-2">
-        {chips.map((c) => (
-          <CategoryChip slug={c.slug} nom={c.nom} />
-        ))}
+    (chips.length > 0 || telHref) && (
+      <div class="relative z-10 flex flex-wrap items-center gap-x-2 gap-y-1 border-t border-neutre-200 bg-neutre-100 px-2.5 py-1.5">
+        {chips.length > 0 && (
+          <ul class="flex flex-wrap items-center gap-x-2 gap-y-1 list-none m-0 p-0">
+            {chips.map((c) => (
+              <li>
+                <CategoryChip slug={c.slug} nom={c.nom} />
+              </li>
+            ))}
+          </ul>
+        )}
+        {telHref && telDisplay && (
+          <a
+            href={`tel:${telHref}`}
+            class="ml-auto inline-flex items-center gap-2 min-h-[44px] px-3.5 rounded-full text-[16px] font-semibold text-teal-700 bg-teal-50 hover:bg-teal-100"
+            aria-label={COPY.callAria(member.nom, telDisplay)}
+          >
+            <Icon name="tel" class="w-5 h-5 shrink-0" />
+            {COPY.profileCall}
+          </a>
+        )}
       </div>
     )
   }
-</div>
+</article>

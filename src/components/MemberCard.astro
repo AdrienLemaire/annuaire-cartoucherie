@@ -1,12 +1,15 @@
 ---
 // src/components/MemberCard.astro — frontmatter binds, it does not compute.
-// Styleguide block 12 ("la carte-portrait"), full-card specimen: a grid tile
-// for the directory and a category page. One tap target — the whole card —
-// so it carries no chips (a chip inside a link is a link inside a link) and
-// no call button.
+// Styleguide block 12 ("la carte-portrait"): the full-card specimen (lines
+// 1114-1143, fixed/rectangle, with the star rating and the accroche) and the
+// disc specimen (lines 1085-1112, itinerant, on .colly-fond with a white
+// ring) — a grid tile for the directory and a category page. One tap
+// target — the whole card, wrapped in a single <a> — so it carries no chips
+// (a chip inside a link is a link inside a link) and no call button.
+import Icon from "./Icon.astro";
 import { COPY } from "../lib/copy";
 import { agree } from "../lib/gender";
-import { hasAddress } from "../lib/members";
+import { formatNote, hasAddress } from "../lib/members";
 import type { Member } from "../content/schemas";
 
 interface Props {
@@ -15,23 +18,62 @@ interface Props {
 }
 const { member, priority = false } = Astro.props;
 const fixed = hasAddress(member);
+const alt = COPY.portraitAlt(member.nom);
+const eager = priority ? "eager" : "lazy";
 ---
 
-<a href={`/membre/${member.slug}`} class="carte-lien block">
-  <article class="carte rounded-box bg-white p-4 shadow-carte">
-    <img
-      src={`/portraits/${member.photo}`}
-      alt={COPY.portraitAlt(member.nom)}
-      width="128"
-      height="128"
-      loading={priority ? "eager" : "lazy"}
-      decoding="async"
-      class={fixed ? "w-full max-w-[176px] rounded-box object-cover" : "size-[112px] rounded-full object-cover"}
-    />
-    <h3 class="ff mt-3 text-nom text-teal-900">{member.nom}</h3>
-    <p class="text-corps text-neutre-700">{member.metier}</p>
-    <p class="mt-1 text-[16px] text-neutre-600">
-      {fixed ? member.distance : COPY.comesToYou(agree(member.genre, "elle"))}
-    </p>
-  </article>
+<a href={`/membre/${member.slug}`} class="carte-lien block max-w-[176px]">
+  {
+    fixed ? (
+      <article class="carte rounded-box bg-white overflow-hidden">
+        <img
+          src={`/portraits/${member.photo}`}
+          alt={alt}
+          width="128"
+          height="128"
+          loading={eager}
+          decoding="async"
+          class="w-full h-[190px] object-cover"
+        />
+        <div class="p-4">
+          <h3 class="ff mt-2.5 text-[25px] leading-[1.05] text-teal-900">{member.nom}</h3>
+          <p class="mt-1 text-corps font-semibold text-neutre-900">{member.metier}</p>
+          <p class="mt-1.5 text-[16px] leading-snug text-neutre-700">{member.accroche}</p>
+          <p class="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1 text-[16px] text-neutre-700">
+            <span class="inline-flex items-center gap-1">
+              <Icon name="etoile" class="w-4 h-4 text-sable-700" />
+              {formatNote(member.note)}
+              <span class="sr-only"> {COPY.ratingOutOf}</span> <span class="text-neutre-600">({member.nbAvis})</span>
+            </span>
+            <span class="inline-flex items-center gap-1">
+              <Icon name="pin" class="w-4 h-4 text-teal-600" />
+              {member.distance}
+            </span>
+          </p>
+        </div>
+      </article>
+    ) : (
+      <article class="carte colly-fond flex flex-col items-center rounded-box px-4 py-5 text-center">
+        <img
+          src={`/portraits/${member.photo}`}
+          alt={alt}
+          width="128"
+          height="128"
+          loading={eager}
+          decoding="async"
+          class="w-[124px] h-[124px] rounded-full object-cover shadow-carte"
+          style="box-shadow: 0 0 0 3px #fff, var(--shadow-carte);"
+        />
+        <h3 class="ff mt-3.5 text-[21px] leading-tight text-teal-900">{member.nom}</h3>
+        <p class="mt-0.5 text-corps text-neutre-900">{member.metier}</p>
+        <p class="mt-1.5 text-[16px] leading-snug text-neutre-700">{member.accroche}</p>
+        <p class="mt-2 text-[16px] font-semibold text-teal-800">{COPY.comesToYou(agree(member.genre, "elle"))}</p>
+        <p class="mt-1.5 inline-flex items-center gap-1 text-[16px] text-neutre-700">
+          <Icon name="etoile" class="w-4 h-4 text-sable-700" />
+          {formatNote(member.note)}
+          <span class="sr-only"> {COPY.ratingOutOf}</span> <span class="text-neutre-600">({member.nbAvis})</span>
+        </p>
+      </article>
+    )
+  }
 </a>

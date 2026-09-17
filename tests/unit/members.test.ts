@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import {
-  formatMemberCount, hasAddress, memberUrl, sortByDistance, withCounts,
+  formatMemberCount, formatNote, hasAddress, memberUrl, sortByDistance, withCounts,
 } from "../../src/lib/members";
 import type { Category } from "../../src/content/schemas";
 import { member } from "./factory";
@@ -51,5 +51,12 @@ describe("Member helpers", () => {
     expect(memberUrl("alice-nguyen", "https://annuaire.lacartoucherie.fr")).toBe(
       "https://annuaire.lacartoucherie.fr/membre/alice-nguyen"
     );
+  });
+
+  // French reads a rating with a comma, and a perfect score still shows one
+  // decimal (styleguide block 12: "5,0", never a bare "5").
+  it("Formats a rating with a French decimal comma", () => {
+    expect(formatNote(4.8)).toBe("4,8");
+    expect(formatNote(5)).toBe("5,0");
   });
 });

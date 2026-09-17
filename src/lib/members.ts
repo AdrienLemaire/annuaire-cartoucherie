@@ -47,3 +47,8 @@ export function firstName(fullName: string): string {
 export function memberUrl(slug: string, site: string): string {
   return new URL(`/membre/${slug}`, site).href;
 }
+
+/** « 4,8 », « 5,0 » — the French decimal comma, always one digit (styleguide block 12). */
+export function formatNote(note: number): string {
+  return note.toFixed(1).replace(".", ",");
+}

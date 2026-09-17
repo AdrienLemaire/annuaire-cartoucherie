@@ -37,6 +37,14 @@ export const COPY = {
   profileInstagram: "Son Instagram",
   profileCall: "Appeler",
   profileWrong: "cette fiche n'est pas correcte",
+  // The row's own call chip (annuaire.html:424) speaks the full name and
+  // number in its aria-label rather than the button's own visible "Appeler",
+  // so a screen-reader user picks the right row out of a list of identical
+  // buttons.
+  callAria: (nom: string, telDisplay: string) => `Appeler ${nom} au ${telDisplay}`,
+  // The sr-only tail of a star rating (styleguide block 12: "4,8<sr-only> sur
+  // 5,</sr-only> (12)") — one string, so MemberCard and MemberRow never fork it.
+  ratingOutOf: "sur 5,",
 
   reviewsTitle: "Avis du quartier",
   reviewsNone: "Aucun avis pour l'instant.",
@@ -60,8 +68,14 @@ export const COPY = {
   comesToYou: (pronoun: string) => `${pronoun[0].toUpperCase()}${pronoun.slice(1)} vient chez vous`,
   // « Portrait de » elides to « Portrait d' » before a vowel or mute h — the
   // fixture already has Amandine and Inès (styleguide line 1090: "Portrait
-  // d'Amandine Rey"). One table, so MemberCard and MemberRow never fork it.
-  portraitAlt: (nom: string) => (/^[aeiouyàâäéèêëïîôöùûüh]/i.test(nom) ? `Portrait d'${nom}` : `Portrait de ${nom}`),
+  // d'Amandine Rey"; index.html:574 and annuaire.html:589 agree on "Portrait
+  // d'Inès Lacombe" — carte.html:691's "Portrait de Inès Lacombe" is the
+  // outlier and is wrong). `y` is deliberately excluded: it is a consonantal
+  // /j/ glide in French given names (Yanis, Yohan, Yasmine), not a vowel —
+  // index.html:413, annuaire.html:428 and carte.html:653 all agree on
+  // "Portrait de Yanis Belhadj". One table, so MemberCard and MemberRow
+  // never fork it.
+  portraitAlt: (nom: string) => (/^[aeiouàâäéèêëïîôöùûüh]/i.test(nom) ? `Portrait d'${nom}` : `Portrait de ${nom}`),
 
   footerAbout: "À propos",
   footerPrivacy: "Confidentialité",
