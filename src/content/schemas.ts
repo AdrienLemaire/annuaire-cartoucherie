@@ -24,7 +24,7 @@ export const memberSchema = z.object({
   lat: z.number().nullable(),
   lng: z.number().nullable(),
   tel: z.string().regex(/^0\d( \d\d){4}$/, "tel: « 06 12 34 56 78 »").nullable(),
-  email: z.string().email().nullable(),
+  email: z.email().nullable(),
   site: z.string().nullable(),
   instagram: z.string().nullable(),
   // A file name under public/portraits/, never a URL: the repo holds no remote
