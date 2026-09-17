@@ -1,9 +1,13 @@
 // src/client/live-search.ts
-// Fetched on the first keystroke, never on load: someone who never searches
-// must not pay a request for the feature. The query itself never becomes a
-// URL, a request or anything stored: search() (src/lib/search.ts) runs
-// entirely here, in the browser, against /recherche.json — fetched once and
-// cached across every keystroke, including ones typed before it resolves.
+// Fetched by this module on the first keystroke, never on load: someone who
+// never searches pays no request from this code path. (public/sw.js
+// separately precaches /recherche.json in the background once installed, for
+// the offline scenario — a build-time-known static request, not a report of
+// what anyone typed.) The query itself never becomes a URL, a request or
+// anything stored: search() (src/lib/search.ts) runs entirely here, in the
+// browser, against /recherche.json — fetched once per page load by this
+// module and cached across every keystroke, including ones typed before it
+// resolves.
 //
 // The GET form (SearchBar.astro) carries no `name` on its input, so even a
 // no-JS submit sends nothing to the host — this only stops the page from

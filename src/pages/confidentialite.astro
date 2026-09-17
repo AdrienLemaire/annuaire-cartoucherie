@@ -1,8 +1,10 @@
 ---
 // src/pages/confidentialite.astro
 // Every claim here must be true of the site as built today, not of the
-// roadmap (task-11 brief/context). Analytics (spec §4) is Task 13's; it does
-// not exist yet, so this page says nothing about it beyond "there is none".
+// roadmap. Task 13 added the offline cache and Cloudflare Web Analytics;
+// both are named below, each with exactly the properties true of the code
+// that ships them (src/client/analytics.ts, public/sw.js) — see
+// task-13-report.md for the file:line check against a built dist/.
 import TextPage from "../layouts/TextPage.astro";
 import { COPY } from "../lib/copy";
 
@@ -15,8 +17,10 @@ const title = `${COPY.footerPrivacy} — ${COPY.brandEyebrow} ${COPY.brandName}`
   <h2 class="ff text-nom text-teal-900">{COPY.privacyDoesTitle}</h2>
   <ul class="list-disc space-y-2 pl-5">
     <li>{COPY.privacyDoesBrowsing}</li>
+    <li>{COPY.privacyDoesOffline}</li>
     <li>{COPY.privacyDoesSearch}</li>
     <li>{COPY.privacyDoesGeo}</li>
+    <li>{COPY.privacyDoesAnalytics}</li>
   </ul>
 
   <h2 class="ff text-nom text-teal-900">{COPY.privacyDoesNotTitle}</h2>

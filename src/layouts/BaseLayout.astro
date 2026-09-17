@@ -36,6 +36,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
     <meta property="og:locale" content="fr_FR" />
     <meta property="og:url" content={canonical} />
     <meta name="theme-color" content="#ffffff" />
+    <link rel="manifest" href="/manifest.webmanifest" />
     <slot name="head" />
     <style>
       /* Safe-area insets. Without them the sticky « Appeler » bar sits under the
@@ -72,5 +73,22 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
       <slot />
     </main>
     <SiteFooter />
+    {
+      // Dynamic import, not a static one: Astro inlines a hoisted script's
+      // bundle straight into every page's HTML (no src=, no CSP hash — the
+      // project sets no `security.csp`) whenever its own chunk statically
+      // imports nothing else and stays under Vite's 4 KB assetsInlineLimit
+      // (node_modules/astro/dist/core/build/plugins/plugin-scripts.js,
+      // shouldInlineScriptChunk). Both modules here are small enough on
+      // their own to qualify, on all 29 pages — verified by building and
+      // grepping dist/*/index.html for a bodyless <script type="module">
+      // before this change. A dynamic import gives the chunk a
+      // dynamicImports entry, which disqualifies it unconditionally, so it
+      // ships as the external, `'self'`-permitted file CSP actually allows.
+    }
+    <script>
+      void import("../client/register-sw");
+      void import("../client/analytics");
+    </script>
   </body>
 </html>

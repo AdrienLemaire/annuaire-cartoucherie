@@ -252,26 +252,49 @@ export const COPY = {
   privacyIntro:
     "Ce site est volontairement simple : voici, sans détour, ce qu'il fait et ce qu'il ne fait pas.",
   privacyDoesTitle: "Ce que ce site fait",
+  // "ne dépose rien" stopped being true the moment public/sw.js started caching pages
+  // for the offline scenario (Task 13) — this now names what actually matters (no
+  // tracker), and privacyDoesOffline below discloses the cache itself instead of
+  // leaving it unmentioned.
   privacyDoesBrowsing:
-    "Parcourir l'annuaire, une fiche ou la carte ne dépose rien sur votre appareil.",
+    "Parcourir l'annuaire, une fiche ou la carte ne vous fait suivre par aucun traceur.",
+  // public/sw.js's networkFirst() only ever writes to the cache with a page it just
+  // fetched successfully (never with placeholder or visitor data), so "cette copie" is
+  // exactly the bytes of the page itself — see that function's own comment.
+  privacyDoesOffline:
+    "Les pages déjà consultées restent disponibles sur votre appareil pour que l'annuaire " +
+    "fonctionne même sans réseau ; cette copie ne contient aucune information sur vous.",
   // Same fact as searchLocal above (spec §5), worded for this list rather than reusing that
   // string verbatim: it names the one network request the claim doesn't cover (the index
   // download) instead of leaving it implicit. See searchLocal's own comment for the
-  // file:line evidence.
+  // file:line evidence. No longer claims "une seule fois": public/sw.js's install step
+  // now also fetches /recherche.json once, in the background, to precache it — see
+  // src/client/live-search.ts's own header comment for that download.
   privacyDoesSearch:
-    "La recherche télécharge une seule fois la liste du quartier, comme n'importe quelle page ; " +
+    "La recherche télécharge la liste du quartier, comme n'importe quelle page ; " +
     "ce que vous tapez ensuite n'est jamais envoyé où que ce soit.",
   privacyDoesGeo:
     "Sur la carte, votre position n'est utilisée que si vous appuyez sur « Classer depuis ma " +
     "position » ; le calcul des distances se fait dans votre navigateur et votre position n'est " +
     "jamais envoyée ailleurs.",
+  // The narrow, true claim (task-13 dispatch): what Cloudflare Web Analytics is, and
+  // no more than that. Only "mesure la fréquentation" is verified against this
+  // project's own code (src/client/analytics.ts, dist/_astro/analytics.*.js with a
+  // token set — task-13-report.md). "Sans cookie" is covered by tests/e2e/privacy.spec.ts
+  // and Task 16's production test. "Sans traceur inter-sites" and "sans profil
+  // individuel" are Cloudflare's own documented properties of the product, not
+  // something this repository's code proves — stated on that basis, not overclaimed.
+  privacyDoesAnalytics:
+    "Cloudflare Web Analytics mesure la fréquentation de ce site, sans cookie, sans traceur " +
+    "qui vous suivrait d'un site à l'autre et sans profil individuel construit sur vous.",
   privacyDoesNotTitle: "Ce que ce site ne fait pas",
   privacyDoesNotCookie: "Aucun cookie n'est déposé.",
   privacyDoesNotAccount: "Aucun compte n'est nécessaire pour consulter l'annuaire.",
   privacyDoesNotFont:
     "Aucune police n'est chargée depuis un service tiers : elles sont hébergées ici.",
-  privacyDoesNotAds:
-    "Aucun outil de mesure d'audience ni de régie publicitaire n'est installé sur ce site.",
+  // Narrowed to régie publicitaire only: the audience-measurement half of this claim
+  // moved to privacyDoesAnalytics above, where it belongs now that it exists.
+  privacyDoesNotAds: "Aucune régie publicitaire n'est installée sur ce site.",
 
   legalDescription: "Éditeur, directeur de la publication, hébergeur et propriété intellectuelle.",
   legalEditorTitle: "Éditeur du site",

@@ -60,6 +60,13 @@ const primaryIcon = chips[0]?.icon;
   header={{ href: "/annuaire", label: COPY.headerBackDirectory, srOnly: COPY.headerBackDirectorySr }}
   bodyClass="pb-[calc(96px+var(--safe-bottom))]"
 >
+  <Fragment slot="head">
+    <meta property="og:image" content={new URL(`/og/${member.slug}.png`, Astro.site).href} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+  </Fragment>
+
   <section aria-labelledby="nom-membre">
     <div class="ventouses relative overflow-hidden rounded-b-[34px] bg-sable-200 pt-9 pb-11">
       <div class="flex justify-center">

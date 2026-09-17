@@ -36,6 +36,14 @@ export default [
     },
   },
 
+  {
+    // The service worker: its own global scope, no Node and no DOM `window`.
+    files: ["public/sw.js"],
+    languageOptions: {
+      globals: { self: "readonly", caches: "readonly", fetch: "readonly", URL: "readonly" },
+    },
+  },
+
   // Layering: lib -> components -> layouts -> pages, one direction only.
   {
     files: ["src/lib/**/*.ts"],
