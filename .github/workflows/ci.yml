@@ -123,12 +123,39 @@ jobs:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     needs: [verify, browser, lighthouse]   # the gate: no green, no deploy
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 8
     environment: production
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/download-artifact@v4
-        with: { name: dist, path: dist }
+      # The real quartier. Private, read-only, and never uploaded as an artifact:
+      # a public repository's Actions tab hands out artifacts to anyone.
+      - uses: actions/checkout@v4
+        with:
+          repository: lacartoucherie/cartoucherie-donnees
+          token: ${{ secrets.CONTENT_REPO_TOKEN }}
+          path: content-private
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+        env:
+          CONTENT_DIR: content-private
+          # Without this the beacon ships with an empty token: the script still
+          # loads, the production test still passes, and nothing is ever counted.
+          PUBLIC_CF_BEACON_TOKEN: ${{ vars.PUBLIC_CF_BEACON_TOKEN }}
+      - run: node scripts/budgets.mjs
+      # The only moment a browser sees the real quartier. It runs in-process on
+      # the runner and this job uploads nothing, so it gates the 200-row build
+      # without the artefact exposure that made `download-artifact` wrong above.
+      - uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-chromium-${{ hashFiles('package-lock.json') }}
+      - run: npx playwright install --with-deps chromium
+      - run: npx playwright test tests/e2e/contenu.spec.ts
       # Pin to a full commit SHA before first use; Dependabot's github-actions
       # ecosystem keeps it current. Tags are mutable, SHAs are not.
       - uses: cloudflare/wrangler-action@v3

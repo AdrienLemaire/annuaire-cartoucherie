@@ -22,7 +22,7 @@
     "budgets": "node scripts/budgets.mjs",
     "lighthouse": "lhci autorun",
     "format": "prettier --write .",
-    "deploy": "npm run build && wrangler deploy",
+    "deploy": "test -n \"$CONTENT_DIR\" || { echo 'deploy: set CONTENT_DIR to the private checkout — never deploy the fixture'; exit 1; }; npm run build && npm run guard:dist && wrangler deploy",
     "prepare": "husky"
   },
   "dependencies": {
