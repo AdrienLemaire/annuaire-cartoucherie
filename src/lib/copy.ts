@@ -356,4 +356,20 @@ export const COPY = {
     "Sandra Carole. Gratuit, sans publicité, sans compte à créer.",
   footerAddress: "Halle de la Cartoucherie · Tram T1, arrêt Cartoucherie · 31300 Toulouse",
   footerNavAria: "Liens de pied de page",
+
+  // src/pages/404.astro (task-16-report.md, fix round 1). This project's main
+  // distribution channel is a QR code printed on paper — a flyer in a shop
+  // window, a sticker on a counter — which cannot be edited once printed.
+  // A renamed slug, a neighbour who has left, or a mistyped shared link all
+  // land here, so the tone matches searchEmpty's directness rather than
+  // apologising at length, and the page always offers the same two ways
+  // onward as annuaire's own empty state: search again, or go to the
+  // directory.
+  notFoundDescription: "Cette page n'existe pas ou a changé d'adresse.",
+  notFoundTitle: "Page introuvable",
+  notFoundCollyTitle: "Cette page n'existe pas.",
+  notFoundCollyText:
+    "Le lien a changé, ou la fiche a été retirée. Cherchez ce que vous cherchiez, ou repartez de " +
+    "l'annuaire.",
+  notFoundDirectoryLink: "Retour à l'annuaire",
 } as const;

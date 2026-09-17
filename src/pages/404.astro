@@ -1,0 +1,46 @@
+---
+// src/pages/404.astro
+// task-16-report.md, fix round 1: this project's distribution is a QR code
+// printed on paper — a flyer in a shop window, a sticker on a counter — which
+// cannot be edited once printed. A renamed slug, a neighbour who has left the
+// directory, or a mistyped shared link all land here, and the person doing
+// the landing has already done everything right. Cloudflare's own default
+// 404 is an unbranded English error page with nothing to do next; this one
+// keeps BaseLayout's header/footer, explains what happened in French, and
+// gives the same two ways onward as annuaire.astro's own "no results" state
+// (CollyPanel's "triste" pose, reused rather than re-invented): search
+// again, or go to the directory directly.
+//
+// Astro builds this file to dist/404.html regardless of `trailingSlash`
+// (verified: `npm run build` still emits it at the site root, not under a
+// /404/ directory) — see the go-live sequence for the post-deploy check that
+// Cloudflare's Workers asset server actually serves it for an unmatched path.
+import BaseLayout from "../layouts/BaseLayout.astro";
+import CollyPanel from "../components/CollyPanel.astro";
+import SearchBar from "../components/SearchBar.astro";
+import { COPY } from "../lib/copy";
+---
+
+<BaseLayout
+  title={`${COPY.notFoundTitle} — ${COPY.brandEyebrow} ${COPY.brandName}`}
+  description={COPY.notFoundDescription}
+  header={{ href: "/annuaire", label: COPY.headerBackDirectory, srOnly: COPY.headerBackDirectorySr }}
+>
+  <div class="mx-auto max-w-[560px] px-5 py-10">
+    <h1 class="ff break-words text-nom text-teal-900">{COPY.notFoundTitle}</h1>
+
+    <div class="mt-6">
+      <CollyPanel pose="triste" title={COPY.notFoundCollyTitle} text={COPY.notFoundCollyText} />
+    </div>
+
+    <div class="mt-2">
+      <SearchBar />
+    </div>
+
+    <p class="mt-6 text-corps text-neutre-800">
+      <a class="font-semibold text-teal-800 underline" href="/annuaire">
+        {COPY.notFoundDirectoryLink}
+      </a>
+    </p>
+  </div>
+</BaseLayout>
