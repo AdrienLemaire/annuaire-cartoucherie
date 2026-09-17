@@ -1,24 +1,42 @@
 ---
 // src/pages/carte.astro
-// Composition authority: docs/mockups/final/carte.html. Markup, class lists and
-// the :target plan/pin/sheet linkage are copied from it; deviations from the
-// mockup and from task-10-brief.md's own sample code are named in
-// task-10-report.md, per the fidelity rule (task-10-brief.md, "The fidelity rule").
+// Composition authority: docs/mockups/final/carte.html. Markup and class lists
+// are copied from it; deviations from the mockup and from task-10-brief.md's
+// own sample code are named in task-10-report.md, per the fidelity rule
+// (task-10-brief.md, "The fidelity rule").
 //
 // The plan is schematic (COPY.mapSchematic): a pin's on-plan position is a pure
 // projection of the member's real lat/lng (src/lib/plan.ts), not the mockup's
 // own hand-placed, hand-jittered specimen coordinates, which no general formula
 // reproduces and which would not generalise past this fixture.
 //
-// The plan pin, its label and its sheet row are linked by :target alone — no
-// script moves anything for that link (task-10-brief.md, "No mapping library in
-// v1"). Because CSS selectors are static, one repeated rule block per pinned
-// member is unavoidable; src/lib/plan.ts's buildTargetCss generates it. That
-// text is not literal at compile time, so it cannot be ordinary <style> content
-// (Astro/Tailwind tries to parse a {expression} child as CSS and fails), and
-// raw-HTML injection is banned repo-wide (scripts/forbidden.mjs: a CSP concern,
-// not specific to <script>) — so src/pages/carte.css.ts serves it as a real,
-// cacheable stylesheet instead, exactly like /qr/[slug].svg.ts's SVGs.
+// The plan pin, its label and its sheet row used to be linked by :target alone,
+// with one generated CSS rule block per pinned member (task-10-brief.md, "No
+// mapping library in v1"; src/lib/plan.ts's buildTargetCss, served from
+// src/pages/carte.css.ts). Elegant at twelve members, unshippable at two
+// hundred: 8 KB of generated CSS grew to 124 KB (task-14-report.md's scale
+// rehearsal), because CSS selectors are static and a rule matching "the pin
+// whose slug equals this anchor's slug" cannot be written generically — it can
+// only be enumerated, once per member.
+//
+// task-15-brief.md's fix keeps as much of that as CSS can genuinely do
+// generically, and spends the minimum JS on what it can't:
+//   - The PIN still needs no script at all. Each pin's own `.ancre` anchor is
+//     now its immediately preceding sibling (not a same-id duplicate, which
+//     would be invalid HTML and an axe duplicate-id violation) — a single
+//     generic `.ancre:target + .epingle-lien` rule, in <style is:global>
+//     below, matches whichever pin was targeted, without knowing its slug.
+//   - The ROW cannot be reached the same way: it lives in a different subtree
+//     (.feuille, not .plan) and is reordered at runtime by src/client/
+//     geolocate.ts, so no fixed sibling relationship to its pin's anchor
+//     exists for CSS to exploit. src/client/carte-select.ts (dynamically
+//     imported below, for the same CSP reason as geolocate.ts) reads
+//     location.hash on load and on "hashchange" and toggles one attribute,
+//     [data-selected], on the [data-sheet] row whose data-m matches — the
+//     same data-m/data-slug attributes carte.astro already wrote for other
+//     reasons, not new ones added for this. Total cost: ~0.3 KB gzip of JS,
+//     of 40 KB budgeted (task-15-report.md); the plan pin itself still works
+//     with JavaScript disabled.
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Icon from "../components/Icon.astro";
 import MemberRow from "../components/MemberRow.astro";
@@ -47,8 +65,7 @@ const itinerantParts = memberCountParts(
 const itinerantPronoun = pluralPronoun(withoutAddress.map((m) => m.genre));
 
 // isPinned (src/lib/plan.ts) is the one place that decides "is there a public
-// point to show" — carte.css.ts filters the same set for the :target rules,
-// so it is asserted here, not re-decided.
+// point to show".
 const pins = members.filter(isPinned).map((m) => ({
   member: m,
   position: projectOnPlan(m)!,
@@ -61,10 +78,6 @@ const pins = members.filter(isPinned).map((m) => ({
   description={COPY.homeBrowseMapText(pins.length, members.length)}
   header={{ href: "/annuaire", label: COPY.headerBackDirectory, srOnly: COPY.headerBackDirectorySr }}
 >
-  <Fragment slot="head">
-    <link rel="stylesheet" href="/carte.css" />
-  </Fragment>
-
   <div class="mx-auto max-w-[1160px] px-5 pt-6">
     <h1 class="ff text-nom sm:text-grand text-teal-900">{COPY.mapTitle}</h1>
     <p class="mt-2.5 text-corps text-neutre-800 max-w-[62ch]">
@@ -120,8 +133,6 @@ const pins = members.filter(isPinned).map((m) => ({
     id="quartier"
     class="relative mx-auto max-w-[1160px] px-5 mt-5 lg:grid lg:grid-cols-[minmax(0,520px)_minmax(0,1fr)] lg:gap-8 lg:items-start"
   >
-    {pins.map((p) => <span class="ancre" id={`pin-${p.member.slug}`} />)}
-
     <div class="colonne-plan lg:sticky lg:top-24">
       <div
         class="plan relative overflow-hidden bg-neutre-200 -mx-5 sm:mx-0 rounded-none sm:rounded-[22px]"
@@ -214,25 +225,32 @@ const pins = members.filter(isPinned).map((m) => ({
         </p>
 
         {
+          // .ancre immediately precedes its own .epingle-lien: the sole reason
+          // this pairing works with one generic CSS rule instead of one
+          // generated per member (see this file's own header comment and
+          // <style is:global> below, ".ancre:target + .epingle-lien").
           pins.map((p) => (
-            <a
-              data-m={p.member.slug}
-              href={`#pin-${p.member.slug}`}
-              class="epingle-lien absolute grid place-items-center w-11 h-11 -ml-[22px] -mt-[22px]"
-              style={`left:${p.position.left}%; top:${p.position.top}%`}
-              aria-label={COPY.mapPinAria(p.member.nom, p.member.metier, p.member.distance)}
-            >
-              <span class="epingle grid place-items-center w-9 h-9 rounded-full bg-white text-teal-700">
-                {p.icon && (
-                  <svg class="w-[18px] h-[18px]" aria-hidden="true">
-                    <use href={`#${p.icon}`} />
-                  </svg>
-                )}
-              </span>
-              <span class={`etiq ${p.position.etiqClass}`} aria-hidden="true">
-                {p.member.nom} · {p.member.distance}
-              </span>
-            </a>
+            <>
+              <span class="ancre" id={`pin-${p.member.slug}`} />
+              <a
+                data-m={p.member.slug}
+                href={`#pin-${p.member.slug}`}
+                class="epingle-lien absolute grid place-items-center w-11 h-11 -ml-[22px] -mt-[22px]"
+                style={`left:${p.position.left}%; top:${p.position.top}%`}
+                aria-label={COPY.mapPinAria(p.member.nom, p.member.metier, p.member.distance)}
+              >
+                <span class="epingle grid place-items-center w-9 h-9 rounded-full bg-white text-teal-700">
+                  {p.icon && (
+                    <svg class="w-[18px] h-[18px]" aria-hidden="true">
+                      <use href={`#${p.icon}`} />
+                    </svg>
+                  )}
+                </span>
+                <span class={`etiq ${p.position.etiqClass}`} aria-hidden="true">
+                  {p.member.nom} · {p.member.distance}
+                </span>
+              </a>
+            </>
           ))
         }
       </div>
@@ -251,7 +269,7 @@ const pins = members.filter(isPinned).map((m) => ({
 
     <div class="feuille relative mt-6 lg:mt-0">
       <div class="flex flex-wrap items-end justify-between gap-x-4 gap-y-1">
-        <h2 id="t-proches" class="ff text-nom text-teal-900">
+        <h2 id="t-proches" class="ff min-w-0 break-words text-nom text-teal-900">
           <span data-from-hall>{COPY.mapFromHall}</span>
           <span data-from-you hidden>{COPY.mapFromYou}</span>
         </h2>
@@ -279,7 +297,7 @@ const pins = members.filter(isPinned).map((m) => ({
         <div class="mx-auto max-w-[1160px] px-5 py-8">
           <h2 id="t-chezvous" class="ff text-nom text-teal-900">{COPY.mapTheyComeToYou}</h2>
           <div class="filet h-[3px] w-16 rounded-full mt-2.5 mb-4" />
-          <ul class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4 list-none p-0 m-0">
+          <ul class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4 list-none p-0 m-0">
             {withoutAddress.map((m) => {
               const homeIcon = homeServiceIcon(m, categories);
               return (
@@ -340,10 +358,21 @@ const pins = members.filter(isPinned).map((m) => ({
   <script>
     void import("../client/geolocate");
   </script>
+  {
+    // Same reason as the dynamic import right above: a static import would
+    // let Astro inline this tiny chunk straight into the HTML, which the
+    // production CSP (script-src 'self') blocks.
+  }
+  <script>
+    void import("../client/carte-select");
+  </script>
 
   <style is:global>
     /* les ancres de :target ne prennent aucune place ; elles ne servent qu'à
-       nommer une épingle dans l'URL. L'en-tête colle, d'où la marge de défilement. */
+       nommer une épingle dans l'URL. L'en-tête colle, d'où la marge de défilement.
+       Chaque ancre précède directement son épingle dans le DOM (voir la boucle
+       pins.map ci-dessus) : elle se positionne donc par rapport à .plan, pas à
+       #quartier, qui garde position:relative pour les règles :has() ci-dessous. */
     #quartier {
       position: relative;
     }
@@ -357,7 +386,8 @@ const pins = members.filter(isPinned).map((m) => ({
     }
 
     /* une épingle : disque blanc, anneau teal. L'état sélectionné — le SEUL objet
-       orange de cette page avec le filet — est posé par les règles générées ci-dessous. */
+       orange de cette page avec le filet — est posé par une seule règle générique
+       plus bas (".ancre:target + .epingle-lien"), pas une par membre. */
     .epingle {
       box-shadow: 0 0 0 2px var(--color-teal-600), var(--shadow-carte);
       transition:
@@ -414,6 +444,41 @@ const pins = members.filter(isPinned).map((m) => ({
     }
     #quartier:has(.ancre:target) .epingle-lien:hover {
       opacity: 1;
+    }
+
+    /* L'épingle ciblée (task-15-brief.md — remplace les six règles jadis
+       générées une fois par voisin épinglé : .ancre étant l'exact frère
+       précédent de .epingle-lien dans le DOM, un seul sélecteur générique la
+       retrouve, quel que soit son slug ni leur nombre. Préfixé par
+       "#quartier .plan" pour l'emporter, quel que soit l'ordre des règles,
+       sur l'assombrissement ci-dessus — les deux ont sinon la même
+       spécificité. */
+    #quartier .plan .ancre:target + .epingle-lien {
+      z-index: 30;
+      opacity: 1;
+    }
+    #quartier .plan .ancre:target + .epingle-lien .epingle {
+      transform: scale(1.14);
+      box-shadow: 0 0 0 3px var(--color-orange-500), var(--shadow-flottant);
+    }
+    #quartier .plan .ancre:target + .epingle-lien .etiq {
+      opacity: 1;
+    }
+    #quartier .plan .ancre:target + .epingle-lien .etiq--c {
+      transform: translate(-50%, 0);
+    }
+    #quartier .plan .ancre:target + .epingle-lien .etiq--g,
+    #quartier .plan .ancre:target + .epingle-lien .etiq--d {
+      transform: translate(0, 0);
+    }
+
+    /* La ligne de la feuille : la seule moitié du lien que le CSS seul ne peut
+       pas faire (elle vit dans un autre sous-arbre que l'épingle, et
+       src/client/geolocate.ts la déplace au tri par position) —
+       src/client/carte-select.ts pose [data-selected]. */
+    .feuille [data-m][data-selected] {
+      background: var(--color-teal-50);
+      box-shadow: 0 0 0 2px var(--color-teal-600), var(--shadow-carte);
     }
   </style>
 </BaseLayout>

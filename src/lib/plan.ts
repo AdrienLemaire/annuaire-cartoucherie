@@ -1,9 +1,12 @@
 // src/lib/plan.ts
 // The schematic quartier plan carte.astro draws (docs/mockups/final/carte.html):
-// a member's real lat/lng projected onto the plan as a left/top percentage pair,
-// plus the per-member CSS that links a plan pin, its label and its row in the
-// distance-ordered sheet through :target alone. No script moves a pixel on this
-// page for that link — src/client/geolocate.ts only ever reorders the sheet.
+// a member's real lat/lng projected onto the plan as a left/top percentage pair.
+// The plan pin itself still needs no script to move — carte.astro's own
+// <style is:global> links it to its :target'd .ancre generically; only the
+// sheet row's highlight is JS (src/client/carte-select.ts), and only
+// src/client/geolocate.ts ever reorders the sheet. Why the pin used to need
+// generated, per-member CSS and no longer does: carte.astro's own header
+// comment (task-15-report.md).
 import type { Member } from "../content/schemas";
 
 // The Halle de la Cartoucherie: the plan's own visual anchor (the mockup's own
@@ -37,10 +40,9 @@ function clamp(n: number): number {
 export type PlanPosition = { left: number; top: number; etiqClass: "etiq--g" | "etiq--c" | "etiq--d" };
 
 /**
- * A public point exists for this member: carte.astro and carte.css.ts both
- * need exactly this set (the plan's pins and the matching :target rules), so
- * it is decided once here rather than the same three-field check drifting
- * between the two callers.
+ * A public point exists for this member: carte.astro needs exactly this set
+ * (the plan's pins), so it is decided once here rather than the same
+ * three-field check drifting between callers.
  */
 export function isPinned(member: Pick<Member, "surCarte" | "lat" | "lng">): boolean {
   return member.surCarte && member.lat !== null && member.lng !== null;
@@ -60,27 +62,6 @@ export function projectOnPlan(point: Pick<Member, "lat" | "lng">): PlanPosition 
   const top = clamp(ORIGIN.top - scaled * Math.sin(angle));
   const etiqClass = left < 25 ? "etiq--g" : left > 75 ? "etiq--d" : "etiq--c";
   return { left, top, etiqClass };
-}
-
-/**
- * The :target rules wiring one plan pin, its label and its sheet row together —
- * docs/mockups/final/carte.html's own repeated block, one per member. CSS
- * selectors are static and cannot compare an id's suffix to a data attribute's
- * value, so this is generated rather than written by hand for a fixed roster.
- */
-export function buildTargetCss(slugs: string[]): string {
-  return slugs
-    .map(
-      (slug) => `
-#pin-${slug}:target ~ .colonne-plan [data-m="${slug}"]{ z-index:30; opacity:1; }
-#pin-${slug}:target ~ .colonne-plan [data-m="${slug}"] .epingle{ transform:scale(1.14); box-shadow:0 0 0 3px var(--color-orange-500), var(--shadow-flottant); }
-#pin-${slug}:target ~ .colonne-plan [data-m="${slug}"] .etiq{ opacity:1; }
-#pin-${slug}:target ~ .colonne-plan [data-m="${slug}"] .etiq--c{ transform:translate(-50%,0); }
-#pin-${slug}:target ~ .colonne-plan [data-m="${slug}"] .etiq--g,
-#pin-${slug}:target ~ .colonne-plan [data-m="${slug}"] .etiq--d{ transform:translate(0,0); }
-#pin-${slug}:target ~ .feuille [data-m="${slug}"]{ background:var(--color-teal-50); box-shadow:0 0 0 2px var(--color-teal-600), var(--shadow-carte); }`,
-    )
-    .join("\n");
 }
 
 /** Great-circle distance in metres — the only arithmetic src/client/geolocate.ts needs. */
