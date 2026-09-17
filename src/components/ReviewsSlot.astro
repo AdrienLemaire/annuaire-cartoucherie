@@ -1,0 +1,47 @@
+---
+/**
+ * src/components/ReviewsSlot.astro
+ *
+ * THE CONTRACT WITH PLAN 2 — do not rename data-reviews-slot, data-slug,
+ * data-rating or data-review-count without updating it. In v1 this renders a
+ * static empty/summary state; Plan 2 replaces the CONTENTS of
+ * <div data-reviews-slot> with a client island that fetches and renders real
+ * reviews. No other part of the profile page changes when that lands.
+ *
+ * membre.html's own « Avis du quartier » (lines 509-595) shows three
+ * hardcoded specimen reviews and a "Laisser un avis" panel that opens the
+ * sign-in dialog — both belong to Plan 2's reviewing feature (task-9-brief.md:
+ * "In Plan 1 it renders a static, server-rendered empty state"), so neither
+ * renders here. Every fixture member already has nbAvis > 0, a case the
+ * mockup specimen never shows either (its count is baked into three <li>s
+ * that don't exist yet in Plan 1) — the state below covers both
+ * reviewCount === 0 ("Aucun avis pour l'instant.") and reviewCount > 0 (the
+ * count alone, no list), since Plan 1 has no review records to list either
+ * way.
+ */
+import { COPY } from "../lib/copy";
+
+interface Props {
+  slug: string;
+  rating: number;
+  reviewCount: number;
+}
+const { slug, rating, reviewCount } = Astro.props;
+---
+
+<section id="avis" class="bg-neutre-100" aria-labelledby="reviews-title">
+  <div class="mx-auto max-w-[1160px] px-5 py-8">
+    <h2 id="reviews-title" class="ff text-nom text-teal-900">{COPY.reviewsTitle}</h2>
+    <div class="filet mt-2.5 mb-4 h-[3px] w-16 rounded-full"></div>
+
+    <div data-reviews-slot data-slug={slug} data-rating={String(rating)} data-review-count={String(reviewCount)}>
+      <p class="text-corps text-neutre-700">
+        {reviewCount > 0 ? COPY.profileReviewCount(reviewCount) : COPY.reviewsNone}
+      </p>
+      <p class="mt-2 text-[16px] text-neutre-600">{COPY.reviewsHow}</p>
+      <p class="mt-2">
+        <a class="font-semibold text-teal-800 underline" href="/avis">{COPY.reviewsPolicy}</a>
+      </p>
+    </div>
+  </div>
+</section>

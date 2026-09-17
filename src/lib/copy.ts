@@ -1,5 +1,13 @@
 // Every French string that is not member content (spec §3). Values are French,
 // keys are English, and the gendered ones take the agreed word from agree().
+
+// « La contacter », « La voir sur la carte » — three COPY entries capitalise
+// an agreed article/pronoun at the head of a sentence. One helper, so a
+// fourth never forks the same one-liner.
+function capitalize(s: string): string {
+  return `${s[0].toUpperCase()}${s.slice(1)}`;
+}
+
 export const COPY = {
   skipLink: "Aller au contenu",
   brandEyebrow: "Annuaire de",
@@ -65,16 +73,29 @@ export const COPY = {
   categoryNobody: "Personne ne s'est encore inscrit·e dans cette catégorie.",
   countNobody: "personne encore inscrit·e",
 
-  profileContact: (article: string) => `${article[0].toUpperCase()}${article.slice(1)} contacter`,
+  profileContact: (article: string) => `${capitalize(article)} contacter`,
   profilePortrait: "Son portrait",
   profileOffers: (pronoun: string) => `Ce qu'${pronoun} propose`,
   profileWhere: (article: string) => `Où ${article} trouver`,
-  profileOnMap: "Voir sur le plan du quartier",
-  profileEmail: "Son adresse e-mail",
+  // membre.html's own « Où la trouver » deep link (line 497): gendered like
+  // profileContact/profileWhere above, so capitalize() is shared rather than
+  // re-inlined a third time.
+  profileOnMap: (article: string) => `${capitalize(article)} voir sur la carte du quartier`,
+  profileDirections: "Ouvrir l'itinéraire",
+  // The identity card's own rating link (membre.html:400-403): the sr-only
+  // tail before the count, and the count itself — kept apart like
+  // MemberCard/MemberRow's ratingOutOf below, but "avis" alone rather than
+  // "avis du quartier": the fuller phrase would duplicate reviewsTitle's own
+  // "Avis du quartier" as a getByText substring on the same page.
+  profileRatingSr: "sur 5 —",
+  profileReviewCount: (n: number) => `${n} avis`,
+  profileDistanceFromHall: (distance: string) => `À ${distance} de la Halle`,
+  profileEmail: "E-mail",
   profileSite: "Son site",
-  profileInstagram: "Son Instagram",
+  profileInstagram: "Instagram",
   profileCall: "Appeler",
-  profileWrong: "cette fiche n'est pas correcte",
+  profileWrong: "Cette fiche n'est pas correcte",
+  profileWrongSubject: (nom: string) => `Correction — fiche de ${nom}`,
   // The row's own call chip (annuaire.html:424) speaks the full name and
   // number in its aria-label rather than the button's own visible "Appeler",
   // so a screen-reader user picks the right row out of a list of identical
@@ -89,9 +110,11 @@ export const COPY = {
   reviewsHow: "Les avis sont signés par des voisins, relus par l'association, et jamais achetés.",
   reviewsPolicy: "Les avis, comment ça marche",
 
-  qrTitle: "Le QR code de cette fiche",
-  qrExplain: "À imprimer pour votre comptoir ou vos cartes de visite : il mène directement ici.",
-  qrDownload: "Télécharger le QR code de cette fiche",
+  qrTitle: "Son QR code",
+  qrExplain:
+    "À imprimer et à poser sur son comptoir, ou à coller au dos de ses cartes de visite. " +
+    "Il mène directement ici, sans passer par l'accueil.",
+  qrDownload: "Télécharger le QR code",
 
   mapTitle: "La carte du quartier",
   mapSchematic: "Plan schématique : les positions sont indicatives.",

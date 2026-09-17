@@ -1,0 +1,224 @@
+---
+// src/pages/membre/[slug].astro
+// Composition authority: docs/mockups/final/membre.html — the page everything
+// else exists to deliver someone to. Section order, containers and class
+// lists are copied from it, not approximated; deviations from task-9-brief.md's
+// own sample code are called out below and in task-9-report.md, per the
+// fidelity rule (task-9-brief.md, "The fidelity rule").
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import CallButton from "../../components/CallButton.astro";
+import CategoryChip from "../../components/CategoryChip.astro";
+import Icon from "../../components/Icon.astro";
+import QrCard from "../../components/QrCard.astro";
+import ReviewsSlot from "../../components/ReviewsSlot.astro";
+import { mailtoHref } from "../../lib/contact";
+import { COPY } from "../../lib/copy";
+import { loadCategories, loadMembers } from "../../lib/collections";
+import { agree } from "../../lib/gender";
+import { formatNote, hasAddress, memberUrl } from "../../lib/members";
+
+export async function getStaticPaths() {
+  const [members, categories] = await Promise.all([loadMembers(), loadCategories()]);
+  return members.map((member) => ({
+    params: { slug: member.slug },
+    props: { member, chips: categories.filter((c) => member.categories.includes(c.slug)) },
+  }));
+}
+
+const { member, chips } = Astro.props;
+const url = memberUrl(member.slug, Astro.site!.href);
+const pronoun = agree(member.genre, "elle");
+const article = agree(member.genre, "la");
+const fixed = hasAddress(member);
+
+// The three canaux membre.html's own "La contacter" carries in full, readable
+// text — never behind an icon alone, never truncated. A null field renders
+// nothing at all (task-9-brief.md, composition authority list), so this
+// filters before the template ever sees it, rather than branching three times.
+const contacts = [
+  { label: COPY.profileEmail, icon: "mail", text: member.email, href: member.email && `mailto:${member.email}` },
+  { label: COPY.profileSite, icon: "globe", text: member.site, href: member.site && `https://${member.site}` },
+  {
+    label: COPY.profileInstagram,
+    icon: "insta",
+    text: member.instagram && `@${member.instagram}`,
+    href: member.instagram && `https://instagram.com/${member.instagram}`,
+  },
+].filter((c): c is typeof c & { text: string; href: string } => Boolean(c.text && c.href));
+
+// "Ce qu'elle propose" tiles carry a pastille icon in the mockup, but services
+// are freeform strings (src/content/schemas.ts) with no per-service icon of
+// their own — inventing one per string would be frontmatter computing data it
+// doesn't have. The member's first category icon stands in for all three
+// tiles instead: a single, real, data-backed choice rather than a guess.
+const primaryIcon = chips[0]?.icon;
+---
+
+<BaseLayout
+  title={`${member.nom}, ${member.metier} — Annuaire de la Cartoucherie`}
+  description={member.accroche}
+  header={{ href: "/annuaire", label: COPY.headerBackDirectory, srOnly: COPY.headerBackDirectorySr }}
+  bodyClass="pb-[calc(96px+var(--safe-bottom))]"
+>
+  <section aria-labelledby="nom-membre">
+    <div class="ventouses relative overflow-hidden rounded-b-[34px] bg-sable-200 pt-9 pb-11">
+      <div class="flex justify-center">
+        <img
+          src={`/portraits/${member.photo}`}
+          alt={COPY.portraitAlt(member.nom)}
+          width="128"
+          height="128"
+          fetchpriority="high"
+          class="arche block h-[176px] w-[148px] bg-white object-cover"
+          style="object-position:50% 22%; box-shadow: 0 0 0 6px #fff, var(--shadow-carte)"
+        />
+      </div>
+    </div>
+    <div class="relative mx-auto -mt-8 max-w-[1160px] px-5">
+      <div class="carte rounded-[24px] bg-white p-5 sm:p-7">
+        <h1 id="nom-membre" class="ff text-grand text-teal-900">{member.nom}</h1>
+        <p class="mt-1.5 text-[20px] text-neutre-800">{member.metier}</p>
+        {
+          chips.length > 0 && (
+            <p class="mt-3 flex flex-wrap gap-2">
+              {chips.map((c) => (
+                <CategoryChip slug={c.slug} nom={c.nom} />
+              ))}
+            </p>
+          )
+        }
+        <p class="mt-4 max-w-[56ch] text-[19px] leading-relaxed text-neutre-900">{member.accroche}</p>
+        <p class="mt-5 flex flex-wrap items-center gap-x-5 gap-y-2.5 text-[16px] text-neutre-700">
+          <a
+            href="#avis"
+            class="inline-flex min-h-[44px] items-center gap-1.5 text-teal-700 underline decoration-teal-300 underline-offset-4 hover:decoration-teal-600"
+          >
+            <Icon name="etoile" class="h-[18px] w-[18px] text-sable-700" />
+            <strong class="font-semibold text-neutre-900">{formatNote(member.note)}</strong>
+            <span class="sr-only"> {COPY.profileRatingSr}</span> {COPY.profileReviewCount(member.nbAvis)}
+          </a>
+          <span class="inline-flex items-center gap-1.5">
+            {fixed ? (
+              <>
+                <Icon name="pin" class="h-[18px] w-[18px] text-teal-600" />
+                {COPY.profileDistanceFromHall(member.distance)}
+              </>
+            ) : (
+              COPY.comesToYou(pronoun)
+            )}
+          </span>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-[1160px] px-5 py-8" aria-labelledby="t-contact">
+    <h2 id="t-contact" class="ff text-nom text-teal-900">{COPY.profileContact(article)}</h2>
+    <div class="filet mt-2.5 mb-5 h-[3px] w-16 rounded-full"></div>
+    <ul class="m-0 grid list-none gap-2.5 p-0 sm:grid-cols-3">
+      {
+        contacts.map((c) => (
+          <li>
+            <a
+              href={c.href}
+              class="carte carte-lien flex h-full min-h-[64px] items-center gap-3.5 rounded-[16px] bg-white px-4 py-3"
+            >
+              <span class="pastille pastille--teal h-10 w-10 shrink-0 bg-teal-50 text-teal-700">
+                <Icon name={c.icon} class="h-5 w-5" />
+              </span>
+              <span class="min-w-0">
+                <span class="block text-[16px] text-neutre-700">{c.label}</span>
+                <span class="block break-words text-corps font-semibold text-teal-800">{c.text}</span>
+              </span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <section class="bg-neutre-100" aria-labelledby="t-portrait">
+    <div class="mx-auto max-w-[1160px] px-5 py-8">
+      <h2 id="t-portrait" class="ff text-nom text-teal-900">{COPY.profilePortrait}</h2>
+      <div class="filet mt-2.5 mb-5 h-[3px] w-16 rounded-full"></div>
+      <p class="max-w-[62ch] text-[19px] leading-relaxed text-neutre-900">{member.bio}</p>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-[1160px] px-5 py-8" aria-labelledby="t-services">
+    <h2 id="t-services" class="ff text-nom text-teal-900">{COPY.profileOffers(pronoun)}</h2>
+    <div class="filet mt-2.5 mb-5 h-[3px] w-16 rounded-full"></div>
+    <ul class="m-0 grid list-none gap-3 p-0 sm:grid-cols-3">
+      {
+        member.services.map((service) => (
+          <li class="flex min-h-[64px] items-center gap-3.5 rounded-[16px] bg-neutre-100 px-4 py-4">
+            {primaryIcon && (
+              <span class="pastille h-9 w-9 shrink-0 bg-white text-sauge-700">
+                <svg class="h-[18px] w-[18px]" aria-hidden="true">
+                  <use href={`#${primaryIcon}`} />
+                </svg>
+              </span>
+            )}
+            <span class="text-corps font-semibold text-teal-900">{service}</span>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <section class="mx-auto max-w-[1160px] px-5 pb-8" aria-labelledby="t-ou">
+    <h2 id="t-ou" class="ff text-nom text-teal-900">{COPY.profileWhere(article)}</h2>
+    <div class="filet mt-2.5 mb-5 h-[3px] w-16 rounded-full"></div>
+    <div class="carte flex items-start gap-4 rounded-[20px] bg-white p-5">
+      <span class="pastille pastille--teal mt-0.5 h-11 w-11 shrink-0 bg-teal-50 text-teal-700">
+        <Icon name="pin" class="h-5 w-5" />
+      </span>
+      <div class="min-w-0">
+        {fixed ? (
+          <>
+            <address class="text-[18px] leading-snug font-semibold text-neutre-900 not-italic">{member.adresse}</address>
+            <p class="mt-2 text-[16px] text-neutre-700">{COPY.profileDistanceFromHall(member.distance)}</p>
+            <p class="mt-3 flex flex-wrap items-center gap-x-5">
+              {member.surCarte && (
+                <a
+                  href={`/carte#pin-${member.slug}`}
+                  class="inline-flex min-h-[44px] items-center gap-2 text-corps font-semibold text-teal-700 underline decoration-teal-300 underline-offset-4 hover:decoration-teal-600"
+                >
+                  {COPY.profileOnMap(article)} <Icon name="chev" class="h-4 w-4" />
+                </a>
+              )}
+              <a
+                href={`https://www.openstreetmap.org/search?query=${encodeURIComponent(member.adresse)}`}
+                class="inline-flex min-h-[44px] items-center gap-2 text-[16px] font-semibold text-teal-700 underline decoration-teal-300 underline-offset-4 hover:decoration-teal-600"
+              >
+                {COPY.profileDirections} <Icon name="chev" class="h-4 w-4" />
+              </a>
+            </p>
+          </>
+        ) : (
+          <p class="text-[18px] leading-snug font-semibold text-neutre-900">{COPY.comesToYou(pronoun)}</p>
+        )}
+      </div>
+    </div>
+  </section>
+
+  <ReviewsSlot slug={member.slug} rating={member.note} reviewCount={member.nbAvis} />
+
+  <section class="mx-auto max-w-[1160px] px-5 py-8" aria-labelledby="t-qr">
+    <h2 id="t-qr" class="ff text-nom text-teal-900">{COPY.qrTitle}</h2>
+    <div class="filet mt-2.5 mb-5 h-[3px] w-16 rounded-full"></div>
+    <QrCard slug={member.slug} nom={member.nom} url={url} />
+
+    <p class="mt-6 flex flex-wrap items-center gap-x-4 gap-y-1 text-[16px] text-neutre-700">
+      <a
+        href={mailtoHref(COPY.profileWrongSubject(member.nom))}
+        class="inline-flex min-h-[44px] items-center gap-1.5 text-neutre-700 underline decoration-neutre-400 underline-offset-4 hover:text-teal-700 hover:decoration-teal-600"
+      >
+        <Icon name="alerte" class="h-[18px] w-[18px]" />
+        {COPY.profileWrong}
+      </a>
+    </p>
+  </section>
+
+  <CallButton member={member} sticky withNumber />
+</BaseLayout>

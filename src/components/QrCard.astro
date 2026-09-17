@@ -1,0 +1,40 @@
+---
+// src/components/QrCard.astro
+// membre.html:598-621 ("Son QR code"): the card only — the section's own h2
+// and filet stay in the page, matching how every other profile section is
+// composed (a shared <h2 class="ff text-nom text-teal-900"> pattern that a
+// single-purpose card component would just have to repeat). The QR image is
+// a build-time file (src/pages/qr/[slug].svg.ts), never generated or
+// downloaded by a script — the STANDARDS §3 rule task-9-brief.md names.
+import Icon from "./Icon.astro";
+import { COPY } from "../lib/copy";
+
+interface Props {
+  slug: string;
+  nom: string;
+  url: string;
+}
+const { slug, nom, url } = Astro.props;
+const file = `/qr/${slug}.svg`;
+---
+
+<div class="carte flex flex-col gap-5 rounded-[20px] bg-white p-5 sm:flex-row sm:items-center">
+  <div
+    class="mx-auto shrink-0 rounded-[14px] bg-white p-2.5 sm:mx-0"
+    style="box-shadow: inset 0 0 0 1px var(--color-neutre-300)"
+  >
+    <img src={file} alt={`QR code vers la fiche de ${nom}`} width="168" height="168" />
+  </div>
+  <div class="min-w-0">
+    <p class="max-w-[48ch] text-corps text-neutre-900">{COPY.qrExplain}</p>
+    <p class="mt-2 break-words text-[16px] text-neutre-700">{url}</p>
+    <a
+      href={file}
+      download={`qr-${slug}.svg`}
+      class="mt-4 inline-flex min-h-[48px] items-center gap-2 rounded-full bg-teal-700 px-5 text-corps font-semibold text-white hover:bg-teal-600"
+    >
+      <Icon name="dl" class="w-[18px] h-[18px]" />
+      {COPY.qrDownload}
+    </a>
+  </div>
+</div>
