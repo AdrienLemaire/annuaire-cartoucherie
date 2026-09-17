@@ -28,10 +28,15 @@
 // child of <section> rather than inside the sticky header the search bar
 // itself lives in (Fragment slot="header-extra" below) — a results list
 // growing inside a position:sticky element would push arbitrarily far down
-// the viewport as the visitor scrolls. It hides [data-browse] (chip rail +
-// map link + the row list — the whole category-filter.ts-owned "browsing"
-// UI, one wrapper) while a query is active; category-filter.ts's own
-// elements survive being hidden as a group.
+// the viewport as the visitor scrolls. It hides [data-browse] (count, chip
+// rail, map link, row list, and category-filter's own [data-empty-for]/
+// [data-no-match] explanations — everything below, one wrapper) while a
+// query is active, so a visitor who lands on an empty-category URL and then
+// types never sees that panel stacked under live results: one rule for what
+// "browsing" means, not two selectors that have to agree. category-filter.ts
+// only ever toggles each block's own `hidden`; the group-level `hidden` here
+// is a second, independent gate on top, so its state survives being hidden
+// as a group and reappears correctly once the query is cleared.
 import BaseLayout from "../layouts/BaseLayout.astro";
 import CollyPanel from "../components/CollyPanel.astro";
 import MemberRow from "../components/MemberRow.astro";
@@ -164,45 +169,50 @@ const populated = counted.filter((c) => c.count > 0);
           </li>
         ))}
       </ul>
-    </div>
 
-    {
-      // Reached only through the client filter (a direct page load of an
-      // empty category goes to /categorie/[slug], which already explains
-      // itself): one hidden block per empty category, composed here in
-      // French so category-filter.ts only ever toggles `hidden`.
-      empty.map((c) => (
-        <div
-          data-empty-for={c.slug}
-          data-noun={COPY.countNobody}
-          data-detail={c.nom}
-          hidden
-          class="colly-fond mt-6 max-w-[52ch] rounded-[20px] p-5"
-        >
-          <p class="text-corps text-teal-950">{COPY.categoryNobody}</p>
-          <a
-            class="mt-3 inline-flex min-h-[44px] items-center font-semibold text-teal-800 underline decoration-teal-400 underline-offset-4"
-            href={mailtoHref(COPY.searchSuggestSubject(c.nom))}
-          >
-            {COPY.searchSuggest}
-          </a>
-        </div>
-      ))
-    }
-
-    <div data-no-match data-noun={COPY.countNobody} hidden class="mt-6">
       {
-        // A slug in no chip and no [data-empty-for] block: not a category at
-        // all — a mistyped share link or a stale QR code, not a category this
-        // annuaire has ever listed. annuaire.html's own generic
-        // #aucun-resultat is the "triste" Colly pose; CollyPanel.astro
-        // already renders that exact specimen, reused rather than duplicated.
+        // [data-empty-for]/[data-no-match] stay inside [data-browse] too: they are
+        // category-filter's own "browsing" explanations (a stale QR code, an empty
+        // category), not search results — without this a visitor who lands on an
+        // empty-category URL and then types would see that panel and the live
+        // results stacked at once, two "nobody here" answers to two different
+        // questions on screen together. category-filter.ts only ever toggles each
+        // block's own `hidden`; wrapping them in a second, group-level `hidden`
+        // here does not disturb that — both must be false for a block to show,
+        // which is exactly "browsing AND this block's own condition".
+        empty.map((c) => (
+          <div
+            data-empty-for={c.slug}
+            data-noun={COPY.countNobody}
+            data-detail={c.nom}
+            hidden
+            class="colly-fond mt-6 max-w-[52ch] rounded-[20px] p-5"
+          >
+            <p class="text-corps text-teal-950">{COPY.categoryNobody}</p>
+            <a
+              class="mt-3 inline-flex min-h-[44px] items-center font-semibold text-teal-800 underline decoration-teal-400 underline-offset-4"
+              href={mailtoHref(COPY.searchSuggestSubject(c.nom))}
+            >
+              {COPY.searchSuggest}
+            </a>
+          </div>
+        ))
       }
-      <CollyPanel
-        pose="triste"
-        title={COPY.searchEmpty}
-        text={COPY.homeBrowseListText(members.length)}
-      />
+
+      <div data-no-match data-noun={COPY.countNobody} hidden class="mt-6">
+        {
+          // A slug in no chip and no [data-empty-for] block: not a category at
+          // all — a mistyped share link or a stale QR code, not a category this
+          // annuaire has ever listed. annuaire.html's own generic
+          // #aucun-resultat is the "triste" Colly pose; CollyPanel.astro
+          // already renders that exact specimen, reused rather than duplicated.
+        }
+        <CollyPanel
+          pose="triste"
+          title={COPY.searchEmpty}
+          text={COPY.homeBrowseListText(members.length)}
+        />
+      </div>
     </div>
   </section>
   <script>
