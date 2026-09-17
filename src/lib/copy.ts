@@ -77,6 +77,12 @@ export const COPY = {
   searchLocal:
     "Ce que vous tapez ne quitte jamais votre téléphone : la recherche se fait dans la liste déjà chargée sur votre appareil.",
   searchEmpty: "Personne ne correspond à cette recherche.",
+  // src/client/live-search.ts's own failure state (task-12 fix round 1): a first visit
+  // on a weak connection is this project's founding scenario, so a failed/slow fetch of
+  // /recherche.json cannot silently do nothing — Task 13's service worker only helps a
+  // *second* visit. One short, true sentence; the next keystroke already retries
+  // (loadIndex resets its cached promise on rejection), so no separate button is needed.
+  searchLoadError: "La liste n'a pas pu être chargée. Réessayez.",
   searchSuggest: "Vous connaissez quelqu'un ?",
   // The mailto: subject when a visitor offers a name for an empty category
   // (NeedsIndex, task-6 brief) — one string, so the format lives here and

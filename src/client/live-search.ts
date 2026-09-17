@@ -75,7 +75,32 @@ if (input && results) {
     }
   };
 
+  // A first visit on a weak connection — this project's founding scenario — has no
+  // service-worker cache to fall back on, so a failed or slow fetch must say something
+  // rather than leave the box looking broken while someone types into it. Only shown
+  // while there is still a query to search for: a rejection that arrives after the
+  // visitor has already cleared the field would otherwise leave a stale error behind.
+  const renderError = (query: string): void => {
+    if (query.trim().length === 0) {
+      for (const section of browseSections) section.hidden = false;
+      results.hidden = true;
+      results.innerHTML = "";
+      return;
+    }
+    for (const section of browseSections) section.hidden = true;
+    results.hidden = false;
+    results.innerHTML = "";
+    const message = document.createElement("p");
+    message.className = "text-corps text-teal-950";
+    message.textContent = COPY.searchLoadError;
+    results.append(message);
+  };
+
   input.addEventListener("input", () => {
-    void loadIndex().then((index) => render(input.value, index));
+    // loadIndex() resets its cached promise on rejection (above), so this is already
+    // reachable again on the very next keystroke — no extra retry button needed.
+    void loadIndex()
+      .then((index) => render(input.value, index))
+      .catch(() => renderError(input.value));
   });
 }

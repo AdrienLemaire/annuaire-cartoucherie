@@ -26,3 +26,15 @@ test("Keeps the search field at 16px so iOS does not zoom the page on focus", as
     .evaluate((el) => Number.parseFloat(getComputedStyle(el).fontSize));
   expect(size).toBeGreaterThanOrEqual(16);
 });
+
+// A first visit on a weak connection is this project's founding scenario, and no
+// service-worker cache exists yet on a first visit — so a failed fetch must say
+// something rather than leave the box looking broken while someone types into it
+// (task-12 fix round 1, finding 2). This is a decision that could have gone the
+// other way (silent, message, or retry-forever), so it earns a test of its own.
+test("Tells the visitor when the index fails to load, in French", async ({ page }) => {
+  await page.route("**/recherche.json", (route) => route.abort());
+  await page.goto("/");
+  await page.getByRole("searchbox").fill(someone.metier);
+  await expect(page.getByText(COPY.searchLoadError)).toBeVisible();
+});
