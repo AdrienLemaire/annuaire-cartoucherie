@@ -34,8 +34,14 @@ interface Props {
   member: Member;
   categories?: Category[];
   variant?: "annuaire" | "carte";
+  // Same convention as MemberCard.astro's own `priority`: the first row is the
+  // page's own LCP element on /annuaire and /categorie/[slug] (task-15-report.md,
+  // Lighthouse's own largest-contentful-paint-element trace) — every row past
+  // it stays lazy, off the critical path.
+  priority?: boolean;
 }
-const { member, categories = [], variant = "annuaire" } = Astro.props;
+const { member, categories = [], variant = "annuaire", priority = false } = Astro.props;
+const loading = priority ? "eager" : "lazy";
 const chips = categories.filter((c) => member.categories.includes(c.slug));
 const fixed = hasAddress(member);
 const homeIcon = fixed ? undefined : homeServiceIcon(member, categories);
@@ -54,7 +60,8 @@ const telDisplay = member.tel ? formatTelDisplay(member.tel) : null;
         alt={COPY.portraitAlt(member.nom)}
         width="128"
         height="128"
-        loading="lazy"
+        loading={loading}
+        fetchpriority={priority ? "high" : undefined}
         decoding="async"
         class="w-[92px] h-[124px] shrink-0 self-start object-cover"
         style="object-position:50% 25%"
@@ -102,7 +109,8 @@ const telDisplay = member.tel ? formatTelDisplay(member.tel) : null;
           alt={COPY.portraitAlt(member.nom)}
           width="128"
           height="128"
-          loading="lazy"
+          loading={loading}
+          fetchpriority={priority ? "high" : undefined}
           decoding="async"
           class="w-[116px] shrink-0 self-stretch object-cover"
         />

@@ -34,6 +34,8 @@ const { withColly = false, value = "", action = "/annuaire" } = Astro.props;
       alt={COPY.searchCollyAlt}
       width="400"
       height="473"
+      fetchpriority="high"
+      decoding="async"
       class="pointer-events-none select-none absolute h-auto"
       style="bottom:calc(100% - 34px); right:6px; width:140px"
     />

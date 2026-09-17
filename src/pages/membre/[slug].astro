@@ -83,7 +83,7 @@ const primaryIcon = chips[0]?.icon;
     </div>
     <div class="relative mx-auto -mt-8 max-w-[1160px] px-5">
       <div class="carte rounded-[24px] bg-white p-5 sm:p-7">
-        <h1 id="nom-membre" class="ff text-grand text-teal-900">{member.nom}</h1>
+        <h1 id="nom-membre" class="ff break-words text-grand text-teal-900">{member.nom}</h1>
         <p class="mt-1.5 text-[20px] text-neutre-800">{member.metier}</p>
         {
           chips.length > 0 && (
@@ -122,7 +122,7 @@ const primaryIcon = chips[0]?.icon;
   <section class="mx-auto max-w-[1160px] px-5 py-8" aria-labelledby="t-contact">
     <h2 id="t-contact" class="ff text-nom text-teal-900">{COPY.profileContact(article)}</h2>
     <div class="filet mt-2.5 mb-5 h-[3px] w-16 rounded-full"></div>
-    <ul class="m-0 grid list-none gap-2.5 p-0 sm:grid-cols-3">
+    <ul class="m-0 grid grid-cols-1 list-none gap-2.5 p-0 sm:grid-cols-3">
       {
         contacts.map((c) => (
           <li>
@@ -155,7 +155,7 @@ const primaryIcon = chips[0]?.icon;
   <section class="mx-auto max-w-[1160px] px-5 py-8" aria-labelledby="t-services">
     <h2 id="t-services" class="ff text-nom text-teal-900">{COPY.profileOffers(pronoun)}</h2>
     <div class="filet mt-2.5 mb-5 h-[3px] w-16 rounded-full"></div>
-    <ul class="m-0 grid list-none gap-3 p-0 sm:grid-cols-3">
+    <ul class="m-0 grid grid-cols-1 list-none gap-3 p-0 sm:grid-cols-3">
       {
         member.services.map((service) => (
           <li class="flex min-h-[64px] items-center gap-3.5 rounded-[16px] bg-neutre-100 px-4 py-4">
@@ -166,7 +166,7 @@ const primaryIcon = chips[0]?.icon;
                 </svg>
               </span>
             )}
-            <span class="text-corps font-semibold text-teal-900">{service}</span>
+            <span class="min-w-0 break-words text-corps font-semibold text-teal-900">{service}</span>
           </li>
         ))
       }
@@ -177,7 +177,7 @@ const primaryIcon = chips[0]?.icon;
     <h2 id="t-ou" class="ff text-nom text-teal-900">{COPY.profileWhere(article)}</h2>
     <div class="filet mt-2.5 mb-5 h-[3px] w-16 rounded-full"></div>
     <div class="carte flex items-start gap-4 rounded-[20px] bg-white p-5">
-      <span class="pastille pastille--teal mt-0.5 h-11 w-11 shrink-0 bg-teal-50 text-teal-700">
+      <span class="pastille pastille--teal mt-0.5 h-[44px] w-[44px] shrink-0 bg-teal-50 text-teal-700">
         <Icon name="pin" class="h-5 w-5" />
       </span>
       <div class="min-w-0">
@@ -189,7 +189,7 @@ const primaryIcon = chips[0]?.icon;
               {member.surCarte && (
                 <a
                   href={`/carte#pin-${member.slug}`}
-                  class="inline-flex min-h-[44px] items-center gap-2 text-corps font-semibold text-teal-700 underline decoration-teal-300 underline-offset-4 hover:decoration-teal-600"
+                  class="inline-flex min-w-0 max-w-full min-h-[44px] items-center gap-2 text-corps font-semibold text-teal-700 underline decoration-teal-300 underline-offset-4 hover:decoration-teal-600"
                 >
                   {COPY.profileOnMap(article)} <Icon name="chev" class="h-4 w-4" />
                 </a>

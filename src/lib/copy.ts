@@ -102,6 +102,11 @@ export const COPY = {
   directoryFilterLabel: "Filtrer par métier",
   directoryAllChip: "Tous les métiers",
   directoryMapLink: "Voir ces fiches sur la carte",
+  // sr-only: MemberRow's own <h3> per row otherwise skips straight from the
+  // page's <h1> to an <h3> with nothing in between — an invalid heading order
+  // (task-15-report.md, Lighthouse's heading-order audit). Not shown visually
+  // so the approved mockup's own layout stays byte-for-byte unchanged.
+  directoryListHeading: "Liste des voisins",
   // annuaire.html's own #compte-detail default, shown until a filter names
   // itself: "Tous les métiers, du plus fourni au plus rare."
   directoryDetailDefault: "Tous les métiers, du plus fourni au plus rare.",
@@ -332,7 +337,6 @@ export const COPY = {
   // and SiteFooter.astro free of hardcoded French (task-3-report.md documents each
   // as a deviation). Text is copied verbatim from docs/mockups/final/index.html
   // and docs/mockups/final/styleguide.html block 21, except where noted.
-  headerHomeAria: "Annuaire de la Cartoucherie, accueil",
   // SiteHeader's secondary link, parametrized (task-3-report.md fix report): the label
   // when it goes back to "/" (docs/mockups/final/annuaire.html) and the label plus
   // screen-reader suffix when it goes back to the directory

@@ -5,6 +5,15 @@ import IconSprite from "../components/IconSprite.astro";
 import SiteHeader from "../components/SiteHeader.astro";
 import SiteFooter from "../components/SiteFooter.astro";
 import { COPY } from "../lib/copy";
+// The `latin` subset only (not `latin-ext`, task-15-report.md's own reading
+// of the brief's "the two font files"): every page's body text and every
+// .ff heading sits on the critical rendering path, and Lighthouse's own LCP
+// trace named render delay, not the network, as most of the budget overrun —
+// exactly what a preload (found before the CSS's own @font-face is parsed)
+// fixes. `?url` resolves to the same hashed, cache-busted path global.css's
+// own @font-face already emits, so this never drifts from it by hand.
+import fraunces from "../fonts/fraunces-latin.woff2?url";
+import sourceSans from "../fonts/source-sans-3-latin.woff2?url";
 
 interface Props {
   title: string;
@@ -27,6 +36,8 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <link rel="preload" href={sourceSans} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={fraunces} as="font" type="font/woff2" crossorigin />
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
@@ -37,6 +48,15 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
     <meta property="og:url" content={canonical} />
     <meta name="theme-color" content="#ffffff" />
     <link rel="manifest" href="/manifest.webmanifest" />
+    {
+      // Without an explicit rel=icon, Chrome still auto-requests /favicon.ico
+      // and logs its 404 to the console — Lighthouse's errors-in-console audit
+      // (best-practices) catches exactly that. public/favicon.ico (a copy of
+      // the PWA icon already declared in manifest.webmanifest) answers both
+      // the auto-probe and this link.
+    }
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" href="/icon-192.png" type="image/png" />
     <slot name="head" />
     <style>
       /* Safe-area insets. Without them the sticky « Appeler » bar sits under the

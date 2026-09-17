@@ -41,7 +41,7 @@ const eager = priority ? "eager" : "lazy";
 const homeIcon = fixed ? undefined : homeServiceIcon(member, categories);
 ---
 
-<a href={`/membre/${member.slug}`} class="carte-lien block max-w-[176px]">
+<a href={`/membre/${member.slug}`} class="carte-lien block min-w-0 max-w-[176px]">
   {
     fixed ? (
       <article class="carte rounded-box bg-white overflow-hidden">
@@ -55,9 +55,9 @@ const homeIcon = fixed ? undefined : homeServiceIcon(member, categories);
           class="w-full h-[150px] object-cover"
         />
         <div class="p-4">
-          <h3 class="ff mt-2.5 text-[25px] leading-[1.05] text-teal-900">{member.nom}</h3>
-          <p class="mt-1 text-corps font-semibold text-neutre-900">{member.metier}</p>
-          <p class="mt-1.5 text-[16px] leading-snug text-neutre-700">{member.accroche}</p>
+          <h3 class="ff break-words mt-2.5 text-[25px] leading-[1.05] text-teal-900">{member.nom}</h3>
+          <p class="break-words mt-1 text-corps font-semibold text-neutre-900">{member.metier}</p>
+          <p class="break-words mt-1.5 text-[16px] leading-snug text-neutre-700">{member.accroche}</p>
           <p class="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1 text-[16px] text-neutre-700">
             <span class="inline-flex items-center gap-1">
               <Icon name="etoile" class="w-4 h-4 text-sable-700" />
@@ -83,9 +83,9 @@ const homeIcon = fixed ? undefined : homeServiceIcon(member, categories);
           class="w-[124px] h-[124px] rounded-full object-cover shadow-carte"
           style="box-shadow: 0 0 0 3px #fff, var(--shadow-carte);"
         />
-        <h3 class="ff mt-3.5 text-[21px] leading-tight text-teal-900">{member.nom}</h3>
-        <p class="mt-0.5 text-corps text-neutre-900">{member.metier}</p>
-        <p class="mt-1.5 text-[16px] leading-snug text-neutre-700">{member.accroche}</p>
+        <h3 class="ff break-words mt-3.5 text-[21px] leading-tight text-teal-900">{member.nom}</h3>
+        <p class="break-words mt-0.5 text-corps text-neutre-900">{member.metier}</p>
+        <p class="break-words mt-1.5 text-[16px] leading-snug text-neutre-700">{member.accroche}</p>
         <p class="mt-2 inline-flex items-center gap-1.5 text-[16px] font-semibold text-teal-800">
           {homeIcon && (
             <svg class="w-4 h-4 shrink-0 text-teal-600" aria-hidden="true">

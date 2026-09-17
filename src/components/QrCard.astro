@@ -31,7 +31,7 @@ const file = `/qr/${slug}.svg`;
     <a
       href={file}
       download={`qr-${slug}.svg`}
-      class="mt-4 inline-flex min-h-[48px] items-center gap-2 rounded-full bg-teal-700 px-5 text-corps font-semibold text-white hover:bg-teal-600"
+      class="mt-4 inline-flex max-w-full min-h-[48px] items-center gap-2 rounded-full bg-teal-700 px-5 text-corps font-semibold text-white hover:bg-teal-600"
     >
       <Icon name="dl" class="w-[18px] h-[18px]" />
       {COPY.qrDownload}

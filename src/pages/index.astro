@@ -48,7 +48,7 @@ const onMapCount = members.filter((m) => m.surCarte).length;
   <section class="mx-auto max-w-[1160px] px-5 pt-8" aria-labelledby="t-cherche">
     <h1
       id="t-cherche"
-      class="ff text-[clamp(3rem,13vw,4.5rem)] leading-[0.9] tracking-[-0.032em] text-teal-900"
+      class="ff break-words text-[clamp(3rem,13vw,4.5rem)] leading-[0.9] tracking-[-0.032em] text-teal-900"
     >
       {COPY.homeTitle}
     </h1>
@@ -94,11 +94,11 @@ const onMapCount = members.filter((m) => m.surCarte).length;
   </section>
 
   <section class="mx-auto max-w-[1160px] px-5 mt-10" aria-labelledby="t-parcourir">
-    <h2 id="t-parcourir" class="ff text-nom text-teal-900">
+    <h2 id="t-parcourir" class="ff break-words text-nom text-teal-900">
       {COPY.homeBrowseOtherwise}
     </h2>
     <p class="mt-3 text-corps text-neutre-800 max-w-[52ch]">{COPY.homeBrowseIntro}</p>
-    <ul class="mt-5 grid gap-3 sm:grid-cols-2 max-w-[860px] list-none p-0 m-0">
+    <ul class="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2 max-w-[860px] list-none p-0 m-0">
       <li class="flex">
         <a
           href="/annuaire"

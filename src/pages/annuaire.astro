@@ -76,7 +76,7 @@ const populated = counted.filter((c) => c.count > 0);
       hidden
       aria-live="polite"
       aria-atomic="true"
-      class="mt-6 grid gap-3 mx-auto max-w-[620px] min-[940px]:max-w-none min-[940px]:grid-cols-2"
+      class="mt-6 grid grid-cols-1 gap-3 mx-auto max-w-[620px] min-[940px]:max-w-none min-[940px]:grid-cols-2"
     ></div>
 
     <div data-browse>
@@ -162,10 +162,11 @@ const populated = counted.filter((c) => c.count > 0);
         </a>
       </p>
 
-      <ul class="mt-6 grid gap-3 mx-auto max-w-[620px] min-[940px]:max-w-none min-[940px]:grid-cols-2 list-none p-0 m-0">
-        {members.map((m) => (
+      <h2 id="t-liste" class="sr-only">{COPY.directoryListHeading}</h2>
+      <ul aria-labelledby="t-liste" class="mt-6 grid grid-cols-1 gap-3 mx-auto max-w-[620px] min-[940px]:max-w-none min-[940px]:grid-cols-2 list-none p-0 m-0">
+        {members.map((m, i) => (
           <li data-member data-cat={m.categories.join(" ")}>
-            <MemberRow member={m} categories={categories} />
+            <MemberRow member={m} categories={categories} priority={i === 0} />
           </li>
         ))}
       </ul>

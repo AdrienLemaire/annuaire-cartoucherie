@@ -43,7 +43,7 @@ const { categories } = Astro.props;
           <a class="besoin flex items-start gap-3 px-5 py-1.5 min-h-[56px]" href={`/categorie/${c.slug}`}>
             <span class="num tnum mt-1 w-6 shrink-0 text-[16px] font-bold text-neutre-600 before:content-[counter(besoin,decimal-leading-zero)]" />
             <span class="min-w-0 flex-1">
-              <span class="ff block text-besoin text-teal-800">{c.besoin}</span>
+              <span class="ff block break-words text-besoin text-teal-800">{c.besoin}</span>
               <span class="mt-0.5 block text-[16px] leading-[1.15] text-neutre-700">
                 {c.motsCles.slice(0, 3).join(", ")} · <span class="font-semibold text-neutre-800">{formatMemberCount(c.count, c.genders)}</span>
               </span>
