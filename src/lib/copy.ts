@@ -21,7 +21,14 @@ export const COPY = {
   searchLocal: "Rien n'est envoyé à un serveur : le calcul reste sur votre téléphone.",
   searchEmpty: "Personne ne correspond à cette recherche.",
   searchSuggest: "Vous connaissez quelqu'un ?",
+  // The mailto: subject when a visitor offers a name for an empty category
+  // (NeedsIndex, task-6 brief) — one string, so the format lives here and
+  // never in a component's frontmatter.
+  searchSuggestSubject: (nom: string) => `Un voisin pour « ${nom} »`,
   searchReason: (reason: string) => `Correspond à ${reason}`,
+  // SearchBar's colly-couleur.png alt (styleguide block "La barre de
+  // recherche"): the only place that image renders, so one string is enough.
+  searchCollyAlt: "Colly, la créature des Halles de la Cartoucherie, agrippée au bord de la barre de recherche",
 
   directoryAll: "Voir tout le quartier",
   categoryNobody: "Personne ne s'est encore inscrit·e dans cette catégorie.",

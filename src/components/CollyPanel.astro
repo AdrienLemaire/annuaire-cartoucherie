@@ -1,0 +1,103 @@
+---
+// src/components/CollyPanel.astro
+// Styleguide block "Les états Colly" (id="b-colly") plus the two other
+// mockup specimens it documents but does not repeat inline: the accueil
+// "salut" panel (index.html, bg-sable-100), the "aucun résultat" panel
+// (index.html/annuaire.html/styleguide, bg-teal-50) and the profile
+// "joyeux" avis invitation (membre.html, bg-sauge-50). Deviation from the
+// task-6 brief, reported in task-6-report.md: the brief says CollyPanel
+// applies .colly-fond, but no mockup specimen uses that gradient for this
+// panel — each pose keeps its own flat background exactly as composed, so
+// this table is data (dims, background, disc, title size), not computed
+// logic, and every class list is copied verbatim from its specimen.
+// Colly's three pencil sketches are opaque paper: .croquis (multiply blend
+// + greyscale) bleeds the paper into the panel colour so only the graphite
+// survives. colly-couleur.png is the only transparent, colour asset and
+// has no panel specimen in the mockups — it reuses the "salut" shape
+// (closest structural match) without .croquis, noted as an assumption.
+const PANELS = {
+  salut: {
+    dims: { width: 320, height: 305 },
+    panel: "relative rounded-[26px] bg-sable-100 px-5 py-8 overflow-hidden",
+    disc: "mx-auto w-[168px] h-[168px] rounded-full bg-sable-200 overflow-hidden grid place-items-center",
+    discStyle: "box-shadow: inset 0 0 0 2px var(--color-sable-300), 0 0 0 8px var(--color-sable-50)",
+    img: "croquis w-[190px] h-auto",
+    title: "ff mt-6 text-[32px] leading-tight text-teal-950",
+    text: "mt-3 text-corps text-teal-950",
+  },
+  triste: {
+    dims: { width: 260, height: 260 },
+    panel: "rounded-[24px] bg-teal-50 px-6 py-9 text-center",
+    disc: "mx-auto w-[132px] h-[132px] rounded-full bg-teal-50 overflow-hidden grid place-items-center",
+    discStyle: "",
+    img: "croquis w-[150px] h-auto -mt-2",
+    title: "ff mt-3 text-[26px] text-teal-900",
+    text: "mt-2 text-corps text-neutre-800",
+  },
+  joyeux: {
+    dims: { width: 260, height: 260 },
+    panel: "rounded-[22px] bg-sauge-50 p-5 sm:flex sm:items-center sm:gap-6",
+    disc: "mx-auto sm:mx-0 w-[104px] h-[104px] rounded-full bg-sauge-100 overflow-hidden grid place-items-center shrink-0",
+    discStyle: "box-shadow: inset 0 0 0 2px var(--color-sauge-200)",
+    img: "croquis w-[104px] h-auto",
+    title: "ff text-[22px] leading-snug text-teal-900",
+    text: "mt-1.5 text-corps text-neutre-800 max-w-[52ch]",
+  },
+  couleur: {
+    dims: { width: 400, height: 473 },
+    panel: "relative rounded-[26px] bg-sable-100 px-5 py-8 overflow-hidden",
+    disc: "mx-auto w-[168px] h-[168px] rounded-full bg-sable-200 overflow-hidden grid place-items-center",
+    discStyle: "box-shadow: inset 0 0 0 2px var(--color-sable-300), 0 0 0 8px var(--color-sable-50)",
+    img: "w-[190px] h-auto",
+    title: "ff mt-6 text-[32px] leading-tight text-teal-950",
+    text: "mt-3 text-corps text-teal-950",
+  },
+} as const;
+
+interface Props {
+  pose: "couleur" | "salut" | "joyeux" | "triste";
+  title: string;
+  text: string;
+}
+const { pose, title, text } = Astro.props;
+const p = PANELS[pose];
+const headingId = `t-colly-${pose}`;
+// salut/couleur sit over the .ventouses top decoration: their content needs
+// its own stacking context (a "relative" wrapper) to paint above it — the
+// exact structure the mockup uses. triste/joyeux have no ventouses, so the
+// disc and body are direct, unwrapped children of the panel.
+const hasVentouses = pose === "salut" || pose === "couleur";
+const bodyClass = pose === "joyeux" ? "mt-4 sm:mt-0 text-center sm:text-left" : "";
+---
+
+<section class="px-5 py-6" aria-labelledby={headingId}>
+  <div class={p.panel}>
+    {hasVentouses ? (
+      <>
+        <div
+          class="ventouses pointer-events-none absolute inset-x-0 top-0 h-[250px]"
+          style="-webkit-mask-image:linear-gradient(to bottom,#000 58%,transparent); mask-image:linear-gradient(to bottom,#000 58%,transparent)"
+        />
+        <div class="relative">
+          <div class={p.disc} style={p.discStyle}>
+            <img src={`/colly/colly-${pose}.png`} alt="" width={p.dims.width} height={p.dims.height} class={p.img} />
+          </div>
+          <div class={bodyClass}>
+            <h2 id={headingId} class={p.title}>{title}</h2>
+            <p class={p.text}>{text}</p>
+          </div>
+        </div>
+      </>
+    ) : (
+      <>
+        <div class={p.disc} style={p.discStyle}>
+          <img src={`/colly/colly-${pose}.png`} alt="" width={p.dims.width} height={p.dims.height} class={p.img} />
+        </div>
+        <div class={bodyClass}>
+          <h2 id={headingId} class={p.title}>{title}</h2>
+          <p class={p.text}>{text}</p>
+        </div>
+      </>
+    )}
+  </div>
+</section>
