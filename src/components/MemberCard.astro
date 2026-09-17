@@ -5,21 +5,30 @@
 // disc specimen (lines 1085-1112, itinerant, on .colly-fond with a white
 // ring) — a grid tile for the directory and a category page. One tap
 // target — the whole card, wrapped in a single <a> — so it carries no chips
-// (a chip inside a link is a link inside a link) and no call button.
+// (a chip inside a link is a link inside a link) and no call button. The
+// optional `categories` prop exists only to resolve the disc variant's
+// "vient chez vous" icon (homeServiceIcon) — pass it when a caller wants
+// that icon; omitting it renders the same text with no icon. That icon is a
+// "c-*" sprite id (a category's own icon, src/content/schemas.ts), referenced
+// directly rather than through Icon.astro — IconSprite.astro's own comment:
+// "Icon.astro references the 'i-' ones … category components reference the
+// 'c-' ones directly".
 import Icon from "./Icon.astro";
 import { COPY } from "../lib/copy";
 import { agree } from "../lib/gender";
-import { formatNote, hasAddress } from "../lib/members";
-import type { Member } from "../content/schemas";
+import { formatNote, hasAddress, homeServiceIcon } from "../lib/members";
+import type { Category, Member } from "../content/schemas";
 
 interface Props {
   member: Member;
   priority?: boolean;
+  categories?: Category[];
 }
-const { member, priority = false } = Astro.props;
+const { member, priority = false, categories = [] } = Astro.props;
 const fixed = hasAddress(member);
 const alt = COPY.portraitAlt(member.nom);
 const eager = priority ? "eager" : "lazy";
+const homeIcon = fixed ? undefined : homeServiceIcon(member, categories);
 ---
 
 <a href={`/membre/${member.slug}`} class="carte-lien block max-w-[176px]">
@@ -67,7 +76,14 @@ const eager = priority ? "eager" : "lazy";
         <h3 class="ff mt-3.5 text-[21px] leading-tight text-teal-900">{member.nom}</h3>
         <p class="mt-0.5 text-corps text-neutre-900">{member.metier}</p>
         <p class="mt-1.5 text-[16px] leading-snug text-neutre-700">{member.accroche}</p>
-        <p class="mt-2 text-[16px] font-semibold text-teal-800">{COPY.comesToYou(agree(member.genre, "elle"))}</p>
+        <p class="mt-2 inline-flex items-center gap-1.5 text-[16px] font-semibold text-teal-800">
+          {homeIcon && (
+            <svg class="w-4 h-4 shrink-0 text-teal-600" aria-hidden="true">
+              <use href={`#${homeIcon}`} />
+            </svg>
+          )}
+          {COPY.comesToYou(agree(member.genre, "elle"))}
+        </p>
         <p class="mt-1.5 inline-flex items-center gap-1 text-[16px] text-neutre-700">
           <Icon name="etoile" class="w-4 h-4 text-sable-700" />
           {formatNote(member.note)}

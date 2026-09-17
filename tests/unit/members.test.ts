@@ -27,8 +27,8 @@ describe("Member helpers", () => {
   // hide the one place a visitor can say « I know someone for this ».
   it("Counts a category without dropping the empty one", () => {
     const categories: Category[] = [
-      { slug: "a", nom: "A", besoin: "Besoin A", motsCles: ["a"] },
-      { slug: "vide", nom: "Vide", besoin: "Besoin vide", motsCles: ["v"] },
+      { slug: "a", nom: "A", besoin: "Besoin A", motsCles: ["a"], icon: "c-a" },
+      { slug: "vide", nom: "Vide", besoin: "Besoin vide", motsCles: ["v"], icon: "c-vide" },
     ];
     const counted = withCounts(categories, [member({ categories: ["a"] })]);
     expect(counted.map((c) => c.count)).toEqual([1, 0]);

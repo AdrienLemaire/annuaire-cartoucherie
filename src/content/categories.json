@@ -11,7 +11,8 @@
         "équilibre",
         "fatigue",
         "détente"
-      ]
+      ],
+      "icon": "c-sante"
     },
     {
       "slug": "beaute-soins",
@@ -22,7 +23,8 @@
         "couleur",
         "soins",
         "beauté"
-      ]
+      ],
+      "icon": "c-beaute"
     },
     {
       "slug": "artisanat-travaux",
@@ -35,7 +37,8 @@
         "meuble",
         "électricité",
         "bricolage"
-      ]
+      ],
+      "icon": "c-artisanat"
     },
     {
       "slug": "alimentation-traiteur",
@@ -46,7 +49,8 @@
         "plats à emporter",
         "cuisine",
         "buffet"
-      ]
+      ],
+      "icon": "c-alimentation"
     },
     {
       "slug": "conseil-entreprise",
@@ -58,7 +62,8 @@
         "gestion",
         "entreprise",
         "association"
-      ]
+      ],
+      "icon": "c-conseil"
     },
     {
       "slug": "numerique-creation",
@@ -71,7 +76,8 @@
         "logo",
         "photo",
         "internet"
-      ]
+      ],
+      "icon": "c-numerique"
     },
     {
       "slug": "enfance-education",
@@ -82,7 +88,8 @@
         "soutien scolaire",
         "éducation",
         "garde"
-      ]
+      ],
+      "icon": "c-enfance"
     },
     {
       "slug": "sport-mouvement",
@@ -94,7 +101,8 @@
         "sport",
         "forme",
         "souplesse"
-      ]
+      ],
+      "icon": "c-sport"
     },
     {
       "slug": "art-culture",
@@ -106,7 +114,8 @@
         "art",
         "portrait",
         "dessin"
-      ]
+      ],
+      "icon": "c-art"
     },
     {
       "slug": "services-domicile",
@@ -117,7 +126,8 @@
         "dépannage",
         "ménage",
         "aide"
-      ]
+      ],
+      "icon": "c-domicile"
     }
   ]
 }

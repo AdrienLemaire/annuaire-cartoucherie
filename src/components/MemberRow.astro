@@ -6,12 +6,16 @@
 // stretched link (before:absolute before:inset-0, positioned against the
 // portrait+info wrapper's own `relative`) covers the portrait, name, trade,
 // rating and distance; the chips and the call chip sit in a footer bar below,
-// outside that link, so no link nests inside another.
+// outside that link, so no link nests inside another. The itinerant note's
+// icon is a "c-*" sprite id (a category's own icon, src/content/schemas.ts),
+// referenced directly rather than through Icon.astro — IconSprite.astro's own
+// comment: "Icon.astro references the 'i-' ones … category components
+// reference the 'c-' ones directly".
 import CategoryChip from "./CategoryChip.astro";
 import Icon from "./Icon.astro";
 import { COPY } from "../lib/copy";
 import { agree } from "../lib/gender";
-import { formatNote, hasAddress } from "../lib/members";
+import { formatNote, hasAddress, homeServiceIcon } from "../lib/members";
 import { formatTelDisplay, formatTelHref } from "../lib/phone";
 import type { Category, Member } from "../content/schemas";
 
@@ -22,6 +26,7 @@ interface Props {
 const { member, categories = [] } = Astro.props;
 const chips = categories.filter((c) => member.categories.includes(c.slug));
 const fixed = hasAddress(member);
+const homeIcon = fixed ? undefined : homeServiceIcon(member, categories);
 const telHref = member.tel ? formatTelHref(member.tel) : null;
 const telDisplay = member.tel ? formatTelDisplay(member.tel) : null;
 ---
@@ -58,6 +63,11 @@ const telDisplay = member.tel ? formatTelDisplay(member.tel) : null;
             </span>
           ) : (
             <span class="inline-flex items-center gap-1 font-semibold text-teal-800">
+              {homeIcon && (
+                <svg class="w-4 h-4 text-teal-600" aria-hidden="true">
+                  <use href={`#${homeIcon}`} />
+                </svg>
+              )}
               {COPY.comesToYou(agree(member.genre, "elle"))}
             </span>
           )

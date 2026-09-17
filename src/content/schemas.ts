@@ -41,5 +41,11 @@ export const categorySchema = z.object({
   nom: z.string().min(1),
   besoin: z.string().min(9, "besoin: the « Je cherche… » phrasing, not a label"),
   motsCles: z.array(z.string()).min(1, "motsCles: the landing page advertises these"),
+  // The IconSprite.astro symbol id for this category (« c-sante », « c-domicile »…).
+  // The slug does not derive it (services-domicile → c-domicile breaks any simple
+  // rule), so it is a required field, not a lookup table living apart from the
+  // record it describes: a category added later without one fails the build
+  // loudly instead of rendering an invisible empty <svg>.
+  icon: z.string().regex(/^c-[a-z]+$/, "icon: a sprite id like « c-sante »"),
 });
 export type Category = z.infer<typeof categorySchema>;

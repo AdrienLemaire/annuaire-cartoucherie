@@ -9,6 +9,20 @@ export function hasAddress(member: Pick<Member, "distance">): boolean {
   return member.distance.trim() !== "—";
 }
 
+/**
+ * The icon for « Il/Elle vient chez vous ». Both approved specimens
+ * (styleguide.html:1099, annuaire.html:576) tie the itinerant note to the
+ * « Services à domicile » category's own icon, not to whichever category a
+ * member lists first: Amandine (beaute-soins, services-domicile) and Julien
+ * (artisanat-travaux, services-domicile) both render #c-domicile, even though
+ * services-domicile is second in both lists. Returns undefined — no icon,
+ * not a wrong one — for an itinerant member who isn't tagged services-domicile.
+ */
+export function homeServiceIcon(member: Pick<Member, "categories">, categories: Category[]): string | undefined {
+  if (!member.categories.includes("services-domicile")) return undefined;
+  return categories.find((c) => c.slug === "services-domicile")?.icon;
+}
+
 function metres(distance: string): number {
   if (!hasAddress({ distance })) return Number.POSITIVE_INFINITY;
   const value = Number.parseFloat(distance.replace(",", "."));

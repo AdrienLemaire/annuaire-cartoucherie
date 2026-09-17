@@ -9,8 +9,8 @@ const members: Member[] = [
 ];
 
 const categories: Category[] = [
-  { slug: "travaux", nom: "Artisanat & travaux", besoin: "Réparer chez moi", motsCles: ["dépannage"] },
-  { slug: "equilibre", nom: "Santé & bien-être", besoin: "Retrouver l'équilibre", motsCles: ["énergie"] },
+  { slug: "travaux", nom: "Artisanat & travaux", besoin: "Réparer chez moi", motsCles: ["dépannage"], icon: "c-artisanat" },
+  { slug: "equilibre", nom: "Santé & bien-être", besoin: "Retrouver l'équilibre", motsCles: ["énergie"], icon: "c-sante" },
 ];
 
 const index = buildIndex(members, categories);
