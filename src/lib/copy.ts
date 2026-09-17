@@ -27,7 +27,12 @@ export const COPY = {
   skipLink: "Aller au contenu",
   brandEyebrow: "Annuaire de",
   brandName: "la Cartoucherie",
-  contactEmail: "contact@lacartoucherie.fr",
+  // The single real contact address for the whole site (task-11-report.md, "fix round 2"):
+  // contact@lacartoucherie.fr was never supplied by anyone — no mockup or spec names it — it
+  // was invented on a real-sounding domain and wired into every mailtoHref() caller. Adrien
+  // supplied lemaire.adrien@gmail.com as the publication contact (task-11-brief.md); one real
+  // address beats a second, fabricated one live on the site.
+  contactEmail: "lemaire.adrien@gmail.com",
 
   homeTitle: "Je cherche…",
   homeIntro: "Les voisines et voisins qui habitent ou travaillent à la Cartoucherie.",
@@ -62,7 +67,12 @@ export const COPY = {
   searchLabel: "Un métier, un prénom, un besoin",
   searchPlaceholder: "électricien, yoga…",
   searchSubmit: "Trouver",
-  searchLocal: "Rien n'est envoyé à un serveur : le calcul reste sur votre téléphone.",
+  // What's true (spec §5 "Search index"): the whole member index is fetched once, like any
+  // other page asset, and every search/filter/map computation after that runs against it
+  // locally. What's promised here is the part visitors actually care about — not "zero
+  // network requests" (false: the index download is one), but that what they type is never
+  // sent anywhere. task-11-report.md, "fix round 2" — corrects an earlier, stronger claim.
+  searchLocal: "Ce que vous tapez ne quitte jamais votre téléphone : la recherche se fait dans la liste déjà chargée sur votre appareil.",
   searchEmpty: "Personne ne correspond à cette recherche.",
   searchSuggest: "Vous connaissez quelqu'un ?",
   // The mailto: subject when a visitor offers a name for an empty category
@@ -166,6 +176,15 @@ export const COPY = {
   mapGeoText:
     "Le repère du quartier : le classement est donc déjà juste. Vous pouvez aussi partir de là où vous êtes.",
   mapGeoTextYou: "Les distances ci-dessous sont recalculées à vol d'oiseau depuis là où vous êtes.",
+  // carte.astro's own reassurance line under the Classer/Non merci buttons
+  // (docs/mockups/final/carte.html's own alerte row) — used to reuse
+  // searchLocal, which read fine generically but went specifically about
+  // "ce que vous tapez" once corrected for the search bar (task-11-report.md,
+  // "fix round 2"), and there is no typing on this panel. Split so each
+  // context states the fact it actually demonstrates: src/client/geolocate.ts
+  // never calls fetch, confirmed by reading the file — the haversine math
+  // (src/lib/plan.ts) runs in the browser and nothing leaves it.
+  mapGeoLocal: "Elle n'est jamais envoyée ailleurs : le calcul des distances se fait ici, sur votre téléphone.",
   // « Non merci, je reste sur la Halle » (carte.html's own geo-refuser) — the
   // visible way to say no without the browser's own permission prompt being
   // the only exit. Never requests a position; src/client/geolocate.ts's own
@@ -220,6 +239,13 @@ export const COPY = {
   privacyIntro: "Ce site est volontairement simple : voici, sans détour, ce qu'il fait et ce qu'il ne fait pas.",
   privacyDoesTitle: "Ce que ce site fait",
   privacyDoesBrowsing: "Parcourir l'annuaire, une fiche ou la carte ne dépose rien sur votre appareil.",
+  // Same fact as searchLocal (spec §5), worded for this list rather than reusing that string
+  // verbatim: it names the one network request the claim doesn't cover (the index download)
+  // instead of leaving it implicit, so this page and the search bar's own reassurance agree
+  // rather than one looking stronger than the other.
+  privacyDoesSearch:
+    "La recherche télécharge une seule fois la liste du quartier, comme n'importe quelle page ; " +
+    "ce que vous tapez ensuite n'est jamais envoyé où que ce soit.",
   privacyDoesGeo:
     "Sur la carte, votre position n'est utilisée que si vous appuyez sur « Classer depuis ma " +
     "position » ; le calcul des distances se fait dans votre navigateur et votre position n'est " +
@@ -235,7 +261,6 @@ export const COPY = {
   legalDirectorTitle: "Directeur de la publication",
   legalDirectorName: "Adrien Lemaire.",
   legalContactTitle: "Contact",
-  legalContactEmail: "lemaire.adrien@gmail.com",
   legalHostTitle: "Hébergeur",
   legalHostIntro: "Ce site est hébergé par Cloudflare.",
   legalIpTitle: "Propriété intellectuelle",

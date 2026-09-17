@@ -24,4 +24,14 @@ corresponds to one line below. Task 16 checks that this list is empty before the
 ## Already known — not on this list
 
 - Publication director: Adrien Lemaire.
-- Legal-notice contact address: lemaire.adrien@gmail.com.
+- Contact address (the whole site, not just the legal notice): lemaire.adrien@gmail.com —
+  `COPY.contactEmail` in `src/lib/copy.ts`, the single address every `mailto:` link on the site
+  now uses. An earlier version of this file listed a second, invented address
+  (`contact@lacartoucherie.fr`) that nobody had supplied; it has been removed everywhere.
+
+## A note on the contact address
+
+The association may want its own address later, separate from Adrien's personal one. That's a
+one-line change in `COPY.contactEmail` — but, like the member slugs, not a free one: the address
+is already printed wherever this site has been printed (flyers, QR codes, business cards). A
+future change reaches the screen instantly; it does not reach anything already on paper.
