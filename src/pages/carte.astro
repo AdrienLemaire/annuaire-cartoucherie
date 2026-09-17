@@ -324,8 +324,21 @@ const pins = members.filter(isPinned).map((m) => ({
     )
   }
 
+  {
+    // Dynamic import, not a static one: a static `import "../client/geolocate"`
+    // here compiled to a bodyless <script type="module">…</script> with no
+    // src= (Astro inlines any hoisted script whose own chunk statically
+    // imports nothing else and stays under Vite's 4 KB assetsInlineLimit —
+    // node_modules/astro/dist/core/build/plugins/plugin-scripts.js,
+    // shouldInlineScriptChunk) — and this project's CSP (public/_headers,
+    // script-src 'self', no security.csp hash/nonce) blocks an inline script
+    // outright. Reported task-13-report.md; fixed here the same way
+    // BaseLayout.astro's own scripts were: a dynamic import carries a
+    // dynamicImports entry, which unconditionally disqualifies the chunk
+    // from inlining, so it ships as the external file CSP actually permits.
+  }
   <script>
-    import "../client/geolocate";
+    void import("../client/geolocate");
   </script>
 
   <style is:global>
