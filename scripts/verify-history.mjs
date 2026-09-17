@@ -10,25 +10,45 @@ import { execFileSync } from "node:child_process";
 
 const PATTERN = /members\.json|portraits\//;
 
-// The only two prefixes allowed to match, and why each is safe to exclude —
-// so a year from now this reads as a decision, not a convenience. Anything
-// else that matches is a real finding: this list must never grow to make a
-// failing run pass.
-const ALLOWED = [
+// tests/fixtures/ is a prefix, deliberately: it is the single, designated
+// container for the fictional fixture (CLAUDE.md, task-14-brief.md), governed
+// end to end by its own rules (the ARCEP phone range, the example.fr emails).
+// A new member added to it is still fictional by construction.
+//
+// docs/mockups/, by contrast, is where this project routinely drops new
+// design work — four variant directories already exist, plus brand/, design/
+// and _shots/ — so a prefix there would keep matching every future addition
+// without anyone having to widen it (task-14-report.md, fix round 2). Each
+// entry below is therefore the exact path already in history, not a prefix:
+// a new file under docs/mockups/ — including a future variant built against
+// real content to test 200 real neighbours — is NOT pre-approved and must
+// surface as unexplained.
+const ALLOWED_PREFIXES = [
   {
     prefix: "tests/fixtures/",
     why: "the permanent, fictional fixture (task-14-brief.md) — this is what's supposed to be here",
   },
-  {
-    prefix: "docs/mockups/",
-    why:
-      "design history that predates the private-content mechanism (Task 14): " +
-      "docs/mockups/_shared/members.json is explicitly labelled fictional in its own " +
-      "_note field, and docs/mockups/variant-b-portraits/ is a rejected design variant " +
-      'whose directory name merely contains the substring "portraits/" — neither ever ' +
-      "held real member data",
-  },
 ];
+
+const ALLOWED_EXACT = [
+  {
+    path: "docs/mockups/_shared/members.json",
+    why: "explicitly labelled fictional in its own _note field",
+  },
+  ...["README.md", "annuaire.html", "carte.html", "index.html", "membre.html"].map((name) => ({
+    path: `docs/mockups/variant-b-portraits/${name}`,
+    why:
+      "a rejected design variant; matches only because its directory name contains the " +
+      'substring "portraits/" — it holds no portrait file',
+  })),
+];
+
+function isAllowed(path) {
+  return (
+    ALLOWED_PREFIXES.some((rule) => path.startsWith(rule.prefix)) ||
+    ALLOWED_EXACT.some((rule) => rule.path === path)
+  );
+}
 
 function historyPaths() {
   const raw = execFileSync("git", ["log", "--all", "--name-only", "--pretty=format:"], {
@@ -38,7 +58,7 @@ function historyPaths() {
 }
 
 const matches = historyPaths().filter((path) => PATTERN.test(path));
-const unexplained = matches.filter((path) => !ALLOWED.some((rule) => path.startsWith(rule.prefix)));
+const unexplained = matches.filter((path) => !isAllowed(path));
 
 if (unexplained.length > 0) {
   console.error("verify-history: member data outside the fixture has reached git history:");
@@ -51,7 +71,10 @@ if (unexplained.length > 0) {
 }
 
 console.log(`verify-history: ${matches.length} historical match(es), all explained:`);
-for (const rule of ALLOWED) {
+for (const rule of ALLOWED_PREFIXES) {
   const count = matches.filter((path) => path.startsWith(rule.prefix)).length;
   console.log(`  ${count} under ${rule.prefix} — ${rule.why}`);
+}
+for (const rule of ALLOWED_EXACT) {
+  if (matches.includes(rule.path)) console.log(`  ${rule.path} — ${rule.why}`);
 }
