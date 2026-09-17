@@ -19,6 +19,7 @@
     "lint": "astro check && eslint . && tsc --noEmit && test -z \"$(find src -name index.ts)\" && jscpd src",
     "guard": "node scripts/forbidden.mjs",
     "guard:dist": "node scripts/forbidden-dist.mjs",
+    "verify:history": "node scripts/verify-history.mjs",
     "budgets": "node scripts/budgets.mjs",
     "lighthouse": "lhci autorun",
     "format": "prettier --write .",
