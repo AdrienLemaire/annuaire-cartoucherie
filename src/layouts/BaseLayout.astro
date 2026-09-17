@@ -10,8 +10,11 @@ interface Props {
   title: string;
   description: string;
   bodyClass?: string;
+  // Forwarded to SiteHeader's secondary link as-is; see its own Props for the
+  // shape and defaults. A page passes this instead of reaching past the layout.
+  header?: { href?: string; label?: string; srOnly?: string };
 }
-const { title, description, bodyClass = "" } = Astro.props;
+const { title, description, bodyClass = "", header = {} } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
 ---
 
@@ -52,7 +55,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
       {COPY.skipLink}
     </a>
     <IconSprite />
-    <SiteHeader />
+    <SiteHeader {...header} />
     <main id="contenu">
       <slot />
     </main>

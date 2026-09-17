@@ -1,11 +1,23 @@
 ---
 // src/components/SiteHeader.astro
-// Styleguide block 09 ("L'en-tête"), the "Accueil" specimen — markup and
-// tap-target classes copied from docs/mockups/final/index.html. The
-// fiche-membre variant (back link instead of "Je veux y figurer") is out of
-// scope: see task-3-report.md.
+// Styleguide block 09 ("L'en-tête"). The wordmark (left) is fixed, copied from
+// docs/mockups/final/index.html. The secondary link (right) varies per page —
+// docs/mockups/final/annuaire.html points it at "/" labelled « Accueil »;
+// docs/mockups/final/membre.html and carte.html point it at "/annuaire"
+// labelled « Annuaire » with a screen-reader-only suffix — so it is a prop,
+// defaulting to the "Accueil" case so BaseLayout's prop-less <SiteHeader />
+// keeps rendering that. The true home page's own "Je veux y figurer" link is
+// a structurally different piece of markup (no icon, hidden below sm, a
+// mailto href) and isn't covered by this prop: see task-3-report.md.
 import Icon from "./Icon.astro";
 import { COPY } from "../lib/copy";
+
+interface Props {
+  href?: string;
+  label?: string;
+  srOnly?: string;
+}
+const { href = "/", label = COPY.headerBackHome, srOnly } = Astro.props;
 ---
 
 <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-sm">
@@ -24,10 +36,12 @@ import { COPY } from "../lib/copy";
       </span>
     </a>
     <a
-      href={`mailto:${COPY.contactEmail}?subject=${encodeURIComponent(COPY.headerJoinSubject)}`}
-      class="hidden sm:inline-flex items-center gap-1.5 min-h-[44px] px-4 rounded-full text-etiquette tracking-normal font-semibold text-teal-700 hover:bg-teal-50"
+      href={href}
+      class="inline-flex items-center gap-2 min-h-[44px] px-3.5 rounded-full text-etiquette tracking-normal font-semibold text-teal-700 hover:bg-teal-50"
     >
-      {COPY.headerJoin}
+      <Icon name="retour" class="w-5 h-5" />
+      <span>{label}</span>
+      {srOnly && <span class="sr-only">{srOnly}</span>}
     </a>
   </div>
   <div class="filet h-[3px]"></div>

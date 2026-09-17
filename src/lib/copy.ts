@@ -67,6 +67,13 @@ export const COPY = {
   headerJoin: "Je veux y figurer",
   // The mailto subject from index.html's "Je veux y figurer" link, decoded.
   headerJoinSubject: "Je veux figurer dans l'annuaire",
+  // SiteHeader's secondary link, parametrized (task-3-report.md fix report): the label
+  // when it goes back to "/" (docs/mockups/final/annuaire.html) and the label plus
+  // screen-reader suffix when it goes back to the directory
+  // (docs/mockups/final/membre.html, carte.html).
+  headerBackHome: "Accueil",
+  headerBackDirectory: "Annuaire",
+  headerBackDirectorySr: "— retour à la liste des voisins",
   footerBrand: "Annuaire de la Cartoucherie",
   footerBlurb:
     "Fait bénévolement pour l'association de quartier, à partir des portraits réunis par " +
