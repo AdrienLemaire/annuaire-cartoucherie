@@ -13,6 +13,13 @@ directory = "./dist"
 # /annuaire/ -> /annuaire instead), matching the service worker's precache list
 # exactly. Re-check with `curl -sI <domain>/annuaire` after every deploy.
 html_handling = "drop-trailing-slash"
+# Default "none" serves an empty body on a 404 status for any unmatched path
+# (verified with `wrangler dev`, task-16-report.md fix round 1) — Cloudflare
+# does not pick up dist/404.html on its own. src/pages/404.astro exists
+# precisely because this project's QR codes are printed on paper and a stale
+# one is a real, expected visitor path, not an edge case; "404-page" is what
+# tells the asset server to actually serve it.
+not_found_handling = "404-page"
 
 # No [[routes]] custom-domain entry yet: the domain is not registered (spec §14).
 # Task 16 adds one here, matching astro.config.mjs's `site` and ci.yml's `smoke`
