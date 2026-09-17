@@ -64,9 +64,6 @@ export const COPY = {
   // as a deviation). Text is copied verbatim from docs/mockups/final/index.html
   // and docs/mockups/final/styleguide.html block 21, except where noted.
   headerHomeAria: "Annuaire de la Cartoucherie, accueil",
-  headerJoin: "Je veux y figurer",
-  // The mailto subject from index.html's "Je veux y figurer" link, decoded.
-  headerJoinSubject: "Je veux figurer dans l'annuaire",
   // SiteHeader's secondary link, parametrized (task-3-report.md fix report): the label
   // when it goes back to "/" (docs/mockups/final/annuaire.html) and the label plus
   // screen-reader suffix when it goes back to the directory
