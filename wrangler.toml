@@ -3,3 +3,18 @@ compatibility_date = "2026-09-01"
 
 [assets]
 directory = "./dist"
+# Default "auto-trailing-slash" 307-redirects /annuaire -> /annuaire/ (verified
+# with `wrangler dev`, 2026-09-17): Astro emits annuaire/index.html, and the
+# default handling only serves a folder index at its trailing-slash URL.
+# public/sw.js precaches the literal string "/annuaire" (no slash) via
+# cache.addAll; a cached *redirect* response cannot satisfy a navigation
+# request in Chrome, so the entry is silently useless offline. "drop-trailing-
+# slash" makes /annuaire itself the canonical, directly-served URL (redirecting
+# /annuaire/ -> /annuaire instead), matching the service worker's precache list
+# exactly. Re-check with `curl -sI <domain>/annuaire` after every deploy.
+html_handling = "drop-trailing-slash"
+
+# No [[routes]] custom-domain entry yet: the domain is not registered (spec §14).
+# Task 16 adds one here, matching astro.config.mjs's `site` and ci.yml's `smoke`
+# job's URL_PROD, once it is. Until then this Worker only has its
+# workers.dev subdomain.
