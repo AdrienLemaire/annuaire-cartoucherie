@@ -52,6 +52,13 @@ export const COPY = {
   searchCollyAlt: "Colly, la créature des Halles de la Cartoucherie, agrippée au bord de la barre de recherche",
 
   directoryAll: "Voir tout le quartier",
+  // annuaire.html's own H1 ("L'annuaire") and filter nav (aria-label and the
+  // label above the chip rail both read "Filtrer par métier"; the leading,
+  // always-present chip reads "Tous les métiers").
+  directoryTitle: "L'annuaire",
+  directoryFilterLabel: "Filtrer par métier",
+  directoryAllChip: "Tous les métiers",
+  directoryMapLink: "Voir ces fiches sur la carte",
   categoryNobody: "Personne ne s'est encore inscrit·e dans cette catégorie.",
   countNobody: "personne encore inscrit·e",
 

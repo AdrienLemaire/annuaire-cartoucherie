@@ -60,5 +60,17 @@ const wordmarkClass = `flex items-center gap-2.5 -ml-0.5 min-h-[44px]${srOnly ? 
       )
     }
   </div>
+  {
+    /* docs/mockups/final/annuaire.html nests its search form inside <header>,
+       above the filet, so it stays sticky with the wordmark row as the visitor
+       scrolls. Every other page leaves this slot empty, which renders nothing —
+       so the three variants above stay byte-identical to before this slot
+       existed. task-8-brief.md's own carried-over note names this gap. */
+    Astro.slots.has("under") && (
+      <div class="mx-auto max-w-[1160px] px-5 pb-3">
+        <slot name="under" />
+      </div>
+    )
+  }
   <div class="filet h-[3px]"></div>
 </header>

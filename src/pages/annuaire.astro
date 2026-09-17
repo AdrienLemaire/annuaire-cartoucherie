@@ -1,0 +1,124 @@
+---
+// src/pages/annuaire.astro
+// Composition authority: docs/mockups/final/annuaire.html. Its search form
+// lives inside <header>, above the filet, so it stays sticky with the
+// wordmark as the visitor scrolls — SiteHeader's "under" slot (this task)
+// carries it there via BaseLayout's header-extra slot. The form itself keeps
+// the mockup's own max-w-[720px] cap, added on the wrapper rather than inside
+// SearchBar.astro (Task 5's file, reused as-is here).
+//
+// One system, not two: the chip rail below is real `<a href="/categorie/…">`
+// links, including "Tous les métiers" (data-filter="") — /categorie/[slug] is
+// a prerendered page for every category, even the one nobody has joined — so
+// the page works with JavaScript disabled. src/client/category-filter.ts only
+// upgrades the click to filter in place, using data-count and the hidden
+// [data-empty-for] blocks this frontmatter already composed in French so the
+// script never has to. /categorie/[slug] and this page render the same
+// MemberRow, from the same withCounts/formatMemberCount pair, so a count
+// never reads different words depending on which route produced it.
+import BaseLayout from "../layouts/BaseLayout.astro";
+import MemberRow from "../components/MemberRow.astro";
+import SearchBar from "../components/SearchBar.astro";
+import { COPY } from "../lib/copy";
+import { mailtoHref } from "../lib/contact";
+import { loadCategories, loadMembers } from "../lib/collections";
+import { formatMemberCount, withCounts } from "../lib/members";
+
+const [members, categories] = await Promise.all([loadMembers(), loadCategories()]);
+const counted = withCounts(categories, members);
+const voisinsCount = formatMemberCount(
+  members.length,
+  members.map((m) => m.genre),
+);
+const empty = counted.filter((c) => c.count === 0);
+---
+
+<BaseLayout title={`${COPY.directoryTitle} — Annuaire de la Cartoucherie`} description={COPY.homeBrowseListText(members.length)}>
+  <Fragment slot="header-extra">
+    <div class="max-w-[720px]">
+      <SearchBar />
+    </div>
+  </Fragment>
+
+  <section class="mx-auto max-w-[1160px] px-5 pt-7" aria-labelledby="t-annuaire">
+    <h1 id="t-annuaire" class="ff text-nom text-teal-900 scroll-mt-[140px]">{COPY.directoryTitle}</h1>
+    <p class="mt-2 text-chapo text-neutre-800" aria-live="polite">
+      <span data-count-text>{voisinsCount}</span>
+    </p>
+
+    <nav class="mt-5" aria-label={COPY.directoryFilterLabel}>
+      <p class="text-etiquette font-semibold uppercase text-sauge-800">{COPY.directoryFilterLabel}</p>
+      <ul class="mt-2 flex gap-2 overflow-x-auto py-1.5 -mx-5 px-5 sm:flex-wrap sm:overflow-visible sm:mx-0 sm:px-0 list-none m-0">
+        <li>
+          <a
+            href="/annuaire"
+            data-filter=""
+            data-count={voisinsCount}
+            class="chip whitespace-nowrap inline-flex items-center gap-2 rounded-selector px-3.5 py-2 min-h-[44px] text-[16px] font-semibold hover:bg-sauge-200"
+          >
+            <svg class="w-[18px] h-[18px]" aria-hidden="true"><use href="#i-groupe" /></svg>
+            {COPY.directoryAllChip} <span class="tnum text-sauge-900">{members.length}</span>
+          </a>
+        </li>
+        {
+          counted.map((c) => (
+            <li>
+              <a
+                href={`/categorie/${c.slug}`}
+                data-filter={c.slug}
+                data-count={formatMemberCount(c.count, c.genders)}
+                class="chip whitespace-nowrap inline-flex items-center gap-2 rounded-selector px-3.5 py-2 min-h-[44px] text-[16px] font-semibold hover:bg-sauge-200"
+              >
+                <svg class="w-[18px] h-[18px]" aria-hidden="true">
+                  <use href={`#${c.icon}`} />
+                </svg>
+                {c.nom} <span class="tnum text-sauge-900">{c.count}</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <p class="mt-4">
+      <a
+        href="/carte"
+        class="inline-flex items-center gap-2 min-h-[44px] text-corps font-semibold text-teal-700 underline decoration-teal-300 underline-offset-4 hover:decoration-teal-600"
+      >
+        <svg class="w-[18px] h-[18px] text-teal-600" aria-hidden="true"><use href="#i-pin" /></svg>
+        {COPY.directoryMapLink}
+      </a>
+    </p>
+
+    <ul class="mt-6 grid gap-3 mx-auto max-w-[620px] min-[940px]:max-w-none min-[940px]:grid-cols-2 list-none p-0 m-0">
+      {
+        members.map((m) => (
+          <li data-member data-cat={m.categories.join(" ")}>
+            <MemberRow member={m} categories={categories} />
+          </li>
+        ))
+      }
+    </ul>
+
+    {
+      // Only the client filter can ever land a visitor on a zero-count category
+      // in place (a fresh page load of an empty one goes to /categorie/[slug],
+      // which already explains itself): one hidden block per empty category,
+      // composed here in French so category-filter.ts only toggles `hidden`.
+      empty.map((c) => (
+        <div data-empty-for={c.slug} hidden class="colly-fond mt-6 max-w-[52ch] rounded-[20px] p-5">
+          <p class="text-corps text-teal-950">{COPY.categoryNobody}</p>
+          <a
+            class="mt-3 inline-flex min-h-[44px] items-center font-semibold text-teal-800 underline decoration-teal-400 underline-offset-4"
+            href={mailtoHref(COPY.searchSuggestSubject(c.nom))}
+          >
+            {COPY.searchSuggest}
+          </a>
+        </div>
+      ))
+    }
+  </section>
+  <script>
+    import "../client/category-filter";
+  </script>
+</BaseLayout>

@@ -254,6 +254,9 @@ body{ font-family:var(--font-sans); font-size:17px; line-height:1.55; color:var(
 
 /* la pastille de catégorie */
 .chip{ background:var(--color-sauge-100); color:var(--color-sauge-800); }
+/* --ring-actif (styleguide.html:621) : l'unique état sélectionné autorisé en
+   orange, un seul par écran — le filtre de catégorie actif sur /annuaire. */
+.chip[aria-current="true"]{ box-shadow:0 0 0 2px var(--color-orange-500); }
 
 /* ── LE HALO ────────────────────────────────────────────────────────────────
    Le portrait du membre lui-même, agrandi et flouté, multiplié sur le lavis.

@@ -14,6 +14,10 @@ interface Props {
   // shape and defaults. A page passes this instead of reaching past the layout.
   header?: { href?: string; label?: string; srOnly?: string; variant?: "back" | "join" };
 }
+// header-extra forwards into SiteHeader's own "under" slot (annuaire.astro's
+// search form, nested inside <header> above the filet per annuaire.html).
+// Unused by every other page, so it renders nothing there and those pages'
+// output is unchanged.
 const { title, description, bodyClass = "", header = {} } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
 ---
@@ -55,7 +59,15 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
       {COPY.skipLink}
     </a>
     <IconSprite />
-    <SiteHeader {...header} />
+    {
+      Astro.slots.has("header-extra") ? (
+        <SiteHeader {...header}>
+          <slot name="header-extra" slot="under" />
+        </SiteHeader>
+      ) : (
+        <SiteHeader {...header} />
+      )
+    }
     <main id="contenu">
       <slot />
     </main>
