@@ -27,6 +27,7 @@ import { COPY } from "../lib/copy";
 import { agree } from "../lib/gender";
 import { formatNote, hasAddress, homeServiceIcon } from "../lib/members";
 import { formatTelDisplay, formatTelHref } from "../lib/phone";
+import { isPinned } from "../lib/plan";
 import type { Category, Member } from "../content/schemas";
 
 interface Props {
@@ -76,14 +77,14 @@ const telDisplay = member.tel ? formatTelDisplay(member.tel) : null;
             <span class="dist">{member.distance}</span>
           </span>
         </p>
-        {!member.surCarte && (
+        {!isPinned(member) && (
           <p class="mt-1 flex items-start gap-1.5 text-[16px] leading-snug text-neutre-700">
             <Icon name="alerte" class="w-4 h-4 shrink-0 mt-1 text-neutre-600" />
             {COPY.mapPickupOnly}
           </p>
         )}
       </div>
-      {member.surCarte && (
+      {isPinned(member) && (
         <a
           href={`#pin-${member.slug}`}
           class="relative z-10 shrink-0 self-center mr-2.5 grid place-items-center w-11 h-11 rounded-full text-teal-700 bg-teal-50 hover:bg-teal-100"

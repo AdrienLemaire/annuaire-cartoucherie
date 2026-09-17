@@ -43,6 +43,12 @@ export function withCounts(categories: Category[], members: Member[]): CategoryW
 
 export type MemberCountParts = { count: number; noun: string };
 
+// French keeps the feminine only when nobody in the group is masculine — the
+// one rule memberCountParts and pluralPronoun both apply, so it lives once.
+function groupGender(genders: Gender[]): Gender {
+  return genders.length > 0 && genders.every((g) => g === "f") ? "f" : "h";
+}
+
 /**
  * The digit and the gendered word, split apart. annuaire.html's own headline
  * (styleguide's `text-enorme`, "les nombres du quartier") sets the two at
@@ -52,9 +58,17 @@ export type MemberCountParts = { count: number; noun: string };
  * never re-derive the gender check anywhere else.
  */
 export function memberCountParts(count: number, genders: Gender[]): MemberCountParts {
-  const feminine = genders.length > 0 && genders.every((g) => g === "f");
-  const noun = agree(feminine ? "f" : "h", "voisine");
+  const noun = agree(groupGender(genders), "voisine");
   return { count, noun: count === 1 ? noun : `${noun}s` };
+}
+
+/**
+ * « ils »/« elles » for a group — carte.astro's own two count-dependent intro
+ * sentences (docs/mockups/final/carte.html:448-449) are the only callers.
+ * Same all-or-nothing rule as memberCountParts' own noun.
+ */
+export function pluralPronoun(genders: Gender[]): string {
+  return agree(groupGender(genders), "ils");
 }
 
 /**

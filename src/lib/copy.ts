@@ -153,6 +153,34 @@ export const COPY = {
   mapFromYou: "Classé depuis votre position",
   mapGeoGranted: "Position reçue. Les distances ci-dessous viennent d'être recalculées ici, dans le navigateur.",
   mapGeoDenied: "Position indisponible : le classement reste mesuré depuis la Halle.",
+  // The geo panel's own explanatory pair (docs/mockups/final/carte.html:457-461,
+  // ids geo-titre/geo-texte) — restored per task-10-report.md finding 1: the
+  // button is the consent, and consent needs to say what it is consenting to
+  // before the tap. mapGeoTitle is deliberately its own key, shorter than
+  // mapFromHall (the sheet's own heading, task-10-brief.md's own instruction):
+  // the mockup's geo-titre never carried the "de la Cartoucherie" suffix, and
+  // reusing mapFromHall here made tests/e2e/carte.spec.ts's own
+  // page.getByText(COPY.mapFromHall) ambiguous between the two. The post-grant
+  // half of the pair is identical in both places, so mapFromYou is reused.
+  mapGeoTitle: "Classé depuis la Halle",
+  mapGeoText:
+    "Le repère du quartier : le classement est donc déjà juste. Vous pouvez aussi partir de là où vous êtes.",
+  mapGeoTextYou: "Les distances ci-dessous sont recalculées à vol d'oiseau depuis là où vous êtes.",
+  // « Non merci, je reste sur la Halle » (carte.html's own geo-refuser) — the
+  // visible way to say no without the browser's own permission prompt being
+  // the only exit. Never requests a position; src/client/geolocate.ts's own
+  // handler only hides the panel.
+  mapDecline: "Non merci, je reste sur la Halle",
+  // The sheet's own origin line (carte.html:647, id="origine") and the page's
+  // own intro (carte.html:448-449) — both count-dependent. Never the mockup's
+  // hardcoded "Dix"/"Deux": count and noun are memberCountParts' own output
+  // (carte.astro's frontmatter), so a neighbour Sandra adds later is counted
+  // honestly rather than the page quietly starting to lie.
+  mapOriginHall: (count: number, noun: string) => `${count} ${noun} · depuis la Halle`,
+  mapOriginYou: (count: number, noun: string) => `${count} ${noun} · depuis votre position`,
+  mapIntroAddress: (count: number, noun: string) => `${count} ${noun} ont une adresse ici.`,
+  mapIntroItinerant: (count: number, noun: string, pronoun: string) =>
+    `${count} ${noun} se déplacent : ${capitalize(pronoun)} sont plus bas.`,
   // The plan SVG's own role="img" aria-label (docs/mockups/final/carte.html):
   // the one accessible summary of a decorative illustration whose baked-in
   // street/landmark <text> labels are art, not UI copy, and so stay literal.

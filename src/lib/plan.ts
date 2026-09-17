@@ -7,10 +7,8 @@
 import type { Member } from "../content/schemas";
 
 // The Halle de la Cartoucherie: the plan's own visual anchor (the mockup's own
-// "vous êtes ici" marker) and the point src/client/geolocate.ts falls back to
-// when a visitor declines geolocation or it fails. The two files never share an
-// import — one runs at build time, the other only in the browser — so this
-// value and geolocate.ts's own HALL constant are kept in sync by hand.
+// "vous êtes ici" marker) and the origin projectOnPlan measures every pin
+// from.
 export const HALL = { lat: 43.6006, lng: 1.4108 };
 
 // The Halle glyph's own fixed position inside the hand-drawn SVG background
@@ -83,4 +81,35 @@ export function buildTargetCss(slugs: string[]): string {
 #pin-${slug}:target ~ .feuille [data-m="${slug}"]{ background:var(--color-teal-50); box-shadow:0 0 0 2px var(--color-teal-600), var(--shadow-carte); }`,
     )
     .join("\n");
+}
+
+/** Great-circle distance in metres — the only arithmetic src/client/geolocate.ts needs. */
+export function haversine(a: { lat: number; lng: number }, b: { lat: number; lng: number }): number {
+  const toRad = (d: number) => (d * Math.PI) / 180;
+  const dLat = toRad(b.lat - a.lat);
+  const dLng = toRad(b.lng - a.lng);
+  const h = Math.sin(dLat / 2) ** 2 + Math.cos(toRad(a.lat)) * Math.cos(toRad(b.lat)) * Math.sin(dLng / 2) ** 2;
+  return 6371000 * 2 * Math.asin(Math.sqrt(h));
+}
+
+export type SheetRow = { slug: string; lat: number | null; lng: number | null };
+export type RankedRow = { slug: string; metres: number | null };
+
+/**
+ * The sheet's new order once a visitor grants a position. memberSchema
+ * permits a real distance with null coordinates (a member whose address was
+ * never geocoded); such a row cannot be measured against `from`, so it is
+ * left in its current relative position — still visible, with a null
+ * `metres` telling the caller not to touch its displayed text — rather than
+ * ranked on a NaN distance or hidden outright. Pure and DOM-free so this
+ * decision is unit-tested without a browser; src/client/geolocate.ts only
+ * reads the coordinates off the DOM and applies the order this returns.
+ */
+export function reorderFromPoint(rows: SheetRow[], from: { lat: number; lng: number }): RankedRow[] {
+  const unrankable = rows.filter((r) => r.lat === null || r.lng === null);
+  const ranked = rows
+    .filter((r): r is SheetRow & { lat: number; lng: number } => r.lat !== null && r.lng !== null)
+    .map((r) => ({ slug: r.slug, metres: haversine(from, { lat: r.lat, lng: r.lng }) }))
+    .sort((a, b) => a.metres - b.metres);
+  return [...unrankable.map((r) => ({ slug: r.slug, metres: null })), ...ranked];
 }
