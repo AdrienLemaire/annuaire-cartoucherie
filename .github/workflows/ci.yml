@@ -171,6 +171,10 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 6
     env:
+      # Placeholder: the domain is not registered yet (spec §14). Task 16 sets
+      # this to the real domain in the same commit as astro.config.mjs's `site`
+      # and wrangler.toml's custom-domain route — never separately, or the QR
+      # codes, this smoke test and the deployed asset origin disagree.
       URL_PROD: https://annuaire.lacartoucherie.fr
     steps:
       - uses: actions/checkout@v4
