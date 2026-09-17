@@ -82,7 +82,7 @@ const telDisplay = member.tel ? formatTelDisplay(member.tel) : null;
           <ul class="flex flex-wrap items-center gap-x-2 gap-y-1 list-none m-0 p-0">
             {chips.map((c) => (
               <li>
-                <CategoryChip slug={c.slug} nom={c.nom} />
+                <CategoryChip slug={c.slug} nom={c.nom} icon={c.icon} />
               </li>
             ))}
           </ul>

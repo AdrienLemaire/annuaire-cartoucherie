@@ -84,11 +84,11 @@ export const COPY = {
   profileDirections: "Ouvrir l'itinéraire",
   // The identity card's own rating link (membre.html:400-403): the sr-only
   // tail before the count, and the count itself — kept apart like
-  // MemberCard/MemberRow's ratingOutOf below, but "avis" alone rather than
-  // "avis du quartier": the fuller phrase would duplicate reviewsTitle's own
-  // "Avis du quartier" as a getByText substring on the same page.
+  // MemberCard/MemberRow's ratingOutOf below. Text matches the mockup
+  // verbatim; tests/e2e/profile.spec.ts targets reviewsTitle by role rather
+  // than text, precisely so this phrase is free to share a substring with it.
   profileRatingSr: "sur 5 —",
-  profileReviewCount: (n: number) => `${n} avis`,
+  profileReviewCount: (n: number) => `${n} avis du quartier`,
   profileDistanceFromHall: (distance: string) => `À ${distance} de la Halle`,
   profileEmail: "E-mail",
   profileSite: "Son site",

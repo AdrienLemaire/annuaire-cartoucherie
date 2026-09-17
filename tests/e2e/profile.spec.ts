@@ -30,10 +30,15 @@ test("Agrees its French with the gender of the neighbour", async ({ page }) => {
 
 // The one place this suite asserts on an attribute rather than on what the
 // visitor sees: these four names are a documented interface with Plan 2.
+//
+// The section heading is targeted by role rather than by getByText: the
+// identity card's own rating badge also reads "{n} avis du quartier" (the
+// mockup's own wording, membre.html:402), so a plain text match would be
+// ambiguous between the two. role=heading is not.
 test("Reserves the reviews slot Plan 2 replaces", async ({ page }) => {
   const m = feminine;
   await page.goto(`/membre/${m.slug}`);
-  await expect(page.getByText("Avis du quartier")).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Avis du quartier" })).toBeVisible();
   const slot = page.locator("[data-reviews-slot]");
   await expect(slot).toHaveAttribute("data-slug", m.slug);
   await expect(slot).toHaveAttribute("data-review-count", String(m.nbAvis));
