@@ -1,0 +1,356 @@
+---
+// src/components/IconSprite.astro
+// The <symbol> sheet lifted verbatim from docs/mockups/final/membre.html
+// (tied with carte.html for the fullest icon set). Each symbol keeps its
+// mockup id="i-…"/"c-…"; Icon.astro references the "i-" ones through
+// <use href={`#i-${name}`} />, category components reference the "c-" ones
+// directly. Rendered once, by BaseLayout, for the whole document.
+---
+
+<svg width="0" height="0" class="hidden" aria-hidden="true" focusable="false">
+  <defs>
+    <symbol
+      id="i-ventouse"
+      viewBox="0 0 32 32"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2.1"
+    >
+      <circle cx="16" cy="16" r="13.2" />
+      <circle cx="16" cy="16" r="7.4" />
+      <circle cx="16" cy="16" r="2.2" fill="currentColor" stroke="none" />
+    </symbol>
+    <symbol
+      id="i-loupe"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.9"
+      stroke-linecap="round"
+    >
+      <circle cx="11" cy="11" r="7" />
+      <path d="m16.6 16.6 4.4 4.4" />
+    </symbol>
+    <symbol
+      id="i-tel"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.7"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path d="M6.6 3.5h2.9l1.5 4-2 1.4a12.4 12.4 0 0 0 6.1 6.1l1.4-2 4 1.5v2.9a2 2 0 0 1-2.2 2A16.6 16.6 0 0 1 4.6 5.7a2 2 0 0 1 2-2.2Z" />
+    </symbol>
+    <symbol
+      id="i-mail"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.7"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <rect x="3" y="5" width="18" height="14" rx="2.5" />
+      <path d="m3.8 7 8.2 5.8L20.2 7" />
+    </symbol>
+    <symbol
+      id="i-globe"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.7"
+      stroke-linecap="round"
+    >
+      <circle cx="12" cy="12" r="8.6" />
+      <path d="M3.4 12h17.2M12 3.4c4.4 4.8 4.4 12.4 0 17.2-4.4-4.8-4.4-12.4 0-17.2Z" />
+    </symbol>
+    <symbol
+      id="i-insta"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.7"
+      stroke-linecap="round"
+    >
+      <rect x="3.2" y="3.2" width="17.6" height="17.6" rx="5.2" />
+      <circle cx="12" cy="12" r="4.1" />
+      <circle cx="17.2" cy="6.8" r=".95" fill="currentColor" stroke="none" />
+    </symbol>
+    <symbol
+      id="i-pin"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.7"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path d="M12 21.2s7.2-6.6 7.2-11.3a7.2 7.2 0 1 0-14.4 0C4.8 14.6 12 21.2 12 21.2Z" />
+      <circle cx="12" cy="9.8" r="2.7" />
+    </symbol>
+    <symbol id="i-etoile" viewBox="0 0 24 24">
+      <path
+        fill="currentColor"
+        d="m12 3.4 2.7 5.5 6 .9-4.3 4.2 1 6-5.4-2.8-5.4 2.8 1-6L3.3 9.8l6-.9z"
+      />
+    </symbol>
+    <symbol
+      id="i-chev"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path d="m9.5 5 7 7-7 7" />
+    </symbol>
+    <symbol
+      id="i-retour"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.9"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path d="M19.5 12H5M11 6l-6 6 6 6" />
+    </symbol>
+    <symbol
+      id="i-plume"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.7"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path d="m4.5 19.5 4.2-.8L20.1 7.4a2.35 2.35 0 0 0-3.3-3.3L5.3 15.3l-.8 4.2Z" />
+      <path d="m15.3 5.5 3.3 3.3" />
+    </symbol>
+    <symbol
+      id="i-signal"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.7"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path d="M5.8 21.2V3.4M5.8 4h11.4l-2.3 4.3 2.3 4.3H5.8" />
+    </symbol>
+    <symbol
+      id="i-fermer"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.9"
+      stroke-linecap="round"
+    >
+      <path d="m6.5 6.5 11 11M17.5 6.5l-11 11" />
+    </symbol>
+    <symbol
+      id="i-coeur"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.7"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path d="M12 20.4C10.3 19.2 4.2 15 4.2 10.6A4.4 4.4 0 0 1 12 7.8a4.4 4.4 0 0 1 7.8 2.8c0 4.4-6.1 8.6-7.8 9.8Z" />
+    </symbol>
+    <symbol
+      id="i-dl"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.7"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path d="M12 3.6v11M7.4 10.2 12 14.8l4.6-4.6M4.4 19.6h15.2" />
+    </symbol>
+    <symbol
+      id="i-groupe"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.7"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <circle cx="9" cy="8.4" r="3.4" />
+      <path d="M2.8 20.2a6.2 6.2 0 0 1 12.4 0" />
+      <path d="M16.4 5.4a3.4 3.4 0 0 1 0 6.6M17.6 14.6a6.2 6.2 0 0 1 3.6 5.6" />
+    </symbol>
+    <symbol
+      id="i-visio"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.7"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <rect x="2.8" y="6" width="12.6" height="12" rx="2.8" />
+      <path d="m15.4 12.6 5.8 3.6V7.8l-5.8 3.6Z" />
+    </symbol>
+    <symbol
+      id="i-alerte"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.8"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <circle cx="12" cy="12" r="9" />
+      <path d="M12 7.6v5.2M12 16.3v.1" />
+    </symbol>
+    <!-- les dix catégories -->
+    <symbol
+      id="c-sante"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.7"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path d="M4.6 19.6C3.4 11 9.6 4.4 19.8 3.8c1 10.2-5.4 16.4-14 15.4Z" />
+      <path d="M4.6 19.6 13 11.2" />
+    </symbol>
+    <symbol
+      id="c-beaute"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.7"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <circle cx="6.6" cy="17.8" r="2.6" />
+      <circle cx="6.6" cy="6.2" r="2.6" />
+      <path d="M8.6 7.9 20 19.4M8.6 16.1 20 4.6" />
+    </symbol>
+    <symbol
+      id="c-artisanat"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.7"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path d="m14.6 6.4-11 11 3 3 11-11" />
+      <path d="m13.2 8.2 3 3" />
+      <path d="m15 3.4 5.6 5.6-2.4 2.4-5.6-5.6z" />
+    </symbol>
+    <symbol
+      id="c-alimentation"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.7"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path d="M3.8 14.6c0-4.4 3.7-7.8 8.2-7.8s8.2 3.4 8.2 7.8v1.6a2.4 2.4 0 0 1-2.4 2.4H6.2a2.4 2.4 0 0 1-2.4-2.4Z" />
+      <path d="M9 8.2 8.2 17M12.6 7.4 12 17M16.2 9 15.8 17" />
+    </symbol>
+    <symbol
+      id="c-conseil"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.7"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path d="M3.8 20.2h16.4" />
+      <path d="M6.6 20.2v-6.6M11.4 20.2V8.4M16.2 20.2V4.6" />
+    </symbol>
+    <symbol
+      id="c-numerique"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.7"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <rect x="2.8" y="4" width="18.4" height="12.6" rx="2.4" />
+      <path d="M9.4 20.4h5.2M12 16.6v3.8" />
+      <path d="m10.2 8.4-1.8 1.9 1.8 1.9M13.8 8.4l1.8 1.9-1.8 1.9" />
+    </symbol>
+    <symbol
+      id="c-enfance"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.7"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path d="M7.4 8.2V6.6a4.6 4.6 0 0 1 9.2 0v1.6" />
+      <rect x="3.8" y="8.2" width="16.4" height="12" rx="3.2" />
+      <path d="M9.4 14.2h5.2" />
+    </symbol>
+    <symbol
+      id="c-sport"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.7"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <circle cx="15.4" cy="4.9" r="2.1" />
+      <path d="m12.4 21 2.2-6-3.6-2.6.9-4.8 3 3 3.1 1" />
+      <path d="m8.2 21 2.6-5.2M11.9 8.6 8.4 10" />
+    </symbol>
+    <symbol
+      id="c-art"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.7"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path d="M12 20.8a8.8 8.8 0 1 1 8.8-8.8c0 2-1.7 2.6-3.1 2.6h-1.3a2.3 2.3 0 0 0-2.3 2.3c0 .8.5 1.2.5 2 0 1.1-.9 1.9-2.6 1.9Z" />
+      <circle cx="8" cy="9.4" r="1.1" fill="currentColor" stroke="none" />
+      <circle cx="12.4" cy="7.4" r="1.1" fill="currentColor" stroke="none" />
+      <circle cx="16.3" cy="9.8" r="1.1" fill="currentColor" stroke="none" />
+    </symbol>
+    <symbol
+      id="c-domicile"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.7"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path d="m3.4 11.2 8.6-7.4 8.6 7.4" />
+      <path d="M6.2 9.6v10.6h11.6V9.6" />
+      <path d="M10 20.2v-5.2h4v5.2" />
+    </symbol>
+    <symbol
+      id="i-cle"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.7"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <circle cx="8.2" cy="8.2" r="4.6" />
+      <path d="m11.5 11.5 8.3 8.3" />
+      <path d="m15.6 15.6 2.3-2.3" />
+      <path d="m18.1 18.1 2.3-2.3" />
+    </symbol>
+  </defs>
+</svg>

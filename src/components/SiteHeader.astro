@@ -1,0 +1,34 @@
+---
+// src/components/SiteHeader.astro
+// Styleguide block 09 ("L'en-tête"), the "Accueil" specimen — markup and
+// tap-target classes copied from docs/mockups/final/index.html. The
+// fiche-membre variant (back link instead of "Je veux y figurer") is out of
+// scope: see task-3-report.md.
+import Icon from "./Icon.astro";
+import { COPY } from "../lib/copy";
+---
+
+<header class="sticky top-0 z-40 bg-white/95 backdrop-blur-sm">
+  <div class="mx-auto max-w-[1160px] px-5 h-16 flex items-center justify-between gap-3">
+    <a
+      href="/"
+      class="flex items-center gap-2.5 -ml-0.5 min-h-[44px]"
+      aria-label={COPY.headerHomeAria}
+    >
+      <Icon name="ventouse" class="w-8 h-8 text-teal-700 shrink-0" />
+      <span class="leading-none">
+        <span class="block text-[11.5px] uppercase tracking-[.18em] text-neutre-700 font-semibold">
+          {COPY.brandEyebrow}
+        </span>
+        <span class="ff block text-[20px] text-teal-900 leading-tight">{COPY.brandName}</span>
+      </span>
+    </a>
+    <a
+      href={`mailto:${COPY.contactEmail}?subject=${encodeURIComponent(COPY.headerJoinSubject)}`}
+      class="hidden sm:inline-flex items-center gap-1.5 min-h-[44px] px-4 rounded-full text-etiquette tracking-normal font-semibold text-teal-700 hover:bg-teal-50"
+    >
+      {COPY.headerJoin}
+    </a>
+  </div>
+  <div class="filet h-[3px]"></div>
+</header>

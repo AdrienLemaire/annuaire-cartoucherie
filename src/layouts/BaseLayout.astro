@@ -1,0 +1,61 @@
+---
+// src/layouts/BaseLayout.astro
+import "../styles/global.css";
+import IconSprite from "../components/IconSprite.astro";
+import SiteHeader from "../components/SiteHeader.astro";
+import SiteFooter from "../components/SiteFooter.astro";
+import { COPY } from "../lib/copy";
+
+interface Props {
+  title: string;
+  description: string;
+  bodyClass?: string;
+}
+const { title, description, bodyClass = "" } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+---
+
+<!doctype html>
+<html lang="fr" data-theme="cartoucherie">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="fr_FR" />
+    <meta property="og:url" content={canonical} />
+    <meta name="theme-color" content="#ffffff" />
+    <slot name="head" />
+    <style>
+      /* Safe-area insets. Without them the sticky « Appeler » bar sits under the
+         iPhone home indicator. None of the four mockups handled this. */
+      :root {
+        --safe-bottom: env(safe-area-inset-bottom, 0px);
+        --safe-left: env(safe-area-inset-left, 0px);
+        --safe-right: env(safe-area-inset-right, 0px);
+      }
+      body {
+        padding-left: var(--safe-left);
+        padding-right: var(--safe-right);
+      }
+    </style>
+  </head>
+  <body class={bodyClass}>
+    <a
+      href="#contenu"
+      class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:m-3 focus:rounded-field focus:bg-white focus:px-4 focus:py-3 focus:text-teal-800"
+    >
+      {COPY.skipLink}
+    </a>
+    <IconSprite />
+    <SiteHeader />
+    <main id="contenu">
+      <slot />
+    </main>
+    <SiteFooter />
+  </body>
+</html>

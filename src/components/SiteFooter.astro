@@ -1,0 +1,58 @@
+---
+// src/components/SiteFooter.astro
+// Styleguide block 21 ("Le pied de page") — markup and classes copied
+// verbatim from docs/mockups/final/index.html, the base specimen with no
+// per-page extras (the /membre variant adds a safe-area bottom pad and a
+// "Voir la carte" link; that belongs to the page that needs it, not here).
+import Icon from "./Icon.astro";
+import { COPY } from "../lib/copy";
+---
+
+<footer class="border-t border-neutre-200 bg-neutre-50">
+  <div class="mx-auto max-w-[1160px] px-5 py-8 grid gap-8 sm:grid-cols-[1fr_auto]">
+    <div>
+      <p class="flex items-center gap-2.5">
+        <Icon name="ventouse" class="w-7 h-7 text-teal-700" />
+        <span class="ff text-[20px] text-teal-900">{COPY.footerBrand}</span>
+      </p>
+      <p class="mt-3 text-[16px] text-neutre-700">{COPY.footerBlurb}</p>
+      <p class="mt-3 text-[16px] text-neutre-700">{COPY.footerAddress}</p>
+    </div>
+    <nav class="text-[16px]" aria-label={COPY.footerNavAria}>
+      <ul class="space-y-1 list-none p-0 m-0">
+        <li>
+          <a
+            class="inline-flex items-center min-h-[44px] text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600"
+            href="/a-propos"
+          >
+            {COPY.footerAbout}
+          </a>
+        </li>
+        <li>
+          <a
+            class="inline-flex items-center min-h-[44px] text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600"
+            href="/confidentialite"
+          >
+            {COPY.footerPrivacy}
+          </a>
+        </li>
+        <li>
+          <a
+            class="inline-flex items-center min-h-[44px] text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600"
+            href="/mentions-legales"
+          >
+            {COPY.footerLegal}
+          </a>
+        </li>
+        <li>
+          <a
+            class="inline-flex items-center min-h-[44px] text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600"
+            href="/avis"
+          >
+            {COPY.footerReviews}
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</footer>
