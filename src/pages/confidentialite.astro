@@ -1,0 +1,29 @@
+---
+// src/pages/confidentialite.astro
+// Every claim here must be true of the site as built today, not of the
+// roadmap (task-11 brief/context). Analytics (spec §4) is Task 13's; it does
+// not exist yet, so this page says nothing about it beyond "there is none".
+import TextPage from "../layouts/TextPage.astro";
+import { COPY } from "../lib/copy";
+
+const title = `${COPY.footerPrivacy} — ${COPY.brandEyebrow} ${COPY.brandName}`;
+---
+
+<TextPage title={title} description={COPY.privacyDescription} heading={COPY.footerPrivacy}>
+  <p>{COPY.privacyIntro}</p>
+
+  <h2 class="ff text-nom text-teal-900">{COPY.privacyDoesTitle}</h2>
+  <ul class="list-disc space-y-2 pl-5">
+    <li>{COPY.privacyDoesBrowsing}</li>
+    <li>{COPY.privacyDoesSearch}</li>
+    <li>{COPY.privacyDoesGeo}</li>
+  </ul>
+
+  <h2 class="ff text-nom text-teal-900">{COPY.privacyDoesNotTitle}</h2>
+  <ul class="list-disc space-y-2 pl-5">
+    <li>{COPY.privacyDoesNotCookie}</li>
+    <li>{COPY.privacyDoesNotAccount}</li>
+    <li>{COPY.privacyDoesNotFont}</li>
+    <li>{COPY.privacyDoesNotAds}</li>
+  </ul>
+</TextPage>

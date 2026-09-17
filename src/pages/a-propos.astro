@@ -1,0 +1,22 @@
+---
+// src/pages/a-propos.astro
+// Credits live here rather than in a badge (spec §9).
+import TextPage from "../layouts/TextPage.astro";
+import { COPY } from "../lib/copy";
+
+const title = `${COPY.footerAbout} — ${COPY.brandEyebrow} ${COPY.brandName}`;
+---
+
+<TextPage title={title} description={COPY.aboutDescription} heading={COPY.footerAbout}>
+  <p>{COPY.aboutIntro}</p>
+
+  <h2 class="ff text-nom text-teal-900">{COPY.aboutCreditsTitle}</h2>
+  <ul class="list-disc space-y-2 pl-5">
+    <li>{COPY.aboutCreditPortraits}</li>
+    <li>
+      {COPY.aboutCreditColly} <mark>{COPY.legalMarker("nom de l'illustratrice ou de l'illustrateur")}</mark>.
+    </li>
+    <li>{COPY.aboutCreditMap}</li>
+    <li>{COPY.aboutCreditOpenSource}</li>
+  </ul>
+</TextPage>

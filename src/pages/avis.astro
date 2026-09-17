@@ -1,0 +1,32 @@
+---
+// src/pages/avis.astro
+// Expected under French consumer law (spec §8). Reviews are not built yet in
+// Plan 1 (ReviewsSlot.astro always shows COPY.reviewsNone) — this page states
+// the policy Plan 2 will implement, not a feature that exists today.
+import TextPage from "../layouts/TextPage.astro";
+import { COPY } from "../lib/copy";
+import { mailtoHref } from "../lib/contact";
+
+const title = `${COPY.footerReviews} — ${COPY.brandEyebrow} ${COPY.brandName}`;
+const reportHref = mailtoHref(COPY.reviewsReportSubject);
+---
+
+<TextPage title={title} description={COPY.reviewsDescription} heading={COPY.footerReviews}>
+  <h2 class="ff text-nom text-teal-900">{COPY.reviewsWhoTitle}</h2>
+  <p>{COPY.reviewsWhoText}</p>
+
+  <h2 class="ff text-nom text-teal-900">{COPY.reviewsPaidTitle}</h2>
+  <p>{COPY.reviewsHow}</p>
+
+  <h2 class="ff text-nom text-teal-900">{COPY.reviewsModerationTitle}</h2>
+  <p>{COPY.reviewsModerationText}</p>
+
+  <h2 class="ff text-nom text-teal-900">{COPY.reviewsReportTitle}</h2>
+  <p>
+    {COPY.reviewsReportText}
+    {" "}
+    <a class="break-words font-semibold text-teal-700 underline underline-offset-4" href={reportHref}>
+      {COPY.reviewsReportLink}
+    </a>
+  </p>
+</TextPage>

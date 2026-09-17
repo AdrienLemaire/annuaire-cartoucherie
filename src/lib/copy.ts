@@ -201,6 +201,69 @@ export const COPY = {
   footerLegal: "Mentions légales",
   footerReviews: "Les avis, comment ça marche",
 
+  // /a-propos, /confidentialite, /mentions-legales, /avis (Task 11). Each page's
+  // <h1> reuses the matching footer* label above rather than forking a second
+  // string that would only ever say the same thing.
+  aboutDescription: "Qui fait cet annuaire, les crédits des portraits, de la mascotte et de la carte.",
+  aboutIntro:
+    "Cet annuaire est fait bénévolement pour l'association de quartier de la Cartoucherie, à partir " +
+    "des portraits réunis par Sandra Carole.",
+  aboutCreditsTitle: "Les crédits",
+  aboutCreditPortraits: "Les portraits des voisins sont l'œuvre de Sandra Carole.",
+  aboutCreditColly: "Colly, la mascotte du quartier, sera redessinée par",
+  aboutCreditMap: "Les itinéraires s'appuient sur OpenStreetMap.",
+  aboutCreditOpenSource:
+    "Ce site tourne grâce à des bibliothèques open source, dont Astro, Tailwind CSS, daisyUI, Zod " +
+    "et qrcode.",
+
+  privacyDescription: "Ce que ce site collecte et ce qu'il ne collecte pas.",
+  privacyIntro: "Ce site est volontairement simple : voici, sans détour, ce qu'il fait et ce qu'il ne fait pas.",
+  privacyDoesTitle: "Ce que ce site fait",
+  privacyDoesBrowsing: "Parcourir l'annuaire, une fiche ou la carte ne dépose rien sur votre appareil.",
+  privacyDoesSearch: "La recherche s'exécute dans votre navigateur : rien n'est envoyé à un serveur.",
+  privacyDoesGeo:
+    "Sur la carte, votre position n'est utilisée que si vous appuyez sur « Classer depuis ma " +
+    "position » ; le calcul des distances se fait dans votre navigateur et votre position n'est " +
+    "jamais envoyée ailleurs.",
+  privacyDoesNotTitle: "Ce que ce site ne fait pas",
+  privacyDoesNotCookie: "Aucun cookie n'est déposé.",
+  privacyDoesNotAccount: "Aucun compte n'est nécessaire pour consulter l'annuaire.",
+  privacyDoesNotFont: "Aucune police n'est chargée depuis un service tiers : elles sont hébergées ici.",
+  privacyDoesNotAds: "Aucun outil de mesure d'audience ni de régie publicitaire n'est installé sur ce site.",
+
+  legalDescription: "Éditeur, directeur de la publication, hébergeur et propriété intellectuelle.",
+  legalEditorTitle: "Éditeur du site",
+  legalDirectorTitle: "Directeur de la publication",
+  legalDirectorName: "Adrien Lemaire.",
+  legalContactTitle: "Contact",
+  legalContactEmail: "lemaire.adrien@gmail.com",
+  legalHostTitle: "Hébergeur",
+  legalHostIntro: "Ce site est hébergé par Cloudflare.",
+  legalIpTitle: "Propriété intellectuelle",
+  legalIpText:
+    "Sauf mention contraire, les textes, la mise en page et les portraits de ce site appartiennent " +
+    "à l'association ou sont utilisés avec l'autorisation de leurs auteurs (voir la page « À " +
+    "propos » pour le détail des crédits). Toute reproduction sans autorisation est interdite.",
+  // The one marker glyph, shared by every unknown on /mentions-legales and
+  // /a-propos so docs/mentions-legales-a-completer.md's own list and the page
+  // never drift apart.
+  legalMarker: (what: string) => `⟨à compléter : ${what}⟩`,
+
+  reviewsDescription: "Qui peut laisser un avis, comment il est modéré, comment en signaler un.",
+  reviewsWhoTitle: "Qui peut laisser un avis ?",
+  reviewsWhoText:
+    "Tout voisin ou toute voisine ayant fait appel à un commerce peut lui laisser un avis signé sur " +
+    "sa fiche, un avis par voisin et par commerce.",
+  reviewsPaidTitle: "Un avis peut-il être acheté ?",
+  reviewsModerationTitle: "Qui modère les avis, et sur quels critères ?",
+  reviewsModerationText:
+    "L'association relit les avis signalés et retire ceux qui sont insultants, hors sujet, ou qui " +
+    "ne concernent pas le commerce noté.",
+  reviewsReportTitle: "Comment signaler un avis ?",
+  reviewsReportText: "Écrivez à l'association en précisant la fiche et l'avis concernés.",
+  reviewsReportLink: "Signaler un avis",
+  reviewsReportSubject: "Signalement d'avis",
+
   // Additions beyond the task-3 brief dictionary, needed to keep SiteHeader.astro
   // and SiteFooter.astro free of hardcoded French (task-3-report.md documents each
   // as a deviation). Text is copied verbatim from docs/mockups/final/index.html
