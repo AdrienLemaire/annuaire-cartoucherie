@@ -15,6 +15,17 @@
 // survives. colly-couleur.png is the only transparent, colour asset and
 // has no panel specimen in the mockups — it reuses the "salut" shape
 // (closest structural match) without .croquis, noted as an assumption.
+//
+// "salut"'s `eyebrow` (task-7 fix round 1): index.html:908 and
+// styleguide.html:1753 both render "La mascotte du quartier" above this
+// pose's title, which the first build of this component dropped. Restored
+// verbatim, with the title's own top margin brought from mt-6 to mt-2 to
+// match the mockup's spacing once the eyebrow sits above it. No mockup
+// specimen shows an eyebrow on "couleur" (which has no specimen of its own
+// at all — see above), so it stays without one rather than inventing text
+// no mockup carries.
+import { COPY } from "../lib/copy";
+
 const PANELS = {
   salut: {
     dims: { width: 320, height: 305 },
@@ -22,7 +33,8 @@ const PANELS = {
     disc: "mx-auto w-[168px] h-[168px] rounded-full bg-sable-200 overflow-hidden grid place-items-center",
     discStyle: "box-shadow: inset 0 0 0 2px var(--color-sable-300), 0 0 0 8px var(--color-sable-50)",
     img: "croquis w-[190px] h-auto",
-    title: "ff mt-6 text-[32px] leading-tight text-teal-950",
+    eyebrow: COPY.collyMascotEyebrow as string | null,
+    title: "ff mt-2 text-[32px] leading-tight text-teal-950",
     text: "mt-3 text-corps text-teal-950",
   },
   triste: {
@@ -31,6 +43,7 @@ const PANELS = {
     disc: "mx-auto w-[132px] h-[132px] rounded-full bg-teal-50 overflow-hidden grid place-items-center",
     discStyle: "",
     img: "croquis w-[150px] h-auto -mt-2",
+    eyebrow: null as string | null,
     title: "ff mt-3 text-[26px] text-teal-900",
     text: "mt-2 text-corps text-neutre-800",
   },
@@ -40,6 +53,7 @@ const PANELS = {
     disc: "mx-auto sm:mx-0 w-[104px] h-[104px] rounded-full bg-sauge-100 overflow-hidden grid place-items-center shrink-0",
     discStyle: "box-shadow: inset 0 0 0 2px var(--color-sauge-200)",
     img: "croquis w-[104px] h-auto",
+    eyebrow: null as string | null,
     title: "ff text-[22px] leading-snug text-teal-900",
     text: "mt-1.5 text-corps text-neutre-800 max-w-[52ch]",
   },
@@ -49,6 +63,7 @@ const PANELS = {
     disc: "mx-auto w-[168px] h-[168px] rounded-full bg-sable-200 overflow-hidden grid place-items-center",
     discStyle: "box-shadow: inset 0 0 0 2px var(--color-sable-300), 0 0 0 8px var(--color-sable-50)",
     img: "w-[190px] h-auto",
+    eyebrow: null as string | null,
     title: "ff mt-6 text-[32px] leading-tight text-teal-950",
     text: "mt-3 text-corps text-teal-950",
   },
@@ -83,6 +98,7 @@ const bodyClass = pose === "joyeux" ? "mt-4 sm:mt-0 text-center sm:text-left" : 
             <img src={`/colly/colly-${pose}.png`} alt="" width={p.dims.width} height={p.dims.height} class={p.img} />
           </div>
           <div class={bodyClass}>
+            {p.eyebrow && <p class="mt-6 text-etiquette font-semibold uppercase text-sable-800">{p.eyebrow}</p>}
             <h2 id={headingId} class={p.title}>{title}</h2>
             <p class={p.text}>{text}</p>
           </div>

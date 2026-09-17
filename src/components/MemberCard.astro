@@ -13,6 +13,16 @@
 // directly rather than through Icon.astro — IconSprite.astro's own comment:
 // "Icon.astro references the 'i-' ones … category components reference the
 // 'c-' ones directly".
+//
+// Fixed-variant image height (task-7 fix round 1): the styleguide's generic
+// full-card specimen uses h-[190px], but object-cover scales a 128×128
+// source by the LARGER of its width and height ratios. In the only grid that
+// currently uses this card (the home page's "Vos voisins", a ~154-169px
+// column at 360-390px), 190px alone put the height ratio at ×1.484 — past
+// the ×1.4 cap — even though the width ratio (×1.20-1.32) was fine. Lowered
+// to h-[150px] (index.html:777's own value for this exact tile, not the
+// styleguide's wider-context specimen), which keeps both axes under the cap
+// with margin at every measured width. See task-7-report.md for the numbers.
 import Icon from "./Icon.astro";
 import { COPY } from "../lib/copy";
 import { agree } from "../lib/gender";
@@ -42,7 +52,7 @@ const homeIcon = fixed ? undefined : homeServiceIcon(member, categories);
           height="128"
           loading={eager}
           decoding="async"
-          class="w-full h-[190px] object-cover"
+          class="w-full h-[150px] object-cover"
         />
         <div class="p-4">
           <h3 class="ff mt-2.5 text-[25px] leading-[1.05] text-teal-900">{member.nom}</h3>

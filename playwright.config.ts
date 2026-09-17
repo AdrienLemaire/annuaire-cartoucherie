@@ -40,8 +40,22 @@ export default defineConfig({
     { name: "Galaxy S9+", use: { ...devices["Galaxy S9+"] } },
     ...(MATRIX
       ? [
-          { name: "iPhone SE", testMatch: LAYOUT_SPECS, use: { ...devices["iPhone SE"] } },
-          { name: "iPhone 14", testMatch: LAYOUT_SPECS, use: { ...devices["iPhone 14"] } },
+          // devices["iPhone SE"]/["iPhone 14"] carry defaultBrowserType: "webkit",
+          // and Playwright's own WebKit build does not link on NixOS for the same
+          // reason its Chromium build does not (see CHROMIUM_PATH above) — so
+          // these two are pinned to chromium explicitly, keeping every other
+          // device field (viewport, deviceScaleFactor, userAgent, isMobile,
+          // hasTouch). This buys viewport coverage at 320px and 390px only.
+          // iOS Safari's actual rendering engine is NEVER exercised by this
+          // matrix, on this machine or in CI: no amount of Chromium at an
+          // iPhone's viewport checks WebKit-specific behaviour (Safari's own
+          // handling of `env(safe-area-inset-*)`, for one — BaseLayout and the
+          // sticky call bar depend on it). The project's Definition of Done
+          // already relies on a human looking at one real iPhone 14 screenshot
+          // for precisely that reason; that step stays necessary regardless of
+          // what runs green here.
+          { name: "iPhone SE", testMatch: LAYOUT_SPECS, use: { ...devices["iPhone SE"], defaultBrowserType: "chromium" as const } },
+          { name: "iPhone 14", testMatch: LAYOUT_SPECS, use: { ...devices["iPhone 14"], defaultBrowserType: "chromium" as const } },
           { name: "Pixel 7", testMatch: LAYOUT_SPECS, use: { ...devices["Pixel 7"] } },
           { name: "Desktop", testMatch: LAYOUT_SPECS, use: { ...devices["Desktop Chrome"] } },
         ]

@@ -24,6 +24,10 @@ export const COPY = {
   homeBrowseMapCardTitle: "Le quartier sur une carte",
   homeBrowseMapText: (onMap: number, total: number) => `${onMap} fiches sur ${total} ont un point.`,
   homeOpen: "Ouvrir",
+  // CollyPanel's own "salut" pose eyebrow (index.html:908, styleguide.html:1753,
+  // "La mascotte du quartier") — not a caller prop: every mockup specimen of this
+  // pose carries the same label, so it belongs to the component, not the page.
+  collyMascotEyebrow: "La mascotte du quartier",
   homeCollyTitle: "Colly reste collée aux bons endroits.",
   homeCollyText:
     "Elle vit dans les poutres de la Halle et connaît tout le monde. Cet annuaire, c'est son " +
