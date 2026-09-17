@@ -4,7 +4,39 @@
    Do not hand-edit: regenerate from the mockup. */
 
 @import "tailwindcss";
-@plugin "daisyui";
+
+/* daisyUI ships every component's CSS unconditionally — Tailwind's own JIT
+   only tree-shakes @utility classes, not a plugin's addComponents() output —
+   so the bare `@plugin "daisyui";` this project shipped through Task 14 cost
+   19.7 KB gzip (of the 25 KB total CSS budget) for sixty-one components
+   (.btn, .card, .modal, …) nothing here renders: confirmed by grepping every
+   class="…" in src/ and docs/mockups/final/ for daisyUI's own component
+   names (task-15-report.md) — the design's component vocabulary is entirely
+   bespoke (.carte, .pastille, .chip, …). What genuinely is used is the radius
+   *scale* (rounded-field/-box/-selector below, wired to --radius-* in the
+   theme block), which daisyUI registers as its own "radius" utility, separate
+   from any component — so this excludes every component and the unused
+   join/glass/typography utilities by name (the full list node_modules/
+   daisyui/imports.js exports) rather than removing the plugin outright, which
+   would silently stop compiling rounded-field/-box/-selector (a class that
+   resolves to nothing is not a build error — exactly the kind of silent
+   failure CLAUDE.md warns about). `themes: false` drops daisyUI's own
+   light/dark palettes too: this project's only theme is the hand-declared
+   [data-theme="cartoucherie"] block below, never daisyUI's `/theme` plugin
+   (its own comment there explains why). A future daisyUI upgrade adding a
+   component keeps costing nothing here, by construction — nothing new is
+   silently re-included the way a shrinking `include:` allow-list would need
+   updating for. */
+@plugin "daisyui" {
+  themes: false;
+  exclude: skeleton, mask, status, checkbox, radio, collapse, fieldset, diff, hover3d,
+    textrotate, kbd, avatar, rating, stat, dropdown, filter, megamenu, toggle, swap, link,
+    hovergallery, select, badge, mockup, calendar, divider, modal, steps, list, breadcrumbs,
+    chat, radialprogress, aura, range, stack, fileinput, carousel, alert, drawer, fab, input,
+    toast, menu, tab, navbar, countdown, textarea, card, label, indicator, progress, otp,
+    table, hero, button, validator, timeline, footer, loading, dock, tooltip, join, glass,
+    typography;
+}
 
 /* Source Sans 3: the npm package's own files, byte-for-byte — only the
    subset selection changed. The bare `@import "@fontsource-variable/
@@ -213,46 +245,21 @@
 }
 
 
+/* Only the radius scale is actually consumed (rounded-field/-box/-selector,
+   grepped across every .astro/.ts under src/ — task-15-report.md): daisyUI's
+   semantic colour tokens (--color-primary, --color-base-*, …), its sizing
+   tokens (--size-selector/-field) and its component-only tokens (--border,
+   --depth, --noise) had no Tailwind utility or inline style reading them —
+   they styled only the sixty-one components excluded above. Removed rather
+   than kept "for later" (CLAUDE.md: delete, don't deprecate); this project's
+   own palette (teal/orange/sauge/sable/neutre, above) is what every utility
+   class actually names. */
 [data-theme="cartoucherie"] {
   color-scheme: light;
-
-  --color-base-100:          #ffffff;                 /* la page, blanche  */
-  --color-base-200:          oklch(97.2% 0.006 199);  /* neutre-100        */
-  --color-base-300:          oklch(94.4% 0.008 198);  /* neutre-200        */
-  --color-base-content:      oklch(25.5% 0.028 201);  /* neutre-900        */
-
-  --color-primary:           oklch(44.0% 0.074 197);  /* teal-700          */
-  --color-primary-content:   #ffffff;
-
-  --color-secondary:         oklch(94.5% 0.026 170);  /* sauge-100 teinté  */
-  --color-secondary-content: oklch(19.0% 0.030 201);  /* teal-950          */
-
-  --color-accent:            oklch(72.0% 0.170 56);   /* orange-500 · CTA  */
-  --color-accent-content:    oklch(19.0% 0.030 201);  /* teal-950          */
-
-  --color-neutral:           oklch(25.5% 0.028 201);  /* neutre-900        */
-  --color-neutral-content:   oklch(98.6% 0.004 200);  /* neutre-50         */
-
-  --color-info:              oklch(53.0% 0.090 196);  /* teal-600          */
-  --color-info-content:      #ffffff;
-
-  --color-success:           oklch(45.5% 0.108 152);  /* sauge-700         */
-  --color-success-content:   #ffffff;
-
-  --color-warning:           oklch(76.0% 0.115 88);   /* sable-500         */
-  --color-warning-content:   oklch(19.0% 0.030 201);  /* teal-950          */
-
-  --color-error:             oklch(54.0% 0.205 24);   /* rouge-600         */
-  --color-error-content:     #ffffff;
 
   --radius-selector: 2rem;      /* pastilles, bascules, badges */
   --radius-field:    0.75rem;   /* champs, boutons             */
   --radius-box:      1.25rem;   /* cartes, modales, feuilles   */
-  --size-selector:   0.28125rem;
-  --size-field:      0.28125rem;
-  --border:          1px;
-  --depth:           1;
-  --noise:           0;
 }
 
 
