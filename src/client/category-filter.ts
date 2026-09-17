@@ -1,25 +1,38 @@
 // src/client/category-filter.ts
-// Upgrades /annuaire's chip rail: every chip, including "Tous les métiers", is
-// a real `<a href="…">` carrying `data-filter` ("" for "Tous"), so the page
-// already works with JavaScript disabled. This only intercepts the click to
-// filter in place instead of navigating, and keeps the URL, the live count,
-// the active chip and the empty-category explanation in sync — so a direct
-// visit to /annuaire?cat=… and the Back button both land on the right,
+// Upgrades /annuaire's chip rail: every populated category's chip, plus
+// "Tous les métiers" (data-filter=""), is a real `<a href="…">`, so the page
+// already works with JavaScript disabled. A zero-count category is a
+// non-interactive span instead (annuaire.astro's own comment explains why),
+// so it is never part of the filterable set here either. This file only
+// intercepts a chip's click to filter in place instead of navigating, and
+// keeps the URL, the live count, the active chip and the "nobody here"
+// explanations in sync — so a direct visit to /annuaire?cat=…, an
+// unrecognised ?cat= value, and the Back button all land on the right,
 // visible state. Every string it shows was composed server-side
-// (formatMemberCount, COPY, mailtoHref all ran in annuaire.astro's
-// frontmatter, into data-count and the hidden [data-empty-for] blocks): this
-// file only moves `hidden` and `aria-current` around, it never composes French.
+// (memberCountParts, COPY, mailtoHref all ran in annuaire.astro's
+// frontmatter, into data-count/data-noun/data-detail and the hidden
+// [data-empty-for]/[data-no-match] blocks): this file only moves `hidden`
+// and `aria-current` around and copies already-French text between elements,
+// it never composes a sentence.
 const rows = [...document.querySelectorAll<HTMLElement>("[data-member]")];
 const chips = [...document.querySelectorAll<HTMLAnchorElement>("[data-filter]")];
 const emptyStates = new Map(
   [...document.querySelectorAll<HTMLElement>("[data-empty-for]")].map((el) => [el.dataset.emptyFor ?? "", el]),
 );
+const noMatch = document.querySelector<HTMLElement>("[data-no-match]");
 const list = rows[0]?.closest("ul") ?? null;
-const count = document.querySelector<HTMLElement>("[data-count-text]");
+const countNumber = document.querySelector<HTMLElement>("[data-count-number]");
+const countWord = document.querySelector<HTMLElement>("[data-count-word]");
+const countDetail = document.querySelector<HTMLElement>("[data-count-detail]");
 
-// "" (the "Tous les métiers" chip's own data-filter) means no filter, same as
-// the attribute being absent from the URL — one reading, so the two never disagree.
-const chipSlug = (chip: HTMLAnchorElement): string | null => chip.dataset.filter || null;
+// "" (the "Tous les métiers" chip's own data-filter, and an empty `?cat=`)
+// means no filter — one normalisation, used everywhere a slug is read, so a
+// chip's click and a URL's query string never disagree about what "unfiltered" means.
+function normalizeSlug(slug: string | null | undefined): string | null {
+  return slug || null;
+}
+
+const chipSlug = (chip: HTMLAnchorElement): string | null => normalizeSlug(chip.dataset.filter);
 
 function filterRows(slug: string | null): number {
   let visible = 0;
@@ -46,22 +59,43 @@ function markActiveChip(slug: string | null): HTMLAnchorElement | undefined {
   return activeChip;
 }
 
-function showEmptyState(slug: string | null, visible: number): void {
+/**
+ * Which explanation, if any, the visitor needs: the category's own "nobody
+ * here yet" block when the filter names a real, empty category; the generic
+ * "nothing matches" panel when it names nothing this annuaire has ever
+ * listed (a stale link, a mistyped ?cat=). Returns whichever one is now
+ * showing, so its own data-count/-noun/-detail can drive the headline too.
+ */
+function resolveExplanation(slug: string | null, visible: number): HTMLElement | undefined {
   for (const empty of emptyStates.values()) empty.hidden = true;
-  const empty = slug ? emptyStates.get(slug) : undefined;
-  if (!empty || visible > 0) {
-    if (list) list.hidden = false;
-    return;
+  if (noMatch) noMatch.hidden = true;
+  if (visible > 0 || slug === null) return undefined;
+
+  const empty = emptyStates.get(slug);
+  if (empty) {
+    empty.hidden = false;
+    return empty;
   }
-  if (list) list.hidden = true;
-  empty.hidden = false;
+  if (noMatch) noMatch.hidden = false;
+  return noMatch ?? undefined;
+}
+
+function updateCount(source: HTMLElement | undefined): void {
+  if (!source) return;
+  if (countNumber) {
+    countNumber.textContent = source.dataset.count ?? "";
+    countNumber.hidden = !source.dataset.count;
+  }
+  if (countWord) countWord.textContent = source.dataset.noun ?? "";
+  if (countDetail) countDetail.textContent = source.dataset.detail ?? "";
 }
 
 function apply(slug: string | null): void {
   const visible = filterRows(slug);
   const activeChip = markActiveChip(slug);
-  showEmptyState(slug, visible);
-  if (count && activeChip?.dataset.count) count.textContent = activeChip.dataset.count;
+  const explanation = resolveExplanation(slug, visible);
+  if (list) list.hidden = visible === 0 && explanation !== undefined;
+  updateCount(activeChip ?? explanation);
 }
 
 for (const chip of chips) {
@@ -75,10 +109,11 @@ for (const chip of chips) {
   });
 }
 
-// A direct visit to /annuaire?cat=… and a Back/Forward navigation both need the
-// same read: the query string is the one source of truth for which chip is active.
+// A direct visit to /annuaire?cat=… and a Back/Forward navigation both need
+// the same read: the query string is the one source of truth for which
+// filter is active, normalised the same way a chip's own value is.
 function applyFromLocation(): void {
-  apply(new URLSearchParams(location.search).get("cat"));
+  apply(normalizeSlug(new URLSearchParams(location.search).get("cat")));
 }
 
 window.addEventListener("popstate", applyFromLocation);

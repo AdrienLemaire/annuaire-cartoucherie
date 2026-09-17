@@ -41,15 +41,30 @@ export function withCounts(categories: Category[], members: Member[]): CategoryW
   });
 }
 
+export type MemberCountParts = { count: number; noun: string };
+
+/**
+ * The digit and the gendered word, split apart. annuaire.html's own headline
+ * (styleguide's `text-enorme`, "les nombres du quartier") sets the two at
+ * different sizes — one caller needs the parts, not the sentence — but the
+ * agreement rule itself stays here, the one place that decides « voisine »
+ * vs « voisin » vs « voisins ». formatMemberCount is a thin wrapper over this;
+ * never re-derive the gender check anywhere else.
+ */
+export function memberCountParts(count: number, genders: Gender[]): MemberCountParts {
+  const feminine = genders.length > 0 && genders.every((g) => g === "f");
+  const noun = agree(feminine ? "f" : "h", "voisine");
+  return { count, noun: count === 1 ? noun : `${noun}s` };
+}
+
 /**
  * « 1 voisine », « 4 voisins », « personne encore inscrit·e ».
  * French keeps the feminine plural only when no masculine is in the group.
  */
 export function formatMemberCount(count: number, genders: Gender[]): string {
   if (count === 0) return COPY.countNobody;
-  const feminine = genders.length > 0 && genders.every((g) => g === "f");
-  const noun = agree(feminine ? "f" : "h", "voisine");
-  return count === 1 ? `${count} ${noun}` : `${count} ${noun}s`;
+  const { count: n, noun } = memberCountParts(count, genders);
+  return `${n} ${noun}`;
 }
 
 /** « Appeler Camille » is warmer than « Appeler ». The schema has no first name. */

@@ -59,6 +59,9 @@ export const COPY = {
   directoryFilterLabel: "Filtrer par métier",
   directoryAllChip: "Tous les métiers",
   directoryMapLink: "Voir ces fiches sur la carte",
+  // annuaire.html's own #compte-detail default, shown until a filter names
+  // itself: "Tous les métiers, du plus fourni au plus rare."
+  directoryDetailDefault: "Tous les métiers, du plus fourni au plus rare.",
   categoryNobody: "Personne ne s'est encore inscrit·e dans cette catégorie.",
   countNobody: "personne encore inscrit·e",
 
