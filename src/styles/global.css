@@ -1,0 +1,287 @@
+/* Design tokens — Annuaire de la Cartoucherie
+   Copied VERBATIM from docs/mockups/final/index.html (the approved mockup).
+   Values originate in docs/mockups/_shared/couleurs.md.
+   Do not hand-edit: regenerate from the mockup. */
+
+@import "tailwindcss";
+@plugin "daisyui";
+
+/* full.css, not the package default: the default only ships the wght axis.
+   SOFT and WONK — pinned below by .ff — exist solely in the full build. */
+@import "@fontsource-variable/fraunces/full.css";
+@import "@fontsource-variable/source-sans-3";
+
+@theme static {
+  /* ── teal · identité ─────────────────────────────────────── */
+  --color-teal-50:  oklch(98.0% 0.010 198);
+  --color-teal-100: oklch(95.5% 0.022 197);
+  --color-teal-200: oklch(91.0% 0.040 196);
+  --color-teal-300: oklch(84.0% 0.058 195);
+  --color-teal-400: oklch(74.0% 0.080 195);
+  --color-teal-500: oklch(63.0% 0.098 196);
+  --color-teal-600: oklch(53.0% 0.090 196);
+  --color-teal-700: oklch(44.0% 0.074 197);
+  --color-teal-800: oklch(35.0% 0.060 198);
+  --color-teal-900: oklch(27.0% 0.045 199);
+  --color-teal-950: oklch(19.0% 0.030 201);
+
+  /* ── orange · action ─────────────────────────────────────── */
+  --color-orange-50:  oklch(97.8% 0.018 75);
+  --color-orange-100: oklch(95.0% 0.042 72);
+  --color-orange-200: oklch(90.0% 0.078 68);
+  --color-orange-300: oklch(84.0% 0.110 64);
+  --color-orange-400: oklch(78.0% 0.145 60);
+  --color-orange-500: oklch(72.0% 0.170 56);
+  --color-orange-600: oklch(65.0% 0.178 50);
+  --color-orange-700: oklch(56.0% 0.172 44);
+  --color-orange-800: oklch(46.0% 0.140 40);
+  --color-orange-900: oklch(37.0% 0.108 38);
+  --color-orange-950: oklch(27.0% 0.078 36);
+
+  /* ── sauge · taxonomie ───────────────────────────────────── */
+  --color-sauge-50:  oklch(97.5% 0.012 170);
+  --color-sauge-100: oklch(94.5% 0.026 170);
+  --color-sauge-200: oklch(89.5% 0.050 170);
+  --color-sauge-300: oklch(82.0% 0.074 168);
+  --color-sauge-400: oklch(73.0% 0.100 164);
+  --color-sauge-500: oklch(64.0% 0.120 160);
+  --color-sauge-600: oklch(54.5% 0.122 156);
+  --color-sauge-700: oklch(45.5% 0.108 152);
+  --color-sauge-800: oklch(37.0% 0.088 150);
+  --color-sauge-900: oklch(29.0% 0.066 152);
+  --color-sauge-950: oklch(20.5% 0.044 156);
+
+  /* ── sable · illustration (50→600 : remplissage seul) ────── */
+  --color-sable-50:  oklch(98.2% 0.010 95);
+  --color-sable-100: oklch(96.0% 0.024 93);
+  --color-sable-200: oklch(92.5% 0.044 91);
+  --color-sable-300: oklch(88.0% 0.064 90);
+  --color-sable-400: oklch(82.0% 0.090 89);
+  --color-sable-500: oklch(76.0% 0.115 88);
+  --color-sable-600: oklch(68.0% 0.118 86);
+  --color-sable-700: oklch(57.5% 0.105 83);
+  --color-sable-800: oklch(47.0% 0.088 80);
+  --color-sable-900: oklch(37.5% 0.068 78);
+  --color-sable-950: oklch(27.0% 0.048 75);
+
+  /* ── neutre · structure, teintée teal ────────────────────── */
+  --color-neutre-50:  oklch(98.6% 0.004 200);
+  --color-neutre-100: oklch(97.2% 0.006 199);
+  --color-neutre-200: oklch(94.4% 0.008 198);
+  --color-neutre-300: oklch(89.8% 0.010 198);
+  --color-neutre-400: oklch(79.5% 0.013 197);
+  --color-neutre-500: oklch(66.5% 0.016 197);
+  --color-neutre-600: oklch(54.5% 0.019 198);
+  --color-neutre-700: oklch(44.0% 0.022 199);
+  --color-neutre-800: oklch(34.0% 0.025 200);
+  --color-neutre-900: oklch(25.5% 0.028 201);
+  --color-neutre-950: oklch(17.5% 0.030 202);
+
+  /* ── rouge · erreur ──────────────────────────────────────── */
+  --color-rouge-50:  oklch(97.6% 0.014 25);
+  --color-rouge-100: oklch(94.6% 0.029 24);
+  --color-rouge-200: oklch(89.0% 0.057 24);
+  --color-rouge-300: oklch(81.0% 0.100 24);
+  --color-rouge-400: oklch(70.0% 0.150 25);
+  --color-rouge-500: oklch(62.0% 0.190 26);
+  --color-rouge-600: oklch(54.0% 0.205 24);
+  --color-rouge-700: oklch(46.0% 0.180 22);
+  --color-rouge-800: oklch(38.0% 0.145 20);
+  --color-rouge-900: oklch(31.0% 0.115 18);
+  --color-rouge-950: oklch(22.0% 0.080 16);
+
+  /* ── profondeur ──────────────────────────────────────────── */
+  --shadow-carte:       0 1px 2px oklch(17.5% .03 202/.05), 0 4px 12px -2px oklch(17.5% .03 202/.09);
+  --shadow-carte-hover: 0 2px 4px oklch(17.5% .03 202/.06), 0 14px 32px -8px oklch(17.5% .03 202/.16);
+  --shadow-flottant:    0 4px 8px oklch(17.5% .03 202/.06), 0 28px 64px -20px oklch(17.5% .03 202/.28);
+  --shadow-cta:         0 2px 4px oklch(37% .108 38/.28), 0 10px 24px -8px oklch(37% .108 38/.38);
+  --shadow-cta-press:   0 1px 2px oklch(37% .108 38/.34);
+}
+
+
+@theme static {
+  /* "Fraunces Variable" / "Source Sans 3 Variable", not the mockup's Google
+     Fonts family names ("Fraunces" / "Source Sans 3"): that is how
+     @fontsource-variable registers its @font-face. The bare names would
+     silently fall through to the Georgia/system-ui fallback — self-hosted,
+     declared, never actually painted. */
+  --font-display: "Fraunces Variable", "Iowan Old Style", Georgia, serif;
+  --font-sans:    "Source Sans 3 Variable", system-ui, sans-serif;
+
+  /* l'échelle · quarte juste 1,333 depuis 17 px — 8 pas, amplitude 4,5× */
+  --text-etiquette: 1rem;      /* 16 · capitales espacées, méta, comptes    */
+  --text-etiquette--line-height: 1.25;
+  --text-etiquette--letter-spacing: 0.14em;
+
+  --text-corps: 1.0625rem;     /* 17 · le corps de texte                    */
+  --text-corps--line-height: 1.55;
+
+  --text-chapo: 1.375rem;      /* 22 · chapô, accroche, sous-titre de bloc  */
+  --text-chapo--line-height: 1.4;
+
+  --text-besoin: 1.1875rem;    /* 19 · une ligne de l'index « Je cherche… » */
+  --text-besoin--line-height: 1.2;
+  --text-besoin--letter-spacing: -0.012em;
+
+  --text-nom: 1.875rem;        /* 30 · titre de section, nom sur une carte  */
+  --text-nom--line-height: 1.08;
+  --text-nom--letter-spacing: -0.018em;
+
+  --text-grand: 2.5rem;        /* 40 · le nom sur la fiche membre           */
+  --text-grand--line-height: 1.0;
+  --text-grand--letter-spacing: -0.022em;
+
+  --text-enorme: 3.375rem;     /* 54 · les nombres du quartier              */
+  --text-enorme--line-height: 0.94;
+  --text-enorme--letter-spacing: -0.028em;
+
+  --text-cri: 4.5rem;          /* 72 · « Je cherche… », une fois par site   */
+  --text-cri--line-height: 0.9;
+  --text-cri--letter-spacing: -0.032em;
+}
+
+
+[data-theme="cartoucherie"] {
+  color-scheme: light;
+
+  --color-base-100:          #ffffff;                 /* la page, blanche  */
+  --color-base-200:          oklch(97.2% 0.006 199);  /* neutre-100        */
+  --color-base-300:          oklch(94.4% 0.008 198);  /* neutre-200        */
+  --color-base-content:      oklch(25.5% 0.028 201);  /* neutre-900        */
+
+  --color-primary:           oklch(44.0% 0.074 197);  /* teal-700          */
+  --color-primary-content:   #ffffff;
+
+  --color-secondary:         oklch(94.5% 0.026 170);  /* sauge-100 teinté  */
+  --color-secondary-content: oklch(19.0% 0.030 201);  /* teal-950          */
+
+  --color-accent:            oklch(72.0% 0.170 56);   /* orange-500 · CTA  */
+  --color-accent-content:    oklch(19.0% 0.030 201);  /* teal-950          */
+
+  --color-neutral:           oklch(25.5% 0.028 201);  /* neutre-900        */
+  --color-neutral-content:   oklch(98.6% 0.004 200);  /* neutre-50         */
+
+  --color-info:              oklch(53.0% 0.090 196);  /* teal-600          */
+  --color-info-content:      #ffffff;
+
+  --color-success:           oklch(45.5% 0.108 152);  /* sauge-700         */
+  --color-success-content:   #ffffff;
+
+  --color-warning:           oklch(76.0% 0.115 88);   /* sable-500         */
+  --color-warning-content:   oklch(19.0% 0.030 201);  /* teal-950          */
+
+  --color-error:             oklch(54.0% 0.205 24);   /* rouge-600         */
+  --color-error-content:     #ffffff;
+
+  --radius-selector: 2rem;      /* pastilles, bascules, badges */
+  --radius-field:    0.75rem;   /* champs, boutons             */
+  --radius-box:      1.25rem;   /* cartes, modales, feuilles   */
+  --size-selector:   0.28125rem;
+  --size-field:      0.28125rem;
+  --border:          1px;
+  --depth:           1;
+  --noise:           0;
+}
+
+
+:root{
+  --gradient-aube:  linear-gradient(168deg, var(--color-teal-50) 0%, #ffffff 44%, var(--color-orange-50) 100%);
+  --gradient-cta:   linear-gradient(180deg, var(--color-orange-400), var(--color-orange-500) 55%, var(--color-orange-600));
+  --gradient-colly: radial-gradient(120% 90% at 30% 15%, var(--color-sable-100), var(--color-sauge-100) 62%, var(--color-teal-100));
+  --gradient-filet: linear-gradient(90deg, var(--color-teal-600), var(--color-sauge-500) 46%, var(--color-orange-500));
+}
+
+html{ -webkit-text-size-adjust:100%; }
+body{ font-family:var(--font-sans); font-size:17px; line-height:1.55; color:var(--color-neutre-900); background:#fff; }
+
+/* Fraunces sur trois axes. WONK est épinglé à 0 : l'italique bancal est
+   exactement ce qui ferait basculer la page du côté « livre pour enfants ». */
+.ff{ font-family:var(--font-display); font-variation-settings:"SOFT" 55,"WONK" 0; font-weight:600; letter-spacing:-0.015em; }
+
+/* un seul anneau de focus, partout, sans exception (couleurs.md §7) */
+:where(a,button,input,textarea,select,summary,[tabindex]):focus-visible{
+  outline:2px solid var(--color-teal-600); outline-offset:2px; border-radius:6px;
+}
+
+/* les quatre dégradés sanctionnés */
+.filet{ background-image:var(--gradient-filet); }
+.aube{ background-image:var(--gradient-aube); }
+.colly-fond{ background-image:var(--gradient-colly); }
+
+/* les trois marches d'élévation */
+.carte{ box-shadow: var(--shadow-carte), inset 0 0 0 1px oklch(17.5% .03 202/.07); }
+.carte:hover{ box-shadow: var(--shadow-carte-hover), inset 0 0 0 1px oklch(17.5% .03 202/.07); }
+.flottant{ box-shadow: var(--shadow-flottant), inset 0 0 0 1px oklch(17.5% .03 202/.07); }
+
+/* le CTA orange — la seule grande surface chaude de l'interface */
+.cta{
+  background-image: var(--gradient-cta);
+  color: var(--color-teal-950);
+  box-shadow: var(--shadow-cta), inset 0 0 0 1px oklch(56% .172 44/.6);
+}
+.cta:hover{ background-image: linear-gradient(180deg, var(--color-orange-300), var(--color-orange-400) 55%, var(--color-orange-500)); }
+.cta:active{ background-image: linear-gradient(180deg, var(--color-orange-500), var(--color-orange-600));
+             transform:translateY(1px); box-shadow:var(--shadow-cta-press), inset 0 0 0 1px oklch(56% .172 44/.6); }
+
+/* ── LE MOTIF VENTOUSE ──────────────────────────────────────────────────────
+   Trois cercles concentriques. Le même dessin sert de symbole, de puce, de
+   médaillon d'icône et de papier peint. Une seule forme tient l'identité.  */
+.ventouses{
+  --v: oklch(68% .118 86 / .26);          /* sable-600 à 26 % : décoratif seul */
+  background-image:
+    radial-gradient(circle at 50% 50%, transparent 0 12.5px, var(--v) 12.5px 14px, transparent 14px),
+    radial-gradient(circle at 50% 50%, transparent 0 7px,   var(--v) 7px 8.4px,   transparent 8.4px),
+    radial-gradient(circle at 50% 50%, var(--v) 0 2.6px, transparent 2.6px);
+  background-size:56px 56px;
+}
+.ventouses--teal{ --v: oklch(53% .09 196 / .16); }
+
+/* la ventouse en médaillon : anneau + halo + anneau, autour de n'importe quoi */
+.pastille{
+  display:grid; place-items:center; flex:none; border-radius:9999px;
+  box-shadow: inset 0 0 0 1.5px var(--color-sauge-400),
+              0 0 0 4px var(--color-sauge-50),
+              0 0 0 5.5px var(--color-sauge-300);
+}
+.pastille--teal{
+  box-shadow: inset 0 0 0 1.5px var(--color-teal-300),
+              0 0 0 4px var(--color-teal-50),
+              0 0 0 5.5px var(--color-teal-200);
+}
+
+/* l'arche de la Halle : demi-cercle en haut, base droite */
+.arche{ border-radius:999px 999px 22px 22px; }
+
+/* la pastille de catégorie */
+.chip{ background:var(--color-sauge-100); color:var(--color-sauge-800); }
+
+/* ── LE HALO ────────────────────────────────────────────────────────────────
+   Le portrait du membre lui-même, agrandi et flouté, multiplié sur le lavis.
+   Chaque fiche hérite de l'ambiance colorée de la personne qu'elle décrit,
+   sans un seul octet d'illustration supplémentaire.                       */
+.halo-fond{ position:absolute; inset:0; overflow:hidden; isolation:isolate; }
+.halo{ position:absolute; background-size:cover; background-position:50% 35%;
+       filter: blur(54px) saturate(2.6) contrast(1.16); mix-blend-mode:multiply; }
+
+/* les croquis au crayon, fondus dans leur panneau : le papier devient la
+   couleur du fond, il ne reste que le graphite */
+.croquis{ mix-blend-mode:multiply; filter:grayscale(1) contrast(1.16) brightness(1.07); }
+
+/* une ligne de l'index « Je cherche… » : le survol allume le numéro,
+   il ne dessine pas une boîte. Dix boîtes empilées, c'est une grille. */
+.besoin{ transition: background-color .18s ease; }
+.besoin:hover, .besoin:focus-visible{ background-color: var(--color-teal-50); }
+.besoin:hover .num, .besoin:focus-visible .num{ color: var(--color-orange-800); }
+.num{ transition: color .18s ease; }
+
+/* la ligne de liste d'un voisin : le lien du nom couvre toute la carte,
+   sauf le bouton d'appel qui remonte en z-10 */
+.carte-lien{ transition: box-shadow .18s ease; }
+
+.tnum{ font-variant-numeric: tabular-nums; }
+
+@media (prefers-reduced-motion: reduce){ *{ transition:none !important; animation:none !important; } }
+
+/* la page composée : un élément caché le reste, quelle que soit son display */
+[hidden]{ display:none !important; }
+
