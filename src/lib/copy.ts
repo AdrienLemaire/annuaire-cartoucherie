@@ -53,6 +53,15 @@ export const COPY = {
   mapUseMyLocation: "Classer depuis ma position",
   mapTheyComeToYou: "Ils viennent chez vous",
   mapPickupOnly: "Adresse de retrait, pas de point sur la carte",
+  // The card's own no-address line, one member at a time: styleguide block 12
+  // (line 1086, « accordé au genre ») renders "Elle vient chez vous" for a
+  // woman, annuaire.html renders "Il vient chez vous" for a man — mapTheyComeToYou
+  // above is the map legend's plural for the group, not this.
+  comesToYou: (pronoun: string) => `${pronoun[0].toUpperCase()}${pronoun.slice(1)} vient chez vous`,
+  // « Portrait de » elides to « Portrait d' » before a vowel or mute h — the
+  // fixture already has Amandine and Inès (styleguide line 1090: "Portrait
+  // d'Amandine Rey"). One table, so MemberCard and MemberRow never fork it.
+  portraitAlt: (nom: string) => (/^[aeiouyàâäéèêëïîôöùûüh]/i.test(nom) ? `Portrait d'${nom}` : `Portrait de ${nom}`),
 
   footerAbout: "À propos",
   footerPrivacy: "Confidentialité",

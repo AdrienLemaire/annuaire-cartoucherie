@@ -1,0 +1,42 @@
+---
+// src/components/CallButton.astro
+// Styleguide block 18 ("Le bouton « Appeler »"): an orange .cta pill with
+// teal-950 lettering, the number spelled out so it reads without a tap.
+// `sticky` renders the thumb-zone bar (block 18's "mobile" specimen, tied to
+// BaseLayout's --safe-bottom); the default renders the inline pill.
+import Icon from "./Icon.astro";
+import { COPY } from "../lib/copy";
+import { firstName } from "../lib/members";
+import { formatTelDisplay, formatTelHref } from "../lib/phone";
+import type { Member } from "../content/schemas";
+
+interface Props {
+  member: Member;
+  sticky?: boolean;
+  withNumber?: boolean;
+}
+const { member, sticky = false, withNumber = false } = Astro.props;
+
+const href = member.tel ? formatTelHref(member.tel) : null;
+const label = withNumber && member.tel ? formatTelDisplay(member.tel) : firstName(member.nom);
+---
+
+{
+  href &&
+    (sticky ? (
+      <div
+        class="fixed inset-x-0 bottom-0 z-40 border-t border-neutre-200 bg-white/95 px-4 pt-3 backdrop-blur-sm"
+        style="padding-bottom: calc(0.75rem + var(--safe-bottom));"
+      >
+        <a href={`tel:${href}`} class="cta flex min-h-[52px] items-center justify-center gap-2 rounded-field px-5 font-semibold">
+          <Icon name="tel" class="size-5" />
+          {COPY.profileCall} {label}
+        </a>
+      </div>
+    ) : (
+      <a href={`tel:${href}`} class="cta inline-flex min-h-[48px] items-center justify-center gap-2 rounded-field px-5 font-semibold">
+        <Icon name="tel" class="size-5" />
+        {withNumber ? label : COPY.profileCall}
+      </a>
+    ))
+}

@@ -1,0 +1,15 @@
+---
+// src/components/CategoryChip.astro
+// Styleguide block 20 ("les petites pièces"): the .chip pill, but as a real
+// <a> at ≥44px — block 12's full card shipped it as a non-tappable <span> at
+// ~34px, which is the third defect this task exists to fix.
+interface Props {
+  slug: string;
+  nom: string;
+}
+const { slug, nom } = Astro.props;
+---
+
+<a href={`/categorie/${slug}`} class="chip inline-flex min-h-[44px] items-center rounded-selector px-3.5 text-[16px] font-semibold">
+  {nom}
+</a>

@@ -1,0 +1,45 @@
+---
+// src/components/MemberRow.astro
+// Styleguide block 12 ("la carte-portrait"), list-row specimen: the dense
+// variant for a search results list. The row's own link covers the portrait,
+// name and trade; the category chips sit outside that link — as real routes,
+// which the styleguide's row specimen shipped without — so no link nests
+// inside another.
+import CategoryChip from "./CategoryChip.astro";
+import { COPY } from "../lib/copy";
+import type { Category, Member } from "../content/schemas";
+
+interface Props {
+  member: Member;
+  categories?: Category[];
+}
+const { member, categories = [] } = Astro.props;
+const chips = categories.filter((c) => member.categories.includes(c.slug));
+---
+
+<div class="carte rounded-box bg-white p-3 shadow-carte">
+  <a href={`/membre/${member.slug}`} class="flex items-center gap-3">
+    <img
+      src={`/portraits/${member.photo}`}
+      alt={COPY.portraitAlt(member.nom)}
+      width="128"
+      height="128"
+      loading="lazy"
+      decoding="async"
+      class="size-[72px] shrink-0 rounded-box object-cover"
+    />
+    <span class="min-w-0">
+      <span class="ff block text-nom text-teal-900">{member.nom}</span>
+      <span class="block text-corps text-neutre-700">{member.metier}</span>
+    </span>
+  </a>
+  {
+    chips.length > 0 && (
+      <div class="mt-2 flex flex-wrap gap-2">
+        {chips.map((c) => (
+          <CategoryChip slug={c.slug} nom={c.nom} />
+        ))}
+      </div>
+    )
+  }
+</div>
