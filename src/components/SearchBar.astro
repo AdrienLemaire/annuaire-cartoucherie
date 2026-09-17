@@ -4,8 +4,18 @@
 // specimens, "avec Colly" (the accueil hero, Colly agrippée au bord de la
 // carte) and "sans Colly" (the compact pill reused at the top of
 // annuaire/membre/carte). withColly picks which one renders; both submit
-// a plain GET form so the field works with JavaScript disabled — Task 12
-// intercepts it via data-search-form/data-search-input for live filtering.
+// a plain GET form so the field works with JavaScript disabled —
+// src/client/live-search.ts intercepts it (data-search-form/-input) for
+// live filtering and prevents the submit outright once it has run.
+//
+// The input deliberately carries no `name`: nothing on the server reads a
+// `?q=` parameter (search only ever runs client-side, against
+// /recherche.json), so a plain GET submit — the no-JS path — would only
+// ever send a query the host does nothing with, while still putting what
+// the visitor typed on the wire and in their browser history. Dropping
+// `name` makes that impossible rather than merely unused: a no-JS submit
+// now goes to `action` (the full /annuaire) with no query string at all.
+// See src/lib/copy.ts (searchLocal) for the claim this keeps true.
 import { COPY } from "../lib/copy";
 import Icon from "./Icon.astro";
 
@@ -17,68 +27,101 @@ interface Props {
 const { withColly = false, value = "", action = "/annuaire" } = Astro.props;
 ---
 
-{
-  withColly ? (
-    <div class="relative mt-[132px]">
-      <img
-        src="/colly/colly-couleur.png"
-        alt={COPY.searchCollyAlt}
-        width="400"
-        height="473"
-        class="pointer-events-none select-none absolute h-auto"
-        style="bottom:calc(100% - 34px); right:6px; width:140px"
-      />
-      <p class="pointer-events-none absolute text-right" style="bottom:calc(100% + 18px); right:174px; width:200px; max-width:44%">
-        <span class="ff block text-[18px] leading-tight text-teal-800">{COPY.homeCollySays}</span>
-        <svg viewBox="0 0 74 46" class="ml-auto mt-1 w-[64px] h-auto text-sauge-500" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
-          <path d="M3 5c14 26 36 34 62 33" />
-          <path d="M56 30.5 65.6 38 57 44.5" />
-        </svg>
-      </p>
-      <form class="flottant relative rounded-[22px] bg-white p-3.5" role="search" method="get" action={action} data-search-form>
-        <label for="q" class="block px-1 pb-1.5 text-etiquette tracking-normal font-semibold text-neutre-800">
-          {COPY.searchLabel}
-        </label>
-        <div class="flex gap-2">
-          <div class="relative flex-1 min-w-0">
-            <Icon name="loupe" class="w-5 h-5 absolute left-3.5 top-1/2 -translate-y-1/2 text-teal-600 pointer-events-none" />
-            <input
-              id="q"
-              name="q"
-              type="search"
-              autocomplete="off"
-              placeholder={COPY.searchPlaceholder}
-              value={value}
-              class="w-full min-h-[52px] pl-11 pr-3 rounded-xl bg-white text-corps text-neutre-900 placeholder:text-neutre-600"
-              style="box-shadow: inset 0 0 0 1.5px var(--color-neutre-500)"
-              data-search-input
-            />
-          </div>
-          <button type="submit" class="cta shrink-0 inline-flex items-center justify-center min-h-[52px] px-5 rounded-xl text-corps font-bold tracking-tight transition">
-            {COPY.searchSubmit}
-          </button>
-        </div>
-      </form>
-    </div>
-  ) : (
-    <form class="carte rounded-full bg-white p-1.5 pl-4 flex items-center gap-2" role="search" method="get" action={action} data-search-form>
-      <label for="q" class="sr-only">
+{withColly ? (
+  <div class="relative mt-[132px]">
+    <img
+      src="/colly/colly-couleur.png"
+      alt={COPY.searchCollyAlt}
+      width="400"
+      height="473"
+      class="pointer-events-none select-none absolute h-auto"
+      style="bottom:calc(100% - 34px); right:6px; width:140px"
+    />
+    <p
+      class="pointer-events-none absolute text-right"
+      style="bottom:calc(100% + 18px); right:174px; width:200px; max-width:44%"
+    >
+      <span class="ff block text-[18px] leading-tight text-teal-800">{COPY.homeCollySays}</span>
+      <svg
+        viewBox="0 0 74 46"
+        class="ml-auto mt-1 w-[64px] h-auto text-sauge-500"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        aria-hidden="true"
+      >
+        <path d="M3 5c14 26 36 34 62 33" />
+        <path d="M56 30.5 65.6 38 57 44.5" />
+      </svg>
+    </p>
+    <form
+      class="flottant relative rounded-[22px] bg-white p-3.5"
+      role="search"
+      method="get"
+      action={action}
+      data-search-form
+    >
+      <label
+        for="q"
+        class="block px-1 pb-1.5 text-etiquette tracking-normal font-semibold text-neutre-800"
+      >
         {COPY.searchLabel}
       </label>
-      <Icon name="loupe" class="w-5 h-5 shrink-0 text-teal-600" />
-      <input
-        id="q"
-        name="q"
-        type="search"
-        autocomplete="off"
-        placeholder={COPY.searchPlaceholder}
-        value={value}
-        class="min-h-[44px] w-full min-w-0 border-0 bg-transparent text-corps text-neutre-900 outline-none placeholder:text-neutre-600"
-        data-search-input
-      />
-      <button type="submit" aria-label={COPY.searchSubmit} class="cta shrink-0 grid place-items-center w-12 h-12 rounded-full transition">
-        <Icon name="loupe" class="w-6 h-6" />
-      </button>
+      <div class="flex gap-2">
+        <div class="relative flex-1 min-w-0">
+          <Icon
+            name="loupe"
+            class="w-5 h-5 absolute left-3.5 top-1/2 -translate-y-1/2 text-teal-600 pointer-events-none"
+          />
+          <input
+            id="q"
+            type="search"
+            autocomplete="off"
+            placeholder={COPY.searchPlaceholder}
+            value={value}
+            class="w-full min-h-[52px] pl-11 pr-3 rounded-xl bg-white text-corps text-neutre-900 placeholder:text-neutre-600"
+            style="box-shadow: inset 0 0 0 1.5px var(--color-neutre-500)"
+            data-search-input
+          />
+        </div>
+        <button
+          type="submit"
+          class="cta shrink-0 inline-flex items-center justify-center min-h-[52px] px-5 rounded-xl text-corps font-bold tracking-tight transition"
+        >
+          {COPY.searchSubmit}
+        </button>
+      </div>
+      <p class="mt-3 px-1 text-etiquette tracking-normal text-neutre-700">{COPY.searchLocal}</p>
     </form>
-  )
-}
+  </div>
+) : (
+  <form
+    class="carte rounded-full bg-white p-1.5 pl-4 flex items-center gap-2"
+    role="search"
+    method="get"
+    action={action}
+    data-search-form
+  >
+    <label for="q" class="sr-only">
+      {COPY.searchLabel}
+    </label>
+    <Icon name="loupe" class="w-5 h-5 shrink-0 text-teal-600" />
+    <input
+      id="q"
+      type="search"
+      autocomplete="off"
+      placeholder={COPY.searchPlaceholder}
+      value={value}
+      class="min-h-[44px] w-full min-w-0 border-0 bg-transparent text-corps text-neutre-900 outline-none placeholder:text-neutre-600"
+      data-search-input
+    />
+    <button
+      type="submit"
+      aria-label={COPY.searchSubmit}
+      class="cta shrink-0 grid place-items-center w-12 h-12 rounded-full transition"
+    >
+      <Icon name="loupe" class="w-6 h-6" />
+    </button>
+  </form>
+)}

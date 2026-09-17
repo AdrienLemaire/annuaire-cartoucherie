@@ -67,12 +67,15 @@ export const COPY = {
   searchLabel: "Un métier, un prénom, un besoin",
   searchPlaceholder: "électricien, yoga…",
   searchSubmit: "Trouver",
-  // No searchLocal key here: today the search bar is a plain method="get" form (Task 12
-  // hasn't landed — no src/client interception, no index file), so submitting it sends
-  // ?q=<query> to the host as a normal navigation. There is no true one-clause claim to
-  // make about that yet. Task 12 adds the client-side index and, with it, this string —
-  // re-verified against the built site at that point, not restored from here.
-  // (task-11-report.md, "fix round 4")
+  // True as of Task 12 (task-11-report.md, "fix round 4", named this task as the one that
+  // would make it true again): src/pages/recherche.json.ts serves the whole member index as
+  // a static file, src/client/live-search.ts fetches it once per page load (cached across
+  // every keystroke) and calls search() — src/lib/search.ts, pure and isomorphic — entirely
+  // in the browser. Nothing there calls fetch a second time or builds a URL from the typed
+  // value, and SearchBar.astro's <input> carries no `name`, so even the no-JS GET fallback
+  // cannot put it on the wire. Verified against the built site: see task-12-report.md.
+  searchLocal:
+    "Ce que vous tapez ne quitte jamais votre téléphone : la recherche se fait dans la liste déjà chargée sur votre appareil.",
   searchEmpty: "Personne ne correspond à cette recherche.",
   searchSuggest: "Vous connaissez quelqu'un ?",
   // The mailto: subject when a visitor offers a name for an empty category
@@ -82,7 +85,8 @@ export const COPY = {
   searchReason: (reason: string) => `Correspond à ${reason}`,
   // SearchBar's colly-couleur.png alt (styleguide block "La barre de
   // recherche"): the only place that image renders, so one string is enough.
-  searchCollyAlt: "Colly, la créature des Halles de la Cartoucherie, agrippée au bord de la barre de recherche",
+  searchCollyAlt:
+    "Colly, la créature des Halles de la Cartoucherie, agrippée au bord de la barre de recherche",
 
   directoryAll: "Voir tout le quartier",
   // annuaire.html's own H1 ("L'annuaire") and filter nav (aria-label and the
@@ -161,7 +165,8 @@ export const COPY = {
   // (category-filter.ts's own precedent: a script toggles hidden, it does not
   // build a sentence). Drops the mockup's own hardcoded "dix" (member count).
   mapFromYou: "Classé depuis votre position",
-  mapGeoGranted: "Position reçue. Les distances ci-dessous viennent d'être recalculées ici, dans le navigateur.",
+  mapGeoGranted:
+    "Position reçue. Les distances ci-dessous viennent d'être recalculées ici, dans le navigateur.",
   mapGeoDenied: "Position indisponible : le classement reste mesuré depuis la Halle.",
   // The geo panel's own explanatory pair (docs/mockups/final/carte.html:457-461,
   // ids geo-titre/geo-texte) — restored per task-10-report.md finding 1: the
@@ -184,7 +189,8 @@ export const COPY = {
   // context states the fact it actually demonstrates: src/client/geolocate.ts
   // never calls fetch, confirmed by reading the file — the haversine math
   // (src/lib/plan.ts) runs in the browser and nothing leaves it.
-  mapGeoLocal: "Elle n'est jamais envoyée ailleurs : le calcul des distances se fait ici, sur votre téléphone.",
+  mapGeoLocal:
+    "Elle n'est jamais envoyée ailleurs : le calcul des distances se fait ici, sur votre téléphone.",
   // « Non merci, je reste sur la Halle » (carte.html's own geo-refuser) — the
   // visible way to say no without the browser's own permission prompt being
   // the only exit. Never requests a position; src/client/geolocate.ts's own
@@ -223,7 +229,8 @@ export const COPY = {
   // /a-propos, /confidentialite, /mentions-legales, /avis (Task 11). Each page's
   // <h1> reuses the matching footer* label above rather than forking a second
   // string that would only ever say the same thing.
-  aboutDescription: "Qui fait cet annuaire, les crédits des portraits, de la mascotte et de la carte.",
+  aboutDescription:
+    "Qui fait cet annuaire, les crédits des portraits, de la mascotte et de la carte.",
   aboutIntro:
     "Cet annuaire est fait bénévolement pour l'association de quartier de la Cartoucherie, à partir " +
     "des portraits réunis par Sandra Carole.",
@@ -236,12 +243,18 @@ export const COPY = {
     "et qrcode.",
 
   privacyDescription: "Ce que ce site collecte et ce qu'il ne collecte pas.",
-  privacyIntro: "Ce site est volontairement simple : voici, sans détour, ce qu'il fait et ce qu'il ne fait pas.",
+  privacyIntro:
+    "Ce site est volontairement simple : voici, sans détour, ce qu'il fait et ce qu'il ne fait pas.",
   privacyDoesTitle: "Ce que ce site fait",
-  privacyDoesBrowsing: "Parcourir l'annuaire, une fiche ou la carte ne dépose rien sur votre appareil.",
-  // No privacyDoesSearch key: see the comment by searchLabel in this same file. A plain
-  // GET form sends the typed query to the host today, so there is no true claim to make
-  // here yet (task-11-report.md, "fix round 4").
+  privacyDoesBrowsing:
+    "Parcourir l'annuaire, une fiche ou la carte ne dépose rien sur votre appareil.",
+  // Same fact as searchLocal above (spec §5), worded for this list rather than reusing that
+  // string verbatim: it names the one network request the claim doesn't cover (the index
+  // download) instead of leaving it implicit. See searchLocal's own comment for the
+  // file:line evidence.
+  privacyDoesSearch:
+    "La recherche télécharge une seule fois la liste du quartier, comme n'importe quelle page ; " +
+    "ce que vous tapez ensuite n'est jamais envoyé où que ce soit.",
   privacyDoesGeo:
     "Sur la carte, votre position n'est utilisée que si vous appuyez sur « Classer depuis ma " +
     "position » ; le calcul des distances se fait dans votre navigateur et votre position n'est " +
@@ -249,8 +262,10 @@ export const COPY = {
   privacyDoesNotTitle: "Ce que ce site ne fait pas",
   privacyDoesNotCookie: "Aucun cookie n'est déposé.",
   privacyDoesNotAccount: "Aucun compte n'est nécessaire pour consulter l'annuaire.",
-  privacyDoesNotFont: "Aucune police n'est chargée depuis un service tiers : elles sont hébergées ici.",
-  privacyDoesNotAds: "Aucun outil de mesure d'audience ni de régie publicitaire n'est installé sur ce site.",
+  privacyDoesNotFont:
+    "Aucune police n'est chargée depuis un service tiers : elles sont hébergées ici.",
+  privacyDoesNotAds:
+    "Aucun outil de mesure d'audience ni de régie publicitaire n'est installé sur ce site.",
 
   legalDescription: "Éditeur, directeur de la publication, hébergeur et propriété intellectuelle.",
   legalEditorTitle: "Éditeur du site",

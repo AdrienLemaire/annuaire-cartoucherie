@@ -4,13 +4,35 @@ import type { Category, Member } from "../../src/content/schemas";
 import { member } from "./factory";
 
 const members: Member[] = [
-  member({ slug: "jules-martin", nom: "Jules Martin", metier: "Électricien", categories: ["travaux"] }),
-  member({ slug: "alice-nguyen", nom: "Alice Nguyen", metier: "Sophrologue", categories: ["equilibre"] }),
+  member({
+    slug: "jules-martin",
+    nom: "Jules Martin",
+    metier: "Électricien",
+    categories: ["travaux"],
+  }),
+  member({
+    slug: "alice-nguyen",
+    nom: "Alice Nguyen",
+    metier: "Sophrologue",
+    categories: ["equilibre"],
+  }),
 ];
 
 const categories: Category[] = [
-  { slug: "travaux", nom: "Artisanat & travaux", besoin: "Réparer chez moi", motsCles: ["dépannage"], icon: "c-artisanat" },
-  { slug: "equilibre", nom: "Santé & bien-être", besoin: "Retrouver l'équilibre", motsCles: ["énergie"], icon: "c-sante" },
+  {
+    slug: "travaux",
+    nom: "Artisanat & travaux",
+    besoin: "Réparer chez moi",
+    motsCles: ["dépannage"],
+    icon: "c-artisanat",
+  },
+  {
+    slug: "equilibre",
+    nom: "Santé & bien-être",
+    besoin: "Retrouver l'équilibre",
+    motsCles: ["énergie"],
+    icon: "c-sante",
+  },
 ];
 
 const index = buildIndex(members, categories);
@@ -38,5 +60,17 @@ describe("Search", () => {
   it("Returns nothing for an empty or an absurd query", () => {
     expect(search(index, "   ")).toEqual([]);
     expect(search(index, "zzzzqqqq")).toEqual([]);
+  });
+
+  // The index is a public file. A crawler fetching it must not come away with
+  // the quartier's phone book — contact details live on the profile page only.
+  it("Keeps contact details out of the public index", () => {
+    const entry = buildIndex(
+      [member({ tel: "06 12 34 56 78", email: "alice@example.fr", instagram: "alice" })],
+      categories,
+    )[0];
+    expect(Object.keys(entry)).not.toContain("tel");
+    expect(Object.keys(entry)).not.toContain("email");
+    expect(JSON.stringify(entry)).not.toContain("@");
   });
 });

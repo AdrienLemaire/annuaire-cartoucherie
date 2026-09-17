@@ -23,6 +23,15 @@
 // one generic [data-no-match] block for a filter that matches nothing at all
 // (an unrecognised ?cat= value) — so the script never composes a sentence,
 // only chooses which one, already written, to reveal.
+//
+// src/client/live-search.ts mounts into [data-results], placed as the first
+// child of <section> rather than inside the sticky header the search bar
+// itself lives in (Fragment slot="header-extra" below) — a results list
+// growing inside a position:sticky element would push arbitrarily far down
+// the viewport as the visitor scrolls. It hides [data-browse] (chip rail +
+// map link + the row list — the whole category-filter.ts-owned "browsing"
+// UI, one wrapper) while a query is active; category-filter.ts's own
+// elements survive being hidden as a group.
 import BaseLayout from "../layouts/BaseLayout.astro";
 import CollyPanel from "../components/CollyPanel.astro";
 import MemberRow from "../components/MemberRow.astro";
@@ -42,7 +51,10 @@ const empty = counted.filter((c) => c.count === 0);
 const populated = counted.filter((c) => c.count > 0);
 ---
 
-<BaseLayout title={`${COPY.directoryTitle} — Annuaire de la Cartoucherie`} description={COPY.homeBrowseListText(members.length)}>
+<BaseLayout
+  title={`${COPY.directoryTitle} — Annuaire de la Cartoucherie`}
+  description={COPY.homeBrowseListText(members.length)}
+>
   <Fragment slot="header-extra">
     <div class="max-w-[720px]">
       <SearchBar />
@@ -50,31 +62,52 @@ const populated = counted.filter((c) => c.count > 0);
   </Fragment>
 
   <section class="mx-auto max-w-[1160px] px-5 pt-7" aria-labelledby="t-annuaire">
-    <h1 id="t-annuaire" class="ff text-nom text-teal-900 scroll-mt-[140px]">{COPY.directoryTitle}</h1>
-    <p class="mt-5 flex flex-wrap items-baseline gap-x-3 gap-y-1" aria-live="polite">
-      <span data-count-number class="ff tnum text-enorme text-teal-900">{total.count}</span>
-      <span data-count-word class="text-chapo text-neutre-800">{total.noun}</span>
-      <span data-count-detail class="w-full text-corps text-neutre-700">{COPY.directoryDetailDefault}</span>
-    </p>
+    <h1 id="t-annuaire" class="ff text-nom text-teal-900 scroll-mt-[140px]">
+      {COPY.directoryTitle}
+    </h1>
 
-    <nav class="mt-5" aria-label={COPY.directoryFilterLabel}>
-      <p class="text-etiquette font-semibold uppercase text-sauge-800">{COPY.directoryFilterLabel}</p>
-      <ul class="mt-2 flex gap-2 overflow-x-auto py-1.5 -mx-5 px-5 sm:flex-wrap sm:overflow-visible sm:mx-0 sm:px-0 list-none m-0">
-        <li>
-          <a
-            href="/annuaire"
-            data-filter=""
-            data-count={total.count}
-            data-noun={total.noun}
-            data-detail={COPY.directoryDetailDefault}
-            class="chip whitespace-nowrap inline-flex items-center gap-2 rounded-selector px-3.5 py-2 min-h-[44px] text-[16px] font-semibold hover:bg-sauge-200"
-          >
-            <svg class="w-[18px] h-[18px]" aria-hidden="true"><use href="#i-groupe" /></svg>
-            {COPY.directoryAllChip} <span class="tnum text-sauge-900">{members.length}</span>
-          </a>
-        </li>
-        {
-          populated.map((c) => {
+    <div
+      data-results
+      hidden
+      aria-live="polite"
+      aria-atomic="true"
+      class="mt-6 grid gap-3 mx-auto max-w-[620px] min-[940px]:max-w-none min-[940px]:grid-cols-2"
+    ></div>
+
+    <div data-browse>
+      <p class="mt-5 flex flex-wrap items-baseline gap-x-3 gap-y-1" aria-live="polite">
+        <span data-count-number class="ff tnum text-enorme text-teal-900">
+          {total.count}
+        </span>
+        <span data-count-word class="text-chapo text-neutre-800">
+          {total.noun}
+        </span>
+        <span data-count-detail class="w-full text-corps text-neutre-700">
+          {COPY.directoryDetailDefault}
+        </span>
+      </p>
+
+      <nav class="mt-5" aria-label={COPY.directoryFilterLabel}>
+        <p class="text-etiquette font-semibold uppercase text-sauge-800">
+          {COPY.directoryFilterLabel}
+        </p>
+        <ul class="mt-2 flex gap-2 overflow-x-auto py-1.5 -mx-5 px-5 sm:flex-wrap sm:overflow-visible sm:mx-0 sm:px-0 list-none m-0">
+          <li>
+            <a
+              href="/annuaire"
+              data-filter=""
+              data-count={total.count}
+              data-noun={total.noun}
+              data-detail={COPY.directoryDetailDefault}
+              class="chip whitespace-nowrap inline-flex items-center gap-2 rounded-selector px-3.5 py-2 min-h-[44px] text-[16px] font-semibold hover:bg-sauge-200"
+            >
+              <svg class="w-[18px] h-[18px]" aria-hidden="true">
+                <use href="#i-groupe" />
+              </svg>
+              {COPY.directoryAllChip} <span class="tnum text-sauge-900">{members.length}</span>
+            </a>
+          </li>
+          {populated.map((c) => {
             const parts = memberCountParts(c.count, c.genders);
             return (
               <li>
@@ -93,45 +126,45 @@ const populated = counted.filter((c) => c.count > 0);
                 </a>
               </li>
             );
-          })
-        }
-        {
-          // Non-interactive: annuaire.html's own chip-vide, and NeedsIndex.astro's
-          // precedent for the same zero-count case — greyed, no href, so the
-          // visitor never taps into an empty category expecting a result.
-          empty.map((c) => (
-            <li>
-              <span class="chip-vide whitespace-nowrap inline-flex items-center gap-2 rounded-selector bg-neutre-100 px-3.5 py-2 min-h-[44px] text-[16px] font-semibold text-neutre-600">
-                <svg class="w-[18px] h-[18px]" aria-hidden="true">
-                  <use href={`#${c.icon}`} />
-                </svg>
-                {c.nom} <span class="tnum">{c.count}</span>
-              </span>
-            </li>
-          ))
-        }
-      </ul>
-    </nav>
+          })}
+          {
+            // Non-interactive: annuaire.html's own chip-vide, and NeedsIndex.astro's
+            // precedent for the same zero-count case — greyed, no href, so the
+            // visitor never taps into an empty category expecting a result.
+            empty.map((c) => (
+              <li>
+                <span class="chip-vide whitespace-nowrap inline-flex items-center gap-2 rounded-selector bg-neutre-100 px-3.5 py-2 min-h-[44px] text-[16px] font-semibold text-neutre-600">
+                  <svg class="w-[18px] h-[18px]" aria-hidden="true">
+                    <use href={`#${c.icon}`} />
+                  </svg>
+                  {c.nom} <span class="tnum">{c.count}</span>
+                </span>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
 
-    <p class="mt-4">
-      <a
-        href="/carte"
-        class="inline-flex items-center gap-2 min-h-[44px] text-corps font-semibold text-teal-700 underline decoration-teal-300 underline-offset-4 hover:decoration-teal-600"
-      >
-        <svg class="w-[18px] h-[18px] text-teal-600" aria-hidden="true"><use href="#i-pin" /></svg>
-        {COPY.directoryMapLink}
-      </a>
-    </p>
+      <p class="mt-4">
+        <a
+          href="/carte"
+          class="inline-flex items-center gap-2 min-h-[44px] text-corps font-semibold text-teal-700 underline decoration-teal-300 underline-offset-4 hover:decoration-teal-600"
+        >
+          <svg class="w-[18px] h-[18px] text-teal-600" aria-hidden="true">
+            <use href="#i-pin" />
+          </svg>
+          {COPY.directoryMapLink}
+        </a>
+      </p>
 
-    <ul class="mt-6 grid gap-3 mx-auto max-w-[620px] min-[940px]:max-w-none min-[940px]:grid-cols-2 list-none p-0 m-0">
-      {
-        members.map((m) => (
+      <ul class="mt-6 grid gap-3 mx-auto max-w-[620px] min-[940px]:max-w-none min-[940px]:grid-cols-2 list-none p-0 m-0">
+        {members.map((m) => (
           <li data-member data-cat={m.categories.join(" ")}>
             <MemberRow member={m} categories={categories} />
           </li>
-        ))
-      }
-    </ul>
+        ))}
+      </ul>
+    </div>
 
     {
       // Reached only through the client filter (a direct page load of an
@@ -165,10 +198,15 @@ const populated = counted.filter((c) => c.count > 0);
         // #aucun-resultat is the "triste" Colly pose; CollyPanel.astro
         // already renders that exact specimen, reused rather than duplicated.
       }
-      <CollyPanel pose="triste" title={COPY.searchEmpty} text={COPY.homeBrowseListText(members.length)} />
+      <CollyPanel
+        pose="triste"
+        title={COPY.searchEmpty}
+        text={COPY.homeBrowseListText(members.length)}
+      />
     </div>
   </section>
   <script>
     import "../client/category-filter";
+    import "../client/live-search";
   </script>
 </BaseLayout>

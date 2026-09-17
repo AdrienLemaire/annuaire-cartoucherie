@@ -9,9 +9,11 @@
 // sample code, per the brief's own fidelity rule — see task-7-report.md for
 // every place the two disagreed and why the mockup won.
 //
-// Not built here: #zone-resultats, the live-filtered results list and its
-// inline <script>. That is Task 12's — see task-7-brief.md, "Global
-// constraints… Live search behaviour is Task 12's, not yours."
+// The live-filtered results list (mockup's #zone-resultats) and its script
+// are Task 12's — see task-7-brief.md, "Global constraints… Live search
+// behaviour is Task 12's, not yours." src/client/live-search.ts mounts into
+// [data-results] below the search bar and hides [data-browse] (the "…ou
+// choisissez la fin" needs index) while a query is active.
 import BaseLayout from "../layouts/BaseLayout.astro";
 import SearchBar from "../components/SearchBar.astro";
 import NeedsIndex from "../components/NeedsIndex.astro";
@@ -38,18 +40,29 @@ const voisinsCount = formatMemberCount(
 const onMapCount = members.filter((m) => m.surCarte).length;
 ---
 
-<BaseLayout title="Annuaire de la Cartoucherie" description={COPY.homeIntro} header={{ variant: "join" }}>
+<BaseLayout
+  title="Annuaire de la Cartoucherie"
+  description={COPY.homeIntro}
+  header={{ variant: "join" }}
+>
   <section class="mx-auto max-w-[1160px] px-5 pt-8" aria-labelledby="t-cherche">
-    <h1 id="t-cherche" class="ff text-[clamp(3rem,13vw,4.5rem)] leading-[0.9] tracking-[-0.032em] text-teal-900">
+    <h1
+      id="t-cherche"
+      class="ff text-[clamp(3rem,13vw,4.5rem)] leading-[0.9] tracking-[-0.032em] text-teal-900"
+    >
       {COPY.homeTitle}
     </h1>
     <p class="mt-4 text-chapo text-neutre-800 max-w-[34ch]">{COPY.homeIntro}</p>
     <SearchBar withColly={true} />
+    <div data-results hidden aria-live="polite" aria-atomic="true" class="mt-4 grid gap-3"></div>
   </section>
 
   <div class="mx-auto max-w-[1160px]">
-    <nav aria-labelledby="t-besoins" class="mt-10">
-      <h2 id="t-besoins" class="px-5 pt-5 pb-2 text-etiquette font-semibold uppercase text-teal-700">
+    <nav aria-labelledby="t-besoins" class="mt-10" data-browse>
+      <h2
+        id="t-besoins"
+        class="px-5 pt-5 pb-2 text-etiquette font-semibold uppercase text-teal-700"
+      >
         {COPY.homeOrPick}
       </h2>
       <NeedsIndex categories={counted} />
@@ -57,19 +70,17 @@ const onMapCount = members.filter((m) => m.surCarte).length;
   </div>
 
   <section class="mx-auto max-w-[1160px] px-5 mt-10" aria-labelledby="t-voisins">
-    <h2 id="t-voisins" class="ff text-nom text-teal-900">{COPY.homeNeighbours}</h2>
+    <h2 id="t-voisins" class="ff text-nom text-teal-900">
+      {COPY.homeNeighbours}
+    </h2>
     <div class="filet h-[3px] w-16 rounded-full mt-2.5"></div>
     <p class="mt-4 text-corps text-neutre-800 max-w-[52ch]">{COPY.discLegend}</p>
-    <ul
-      class="mt-5 mx-auto grid grid-cols-2 gap-3 max-w-[356px] min-[720px]:grid-cols-3 min-[720px]:max-w-[540px] min-[1000px]:grid-cols-6 min-[1000px]:max-w-[1092px] list-none p-0 m-0"
-    >
-      {
-        featured.map((m, i) => (
-          <li class="flex">
-            <MemberCard member={m} priority={i === 0} categories={categories} />
-          </li>
-        ))
-      }
+    <ul class="mt-5 mx-auto grid grid-cols-2 gap-3 max-w-[356px] min-[720px]:grid-cols-3 min-[720px]:max-w-[540px] min-[1000px]:grid-cols-6 min-[1000px]:max-w-[1092px] list-none p-0 m-0">
+      {featured.map((m, i) => (
+        <li class="flex">
+          <MemberCard member={m} priority={i === 0} categories={categories} />
+        </li>
+      ))}
     </ul>
     <p class="mt-6">
       <a
@@ -83,17 +94,26 @@ const onMapCount = members.filter((m) => m.surCarte).length;
   </section>
 
   <section class="mx-auto max-w-[1160px] px-5 mt-10" aria-labelledby="t-parcourir">
-    <h2 id="t-parcourir" class="ff text-nom text-teal-900">{COPY.homeBrowseOtherwise}</h2>
+    <h2 id="t-parcourir" class="ff text-nom text-teal-900">
+      {COPY.homeBrowseOtherwise}
+    </h2>
     <p class="mt-3 text-corps text-neutre-800 max-w-[52ch]">{COPY.homeBrowseIntro}</p>
     <ul class="mt-5 grid gap-3 sm:grid-cols-2 max-w-[860px] list-none p-0 m-0">
       <li class="flex">
-        <a href="/annuaire" class="carte carte-lien w-full flex items-start gap-4 rounded-[20px] bg-white p-5">
+        <a
+          href="/annuaire"
+          class="carte carte-lien w-full flex items-start gap-4 rounded-[20px] bg-white p-5"
+        >
           <span class="pastille pastille--teal w-11 h-11 bg-teal-50 text-teal-700 shrink-0 mt-0.5">
             <Icon name="groupe" class="w-5 h-5" />
           </span>
           <span class="min-w-0">
-            <span class="ff block text-[21px] leading-tight text-teal-900">{COPY.homeBrowseListTitle}</span>
-            <span class="mt-1.5 block text-[16px] text-neutre-700">{COPY.homeBrowseListText(members.length)}</span>
+            <span class="ff block text-[21px] leading-tight text-teal-900">
+              {COPY.homeBrowseListTitle}
+            </span>
+            <span class="mt-1.5 block text-[16px] text-neutre-700">
+              {COPY.homeBrowseListText(members.length)}
+            </span>
             <span class="mt-2 inline-flex items-center gap-1.5 text-[16px] font-semibold text-teal-700">
               {COPY.homeOpen} <Icon name="chev" class="w-4 h-4" />
             </span>
@@ -101,12 +121,17 @@ const onMapCount = members.filter((m) => m.surCarte).length;
         </a>
       </li>
       <li class="flex">
-        <a href="/carte" class="carte carte-lien w-full flex items-start gap-4 rounded-[20px] bg-white p-5">
+        <a
+          href="/carte"
+          class="carte carte-lien w-full flex items-start gap-4 rounded-[20px] bg-white p-5"
+        >
           <span class="pastille pastille--teal w-11 h-11 bg-teal-50 text-teal-700 shrink-0 mt-0.5">
             <Icon name="pin" class="w-5 h-5" />
           </span>
           <span class="min-w-0">
-            <span class="ff block text-[21px] leading-tight text-teal-900">{COPY.homeBrowseMapCardTitle}</span>
+            <span class="ff block text-[21px] leading-tight text-teal-900">
+              {COPY.homeBrowseMapCardTitle}
+            </span>
             <span class="mt-1.5 block text-[16px] text-neutre-700">
               {COPY.homeBrowseMapText(onMapCount, members.length)}
             </span>
@@ -120,4 +145,7 @@ const onMapCount = members.filter((m) => m.surCarte).length;
   </section>
 
   <CollyPanel pose="salut" title={COPY.homeCollyTitle} text={COPY.homeCollyText} />
+  <script>
+    import "../client/live-search";
+  </script>
 </BaseLayout>
