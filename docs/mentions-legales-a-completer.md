@@ -1,32 +1,27 @@
-# Mentions légales — à compléter
+# Mentions légales — to complete
 
-Chaque `⟨à compléter : …⟩` visible sur `/mentions-legales` (et un, sur `/a-propos`) correspond
-à une ligne ci-dessous. Task 16 vérifie que cette liste est vide avant la mise en ligne.
+Each `⟨à compléter : …⟩` marker visible on `/mentions-legales` (one more on `/a-propos`)
+corresponds to one line below. Task 16 checks that this list is empty before the site goes live.
 
 ## `/mentions-legales`
 
-- **Nom et forme juridique de l'association** — raison sociale complète telle qu'elle figure sur
-  ses statuts (ex. « Association [nom], loi du 1er juillet 1901 »). Ne pas supposer la forme
-  juridique : elle doit être lue sur les statuts, pas déduite.
-- **Adresse du siège social** — l'adresse officielle de l'association, telle qu'enregistrée en
-  préfecture.
-- **SIRET ou numéro RNA** — l'un ou l'autre identifie légalement l'association ; celui qui existe
-  suffit.
-- **Raison sociale exacte de l'hébergeur Cloudflare** — le nom légal de l'entité Cloudflare
-  contractante. Il dépend du compte Cloudflare utilisé (l'entité indiquée varie selon le pays et
-  le service souscrits) : à relever dans les conditions de service ou la facture du compte
-  Cloudflare de l'association, pas d'une recherche générique — une recherche menée pendant ce
-  travail n'a renvoyé que des sources tierces non fiables (mentions légales d'autres sites,
-  un annuaire LEI), jamais la page officielle.
-- **Adresse de cette entité Cloudflare** — idem, à relever au même endroit.
+- **Association's registered name and legal form** — read from the association's own statuts,
+  not assumed. The exact wording (name, then legal form) belongs on the page verbatim.
+- **Registered address** — the association's official address, as filed with the préfecture.
+- **SIRET or RNA number** — whichever identifier the association holds is enough.
+- **Cloudflare's exact legal entity name** — the contracting entity depends on the specific
+  Cloudflare account (it varies by country and by which service is subscribed to). Read it from
+  that account's own terms of service or invoice, not from a general web search: one was
+  attempted during this task and only returned unreliable secondary sources (other sites' own
+  legal notices, a third-party company-registry lookup), never Cloudflare's own page.
+- **That entity's address** — same source, same caveat.
 
 ## `/a-propos`
 
-- **Nom de l'illustratrice ou de l'illustrateur qui redessine Colly** — une fois Colly redessinée
-  (mémoire du projet : la mascotte actuelle vient de ChatGPT et doit être refaite par une
-  personne réelle), son nom vient remplacer ce marqueur.
+- **Name of the illustrator redrawing Colly** — the current mascot artwork is a placeholder and
+  is due to be redrawn by a named illustrator; the credit is marked until that person is known.
 
-## Déjà connu, ne figure pas ci-dessus
+## Already known — not on this list
 
-- Directeur de la publication : Adrien Lemaire.
-- Contact (mentions légales) : lemaire.adrien@gmail.com.
+- Publication director: Adrien Lemaire.
+- Legal-notice contact address: lemaire.adrien@gmail.com.

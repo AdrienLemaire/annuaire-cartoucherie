@@ -220,7 +220,6 @@ export const COPY = {
   privacyIntro: "Ce site est volontairement simple : voici, sans détour, ce qu'il fait et ce qu'il ne fait pas.",
   privacyDoesTitle: "Ce que ce site fait",
   privacyDoesBrowsing: "Parcourir l'annuaire, une fiche ou la carte ne dépose rien sur votre appareil.",
-  privacyDoesSearch: "La recherche s'exécute dans votre navigateur : rien n'est envoyé à un serveur.",
   privacyDoesGeo:
     "Sur la carte, votre position n'est utilisée que si vous appuyez sur « Classer depuis ma " +
     "position » ; le calcul des distances se fait dans votre navigateur et votre position n'est " +
@@ -252,13 +251,13 @@ export const COPY = {
   reviewsDescription: "Qui peut laisser un avis, comment il est modéré, comment en signaler un.",
   reviewsWhoTitle: "Qui peut laisser un avis ?",
   reviewsWhoText:
-    "Tout voisin ou toute voisine ayant fait appel à un commerce peut lui laisser un avis signé sur " +
-    "sa fiche, un avis par voisin et par commerce.",
+    "Tout voisin ou toute voisine qui a eu recours à un voisin de l'annuaire peut lui laisser un " +
+    "avis signé sur sa fiche, un avis par voisin et par fiche.",
   reviewsPaidTitle: "Un avis peut-il être acheté ?",
   reviewsModerationTitle: "Qui modère les avis, et sur quels critères ?",
   reviewsModerationText:
     "L'association relit les avis signalés et retire ceux qui sont insultants, hors sujet, ou qui " +
-    "ne concernent pas le commerce noté.",
+    "ne concernent pas la fiche notée.",
   reviewsReportTitle: "Comment signaler un avis ?",
   reviewsReportText: "Écrivez à l'association en précisant la fiche et l'avis concernés.",
   reviewsReportLink: "Signaler un avis",
