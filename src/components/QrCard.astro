@@ -23,7 +23,7 @@ const file = `/qr/${slug}.svg`;
     class="mx-auto shrink-0 rounded-[14px] bg-white p-2.5 sm:mx-0"
     style="box-shadow: inset 0 0 0 1px var(--color-neutre-300)"
   >
-    <img src={file} alt={`QR code vers la fiche de ${nom}`} width="168" height="168" />
+    <img src={file} alt={COPY.qrAlt(nom)} width="168" height="168" />
   </div>
   <div class="min-w-0">
     <p class="max-w-[48ch] text-corps text-neutre-900">{COPY.qrExplain}</p>

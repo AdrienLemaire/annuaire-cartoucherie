@@ -8,6 +8,21 @@ function capitalize(s: string): string {
   return `${s[0].toUpperCase()}${s.slice(1)}`;
 }
 
+// « de » elides to « d' » before a vowel or mute h — caught in review three
+// times now: portraitAlt's own regex (Inès Lacombe rendered "Portrait de
+// Inès" until fixed; styleguide line 1090 and index.html:574 confirm
+// "Portrait d'Inès"/"d'Amandine"), corrected a second time when it wrongly
+// elided before a consonantal y (Yanis Belhadj stays "de Yanis" —
+// index.html:413, annuaire.html:428, carte.html:653 all agree), and a third
+// time when profileWrongSubject and the QR card's alt text each grew their
+// own un-elided "fiche de {nom}". One function now, so a fourth caller never
+// reforks the regex. Returns the full prefix ("d'" or "de ", trailing space
+// included on the non-eliding branch) rather than a boolean, so every caller
+// just concatenates.
+function elideDe(nom: string): string {
+  return /^[aeiouàâäéèêëïîôöùûüh]/i.test(nom) ? "d'" : "de ";
+}
+
 export const COPY = {
   skipLink: "Aller au contenu",
   brandEyebrow: "Annuaire de",
@@ -95,7 +110,7 @@ export const COPY = {
   profileInstagram: "Instagram",
   profileCall: "Appeler",
   profileWrong: "Cette fiche n'est pas correcte",
-  profileWrongSubject: (nom: string) => `Correction — fiche de ${nom}`,
+  profileWrongSubject: (nom: string) => `Correction — fiche ${elideDe(nom)}${nom}`,
   // The row's own call chip (annuaire.html:424) speaks the full name and
   // number in its aria-label rather than the button's own visible "Appeler",
   // so a screen-reader user picks the right row out of a list of identical
@@ -115,6 +130,7 @@ export const COPY = {
     "À imprimer et à poser sur son comptoir, ou à coller au dos de ses cartes de visite. " +
     "Il mène directement ici, sans passer par l'accueil.",
   qrDownload: "Télécharger le QR code",
+  qrAlt: (nom: string) => `QR code vers la fiche ${elideDe(nom)}${nom}`,
 
   mapTitle: "La carte du quartier",
   mapSchematic: "Plan schématique : les positions sont indicatives.",
@@ -127,16 +143,9 @@ export const COPY = {
   // woman, annuaire.html renders "Il vient chez vous" for a man — mapTheyComeToYou
   // above is the map legend's plural for the group, not this.
   comesToYou: (pronoun: string) => `${pronoun[0].toUpperCase()}${pronoun.slice(1)} vient chez vous`,
-  // « Portrait de » elides to « Portrait d' » before a vowel or mute h — the
-  // fixture already has Amandine and Inès (styleguide line 1090: "Portrait
-  // d'Amandine Rey"; index.html:574 and annuaire.html:589 agree on "Portrait
-  // d'Inès Lacombe" — carte.html:691's "Portrait de Inès Lacombe" is the
-  // outlier and is wrong). `y` is deliberately excluded: it is a consonantal
-  // /j/ glide in French given names (Yanis, Yohan, Yasmine), not a vowel —
-  // index.html:413, annuaire.html:428 and carte.html:653 all agree on
-  // "Portrait de Yanis Belhadj". One table, so MemberCard and MemberRow
-  // never fork it.
-  portraitAlt: (nom: string) => (/^[aeiouàâäéèêëïîôöùûüh]/i.test(nom) ? `Portrait d'${nom}` : `Portrait de ${nom}`),
+  // The elision itself is elideDe() above; MemberCard and MemberRow never
+  // fork this one table.
+  portraitAlt: (nom: string) => `Portrait ${elideDe(nom)}${nom}`,
 
   footerAbout: "À propos",
   footerPrivacy: "Confidentialité",

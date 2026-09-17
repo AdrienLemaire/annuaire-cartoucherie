@@ -202,7 +202,7 @@ const primaryIcon = chips[0]?.icon;
     </div>
   </section>
 
-  <ReviewsSlot slug={member.slug} rating={member.note} reviewCount={member.nbAvis} />
+  <ReviewsSlot slug={member.slug} rating={member.note} reviewCount={member.nbAvis} genre={member.genre} />
 
   <section class="mx-auto max-w-[1160px] px-5 py-8" aria-labelledby="t-qr">
     <h2 id="t-qr" class="ff text-nom text-teal-900">{COPY.qrTitle}</h2>
