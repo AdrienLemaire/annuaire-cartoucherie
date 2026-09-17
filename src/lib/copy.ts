@@ -67,12 +67,12 @@ export const COPY = {
   searchLabel: "Un métier, un prénom, un besoin",
   searchPlaceholder: "électricien, yoga…",
   searchSubmit: "Trouver",
-  // What's true (spec §5 "Search index"): the whole member index is fetched once, like any
-  // other page asset, and every search/filter/map computation after that runs against it
-  // locally. What's promised here is the part visitors actually care about — not "zero
-  // network requests" (false: the index download is one), but that what they type is never
-  // sent anywhere. task-11-report.md, "fix round 2" — corrects an earlier, stronger claim.
-  searchLocal: "Ce que vous tapez ne quitte jamais votre téléphone : la recherche se fait dans la liste déjà chargée sur votre appareil.",
+  // No searchLocal key here: today the search bar is a plain method="get" form (Task 12
+  // hasn't landed — no src/client interception, no index file), so submitting it sends
+  // ?q=<query> to the host as a normal navigation. There is no true one-clause claim to
+  // make about that yet. Task 12 adds the client-side index and, with it, this string —
+  // re-verified against the built site at that point, not restored from here.
+  // (task-11-report.md, "fix round 4")
   searchEmpty: "Personne ne correspond à cette recherche.",
   searchSuggest: "Vous connaissez quelqu'un ?",
   // The mailto: subject when a visitor offers a name for an empty category
@@ -239,13 +239,9 @@ export const COPY = {
   privacyIntro: "Ce site est volontairement simple : voici, sans détour, ce qu'il fait et ce qu'il ne fait pas.",
   privacyDoesTitle: "Ce que ce site fait",
   privacyDoesBrowsing: "Parcourir l'annuaire, une fiche ou la carte ne dépose rien sur votre appareil.",
-  // Same fact as searchLocal (spec §5), worded for this list rather than reusing that string
-  // verbatim: it names the one network request the claim doesn't cover (the index download)
-  // instead of leaving it implicit, so this page and the search bar's own reassurance agree
-  // rather than one looking stronger than the other.
-  privacyDoesSearch:
-    "La recherche télécharge une seule fois la liste du quartier, comme n'importe quelle page ; " +
-    "ce que vous tapez ensuite n'est jamais envoyé où que ce soit.",
+  // No privacyDoesSearch key: see the comment by searchLabel in this same file. A plain
+  // GET form sends the typed query to the host today, so there is no true claim to make
+  // here yet (task-11-report.md, "fix round 4").
   privacyDoesGeo:
     "Sur la carte, votre position n'est utilisée que si vous appuyez sur « Classer depuis ma " +
     "position » ; le calcul des distances se fait dans votre navigateur et votre position n'est " +
