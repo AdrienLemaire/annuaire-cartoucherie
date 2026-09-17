@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import {
-  formatMemberCount, formatNote, hasAddress, memberUrl, sortByDistance, withCounts,
+  formatDistance, formatMemberCount, formatNote, hasAddress, memberUrl, sortByDistance, withCounts,
 } from "../../src/lib/members";
 import type { Category } from "../../src/content/schemas";
 import { member } from "./factory";
@@ -58,5 +58,13 @@ describe("Member helpers", () => {
   it("Formats a rating with a French decimal comma", () => {
     expect(formatNote(4.8)).toBe("4,8");
     expect(formatNote(5)).toBe("5,0");
+  });
+
+  // src/client/geolocate.ts rewrites a row's distance after a grant; the
+  // result must satisfy memberSchema's own regex, hence the 950 m cutover
+  // to kilometres and the French comma below it.
+  it("Formats a distance the way the fixture's own field does", () => {
+    expect(formatDistance(63)).toBe("60 m");
+    expect(formatDistance(1234)).toBe("1,2 km");
   });
 });

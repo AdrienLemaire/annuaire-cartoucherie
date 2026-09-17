@@ -81,3 +81,16 @@ export function memberUrl(slug: string, site: string): string {
 export function formatNote(note: number): string {
   return note.toFixed(1).replace(".", ",");
 }
+
+/**
+ * « 60 m », « 1,2 km » — src/client/geolocate.ts's own rewrite of a row's
+ * distance once a visitor grants their position and it is recalculated in the
+ * browser (docs/mockups/final/carte.html's own joli()). Rounds to the nearest
+ * 10 m below 950 m, one decimal place in km beyond that, so a row updated at
+ * runtime reads exactly like one written by hand in the fixture — the same
+ * shape memberSchema's own distance field requires.
+ */
+export function formatDistance(metres: number): string {
+  if (metres < 950) return `${Math.round(metres / 10) * 10} m`;
+  return `${(Math.round(metres / 100) / 10).toString().replace(".", ",")} km`;
+}

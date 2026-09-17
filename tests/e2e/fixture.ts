@@ -3,6 +3,7 @@
 // the fixture is data, and data changes.
 import { readFileSync } from "node:fs";
 import type { Member } from "../../src/content/schemas";
+import { hasAddress } from "../../src/lib/members";
 
 const raw = readFileSync("tests/fixtures/members.json", "utf-8");
 export const members: Member[] = (JSON.parse(raw) as { membres: Member[] }).membres;
@@ -30,6 +31,9 @@ export const masculineWithoutSite = pick(
 
 /** No address to go to: the disc portrait, and « Ils viennent chez vous ». */
 export const itinerant = pick((m) => m.distance === "—", "without an address");
+
+/** A real address and distance, but no public pin: the map's pickup-address row. */
+export const pickupOnly = pick((m) => hasAddress(m) && !m.surCarte, "with an address but no map pin");
 
 // Every export here is used by a spec. An unused one is a selector nobody needs:
 // delete it rather than keeping it « for later ».

@@ -11,6 +11,16 @@
 // referenced directly rather than through Icon.astro — IconSprite.astro's own
 // comment: "Icon.astro references the 'i-' ones … category components
 // reference the 'c-' ones directly".
+//
+// variant="carte" (task-10-brief.md, carried item 3): docs/mockups/final/carte.html's
+// own, different row (lines 651-668) — min-h-[124px], a 92px portrait, no chips
+// and no call chip, a "situer sur le plan" pin button instead. Reached only from
+// members already known to have an address (src/pages/carte.astro filters with
+// hasAddress before ever rendering this component in this variant), so this
+// branch never needs the itinerant "vient chez vous" note the annuaire variant
+// renders — the two variants' markup diverges completely below the rating line,
+// and the variant="annuaire" branch is untouched, byte-for-byte, from before this
+// prop existed.
 import CategoryChip from "./CategoryChip.astro";
 import Icon from "./Icon.astro";
 import { COPY } from "../lib/copy";
@@ -22,8 +32,9 @@ import type { Category, Member } from "../content/schemas";
 interface Props {
   member: Member;
   categories?: Category[];
+  variant?: "annuaire" | "carte";
 }
-const { member, categories = [] } = Astro.props;
+const { member, categories = [], variant = "annuaire" } = Astro.props;
 const chips = categories.filter((c) => member.categories.includes(c.slug));
 const fixed = hasAddress(member);
 const homeIcon = fixed ? undefined : homeServiceIcon(member, categories);
@@ -31,73 +42,127 @@ const telHref = member.tel ? formatTelHref(member.tel) : null;
 const telDisplay = member.tel ? formatTelDisplay(member.tel) : null;
 ---
 
-<article class="carte carte-lien rounded-[20px] bg-white overflow-hidden">
-  <div class="relative flex min-h-[152px]">
-    <img
-      src={`/portraits/${member.photo}`}
-      alt={COPY.portraitAlt(member.nom)}
-      width="128"
-      height="128"
-      loading="lazy"
-      decoding="async"
-      class="w-[116px] shrink-0 self-stretch object-cover"
-    />
-    <div class="flex-1 min-w-0 py-4 px-4 flex flex-col justify-center gap-1">
-      <h3 class="ff text-[20px] leading-tight text-teal-900">
-        <a href={`/membre/${member.slug}`} class="before:absolute before:inset-0 before:content-['']">
-          {member.nom}
-        </a>
-      </h3>
-      <p class="text-corps text-neutre-800 leading-snug">{member.metier}</p>
-      <p class="flex flex-wrap items-center gap-x-3 gap-y-1 text-[16px] text-neutre-700 mt-0.5">
-        <span class="inline-flex items-center gap-1">
-          <Icon name="etoile" class="w-4 h-4 text-sable-700" />
-          {formatNote(member.note)}
-          <span class="sr-only"> {COPY.ratingOutOf}</span> <span class="text-neutre-600">({member.nbAvis})</span>
-        </span>
-        {
-          fixed ? (
-            <span class="inline-flex items-center gap-1">
-              <Icon name="pin" class="w-4 h-4 text-teal-600" />
-              {member.distance}
-            </span>
-          ) : (
-            <span class="inline-flex items-center gap-1 font-semibold text-teal-800">
-              {homeIcon && (
-                <svg class="w-4 h-4 text-teal-600" aria-hidden="true">
-                  <use href={`#${homeIcon}`} />
-                </svg>
-              )}
-              {COPY.comesToYou(agree(member.genre, "elle"))}
-            </span>
-          )
-        }
-      </p>
-    </div>
-  </div>
-  {
-    (chips.length > 0 || telHref) && (
-      <div class="relative z-10 flex flex-wrap items-center gap-x-2 gap-y-1 border-t border-neutre-200 bg-neutre-100 px-2.5 py-1.5">
-        {chips.length > 0 && (
-          <ul class="flex flex-wrap items-center gap-x-2 gap-y-1 list-none m-0 p-0">
-            {chips.map((c) => (
-              <li>
-                <CategoryChip slug={c.slug} nom={c.nom} icon={c.icon} />
-              </li>
-            ))}
-          </ul>
-        )}
-        {telHref && telDisplay && (
-          <a
-            href={`tel:${telHref}`}
-            class="ml-auto inline-flex items-center gap-2 min-h-[44px] px-3.5 rounded-full text-[16px] font-semibold text-teal-700 bg-teal-50 hover:bg-teal-100"
-            aria-label={COPY.callAria(member.nom, telDisplay)}
-          >
-            <Icon name="tel" class="w-5 h-5 shrink-0" />
-            {COPY.profileCall}
+{
+  variant === "carte" ? (
+    <article
+      class="carte carte-lien rangee relative flex min-h-[124px] rounded-[20px] bg-white overflow-hidden"
+      data-m={member.slug}
+    >
+      <img
+        src={`/portraits/${member.photo}`}
+        alt={COPY.portraitAlt(member.nom)}
+        width="128"
+        height="128"
+        loading="lazy"
+        decoding="async"
+        class="w-[92px] h-[124px] shrink-0 self-start object-cover"
+        style="object-position:50% 25%"
+      />
+      <div class="flex-1 min-w-0 py-3.5 pl-3.5 pr-1 flex flex-col justify-center gap-0.5">
+        <h3 class="ff text-[20px] leading-tight text-teal-900">
+          <a href={`/membre/${member.slug}`} class="before:absolute before:inset-0 before:content-['']">
+            {member.nom}
           </a>
+        </h3>
+        <p class="text-[16px] text-neutre-800 leading-snug">{member.metier}</p>
+        <p class="flex flex-wrap items-center gap-x-3 gap-y-1 text-[16px] text-neutre-700 mt-0.5">
+          <span class="inline-flex items-center gap-1">
+            <Icon name="etoile" class="w-4 h-4 text-sable-700" />
+            {formatNote(member.note)}
+            <span class="sr-only"> {COPY.ratingOutOf}</span> <span class="text-neutre-600">({member.nbAvis})</span>
+          </span>
+          <span class="inline-flex items-center gap-1">
+            <Icon name="pin" class="w-4 h-4 text-teal-600" />
+            <span class="dist">{member.distance}</span>
+          </span>
+        </p>
+        {!member.surCarte && (
+          <p class="mt-1 flex items-start gap-1.5 text-[16px] leading-snug text-neutre-700">
+            <Icon name="alerte" class="w-4 h-4 shrink-0 mt-1 text-neutre-600" />
+            {COPY.mapPickupOnly}
+          </p>
         )}
       </div>
-    )
-  }
-</article>
+      {member.surCarte && (
+        <a
+          href={`#pin-${member.slug}`}
+          class="relative z-10 shrink-0 self-center mr-2.5 grid place-items-center w-11 h-11 rounded-full text-teal-700 bg-teal-50 hover:bg-teal-100"
+          aria-label={COPY.mapLocatePin(member.nom)}
+        >
+          <Icon name="pin" class="w-5 h-5" />
+        </a>
+      )}
+    </article>
+  ) : (
+    <article class="carte carte-lien rounded-[20px] bg-white overflow-hidden">
+      <div class="relative flex min-h-[152px]">
+        <img
+          src={`/portraits/${member.photo}`}
+          alt={COPY.portraitAlt(member.nom)}
+          width="128"
+          height="128"
+          loading="lazy"
+          decoding="async"
+          class="w-[116px] shrink-0 self-stretch object-cover"
+        />
+        <div class="flex-1 min-w-0 py-4 px-4 flex flex-col justify-center gap-1">
+          <h3 class="ff text-[20px] leading-tight text-teal-900">
+            <a href={`/membre/${member.slug}`} class="before:absolute before:inset-0 before:content-['']">
+              {member.nom}
+            </a>
+          </h3>
+          <p class="text-corps text-neutre-800 leading-snug">{member.metier}</p>
+          <p class="flex flex-wrap items-center gap-x-3 gap-y-1 text-[16px] text-neutre-700 mt-0.5">
+            <span class="inline-flex items-center gap-1">
+              <Icon name="etoile" class="w-4 h-4 text-sable-700" />
+              {formatNote(member.note)}
+              <span class="sr-only"> {COPY.ratingOutOf}</span> <span class="text-neutre-600">({member.nbAvis})</span>
+            </span>
+            {
+              fixed ? (
+                <span class="inline-flex items-center gap-1">
+                  <Icon name="pin" class="w-4 h-4 text-teal-600" />
+                  {member.distance}
+                </span>
+              ) : (
+                <span class="inline-flex items-center gap-1 font-semibold text-teal-800">
+                  {homeIcon && (
+                    <svg class="w-4 h-4 text-teal-600" aria-hidden="true">
+                      <use href={`#${homeIcon}`} />
+                    </svg>
+                  )}
+                  {COPY.comesToYou(agree(member.genre, "elle"))}
+                </span>
+              )
+            }
+          </p>
+        </div>
+      </div>
+      {
+        (chips.length > 0 || telHref) && (
+          <div class="relative z-10 flex flex-wrap items-center gap-x-2 gap-y-1 border-t border-neutre-200 bg-neutre-100 px-2.5 py-1.5">
+            {chips.length > 0 && (
+              <ul class="flex flex-wrap items-center gap-x-2 gap-y-1 list-none m-0 p-0">
+                {chips.map((c) => (
+                  <li>
+                    <CategoryChip slug={c.slug} nom={c.nom} icon={c.icon} />
+                  </li>
+                ))}
+              </ul>
+            )}
+            {telHref && telDisplay && (
+              <a
+                href={`tel:${telHref}`}
+                class="ml-auto inline-flex items-center gap-2 min-h-[44px] px-3.5 rounded-full text-[16px] font-semibold text-teal-700 bg-teal-50 hover:bg-teal-100"
+                aria-label={COPY.callAria(member.nom, telDisplay)}
+              >
+                <Icon name="tel" class="w-5 h-5 shrink-0" />
+                {COPY.profileCall}
+              </a>
+            )}
+          </div>
+        )
+      }
+    </article>
+  )
+}
