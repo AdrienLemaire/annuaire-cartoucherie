@@ -12,7 +12,7 @@ interface Props {
   bodyClass?: string;
   // Forwarded to SiteHeader's secondary link as-is; see its own Props for the
   // shape and defaults. A page passes this instead of reaching past the layout.
-  header?: { href?: string; label?: string; srOnly?: string };
+  header?: { href?: string; label?: string; srOnly?: string; variant?: "back" | "join" };
 }
 const { title, description, bodyClass = "", header = {} } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site).href;

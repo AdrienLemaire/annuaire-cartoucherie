@@ -9,6 +9,7 @@
 // hidden") renders greyed with no link and a mailto: to offer a name —
 // the one place a visitor can suggest a neighbour.
 import { COPY } from "../lib/copy";
+import { mailtoHref } from "../lib/contact";
 import { formatMemberCount } from "../lib/members";
 import type { CategoryWithCount } from "../lib/members";
 
@@ -16,9 +17,6 @@ interface Props {
   categories: CategoryWithCount[];
 }
 const { categories } = Astro.props;
-
-const mailto = (nom: string) =>
-  `mailto:${COPY.contactEmail}?subject=${encodeURIComponent(COPY.searchSuggestSubject(nom))}`;
 ---
 
 <ol class="list-none m-0 p-0 [counter-reset:besoin] sm:grid sm:grid-cols-2 sm:gap-x-8">
@@ -32,7 +30,10 @@ const mailto = (nom: string) =>
               <span class="ff block text-besoin text-neutre-600">{c.besoin}</span>
               <span class="mt-0.5 block text-[16px] leading-[1.3] text-neutre-700">
                 {c.nom} · <span class="font-semibold text-neutre-800">{formatMemberCount(c.count, c.genders)}</span> —{" "}
-                <a class="font-semibold text-teal-700 underline decoration-teal-300 underline-offset-4 hover:decoration-teal-600" href={mailto(c.nom)}>
+                <a
+                  class="font-semibold text-teal-700 underline decoration-teal-300 underline-offset-4 hover:decoration-teal-600"
+                  href={mailtoHref(COPY.searchSuggestSubject(c.nom))}
+                >
                   {COPY.searchSuggest}
                 </a>
               </span>

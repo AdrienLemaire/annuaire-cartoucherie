@@ -9,9 +9,26 @@ export const COPY = {
   homeTitle: "Je cherche…",
   homeIntro: "Les voisines et voisins qui habitent ou travaillent à la Cartoucherie.",
   homeCollySays: "Dites-lui ce qu'il vous faut.",
-  homeOrPick: "…ou choisissez la fin :",
+  homeOrPick: "…ou choisissez la fin :",
   homeNeighbours: "Vos voisins",
+  homeSeeAllNeighbours: (voisins: string) => `Voir les ${voisins}`,
   homeBrowseOtherwise: "Parcourir autrement",
+  homeBrowseIntro:
+    "Le quartier se traverse en dix minutes : la carte est une entrée parmi d'autres, " +
+    "pas le plan de l'annuaire.",
+  homeBrowseListTitle: "La liste complète",
+  homeBrowseListText: (count: number) => `Les ${count} fiches, filtrables par métier.`,
+  // Distinct from mapTitle ("La carte du quartier", the /carte page's own H1) — this is
+  // the "Parcourir autrement" card's own title, index.html's own different wording for
+  // the same destination.
+  homeBrowseMapCardTitle: "Le quartier sur une carte",
+  homeBrowseMapText: (onMap: number, total: number) => `${onMap} fiches sur ${total} ont un point.`,
+  homeOpen: "Ouvrir",
+  homeCollyTitle: "Colly reste collée aux bons endroits.",
+  homeCollyText:
+    "Elle vit dans les poutres de la Halle et connaît tout le monde. Cet annuaire, c'est son " +
+    "carnet d'adresses : uniquement des gens qui habitent ou travaillent ici, ajoutés un " +
+    "par un par l'association.",
   discLegend:
     "Le portrait rond veut dire que la personne se déplace : il n'y a pas d'adresse où aller.",
 
@@ -101,6 +118,12 @@ export const COPY = {
   headerBackHome: "Accueil",
   headerBackDirectory: "Annuaire",
   headerBackDirectorySr: "— retour à la liste des voisins",
+  // The home page's own "Je veux y figurer" header link (task-7-brief.md carried item
+  // 2): re-added after task-3's fix report deleted it as unread — SiteHeader.astro's
+  // "join" variant is now the reader. The mailto subject is index.html's own
+  // "Je%20veux%20figurer%20dans%20l'annuaire", decoded.
+  headerJoin: "Je veux y figurer",
+  headerJoinSubject: "Je veux figurer dans l'annuaire",
   footerBrand: "Annuaire de la Cartoucherie",
   footerBlurb:
     "Fait bénévolement pour l'association de quartier, à partir des portraits réunis par " +

@@ -4,19 +4,23 @@
 // docs/mockups/final/annuaire.html points it at "/" labelled « Accueil »;
 // docs/mockups/final/membre.html and carte.html point it at "/annuaire"
 // labelled « Annuaire » with a screen-reader-only suffix — so it is a prop,
-// defaulting to the "Accueil" case so BaseLayout's prop-less <SiteHeader />
-// keeps rendering that. The true home page's own "Je veux y figurer" link is
-// a structurally different piece of markup (no icon, hidden below sm, a
-// mailto href) and isn't covered by this prop: see task-3-report.md.
+// defaulting to the "back" ("Accueil") case so BaseLayout's prop-less
+// <SiteHeader /> keeps rendering that. index.html's own header carries a
+// third, structurally different shape instead: no icon, a mailto: href,
+// hidden below the sm (640px) breakpoint — variant="join" (task-7-brief.md
+// carried item 2). The two existing <a> branches below are byte-identical
+// to before this variant was added.
 import Icon from "./Icon.astro";
 import { COPY } from "../lib/copy";
+import { mailtoHref } from "../lib/contact";
 
 interface Props {
   href?: string;
   label?: string;
   srOnly?: string;
+  variant?: "back" | "join";
 }
-const { href = "/", label = COPY.headerBackHome, srOnly } = Astro.props;
+const { href = "/", label = COPY.headerBackHome, srOnly, variant = "back" } = Astro.props;
 // The wordmark link's own class list is not fixed either: docs/mockups/final/annuaire.html
 // and index.html omit `py-1`, docs/mockups/final/membre.html and carte.html include it.
 // Those two mockup families are exactly the two variants this component renders — srOnly
@@ -36,14 +40,25 @@ const wordmarkClass = `flex items-center gap-2.5 -ml-0.5 min-h-[44px]${srOnly ? 
         <span class="ff block text-[20px] text-teal-900 leading-tight">{COPY.brandName}</span>
       </span>
     </a>
-    <a
-      href={href}
-      class="inline-flex items-center gap-2 min-h-[44px] px-3.5 rounded-full text-etiquette tracking-normal font-semibold text-teal-700 hover:bg-teal-50"
-    >
-      <Icon name="retour" class="w-5 h-5" />
-      <span>{label}</span>
-      {srOnly && <span class="sr-only">{srOnly}</span>}
-    </a>
+    {
+      variant === "join" ? (
+        <a
+          href={mailtoHref(COPY.headerJoinSubject)}
+          class="hidden sm:inline-flex items-center gap-1.5 min-h-[44px] px-4 rounded-full text-etiquette tracking-normal font-semibold text-teal-700 hover:bg-teal-50"
+        >
+          {COPY.headerJoin}
+        </a>
+      ) : (
+        <a
+          href={href}
+          class="inline-flex items-center gap-2 min-h-[44px] px-3.5 rounded-full text-etiquette tracking-normal font-semibold text-teal-700 hover:bg-teal-50"
+        >
+          <Icon name="retour" class="w-5 h-5" />
+          <span>{label}</span>
+          {srOnly && <span class="sr-only">{srOnly}</span>}
+        </a>
+      )
+    }
   </div>
   <div class="filet h-[3px]"></div>
 </header>
