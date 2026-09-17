@@ -34,6 +34,11 @@ test("the full directory does not overflow sideways at 360 px", async ({ page })
 });
 
 test("the directory and a real profile have no serious or critical axe violation", async ({ page }) => {
+  // Axe over a real ~200-row /annuaire took 26.8s in a rehearsal against a
+  // synthetic 200-member build (task-14-report.md) — too close to Playwright's
+  // 30s default on a slower CI runner. The deploy job has an 8-minute budget;
+  // spend a little of it here rather than fail closed on timing, not content.
+  test.setTimeout(90_000);
   const [firstProfile] = await profileLinks(page);
   for (const path of ["/annuaire", firstProfile]) {
     await page.goto(path);
