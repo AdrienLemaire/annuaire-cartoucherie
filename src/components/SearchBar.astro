@@ -29,16 +29,28 @@ const { withColly = false, value = "", action = "/annuaire" } = Astro.props;
 
 {withColly ? (
   <div class="relative mt-[132px]">
-    <img
-      src="/colly/colly-couleur.png"
-      alt={COPY.searchCollyAlt}
-      width="400"
-      height="473"
-      fetchpriority="high"
-      decoding="async"
-      class="pointer-events-none select-none absolute h-auto"
-      style="bottom:calc(100% - 34px); right:6px; width:140px"
-    />
+    {
+      // task-15-report.md, fix round 1: this PNG alone was 231 KB, unbudgeted
+      // and un-audited — more than twice the entire font budget, on the
+      // page's own LCP element. WebP re-encodes the same pixels (same
+      // dimensions, same visible quality at the 140px this renders at) for
+      // 33.6 KB; the <picture>'s <img> PNG is a real fallback, not merely a
+      // declared one — also re-encoded (a 256-colour palette, still visually
+      // identical), never the original, for browsers with no WebP decoder.
+    }
+    <picture>
+      <source srcset="/colly/colly-couleur.webp" type="image/webp" />
+      <img
+        src="/colly/colly-couleur.png"
+        alt={COPY.searchCollyAlt}
+        width="400"
+        height="473"
+        fetchpriority="high"
+        decoding="async"
+        class="pointer-events-none select-none absolute h-auto"
+        style="bottom:calc(100% - 34px); right:6px; width:140px"
+      />
+    </picture>
     <p
       class="pointer-events-none absolute text-right"
       style="bottom:calc(100% + 18px); right:174px; width:200px; max-width:44%"

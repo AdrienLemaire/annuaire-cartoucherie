@@ -16,6 +16,15 @@ const BUDGETS = [
   ["Fonts, total (raw)",      (f) => f.endsWith(".woff2"),          150, "raw-sum"],
   ["Search index",            (f) => f.endsWith("recherche.json"),   90, "gzip-sum"],
   ["Heaviest HTML document",  (f) => f.endsWith(".html"),            25, "gzip-max"],
+  // task-15-report.md, fix round 1: nothing above sees a raster image, which
+  // is how 441 KB of unbudgeted mascot art shipped on the landing page. Two
+  // budgets, not one: portraits and OG images are legitimately per-member —
+  // their total grows with the directory by design, so only their heaviest
+  // single file (raw-max, scale-invariant) belongs in a budget. The mascot
+  // set is fixed regardless of member count, so its own total (the WebP path
+  // nearly every visitor takes) gets a real cap, not just a max.
+  ["Images, total (mascot)",  (f) => f.includes("/colly/") && f.endsWith(".webp"), 80, "raw-sum"],
+  ["Heaviest single image",   (f) => /\.(png|jpe?g|webp)$/.test(f),               100, "raw-max"],
 ];
 
 function* walk(dir) {
@@ -51,7 +60,9 @@ if (failed) {
     "\nA budget was exceeded. Raising the number is the last resort, not the first:\n" +
     "  JS      — does this island have to ship?\n" +
     "  Fonts   — instance the pinned SOFT/WONK axes, subset to latin + latin-ext.\n" +
-    "  Index   — split recherche.json before widening it."
+    "  Index   — split recherche.json before widening it.\n" +
+    "  Images  — re-encode (palette PNG, or WebP behind a real <picture> fallback)\n" +
+    "            before you resize or redraw; neither of those is a byte-budget call."
   );
   process.exit(1);
 }

@@ -24,6 +24,12 @@
 // specimen shows an eyebrow on "couleur" (which has no specimen of its own
 // at all — see above), so it stays without one rather than inventing text
 // no mockup carries.
+//
+// task-15-report.md, fix round 1: every pose's <img> is now the <picture>'s
+// fallback, alongside a WebP <source> — see SearchBar.astro's own comment on
+// colly-couleur for the reasoning. Same dimensions, same visible quality at
+// the small size a disc actually renders these at, both formats re-encoded,
+// neither a resize or a redraw.
 import { COPY } from "../lib/copy";
 
 const PANELS = {
@@ -95,7 +101,10 @@ const bodyClass = pose === "joyeux" ? "mt-4 sm:mt-0 text-center sm:text-left" : 
         />
         <div class="relative">
           <div class={p.disc} style={p.discStyle}>
-            <img src={`/colly/colly-${pose}.png`} alt="" width={p.dims.width} height={p.dims.height} class={p.img} />
+            <picture>
+              <source srcset={`/colly/colly-${pose}.webp`} type="image/webp" />
+              <img src={`/colly/colly-${pose}.png`} alt="" width={p.dims.width} height={p.dims.height} class={p.img} />
+            </picture>
           </div>
           <div class={bodyClass}>
             {p.eyebrow && <p class="mt-6 text-etiquette font-semibold uppercase text-sable-800">{p.eyebrow}</p>}
@@ -107,7 +116,10 @@ const bodyClass = pose === "joyeux" ? "mt-4 sm:mt-0 text-center sm:text-left" : 
     ) : (
       <>
         <div class={p.disc} style={p.discStyle}>
-          <img src={`/colly/colly-${pose}.png`} alt="" width={p.dims.width} height={p.dims.height} class={p.img} />
+          <picture>
+            <source srcset={`/colly/colly-${pose}.webp`} type="image/webp" />
+            <img src={`/colly/colly-${pose}.png`} alt="" width={p.dims.width} height={p.dims.height} class={p.img} />
+          </picture>
         </div>
         <div class={bodyClass}>
           <h2 id={headingId} class={p.title}>{title}</h2>
