@@ -18,21 +18,28 @@ if (!existsSync(membersFrom)) {
 const raw = readFileSync(membersFrom, "utf-8");
 const { membres } = JSON.parse(raw);
 const seen = new Set();
-for (const m of membres) {
+// Identify a bad row by its 1-based position, never by name, slug or photo
+// filename (final-fixes-report.md, I9): CI's deploy job runs this against
+// the real, private quartier, and Actions logs on a public repository are
+// world-readable. These fields are already public on the live site, so this
+// is log hygiene rather than a new exposure — but a row index is just as
+// actionable for fixing tests/fixtures/members.json or the private source.
+membres.forEach((m, i) => {
+  const row = `row ${i + 1} of ${membres.length}`;
   if (!/^[a-z0-9-]+$/.test(m.slug ?? "")) {
-    console.error(`sync-content: bad slug ${JSON.stringify(m.slug)} on « ${m.nom} ».`);
+    console.error(`sync-content: bad slug on ${row}.`);
     process.exit(1);
   }
   if (seen.has(m.slug)) {
-    console.error(`sync-content: duplicate slug « ${m.slug} ». Slugs are printed on QR codes.`);
+    console.error(`sync-content: duplicate slug on ${row}. Slugs are printed on QR codes.`);
     process.exit(1);
   }
   seen.add(m.slug);
   if (!existsSync(join(portraitsFrom, m.photo))) {
-    console.error(`sync-content: « ${m.nom} » names a missing portrait ${m.photo}.`);
+    console.error(`sync-content: ${row} names a missing portrait.`);
     process.exit(1);
   }
-}
+});
 
 mkdirSync("src/content", { recursive: true });
 writeFileSync("src/content/members.json", raw);

@@ -23,6 +23,12 @@ jobs:
     timeout-minutes: 8
     steps:
       - uses: actions/checkout@v4
+        # fetch-depth: 0 (final-fixes-report.md, I8): verify-history.mjs
+        # greps `git log --all`, which sees only the one fetched commit on
+        # the default shallow checkout — the check went green without
+        # examining any history at all, exactly the failure its own header
+        # comment warns about. Full history is the whole point here.
+        with: { fetch-depth: 0 }
       - uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
@@ -31,6 +37,7 @@ jobs:
       - run: node scripts/sync-content.mjs
       - run: npx astro check
       - run: node scripts/forbidden.mjs
+      - run: node scripts/verify-history.mjs
       - run: npm test
       - run: npm run build
       - run: node scripts/forbidden-dist.mjs

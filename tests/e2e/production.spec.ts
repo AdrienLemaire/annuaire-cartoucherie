@@ -23,13 +23,20 @@ test("Serves the directory over HTTPS, with a working search index", async ({ pa
 test("Sets no cookie and sends the headers it promises", async ({ page, context }) => {
   // Registered BEFORE the navigation: the beacon may answer while goto is still
   // resolving, and a wait started afterwards would hang until the timeout.
-  const beacon = page.waitForResponse((r) => r.url().includes("cloudflareinsights.com"));
+  //
+  // Matches the RUM POST itself (final-fixes-report.md, M21), not the script's
+  // own GET: the script loads and this URL matches even with a wrong or empty
+  // beacon token (CI's own vars.PUBLIC_CF_BEACON_TOKEN unset) — "loads, runs,
+  // counts nothing" would still pass green. Only the POST, and it succeeding,
+  // proves analytics actually recorded the visit.
+  const beacon = page.waitForResponse(
+    (r) => r.request().method() === "POST" && r.url().includes("/cdn-cgi/rum"),
+  );
   const response = await page.goto(BASE!);
   await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
 
-  // The beacon is the only third-party request the site makes; waiting for it
-  // proves analytics is live before asserting that it still sets no cookie.
-  await beacon;
+  const beaconResponse = await beacon;
+  expect(beaconResponse.ok()).toBe(true);
   expect(await context.cookies()).toHaveLength(0);
 
   const headers = response!.headers();

@@ -17,10 +17,14 @@ async function profileLinks(page: Page): Promise<string[]> {
 }
 
 test("every profile the directory links to is actually built", async ({ page }) => {
+  const links = await profileLinks(page);
   const missing: string[] = [];
-  for (const href of await profileLinks(page)) {
+  // Identified by position, not by the real slug in `href` (final-fixes-report.md,
+  // I9): this test also runs against the real quartier, in the deploy job, whose
+  // Actions log is world-readable on this public repository.
+  for (const [i, href] of links.entries()) {
     const response = await page.request.get(href);
-    if (!response.ok()) missing.push(`${href} → ${response.status()}`);
+    if (!response.ok()) missing.push(`profile ${i + 1} of ${links.length} → ${response.status()}`);
   }
   expect(missing).toEqual([]);
 });
