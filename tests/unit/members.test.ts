@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import {
-  formatDistance, formatMemberCount, formatNote, hasAddress, memberUrl, sortByDistance, withCounts,
+  formatDistance, formatMemberCount, formatNote, hasAddress, memberUrl, sortByCountDesc, sortByDistance, withCounts,
 } from "../../src/lib/members";
 import type { Category } from "../../src/content/schemas";
 import { member } from "./factory";
@@ -21,6 +21,22 @@ describe("Member helpers", () => {
       member({ slug: "near", distance: "60 m" }),
     ]);
     expect(ordered.map((m) => m.slug)).toEqual(["near", "far", "itinerant"]);
+  });
+
+  // annuaire.astro's chip rail (final-fixes-report.md, I3): COPY says « du plus
+  // fourni au plus rare », a decision that could have gone the other way
+  // (curated order, insertion order) — count descending, tied categories in
+  // French alphabetical order, matching annuaire.html:368-388's own five-way tie.
+  it("Sorts categories by count, then alphabetically in French", () => {
+    const cats = [
+      { count: 1, nom: "Beauté & soins" }, { count: 2, nom: "Sport & mouvement" },
+      { count: 4, nom: "Santé & bien-être" }, { count: 2, nom: "Art & culture" },
+      { count: 1, nom: "Alimentation & traiteur" },
+    ];
+    expect(sortByCountDesc(cats).map((c) => c.nom)).toEqual([
+      "Santé & bien-être", "Art & culture", "Sport & mouvement",
+      "Alimentation & traiteur", "Beauté & soins",
+    ]);
   });
 
   // The empty category stays in the list and is shown greyed. Hiding it would

@@ -46,7 +46,7 @@ import SearchResults from "../components/SearchResults.astro";
 import { COPY } from "../lib/copy";
 import { mailtoHref } from "../lib/contact";
 import { loadCategories, loadMembers } from "../lib/collections";
-import { formatMemberCount, memberCountParts, withCounts } from "../lib/members";
+import { formatMemberCount, memberCountParts, sortByCountDesc, withCounts } from "../lib/members";
 
 const [members, categories] = await Promise.all([loadMembers(), loadCategories()]);
 const counted = withCounts(categories, members);
@@ -55,7 +55,9 @@ const total = memberCountParts(
   members.map((m) => m.genre),
 );
 const empty = counted.filter((c) => c.count === 0);
-const populated = counted.filter((c) => c.count > 0);
+// « Tous les métiers, du plus fourni au plus rare » (COPY.directoryDetailDefault):
+// sortByCountDesc, not categories.json's own curated order (final-fixes-report.md, I3).
+const populated = sortByCountDesc(counted.filter((c) => c.count > 0));
 ---
 
 <BaseLayout

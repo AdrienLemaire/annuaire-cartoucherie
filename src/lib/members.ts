@@ -33,6 +33,18 @@ export function sortByDistance<T extends Pick<Member, "distance">>(members: T[])
   return [...members].sort((a, b) => metres(a.distance) - metres(b.distance));
 }
 
+/**
+ * annuaire.astro's own chip rail (final-fixes-report.md, I3): COPY.directoryDetailDefault
+ * says « du plus fourni au plus rare », but the code shipped categories.json's own
+ * curated order. The mockup (annuaire.html:368-388) sorts by member count, descending,
+ * and ties five 2-count and two 1-count categories in French alphabetical order —
+ * a decision that could have gone the other way (curated order, insertion order,
+ * id order), so it earns naming here rather than living inline in a page.
+ */
+export function sortByCountDesc<T extends Pick<CategoryWithCount, "count" | "nom">>(categories: T[]): T[] {
+  return [...categories].sort((a, b) => b.count - a.count || a.nom.localeCompare(b.nom, "fr"));
+}
+
 /** Every category, counted. The empty one stays: it is shown, not hidden. */
 export function withCounts(categories: Category[], members: Member[]): CategoryWithCount[] {
   return categories.map((c) => {
