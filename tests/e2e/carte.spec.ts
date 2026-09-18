@@ -76,16 +76,24 @@ test("States each of the three address cases instead of flattening them", async 
 // whichever one is tapped, and the highlight moves rather than just turning
 // on once. A deep link (`#pin-<slug>`, as the twelve profile pages send)
 // is the same mechanism as a tap, so it doubles as that regression check.
+// A row's own [data-selected] attribute is carte-select.ts's internal
+// mechanism, not something a visitor sees — asserts on the visible
+// consequence instead (final-fixes-report.md, M20): the CSS rule
+// `.feuille [data-m][data-selected]` swaps the plain white row background for
+// var(--color-teal-50), so an unselected row is exactly rgb(255, 255, 255)
+// and a selected one is not.
+const WHITE = "rgb(255, 255, 255)";
+
 test("A pin and its sheet row highlight each other, and the highlight moves", async ({ page }) => {
   const [first, second] = members.filter(isPinned);
 
   await page.goto(`/carte#pin-${first.slug}`);
   await expect(page.locator(`.epingle-lien[data-m="${first.slug}"]`)).toHaveCSS("opacity", "1");
-  await expect(page.locator(`[data-sheet] [data-m="${first.slug}"]`)).toHaveAttribute("data-selected", "");
+  await expect(page.locator(`[data-sheet] [data-m="${first.slug}"]`)).not.toHaveCSS("background-color", WHITE);
 
   await page.locator(`[data-sheet] [data-m="${second.slug}"] a[href="#pin-${second.slug}"]`).click();
 
   await expect(page.locator(`.epingle-lien[data-m="${second.slug}"]`)).toHaveCSS("opacity", "1");
-  await expect(page.locator(`[data-sheet] [data-m="${second.slug}"]`)).toHaveAttribute("data-selected", "");
-  await expect(page.locator(`[data-sheet] [data-m="${first.slug}"]`)).not.toHaveAttribute("data-selected", "");
+  await expect(page.locator(`[data-sheet] [data-m="${second.slug}"]`)).not.toHaveCSS("background-color", WHITE);
+  await expect(page.locator(`[data-sheet] [data-m="${first.slug}"]`)).toHaveCSS("background-color", WHITE);
 });

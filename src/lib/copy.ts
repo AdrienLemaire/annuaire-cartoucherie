@@ -315,8 +315,12 @@ export const COPY = {
   // The narrow, true claim (task-13 dispatch): what Cloudflare Web Analytics is, and
   // no more than that. Only "mesure la fréquentation" is verified against this
   // project's own code (src/client/analytics.ts, dist/_astro/analytics.*.js with a
-  // token set — task-13-report.md). "Sans cookie" is covered by tests/e2e/privacy.spec.ts
-  // and Task 16's production test. "Sans traceur inter-sites" and "sans profil
+  // token set — task-13-report.md). "Sans cookie" is covered by
+  // tests/e2e/production.spec.ts's own "Sets no cookie…" test, against the
+  // deployed site — where the analytics beacon actually loads (locally none
+  // does, so a local-only test of this claim would assert something no
+  // configuration could make false; final-fixes-report.md, M20, deleted the
+  // one that did). "Sans traceur inter-sites" and "sans profil
   // individuel" are Cloudflare's own documented properties of the product, not
   // something this repository's code proves — stated on that basis, not overclaimed.
   privacyDoesAnalytics:

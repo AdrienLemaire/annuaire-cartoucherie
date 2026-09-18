@@ -15,8 +15,9 @@ French; identifiers, comments, filenames, test descriptions, commits and this fi
 
 ## Binding documents
 
-Read these before changing behaviour, not this file — they are the source of truth and this
-file does not restate them:
+Read these before changing behaviour — they are the source of truth. This file is for setup and
+commands, not their reasoning, with one deliberate exception: the three silent failures below,
+kept here too because they have each cost real time rediscovering more than once.
 
 - `docs/superpowers/specs/2026-08-29-annuaire-cartoucherie-design.md` — the product spec: scope,
   constraints, data model, definition of done.
