@@ -8,9 +8,7 @@
 // rating and distance; the chips and the call chip sit in a footer bar below,
 // outside that link, so no link nests inside another. The itinerant note's
 // icon is a "c-*" sprite id (a category's own icon, src/content/schemas.ts),
-// referenced directly rather than through Icon.astro — IconSprite.astro's own
-// comment: "Icon.astro references the 'i-' ones … category components
-// reference the 'c-' ones directly".
+// rendered through Icon.astro's own `raw` prop (final-fixes-report.md, I7).
 //
 // variant="carte" (task-10-brief.md, carried item 3): docs/mockups/final/carte.html's
 // own, different row (lines 651-668) — min-h-[124px], a 92px portrait, no chips
@@ -135,11 +133,7 @@ const telDisplay = member.tel ? formatTelDisplay(member.tel) : null;
                 </span>
               ) : (
                 <span class="inline-flex items-center gap-1 font-semibold text-teal-800">
-                  {homeIcon && (
-                    <svg class="w-4 h-4 text-teal-600" aria-hidden="true">
-                      <use href={`#${homeIcon}`} />
-                    </svg>
-                  )}
+                  {homeIcon && <Icon raw={homeIcon} class="w-4 h-4 text-teal-600" />}
                   {COPY.comesToYou(agree(member.genre, "elle"))}
                 </span>
               )

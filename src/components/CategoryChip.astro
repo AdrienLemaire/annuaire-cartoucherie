@@ -8,10 +8,11 @@
 // The icon (task-9-report.md fix round 1): styleguide's own canonical chip
 // carries a "c-*" category icon — categorySchema's `icon` field exists
 // precisely so this could render one — and docs/mockups/final/membre.html's
-// identity-card chip (line 392-394) confirms it. Referenced directly as
-// <svg><use href="#c-…"> rather than through Icon.astro, which unconditionally
-// prefixes "i-": MemberCard and MemberRow already do the same for a
-// category's own icon.
+// identity-card chip (line 392-394) confirms it. Rendered through Icon.astro's
+// own `raw` prop (final-fixes-report.md, I7), since a category's icon is
+// already a full sprite id, not one Icon.astro's `name` should prefix "i-" to.
+import Icon from "./Icon.astro";
+
 interface Props {
   slug: string;
   nom: string;
@@ -24,8 +25,6 @@ const { slug, nom, icon } = Astro.props;
   href={`/categorie/${slug}`}
   class="chip inline-flex min-h-[44px] items-center gap-2 rounded-selector px-3.5 text-[16px] font-semibold"
 >
-  <svg class="h-[18px] w-[18px]" aria-hidden="true">
-    <use href={`#${icon}`} />
-  </svg>
+  <Icon raw={icon} class="h-[18px] w-[18px]" />
   {nom}
 </a>

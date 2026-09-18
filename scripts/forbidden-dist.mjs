@@ -48,6 +48,18 @@ function* walk(dir) {
 const SCRIPT_TAG = /<script([^>]*)>([\s\S]*?)<\/script>/g;
 const SRC_ATTR = /\bsrc=["']([^"']+)["']/;
 
+// Every <use href="#…">, scoped to that tag specifically — not every href="#…"
+// in the document (carte.astro alone has #quartier, #pin-<slug>, and profiles
+// have #avis, none of them <use> targets). A <use> naming a missing symbol
+// renders nothing at all, silently — no error, no broken-image icon, just an
+// empty <svg> — a failure class this project has hit repeatedly (I7/I13,
+// final-fixes-report.md). schemas.ts's own `icon` field cannot prevent it:
+// /^c-[a-z]+$/ accepts "c-zzz" happily, and Icon.astro's `name`/`raw` props
+// are free-form strings.
+const USE_HREF = /<use\s[^>]*href=["']#([^"']+)["'][^>]*\/?>/g;
+const ID_ATTR = /\bid=["']([^"']+)["']/g;
+const SYMBOL_ID = /<symbol\s[^>]*id=["']([^"']+)["']/g;
+
 // One tag's worth of checking, pulled out of the walk loop so neither loop nests past
 // two levels — this project's own eslint max-depth: 3 would otherwise flag the walk.
 function checkScriptTag(path, attrs, body, allowedOrigins) {
@@ -69,8 +81,28 @@ function checkScriptTag(path, attrs, body, allowedOrigins) {
   return false;
 }
 
+// One document's worth of <use> resolution: every #target it references must
+// be an id="…" present in that same document (IconSprite.astro renders once
+// per page, so every symbol is always local — a <use> never reaches across
+// documents). Returns false and logs on the first unresolved reference per
+// document, same style as checkScriptTag above.
+function checkUseRefs(path, html) {
+  const ids = new Set([...html.matchAll(ID_ATTR)].map((m) => m[1]));
+  let ok = true;
+  for (const match of html.matchAll(USE_HREF)) {
+    const target = match[1];
+    if (!ids.has(target)) {
+      console.error(`${path}: <use href="#${target}"> resolves to no id="${target}" in the document`);
+      ok = false;
+    }
+  }
+  return ok;
+}
+
 let failed = false;
 const allowedOrigins = scriptSrcOrigins();
+const definedSymbols = new Set();
+const referencedSymbols = new Set();
 
 for (const path of walk(DIST)) {
   const html = readFileSync(path, "utf-8");
@@ -78,14 +110,27 @@ for (const path of walk(DIST)) {
     const [, attrs, body] = match;
     if (!checkScriptTag(path, attrs, body, allowedOrigins)) failed = true;
   }
+  if (!checkUseRefs(path, html)) failed = true;
+  for (const match of html.matchAll(SYMBOL_ID)) definedSymbols.add(match[1]);
+  for (const match of html.matchAll(USE_HREF)) referencedSymbols.add(match[1]);
 }
 
 if (failed) {
   console.error(
-    "\nA built page ships a <script> the production CSP (public/_headers) would block.\n" +
-      "Astro inlines a hoisted <script> whose own chunk imports nothing else and stays under\n" +
-      "Vite's assetsInlineLimit (4 KB) — wrap the import in `void import(...)` (a dynamic\n" +
-      "import) to force it out as an external file; see BaseLayout.astro's own comment.",
+    "\nA built page ships a <script> the production CSP (public/_headers) would block, or a\n" +
+      "<use> naming a symbol that does not exist — which renders nothing at all, silently.\n" +
+      "For the script case: Astro inlines a hoisted <script> whose own chunk imports nothing\n" +
+      "else and stays under Vite's assetsInlineLimit (4 KB) — wrap the import in\n" +
+      "`void import(...)` (a dynamic import) to force it out as an external file; see\n" +
+      "BaseLayout.astro's own comment.",
   );
 }
+
+const dead = [...definedSymbols].filter((id) => !referencedSymbols.has(id)).sort();
+if (dead.length > 0) {
+  console.error(`\nforbidden-dist: sprite symbol(s) defined but never referenced by any <use>: ${dead.join(", ")}`);
+  console.error("Remove them from IconSprite.astro's own <defs>, or use them.");
+  failed = true;
+}
+
 process.exit(failed ? 1 : 0);

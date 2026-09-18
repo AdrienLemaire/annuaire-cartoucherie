@@ -9,10 +9,8 @@
 // optional `categories` prop exists only to resolve the disc variant's
 // "vient chez vous" icon (homeServiceIcon) — pass it when a caller wants
 // that icon; omitting it renders the same text with no icon. That icon is a
-// "c-*" sprite id (a category's own icon, src/content/schemas.ts), referenced
-// directly rather than through Icon.astro — IconSprite.astro's own comment:
-// "Icon.astro references the 'i-' ones … category components reference the
-// 'c-' ones directly".
+// "c-*" sprite id (a category's own icon, src/content/schemas.ts), rendered
+// through Icon.astro's own `raw` prop (final-fixes-report.md, I7).
 //
 // Fixed-variant image height (task-7 fix round 1): the styleguide's generic
 // full-card specimen uses h-[190px], but object-cover scales a 128×128
@@ -23,6 +21,15 @@
 // to h-[150px] (index.html:777's own value for this exact tile, not the
 // styleguide's wider-context specimen), which keeps both axes under the cap
 // with margin at every measured width. See task-7-report.md for the numbers.
+//
+// Disc-variant fixes (final-fixes-report.md, I6, found while replacing
+// carte.astro's own inline third copy of this card): the portrait was
+// missing `object-position:50% 22%`, present on styleguide.html's own
+// specimen (line 1093) and on every other disc/itinerant portrait in this
+// codebase (MemberRow.astro, carte.astro's own "chezvous" grid); and it
+// rendered `member.accroche`, which no mockup specimen of this exact card
+// does (styleguide.html:1085-1108, index.html's own "Vos voisins" disc
+// tile) — removed rather than kept, per "mockups win".
 import Icon from "./Icon.astro";
 import { COPY } from "../lib/copy";
 import { agree } from "../lib/gender";
@@ -33,15 +40,21 @@ interface Props {
   member: Member;
   priority?: boolean;
   categories?: Category[];
+  // carte.astro's own "chezvous" grid is wide (lg:grid-cols-4 over
+  // max-w-[1160px], ~275px cells) and wants an equal-height card that fills
+  // its cell, unlike the home page's narrow, fixed-width "Vos voisins" rail
+  // this component was built for (final-fixes-report.md, I6). Swaps the
+  // 176px cap for w-full/h-full rather than forking a third copy of this card.
+  fill?: boolean;
 }
-const { member, priority = false, categories = [] } = Astro.props;
+const { member, priority = false, categories = [], fill = false } = Astro.props;
 const fixed = hasAddress(member);
 const alt = COPY.portraitAlt(member.nom);
 const eager = priority ? "eager" : "lazy";
 const homeIcon = fixed ? undefined : homeServiceIcon(member, categories);
 ---
 
-<a href={`/membre/${member.slug}`} class="carte-lien block min-w-0 max-w-[176px]">
+<a href={`/membre/${member.slug}`} class={`carte-lien block min-w-0 ${fill ? "h-full" : "max-w-[176px]"}`}>
   {
     fixed ? (
       <article class="carte rounded-box bg-white overflow-hidden">
@@ -72,7 +85,7 @@ const homeIcon = fixed ? undefined : homeServiceIcon(member, categories);
         </div>
       </article>
     ) : (
-      <article class="carte colly-fond flex flex-col items-center rounded-box px-4 py-5 text-center">
+      <article class={`carte colly-fond flex flex-col items-center rounded-box px-4 py-5 text-center ${fill ? "h-full" : ""}`}>
         <img
           src={`/portraits/${member.photo}`}
           alt={alt}
@@ -81,17 +94,12 @@ const homeIcon = fixed ? undefined : homeServiceIcon(member, categories);
           loading={eager}
           decoding="async"
           class="w-[124px] h-[124px] rounded-full object-cover shadow-carte"
-          style="box-shadow: 0 0 0 3px #fff, var(--shadow-carte);"
+          style="object-position:50% 22%; box-shadow: 0 0 0 3px #fff, var(--shadow-carte);"
         />
         <h3 class="ff break-words mt-3.5 text-[21px] leading-tight text-teal-900">{member.nom}</h3>
         <p class="break-words mt-0.5 text-corps text-neutre-900">{member.metier}</p>
-        <p class="break-words mt-1.5 text-[16px] leading-snug text-neutre-700">{member.accroche}</p>
         <p class="mt-2 inline-flex items-center gap-1.5 text-[16px] font-semibold text-teal-800">
-          {homeIcon && (
-            <svg class="w-4 h-4 shrink-0 text-teal-600" aria-hidden="true">
-              <use href={`#${homeIcon}`} />
-            </svg>
-          )}
+          {homeIcon && <Icon raw={homeIcon} class="w-4 h-4 shrink-0 text-teal-600" />}
           {COPY.comesToYou(agree(member.genre, "elle"))}
         </p>
         <p class="mt-1.5 inline-flex items-center gap-1 text-[16px] text-neutre-700">

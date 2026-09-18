@@ -39,11 +39,11 @@
 //     with JavaScript disabled.
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Icon from "../components/Icon.astro";
+import MemberCard from "../components/MemberCard.astro";
 import MemberRow from "../components/MemberRow.astro";
 import { COPY } from "../lib/copy";
-import { agree } from "../lib/gender";
 import { loadCategories, loadMembers } from "../lib/collections";
-import { formatNote, hasAddress, homeServiceIcon, memberCountParts, pluralPronoun, sortByDistance } from "../lib/members";
+import { hasAddress, memberCountParts, pluralPronoun, sortByDistance } from "../lib/members";
 import { isPinned, projectOnPlan } from "../lib/plan";
 
 const [members, categories] = await Promise.all([loadMembers(), loadCategories()]);
@@ -240,11 +240,7 @@ const pins = members.filter(isPinned).map((m) => ({
                 aria-label={COPY.mapPinAria(p.member.nom, p.member.metier, p.member.distance)}
               >
                 <span class="epingle grid place-items-center w-9 h-9 rounded-full bg-white text-teal-700">
-                  {p.icon && (
-                    <svg class="w-[18px] h-[18px]" aria-hidden="true">
-                      <use href={`#${p.icon}`} />
-                    </svg>
-                  )}
+                  {p.icon && <Icon raw={p.icon} class="w-[18px] h-[18px]" />}
                 </span>
                 <span class={`etiq ${p.position.etiqClass}`} aria-hidden="true">
                   {p.member.nom} · {p.member.distance}
@@ -298,44 +294,11 @@ const pins = members.filter(isPinned).map((m) => ({
           <h2 id="t-chezvous" class="ff text-nom text-teal-900">{COPY.mapTheyComeToYou}</h2>
           <div class="filet h-[3px] w-16 rounded-full mt-2.5 mb-4" />
           <ul class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4 list-none p-0 m-0">
-            {withoutAddress.map((m) => {
-              const homeIcon = homeServiceIcon(m, categories);
-              return (
-                <li>
-                  <article class="carte carte-lien colly-fond relative flex flex-col items-center rounded-[20px] px-4 py-5 text-center h-full">
-                    <img
-                      src={`/portraits/${m.photo}`}
-                      alt={COPY.portraitAlt(m.nom)}
-                      width="128"
-                      height="128"
-                      loading="lazy"
-                      decoding="async"
-                      class="w-[112px] h-[112px] rounded-full object-cover"
-                      style="object-position:50% 22%; box-shadow: 0 0 0 3px #fff, var(--shadow-carte)"
-                    />
-                    <h3 class="ff mt-3.5 text-[21px] leading-tight text-teal-900">
-                      <a href={`/membre/${m.slug}`} class="before:absolute before:inset-0 before:content-['']">
-                        {m.nom}
-                      </a>
-                    </h3>
-                    <p class="mt-0.5 text-corps text-neutre-900">{m.metier}</p>
-                    <p class="mt-2 inline-flex items-center gap-1.5 text-[16px] font-semibold text-teal-800">
-                      {homeIcon && (
-                        <svg class="w-4 h-4 shrink-0 text-teal-600" aria-hidden="true">
-                          <use href={`#${homeIcon}`} />
-                        </svg>
-                      )}
-                      {COPY.comesToYou(agree(m.genre, "elle"))}
-                    </p>
-                    <p class="mt-1.5 inline-flex items-center gap-1 text-[16px] text-neutre-700">
-                      <Icon name="etoile" class="w-4 h-4 text-sable-700" />
-                      {formatNote(m.note)}
-                      <span class="sr-only"> {COPY.ratingOutOf}</span> <span class="text-neutre-600">({m.nbAvis})</span>
-                    </p>
-                  </article>
-                </li>
-              );
-            })}
+            {withoutAddress.map((m) => (
+              <li>
+                <MemberCard member={m} categories={categories} fill />
+              </li>
+            ))}
           </ul>
         </div>
       </section>

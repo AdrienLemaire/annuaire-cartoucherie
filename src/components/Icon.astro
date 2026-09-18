@@ -2,13 +2,23 @@
 // src/components/Icon.astro
 // The one way icons reach markup: a <use> reference into IconSprite.astro's
 // <symbol> sheet, never a raw inline <svg><path>.
+//
+// `name` prefixes "i-" automatically (the general icon set); a category's
+// own icon is a full sprite id already ("c-sante" — src/content/schemas.ts),
+// so `raw` takes one of those verbatim instead (final-fixes-report.md, I7).
+// The two are mutually exclusive: every caller has exactly one to give,
+// never both. Before this prop existed, a category icon had to bypass this
+// component entirely for a hand-written `<svg aria-hidden><use></svg>` —
+// eight call sites' worth, now collapsed to one.
 interface Props {
-  name: string;
+  name?: string;
+  raw?: string;
   class?: string;
 }
-const { name, class: className = "size-5" } = Astro.props;
+const { name, raw, class: className = "size-5" } = Astro.props;
+const href = raw ? `#${raw}` : `#i-${name}`;
 ---
 
 <svg class={className} aria-hidden="true" focusable="false">
-  <use href={`#i-${name}`} />
+  <use href={href} />
 </svg>

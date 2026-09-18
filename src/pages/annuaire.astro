@@ -39,6 +39,7 @@
 // as a group and reappears correctly once the query is cleared.
 import BaseLayout from "../layouts/BaseLayout.astro";
 import CollyPanel from "../components/CollyPanel.astro";
+import Icon from "../components/Icon.astro";
 import MemberRow from "../components/MemberRow.astro";
 import SearchBar from "../components/SearchBar.astro";
 import SearchResults from "../components/SearchResults.astro";
@@ -101,9 +102,7 @@ const populated = counted.filter((c) => c.count > 0);
               data-detail={COPY.directoryDetailDefault}
               class="chip whitespace-nowrap inline-flex items-center gap-2 rounded-selector px-3.5 py-2 min-h-[44px] text-[16px] font-semibold hover:bg-sauge-200"
             >
-              <svg class="w-[18px] h-[18px]" aria-hidden="true">
-                <use href="#i-groupe" />
-              </svg>
+              <Icon name="groupe" class="w-[18px] h-[18px]" />
               {COPY.directoryAllChip} <span class="tnum text-sauge-900">{members.length}</span>
             </a>
           </li>
@@ -119,9 +118,7 @@ const populated = counted.filter((c) => c.count > 0);
                   data-detail={c.nom}
                   class="chip whitespace-nowrap inline-flex items-center gap-2 rounded-selector px-3.5 py-2 min-h-[44px] text-[16px] font-semibold hover:bg-sauge-200"
                 >
-                  <svg class="w-[18px] h-[18px]" aria-hidden="true">
-                    <use href={`#${c.icon}`} />
-                  </svg>
+                  <Icon raw={c.icon} class="w-[18px] h-[18px]" />
                   {c.nom} <span class="tnum text-sauge-900">{c.count}</span>
                 </a>
               </li>
@@ -134,9 +131,7 @@ const populated = counted.filter((c) => c.count > 0);
             empty.map((c) => (
               <li>
                 <span class="chip-vide whitespace-nowrap inline-flex items-center gap-2 rounded-selector bg-neutre-100 px-3.5 py-2 min-h-[44px] text-[16px] font-semibold text-neutre-600">
-                  <svg class="w-[18px] h-[18px]" aria-hidden="true">
-                    <use href={`#${c.icon}`} />
-                  </svg>
+                  <Icon raw={c.icon} class="w-[18px] h-[18px]" />
                   {c.nom} <span class="tnum">{c.count}</span>
                 </span>
               </li>
@@ -150,9 +145,7 @@ const populated = counted.filter((c) => c.count > 0);
           href="/carte"
           class="inline-flex items-center gap-2 min-h-[44px] text-corps font-semibold text-teal-700 underline decoration-teal-300 underline-offset-4 hover:decoration-teal-600"
         >
-          <svg class="w-[18px] h-[18px] text-teal-600" aria-hidden="true">
-            <use href="#i-pin" />
-          </svg>
+          <Icon name="pin" class="w-[18px] h-[18px] text-teal-600" />
           {COPY.directoryMapLink}
         </a>
       </p>
