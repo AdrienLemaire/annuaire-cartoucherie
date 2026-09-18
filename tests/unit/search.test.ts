@@ -62,6 +62,27 @@ describe("Search", () => {
     expect(search(index, "zzzzqqqq")).toEqual([]);
   });
 
+  // search.ts:86 (final-fixes-report.md, "three tests owed"): weight first,
+  // then localeCompare("fr") — a decision that could have gone the other way
+  // (insertion order, plain string compare). A name match always outranks a
+  // trade match, regardless of which member's name sorts first.
+  it("Ranks a name match above a trade match, whatever the names are", () => {
+    const yoga = member({ slug: "yoga-personne", nom: "Yoga Personne", metier: "Peintre" });
+    const prof = member({ slug: "prof-yoga", nom: "Alice Prof", metier: "Prof de yoga" });
+    const idx = buildIndex([yoga, prof], categories);
+    expect(search(idx, "yoga").map((r) => r.entry.slug)).toEqual(["yoga-personne", "prof-yoga"]);
+  });
+
+  // Same field, same weight: only the tie-break decides. French collation
+  // treats É next to E, well before Z; a plain code-unit compare (no locale)
+  // would rank "Zoé" first instead (U+00C9 sorts after U+005A).
+  it("Breaks a same-field tie with French collation, not code-point order", () => {
+    const zoe = member({ slug: "zoe", nom: "Zoé Test" });
+    const emile = member({ slug: "emile", nom: "Émile Test" });
+    const idx = buildIndex([zoe, emile], categories);
+    expect(search(idx, "test").map((r) => r.entry.slug)).toEqual(["emile", "zoe"]);
+  });
+
   // The index is a public file. A crawler fetching it must not come away with
   // the quartier's phone book — contact details live on the profile page only.
   it("Keeps contact details out of the public index", () => {
