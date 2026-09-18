@@ -21,10 +21,9 @@ import Icon from "./Icon.astro";
 
 interface Props {
   withColly?: boolean;
-  value?: string;
   action?: string;
 }
-const { withColly = false, value = "", action = "/annuaire" } = Astro.props;
+const { withColly = false, action = "/annuaire" } = Astro.props;
 ---
 
 {withColly ? (
@@ -93,7 +92,6 @@ const { withColly = false, value = "", action = "/annuaire" } = Astro.props;
             type="search"
             autocomplete="off"
             placeholder={COPY.searchPlaceholder}
-            value={value}
             class="w-full min-h-[52px] pl-11 pr-3 rounded-xl bg-white text-corps text-neutre-900 placeholder:text-neutre-600"
             style="box-shadow: inset 0 0 0 1.5px var(--color-neutre-500)"
             data-search-input
@@ -126,7 +124,6 @@ const { withColly = false, value = "", action = "/annuaire" } = Astro.props;
       type="search"
       autocomplete="off"
       placeholder={COPY.searchPlaceholder}
-      value={value}
       class="min-h-[44px] w-full min-w-0 border-0 bg-transparent text-corps text-neutre-900 outline-none placeholder:text-neutre-600"
       data-search-input
     />
