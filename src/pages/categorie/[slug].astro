@@ -49,13 +49,20 @@ const count = formatMemberCount(category.count, category.genders);
 
   <div class="mx-auto max-w-[1160px] px-5 py-7">
     <h1 class="ff text-nom text-teal-900">{category.besoin}</h1>
-    <p class="mt-2 text-chapo text-neutre-800">
-      {category.nom} · {count}
-    </p>
 
     <SearchResults class="mt-6 grid grid-cols-1 gap-3 mx-auto max-w-[620px] min-[940px]:max-w-none min-[940px]:grid-cols-2" />
 
     <div data-browse>
+      {
+        // This category's own count (final-fixes-report.md, I11 review follow-up):
+        // stays inside [data-browse] with everything else "browsing" means on this
+        // page — outside it, a search for an unrelated need would leave this
+        // category's own count sitting above live results from every category,
+        // the same rule annuaire.astro's own count line already follows.
+      }
+      <p class="mt-2 text-chapo text-neutre-800">
+        {category.nom} · {count}
+      </p>
       {
         category.count === 0 ? (
           <div class="colly-fond mt-6 max-w-[52ch] rounded-[20px] p-5">

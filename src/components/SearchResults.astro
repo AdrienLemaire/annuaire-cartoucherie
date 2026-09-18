@@ -16,7 +16,11 @@
 // navigation. `<ul class="contents">` keeps it invisible to CSS: the grid
 // classes stay on this component's own wrapper (byte-for-byte what each
 // caller already had), and `display:contents` promotes each <li> straight
-// into that grid without an extra box.
+// into that grid without an extra box. `role="list"` is required, not
+// decorative: Safari/VoiceOver strips list semantics from any <ul> styled
+// with `list-style:none` (WebKit bug 170179, deliberate, unfixed) — without
+// the explicit role this <ul> would announce as nothing on iOS, the exact
+// platform this fix exists for, list-none or not.
 import { COPY } from "../lib/copy";
 import { mailtoHref } from "../lib/contact";
 
@@ -27,7 +31,7 @@ const { class: className } = Astro.props;
 ---
 
 <div data-results hidden aria-live="polite" class={className} data-reason-prefix={COPY.searchReasonPrefix}>
-  <ul data-result-list class="contents list-none p-0 m-0"></ul>
+  <ul data-result-list role="list" class="contents list-none p-0 m-0"></ul>
   <template data-empty-template>
     <div data-empty-state>
       <p class="text-corps text-teal-950">{COPY.searchEmpty}</p>
@@ -35,7 +39,7 @@ const { class: className } = Astro.props;
         class="mt-3 inline-flex min-h-[44px] items-center font-semibold text-teal-800 underline decoration-teal-400 underline-offset-4"
         href={mailtoHref(COPY.searchNoMatchSubject)}
       >
-        {COPY.searchSuggest}
+        {COPY.searchNoMatchSuggest}
       </a>
     </div>
   </template>

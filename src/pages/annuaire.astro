@@ -202,21 +202,22 @@ const populated = sortByCountDesc(counted.filter((c) => c.count > 0));
           pose="triste"
           title={COPY.searchEmpty}
           text={COPY.homeBrowseListText(members.length)}
-        />
-        <p class="mt-5 flex flex-wrap items-center gap-x-4 gap-y-2">
+        >
           <a
             href="/annuaire"
-            class="inline-flex min-h-[48px] items-center gap-2 rounded-full bg-teal-700 px-5 text-corps font-semibold text-white hover:bg-teal-600"
+            class="mt-5 inline-flex min-h-[48px] items-center gap-2 rounded-full bg-teal-700 px-5 text-corps font-semibold text-white hover:bg-teal-600"
           >
             {COPY.directoryResetAll(formatMemberCount(members.length, members.map((m) => m.genre)))}
           </a>
-          <a
-            href={mailtoHref(COPY.searchNoMatchSubject)}
-            class="inline-flex min-h-[44px] items-center font-semibold text-teal-800 underline decoration-teal-400 underline-offset-4"
-          >
-            {COPY.searchSuggest}
-          </a>
-        </p>
+          <p class="mt-4 text-[16px]">
+            <a
+              href={mailtoHref(COPY.searchNoMatchSubject)}
+              class="font-semibold text-teal-700 underline decoration-teal-300 underline-offset-4 hover:decoration-teal-600"
+            >
+              {COPY.searchNoMatchSuggest}
+            </a>
+          </p>
+        </CollyPanel>
       </div>
     </div>
   </section>

@@ -93,6 +93,7 @@ const hasVentouses = pose === "salut";
             {p.eyebrow && <p class="mt-6 text-etiquette font-semibold uppercase text-sable-800">{p.eyebrow}</p>}
             <h2 id={headingId} class={p.title}>{title}</h2>
             <p class={p.text}>{text}</p>
+            <slot />
           </div>
         </div>
       </>
@@ -107,6 +108,7 @@ const hasVentouses = pose === "salut";
         <div>
           <h2 id={headingId} class={p.title}>{title}</h2>
           <p class={p.text}>{text}</p>
+          <slot />
         </div>
       </>
     )}

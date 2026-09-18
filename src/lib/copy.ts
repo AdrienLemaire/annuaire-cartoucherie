@@ -98,6 +98,11 @@ export const COPY = {
   // I5/M18). The mockup's own #aucun-resultat carries this exact subject
   // (docs/mockups/final/annuaire.html:717, decoded).
   searchNoMatchSubject: "Je connais quelqu'un",
+  // The same panel's own link label (annuaire.html:717) — distinct from the
+  // generic searchSuggest ("Vous connaissez quelqu'un ?") used everywhere a
+  // category name is known: this one names no category, so it asks the
+  // broader question the mockup's own text asks.
+  searchNoMatchSuggest: "Dites-nous quel métier manque à la Cartoucherie",
   // The fixed half of a result's "why it matched" line — src/lib/search.ts's
   // own FIELDS carries the variable half (« son métier », « le besoin »…).
   // A plain string, not a function: src/client/live-search.ts reads it off
