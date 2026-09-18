@@ -12,18 +12,29 @@
 // The GET form (SearchBar.astro) carries no `name` on its input, so even a
 // no-JS submit sends nothing to the host — this only stops the page from
 // navigating once the script is ready to render results in place instead.
+//
+// No COPY import (final-fixes-report.md, I4): SearchResults.astro composed
+// every French string this script needs into the markup already — the empty
+// state (including its mailto:, mailtoHref's own output) as a <template>,
+// the load-error text as a hidden <p>, the "why it matched" prefix as a data
+// attribute. This module only ever toggles `hidden`, clones the template or
+// copies already-French text between elements, category-filter.ts's own
+// precedent for what a client script may do.
 import { search, type IndexEntry } from "../lib/search";
-import { COPY } from "../lib/copy";
 
 const input = document.querySelector<HTMLInputElement>("[data-search-input]");
 const results = document.querySelector<HTMLElement>("[data-results]");
+const resultList = results?.querySelector<HTMLUListElement>("[data-result-list]") ?? null;
+const emptyTemplate = results?.querySelector<HTMLTemplateElement>("[data-empty-template]") ?? null;
+const loadError = results?.querySelector<HTMLElement>("[data-load-error]") ?? null;
+const reasonPrefix = results?.dataset.reasonPrefix ?? "";
 const browseSections = [...document.querySelectorAll<HTMLElement>("[data-browse]")];
 
 document.querySelector("[data-search-form]")?.addEventListener("submit", (event) => {
   event.preventDefault();
 });
 
-if (input && results) {
+if (input && results && resultList) {
   // A promise, not the resolved array, so a second keystroke while the first
   // fetch is still in flight reuses it instead of firing a second request.
   // Reset on failure so a visitor who searched while offline can retry once
@@ -40,30 +51,23 @@ if (input && results) {
     return indexPromise;
   }
 
+  const showEmptyState = (show: boolean): void => {
+    results.querySelector("[data-empty-state]")?.remove();
+    if (show && emptyTemplate) results.append(emptyTemplate.content.cloneNode(true));
+  };
+
   const render = (query: string, index: IndexEntry[]): void => {
     const found = search(index, query);
-    for (const section of browseSections) section.hidden = query.trim().length > 0;
-    results.hidden = query.trim().length === 0;
-    results.innerHTML = "";
-
-    if (query.trim().length > 0 && found.length === 0) {
-      // Same two class lists as annuaire.astro's own [data-empty-for] block
-      // (its categoryNobody/searchSuggest pair) — already emitted by that
-      // page, so reusing them here adds no CSS, and the suggest link keeps
-      // its 44px tap target instead of rendering as a bare default link.
-      const empty = document.createElement("p");
-      empty.className = "text-corps text-teal-950";
-      empty.textContent = COPY.searchEmpty;
-      const suggest = document.createElement("a");
-      suggest.className =
-        "mt-3 inline-flex min-h-[44px] items-center font-semibold text-teal-800 underline decoration-teal-400 underline-offset-4";
-      suggest.href = `mailto:${COPY.contactEmail}`;
-      suggest.textContent = COPY.searchSuggest;
-      results.append(empty, suggest);
-      return;
-    }
+    const trimmed = query.trim().length > 0;
+    for (const section of browseSections) section.hidden = trimmed;
+    results.hidden = !trimmed;
+    if (loadError) loadError.hidden = true;
+    resultList.replaceChildren();
+    showEmptyState(trimmed && found.length === 0);
+    if (!trimmed || found.length === 0) return;
 
     for (const { entry, reason } of found) {
+      const li = document.createElement("li");
       const link = document.createElement("a");
       link.href = `/membre/${entry.slug}`;
       link.dataset.result = "";
@@ -73,9 +77,10 @@ if (input && results) {
       name.textContent = entry.nom;
       const why = document.createElement("span");
       why.className = "block text-[16px] text-neutre-600";
-      why.textContent = `${entry.metier} · ${COPY.searchReason(reason)}`;
+      why.textContent = `${entry.metier} · ${reasonPrefix} ${reason}`;
       link.append(name, why);
-      results.append(link);
+      li.append(link);
+      resultList.append(li);
     }
   };
 
@@ -85,19 +90,17 @@ if (input && results) {
   // while there is still a query to search for: a rejection that arrives after the
   // visitor has already cleared the field would otherwise leave a stale error behind.
   const renderError = (query: string): void => {
+    resultList.replaceChildren();
+    showEmptyState(false);
     if (query.trim().length === 0) {
       for (const section of browseSections) section.hidden = false;
       results.hidden = true;
-      results.innerHTML = "";
+      if (loadError) loadError.hidden = true;
       return;
     }
     for (const section of browseSections) section.hidden = true;
     results.hidden = false;
-    results.innerHTML = "";
-    const message = document.createElement("p");
-    message.className = "text-corps text-teal-950";
-    message.textContent = COPY.searchLoadError;
-    results.append(message);
+    if (loadError) loadError.hidden = false;
   };
 
   input.addEventListener("input", () => {

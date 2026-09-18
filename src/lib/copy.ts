@@ -67,6 +67,10 @@ export const COPY = {
   searchLabel: "Un métier, un prénom, un besoin",
   searchPlaceholder: "électricien, yoga…",
   searchSubmit: "Trouver",
+  // The compact variant's submit is icon-only (SearchBar.astro, withColly:
+  // false) — this string is its entire accessible name, matching
+  // styleguide.html:880 verbatim (final-fixes-report.md, I11).
+  searchSubmitAria: "Chercher dans l'annuaire",
   // True as of Task 12 (task-11-report.md, "fix round 4", named this task as the one that
   // would make it true again): src/pages/recherche.json.ts serves the whole member index as
   // a static file, src/client/live-search.ts fetches it once per page load (cached across
@@ -88,7 +92,18 @@ export const COPY = {
   // (NeedsIndex, task-6 brief) — one string, so the format lives here and
   // never in a component's frontmatter.
   searchSuggestSubject: (nom: string) => `Un voisin pour « ${nom} »`,
-  searchReason: (reason: string) => `Correspond à ${reason}`,
+  // A free-text search or a stale ?cat= has no category name to plug into
+  // searchSuggestSubject above — used by SearchResults.astro's own empty
+  // state and annuaire.astro's [data-no-match] panel (final-fixes-report.md,
+  // I5/M18). The mockup's own #aucun-resultat carries this exact subject
+  // (docs/mockups/final/annuaire.html:717, decoded).
+  searchNoMatchSubject: "Je connais quelqu'un",
+  // The fixed half of a result's "why it matched" line — src/lib/search.ts's
+  // own FIELDS carries the variable half (« son métier », « le besoin »…).
+  // A plain string, not a function: src/client/live-search.ts reads it off
+  // a data attribute rather than importing COPY (final-fixes-report.md, I4 —
+  // COPY is one object literal, so importing any of it ships all of it).
+  searchReasonPrefix: "Correspond à",
   // SearchBar's colly-couleur.png alt (styleguide block "La barre de
   // recherche"): the only place that image renders, so one string is enough.
   searchCollyAlt:
@@ -102,6 +117,13 @@ export const COPY = {
   directoryFilterLabel: "Filtrer par métier",
   directoryAllChip: "Tous les métiers",
   directoryMapLink: "Voir ces fiches sur la carte",
+  // [data-no-match]'s own reset link (annuaire.html:715, "Revoir les 12
+  // voisins" — final-fixes-report.md, M18): a stale/mistyped ?cat= is a
+  // browsing state with no live query to clear, so a plain link back to the
+  // unfiltered /annuaire is the fix, not a JS reset button. Takes the
+  // already-formatted "N voisins" string (formatMemberCount's own output),
+  // never a literal — a neighbour added later is counted honestly.
+  directoryResetAll: (voisins: string) => `Revoir les ${voisins}`,
   // sr-only: MemberRow's own <h3> per row otherwise skips straight from the
   // page's <h1> to an <h3> with nothing in between — an invalid heading order
   // (task-15-report.md, Lighthouse's heading-order audit). Not shown visually

@@ -16,6 +16,7 @@
 // choisissez la fin" needs index) while a query is active.
 import BaseLayout from "../layouts/BaseLayout.astro";
 import SearchBar from "../components/SearchBar.astro";
+import SearchResults from "../components/SearchResults.astro";
 import NeedsIndex from "../components/NeedsIndex.astro";
 import MemberCard from "../components/MemberCard.astro";
 import CollyPanel from "../components/CollyPanel.astro";
@@ -54,7 +55,7 @@ const onMapCount = members.filter((m) => m.surCarte).length;
     </h1>
     <p class="mt-4 text-chapo text-neutre-800 max-w-[34ch]">{COPY.homeIntro}</p>
     <SearchBar withColly={true} />
-    <div data-results hidden aria-live="polite" aria-atomic="true" class="mt-4 grid gap-3"></div>
+    <SearchResults class="mt-4 grid gap-3" />
   </section>
 
   <div class="mx-auto max-w-[1160px]">

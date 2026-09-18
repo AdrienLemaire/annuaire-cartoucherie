@@ -1,0 +1,43 @@
+---
+// src/components/SearchResults.astro
+// The [data-results] mount point src/client/live-search.ts renders into, on
+// every page that carries a SearchBar. Composes every French string the
+// script needs — the empty state's text and its mailto: (mailtoHref, real
+// function, not hand-built), the load-error text, and the "why it matched"
+// prefix — server-side, into markup and a data attribute, so live-search.ts
+// never imports COPY: COPY is one `as const` object literal, so importing
+// any of it ships the whole dictionary (final-fixes-report.md, I4 — 12.3 KB
+// raw / 5.0 KB gzip for five strings). live-search.ts only ever toggles
+// `hidden`, clones the template and copies already-French text between
+// elements — category-filter.ts's own precedent.
+//
+// Results render as a <ul>/<li> (final-fixes-report.md, I11), not a bag of
+// <a> siblings, so a screen reader announces "list, N items" and offers item
+// navigation. `<ul class="contents">` keeps it invisible to CSS: the grid
+// classes stay on this component's own wrapper (byte-for-byte what each
+// caller already had), and `display:contents` promotes each <li> straight
+// into that grid without an extra box.
+import { COPY } from "../lib/copy";
+import { mailtoHref } from "../lib/contact";
+
+interface Props {
+  class: string;
+}
+const { class: className } = Astro.props;
+---
+
+<div data-results hidden aria-live="polite" class={className} data-reason-prefix={COPY.searchReasonPrefix}>
+  <ul data-result-list class="contents list-none p-0 m-0"></ul>
+  <template data-empty-template>
+    <div data-empty-state>
+      <p class="text-corps text-teal-950">{COPY.searchEmpty}</p>
+      <a
+        class="mt-3 inline-flex min-h-[44px] items-center font-semibold text-teal-800 underline decoration-teal-400 underline-offset-4"
+        href={mailtoHref(COPY.searchNoMatchSubject)}
+      >
+        {COPY.searchSuggest}
+      </a>
+    </div>
+  </template>
+  <p data-load-error hidden class="text-corps text-teal-950">{COPY.searchLoadError}</p>
+</div>

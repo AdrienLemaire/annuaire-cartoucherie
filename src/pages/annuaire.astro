@@ -41,10 +41,11 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import CollyPanel from "../components/CollyPanel.astro";
 import MemberRow from "../components/MemberRow.astro";
 import SearchBar from "../components/SearchBar.astro";
+import SearchResults from "../components/SearchResults.astro";
 import { COPY } from "../lib/copy";
 import { mailtoHref } from "../lib/contact";
 import { loadCategories, loadMembers } from "../lib/collections";
-import { memberCountParts, withCounts } from "../lib/members";
+import { formatMemberCount, memberCountParts, withCounts } from "../lib/members";
 
 const [members, categories] = await Promise.all([loadMembers(), loadCategories()]);
 const counted = withCounts(categories, members);
@@ -71,13 +72,7 @@ const populated = counted.filter((c) => c.count > 0);
       {COPY.directoryTitle}
     </h1>
 
-    <div
-      data-results
-      hidden
-      aria-live="polite"
-      aria-atomic="true"
-      class="mt-6 grid grid-cols-1 gap-3 mx-auto max-w-[620px] min-[940px]:max-w-none min-[940px]:grid-cols-2"
-    ></div>
+    <SearchResults class="mt-6 grid grid-cols-1 gap-3 mx-auto max-w-[620px] min-[940px]:max-w-none min-[940px]:grid-cols-2" />
 
     <div data-browse>
       <p class="mt-5 flex flex-wrap items-baseline gap-x-3 gap-y-1" aria-live="polite">
@@ -213,6 +208,20 @@ const populated = counted.filter((c) => c.count > 0);
           title={COPY.searchEmpty}
           text={COPY.homeBrowseListText(members.length)}
         />
+        <p class="mt-5 flex flex-wrap items-center gap-x-4 gap-y-2">
+          <a
+            href="/annuaire"
+            class="inline-flex min-h-[48px] items-center gap-2 rounded-full bg-teal-700 px-5 text-corps font-semibold text-white hover:bg-teal-600"
+          >
+            {COPY.directoryResetAll(formatMemberCount(members.length, members.map((m) => m.genre)))}
+          </a>
+          <a
+            href={mailtoHref(COPY.searchNoMatchSubject)}
+            class="inline-flex min-h-[44px] items-center font-semibold text-teal-800 underline decoration-teal-400 underline-offset-4"
+          >
+            {COPY.searchSuggest}
+          </a>
+        </p>
       </div>
     </div>
   </section>
