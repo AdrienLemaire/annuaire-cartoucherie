@@ -24,6 +24,43 @@ test("Never asks for a position before an explicit tap", async ({ page }) => {
   expect(await page.evaluate(() => (window as unknown as GeoWindow).geoAsked)).toBe(false);
 });
 
+// C1 (final-fixes-report.md): [data-geo-status] carried the Tailwind class
+// `hidden` while src/client/geolocate.ts's showStatus() only ever
+// removeAttribute("hidden") — an attribute never set. The paragraph stayed
+// display:none forever, so neither the grant reassurance nor the ONLY
+// feedback on a denial ever appeared. Both branches, with a real (mocked)
+// browser geolocation API rather than the machine's own location.
+test("Shows the reassurance message once a position is granted, and reorders the sheet", async ({
+  page,
+  context,
+}) => {
+  const [target] = members.filter(isPinned);
+  await context.grantPermissions(["geolocation"]);
+  await context.setGeolocation({ latitude: target.lat!, longitude: target.lng! });
+  await page.goto("/carte");
+
+  await page.getByRole("button", { name: /ma position/i }).click();
+
+  await expect(page.getByText(COPY.mapGeoGranted)).toBeVisible();
+  // The strongest, most concrete proof the reorder actually ran: the member
+  // whose coordinates match the granted position is now 0 m away, and first.
+  await expect(page.locator(`[data-sheet] [data-m="${target.slug}"] .dist`)).toHaveText("0 m");
+  await expect(page.locator("[data-sheet] > li").first()).toHaveAttribute("data-slug", target.slug);
+});
+
+test("Shows the denied message when geolocation is refused, and leaves the sheet alone", async ({ page }) => {
+  // No context.grantPermissions(): Chromium then rejects getCurrentPosition
+  // outright (PERMISSION_DENIED), with no dialog to interact with — the same
+  // outcome a visitor who has blocked location for their browser would see.
+  await page.goto("/carte");
+  const firstRow = await page.locator("[data-sheet] > li").first().getAttribute("data-slug");
+
+  await page.getByRole("button", { name: /ma position/i }).click();
+
+  await expect(page.getByText(COPY.mapGeoDenied)).toBeVisible();
+  await expect(page.locator("[data-sheet] > li").first()).toHaveAttribute("data-slug", firstRow!);
+});
+
 test("States each of the three address cases instead of flattening them", async ({ page }) => {
   await page.goto("/carte");
   await expect(page.getByText(COPY.mapTheyComeToYou)).toBeVisible();

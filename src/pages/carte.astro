@@ -122,7 +122,7 @@ const pins = members.filter(isPinned).map((m) => ({
         <Icon name="alerte" class="w-[18px] h-[18px] shrink-0 mt-0.5 text-teal-600" />
         {COPY.mapGeoLocal}
       </p>
-      <p data-geo-status role="status" class="mt-3 hidden rounded-[14px] bg-white px-4 py-3 text-corps text-teal-900">
+      <p data-geo-status role="status" hidden class="mt-3 rounded-[14px] bg-white px-4 py-3 text-corps text-teal-900">
         <span data-geo-granted hidden>{COPY.mapGeoGranted}</span>
         <span data-geo-denied hidden>{COPY.mapGeoDenied}</span>
       </p>
