@@ -103,6 +103,18 @@ export function memberUrl(slug: string, site: string): string {
   return new URL(`/membre/${slug}`, site).href;
 }
 
+/**
+ * The same URL, without its scheme — membre.html:614's own display value
+ * (QrCard.astro, final-fixes-report.md M17): printed beside a QR code,
+ * "https://" is noise nobody reads aloud or types. Takes the full URL memberUrl
+ * already built rather than reconstructing it, so the QR code and the text
+ * beside it can never point at two different things.
+ */
+export function displayUrl(url: string): string {
+  const u = new URL(url);
+  return `${u.host}${u.pathname}`;
+}
+
 /** « 4,8 », « 5,0 » — the French decimal comma, always one digit (styleguide block 12). */
 export function formatNote(note: number): string {
   return note.toFixed(1).replace(".", ",");

@@ -169,7 +169,10 @@ export const COPY = {
 
   reviewsTitle: "Avis du quartier",
   reviewsNone: "Aucun avis pour l'instant.",
-  reviewsHow: "Les avis sont signés par des voisins, relus par l'association, et jamais achetés.",
+  // Future tense (final-fixes-report.md, I12): renders under "Aucun avis pour
+  // l'instant." on every profile (ReviewsSlot.astro) and under "Un avis
+  // pourra-t-il être acheté ?" on /avis — reviewing does not exist yet.
+  reviewsHow: "Les avis seront signés par des voisins, relus par l'association, et jamais achetés.",
   reviewsPolicy: "Les avis, comment ça marche",
 
   qrTitle: "Son QR code",
@@ -249,7 +252,7 @@ export const COPY = {
   // (line 1086, « accordé au genre ») renders "Elle vient chez vous" for a
   // woman, annuaire.html renders "Il vient chez vous" for a man — mapTheyComeToYou
   // above is the map legend's plural for the group, not this.
-  comesToYou: (pronoun: string) => `${pronoun[0].toUpperCase()}${pronoun.slice(1)} vient chez vous`,
+  comesToYou: (pronoun: string) => `${capitalize(pronoun)} vient chez vous`,
   // The elision itself is elideDe() above; MemberCard and MemberRow never
   // fork this one table.
   portraitAlt: (nom: string) => `Portrait ${elideDe(nom)}${nom}`,
@@ -287,10 +290,15 @@ export const COPY = {
     "Parcourir l'annuaire, une fiche ou la carte ne vous fait suivre par aucun traceur.",
   // public/sw.js's networkFirst() only ever writes to the cache with a page it just
   // fetched successfully (never with placeholder or visitor data), so "cette copie" is
-  // exactly the bytes of the page itself — see that function's own comment.
+  // exactly the bytes of the page itself — see that function's own comment. Named
+  // precisely (final-fixes-report.md, M19): sw.js's own SHELL precaches "/" and
+  // "/annuaire" on install, regardless of whether either was ever visited — the
+  // previous wording claimed offline access depended on having consulted a page first,
+  // which was true only for every OTHER page.
   privacyDoesOffline:
-    "Les pages déjà consultées restent disponibles sur votre appareil pour que l'annuaire " +
-    "fonctionne même sans réseau ; cette copie ne contient aucune information sur vous.",
+    "L'accueil et l'annuaire sont mis en cache dès l'installation pour rester disponibles " +
+    "hors connexion ; toute autre page consultée s'y ajoute au fil de la navigation. Cette " +
+    "copie ne contient aucune information sur vous.",
   // Same fact as searchLocal above (spec §5), worded for this list rather than reusing that
   // string verbatim: it names the one network request the claim doesn't cover (the index
   // download) instead of leaving it implicit. See searchLocal's own comment for the
@@ -340,16 +348,23 @@ export const COPY = {
   // never drift apart.
   legalMarker: (what: string) => `⟨à compléter : ${what}⟩`,
 
-  reviewsDescription: "Qui peut laisser un avis, comment il est modéré, comment en signaler un.",
-  reviewsWhoTitle: "Qui peut laisser un avis ?",
+  // Future tense throughout this section but reviewsReportText below
+  // (final-fixes-report.md, I12): reviews are not built yet (avis.astro's own
+  // header comment) — no page anywhere on this site offers a way to leave
+  // one, so describing the collection and moderation process as already
+  // running is worse than describing none. reviewsReportText stays present
+  // tense because it is true today: writing to the association is a real
+  // mailto:, working right now, independent of whether reviewing itself exists.
+  reviewsDescription: "Qui pourra laisser un avis, comment il sera modéré, comment en signaler un.",
+  reviewsWhoTitle: "Qui pourra laisser un avis ?",
   reviewsWhoText:
-    "Tout voisin ou toute voisine qui a eu recours à un voisin de l'annuaire peut lui laisser un " +
-    "avis signé sur sa fiche, un avis par voisin et par fiche.",
-  reviewsPaidTitle: "Un avis peut-il être acheté ?",
-  reviewsModerationTitle: "Qui modère les avis, et sur quels critères ?",
+    "Tout voisin ou toute voisine qui aura eu recours à un voisin de l'annuaire pourra lui laisser " +
+    "un avis signé sur sa fiche, un avis par voisin et par fiche.",
+  reviewsPaidTitle: "Un avis pourra-t-il être acheté ?",
+  reviewsModerationTitle: "Qui modérera les avis, et sur quels critères ?",
   reviewsModerationText:
-    "L'association relit les avis signalés et retire ceux qui sont insultants, hors sujet, ou qui " +
-    "ne concernent pas la fiche notée.",
+    "L'association relira les avis signalés et retirera ceux qui seront insultants, hors sujet, ou " +
+    "qui ne concerneront pas la fiche notée.",
   reviewsReportTitle: "Comment signaler un avis ?",
   reviewsReportText: "Écrivez à l'association en précisant la fiche et l'avis concernés.",
   reviewsReportLink: "Signaler un avis",
