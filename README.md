@@ -99,6 +99,9 @@ first. There must be no second, ungated deploy path: Cloudflare Workers Builds d
 push regardless of CI status and must never be enabled on this project, or two deploy paths race
 and the ungated one wins.
 
+`docs/go-live.md` is the ordered runbook for the first deploy — accounts, secrets, the domain
+cutover, post-deploy checks, and the manual checks nothing automated can replace.
+
 ## Three silent failures already hit once
 
 Each cost real time rediscovering it. None of the three produces an error message —
