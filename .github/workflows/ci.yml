@@ -87,7 +87,7 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
           cache: npm
       - run: npm ci
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v8
         with: { name: dist, path: dist }
       # Chromium only. WebKit costs a minute to install and only approximates
       # Safari; real Safari is a human check on a real device.
@@ -117,7 +117,7 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
           cache: npm
       - run: npm ci
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v8
         with: { name: dist, path: dist }
       - run: npx lhci autorun
       - uses: actions/upload-artifact@v4
