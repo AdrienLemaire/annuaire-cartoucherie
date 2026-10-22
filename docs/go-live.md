@@ -14,9 +14,9 @@ Four things are undecided or missing. None of them are code problems, and none o
 guessed or invented on your behalf. Work through this list first; the numbered sequence below
 assumes all four are settled.
 
-1. **The domain is not registered.** Nothing is live anywhere. `astro.config.mjs`'s `site`,
-   every QR code the build emits, and the CI `smoke` job's `URL_PROD` all still say
-   `annuaire.lacartoucherie.fr` as a placeholder. **Once you print a QR code with a domain on
+1. **The domain is not registered.** Nothing is live anywhere. Every QR code the build emits
+   encodes `SITE_URL`, set per GitHub Environment (step 7); a local build falls back to
+   `http://localhost:4321`. **Once you print a QR code with a domain on
    it, that domain is permanent for that piece of paper** — decide and register before printing
    anything, not after.
 2. **No Cloudflare account is configured for this project.** `CLOUDFLARE_API_TOKEN` and
@@ -29,13 +29,12 @@ assumes all four are settled.
    Cloudflare's non-profit credit programmes) and **PolyForm Noncommercial 1.0.0**
    (source-available only, not open source by the OSD's own definition; forfeits those
    credits). This is a real decision with a real tradeoff, not a formality.
-4. **Six legal-notice markers are unfilled.** `docs/mentions-legales-a-completer.md` is the
-   single list — association name and legal form, registered address, SIRET or RNA number,
-   Cloudflare's exact contracting entity and its address, and the name of the illustrator
-   redrawing the mascot. **Do not duplicate that list here**; open the file itself, it explains
+4. **Three legal-notice markers are unfilled.** `docs/mentions-legales-a-completer.md` is the
+   single list — Cloudflare's exact contracting entity and its address, and the name of the
+   illustrator redrawing the mascot. **Do not duplicate that list here**; open the file itself, it explains
    what each line needs and where to get it. Going live with the markers still visible on the
-   page (they render as `⟨à compléter : …⟩`) is an acceptable soft launch. Inventing any of the
-   six — guessing an address, making up an RNA number — is not, ever.
+   page (they render as `⟨à compléter : …⟩`) is an acceptable soft launch. Inventing any of them —
+   guessing an address or an entity name — is not, ever.
 
 ## The sequence
 
@@ -48,7 +47,7 @@ what to do about it.
    until this is done.
 
 2. **Create the GitHub repository** for this codebase (public, once the licence in Blocker 3 is
-   chosen — private is fine as a holding state before that). Push this code to it as `main`.
+   chosen — private is fine as a holding state before that). Push this code to it as `main`, and create `develop` from it.
 
 3. **Create the private content repository**, `cartoucherie-donnees`, on GitHub. Private.
    Containing exactly:
@@ -80,25 +79,28 @@ what to do about it.
    falling back to anything. Renewing this token before it lapses is a recurring task, not a
    one-time setup step — put it on a calendar.
 
-6. **Create the `production` GitHub Environment** on this repository (repository Settings →
-   Environments), if it doesn't already exist. The `deploy` job in `.github/workflows/ci.yml`
-   targets `environment: production`, and the secrets in the next step need to live there.
+6. **Create two GitHub Environments** (repository Settings → Environments), `staging` and
+   `production`. The flow, in `.github/workflows/ci.yml`:
+   - a feature branch deploys nothing — its pull request runs the full test gate;
+   - a merge to `develop` deploys **staging** (`wrangler deploy --env staging`);
+   - a merge to `main` deploys **production** (`wrangler deploy --env ""`).
 
-7. **Store these values as GitHub Actions secrets and variables, scoped to the `production`
-   environment** (not repository-level — environment scoping is what keeps them unavailable to
-   workflow runs triggered from forks or pull requests):
-   - `CONTENT_REPO_TOKEN` — the token from step 5.
-   - `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID` — generated in step 8, below.
-   - `PUBLIC_CF_BEACON_TOKEN` — as a repository **variable** (`vars`, not `secrets`; Settings →
-     Secrets and variables → Actions → Variables), from the Cloudflare Web Analytics site token
-     you'll get in step 14.
+   Give `production` a **required reviewer** (yourself): the deploy job then waits for your
+   click before it builds or uploads anything.
+
+7. **Store these in each environment, under the same names** (not repository-level —
+   environment scoping keeps them unavailable to runs triggered from forks or pull requests):
+   - Secrets: `CONTENT_REPO_TOKEN` (step 5), `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID`
+     (step 8).
+   - Variables: `SITE_URL` — the full `https://` URL this environment serves, which every QR code
+     and canonical URL encodes; and `PUBLIC_CF_BEACON_TOKEN`, from that environment's own Web
+     Analytics site (step 14).
 
    *If it fails*: a missing or wrong secret doesn't produce a silently broken deploy — the
-   `deploy` job fails at the step that needed it, by name, in the Actions log. The dangerous
-   failure mode is a *forgotten* `PUBLIC_CF_BEACON_TOKEN`: the analytics beacon still loads and
-   runs with an empty token, so nothing looks wrong on the page, and nothing is ever counted.
-   That's why step 14 exists as its own checklist item below — don't skip it. You'll come back
-   and fill this secret in after step 14, once the token exists; it can't be done any earlier.
+   `deploy` job fails at the step that needed it, by name. A missing `SITE_URL` stops the job
+   before anything is built. The dangerous failure mode is a *forgotten*
+   `PUBLIC_CF_BEACON_TOKEN`: the beacon still loads with an empty token, nothing looks wrong, and
+   nothing is ever counted. That's why step 14 exists — don't skip it.
 
 8. **Create and configure the Cloudflare account.** Enable Workers. Generate the API token and
    account ID for step 7. **Confirm Cloudflare Workers Builds is off, and leave it off.**
@@ -106,24 +108,21 @@ what to do about it.
    deploy path is the gated CI job (`needs: [verify, browser, lighthouse]` in the `deploy` job).
    If both are ever enabled at once, they race, and there is no guarantee the gated one wins.
 
-9. **Pin the deploy action to a commit SHA.** `.github/workflows/ci.yml`'s `deploy` job uses
-   `cloudflare/wrangler-action@v3` — its own comment says "before first use." Replace `@v3` with
-   the full commit SHA of the version you're pinning to; Dependabot's `github-actions` ecosystem
-   will then keep it current via PRs instead of a mutable tag silently changing under a workflow
-   that has write access to production.
+9. **Protect `develop` and `main`** (Settings → Branches, or Rules → Rulesets): changes only
+   through a pull request, with the `verify`, `browser`, `lighthouse` and `commits` checks
+   required. Without it a direct push skips the review the flow depends on — the deploy job
+   still waits for green tests, but nothing waits for a second look.
 
 ### Wire the domain into the code
 
-10. **In one commit**, once the domain from step 1 is registered:
-    - `astro.config.mjs`: set `site` to the real `https://` URL.
-    - `wrangler.toml`: add a `[[routes]]` entry for the custom domain. Leave `html_handling =
-      "drop-trailing-slash"` and `not_found_handling = "404-page"` exactly as they are — both
-      are load-bearing (see "Post-deploy checks" below for what they fix).
-    - `.github/workflows/ci.yml`: set the `smoke` job's `URL_PROD` to the same real URL.
+10. **Once the domain from step 1 is registered**, add one custom-domain route per environment
+    in `wrangler.toml` — its own comment shows both lines — each matching that environment's
+    `SITE_URL`. Leave `html_handling = "drop-trailing-slash"` and `not_found_handling =
+    "404-page"` exactly as they are — both are load-bearing (see "Post-deploy checks" below).
 
-    Then rebuild and confirm every QR code picked up the change:
+    Then confirm a build encodes the URL you give it:
     ```bash
-    npm run build && grep -o 'https://[^"<]*' dist/qr/*.svg | head -3
+    SITE_URL=https://<the real domain> npm run build && grep -o 'https://[^"<]*' dist/qr/*.svg | head -3
     ```
     *If it fails*: if the printed URL doesn't match what you registered, don't print anything —
     fix the config and rebuild. A QR code is paper; it can't be patched after printing.
@@ -132,7 +131,7 @@ what to do about it.
     first time:
     ```bash
     git clone git@github.com:<owner>/cartoucherie-donnees.git content-private
-    CONTENT_DIR=content-private npm run build
+    CONTENT_DIR=content-private SITE_URL=https://<the real domain> npm run build
     npm run budgets
     git status --porcelain
     ```
@@ -163,24 +162,20 @@ what to do about it.
     so the only fix is a history rewrite plus rotating every phone number and email address that
     leaked. This is the one failure mode in this whole runbook that isn't a quick fix.
 
-### First deploy — by hand, once
+### First deploys — through CI, staging first
 
-13. **Deploy once by hand**, to prove the pipeline works end to end before handing it to CI:
-    ```bash
-    npx wrangler login
-    CONTENT_DIR=content-private npm run deploy
-    ```
-    Use `npm run deploy`, not a bare `wrangler deploy` — the `deploy` script refuses to run
-    without `CONTENT_DIR` set (so you can't accidentally ship the twelve-person fixture to
-    production) and runs the dist-output guard before `wrangler deploy`.
+13. **Merge into `develop`.** The `deploy` job creates the staging Worker and uploads to it.
+    Nothing is ever deployed by hand: a hand-run `wrangler deploy` bypasses the same test gate
+    that disabling Workers Builds (step 8) protects — the same risk by a different door. If you
+    ever must, use `npm run deploy`, which refuses to run without `CONTENT_DIR` and `SITE_URL`.
 
-14. **In the Cloudflare dashboard**: attach the custom domain to this Worker, then enable Web
-    Analytics for it and copy its site token into the `PUBLIC_CF_BEACON_TOKEN` repository
-    variable from step 7.
+14. **In the Cloudflare dashboard**: attach each environment's custom domain to its Worker, then
+    enable Web Analytics for each and copy each site token into that environment's
+    `PUBLIC_CF_BEACON_TOKEN` variable. Staging sends `X-Robots-Tag: noindex` (added by the deploy
+    job), so search engines never send a neighbour to the test copy.
 
-15. **From this point on, never deploy by hand again.** Every deploy after this one goes through
-    the gated CI job. A hand-run `wrangler deploy` bypasses the same test gate that disabling
-    Workers Builds (step 8) was meant to protect — it's the same risk by a different door.
+15. **Run the post-deploy checks below against staging, then open a pull request from `develop`
+    to `main`.** Merging it starts the production deploy, which waits for your approval.
 
 ### Post-deploy checks
 
@@ -212,9 +207,10 @@ without a live host, or that an automated test can't fully substitute for — ea
     `wrangler.toml`'s `not_found_handling = "404-page"` is what makes this work; without it,
     Cloudflare serves an empty body on a bare 404 regardless of `src/pages/404.astro` existing.
 
-18. **Run the automated production smoke test:**
+18. **The smoke test** (`tests/e2e/deployed.spec.ts`) runs at the end of every deploy job,
+    against the host it just uploaded to. To run it by hand:
     ```bash
-    URL_PROD=https://<the real domain> npx playwright test tests/e2e/production.spec.ts
+    URL_DEPLOYED=https://<the real domain> npx playwright test tests/e2e/deployed.spec.ts
     ```
     Expect both tests to pass: the site answers over HTTPS with a working search index and no
     contact details leaking into it, and the page sets zero cookies while sending the
@@ -246,7 +242,7 @@ without a live host, or that an automated test can't fully substitute for — ea
 
 ### Go live for real
 
-22. **Push to `main`.** This is the first time the `deploy` job runs for a real reason — watch
+22. **Merge `develop` into `main` and approve the production deploy.** This is the first time production is deployed — watch
     it closely in the Actions tab. A wrong token, a `cartoucherie-donnees` row that fails
     validation, or anything else wrong should surface as a **named, specific failure** in that
     job's log. If the `deploy` job fails, the previous successful deployment stays live —

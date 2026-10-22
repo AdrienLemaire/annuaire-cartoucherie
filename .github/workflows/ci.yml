@@ -1,8 +1,11 @@
 name: CI
 
+# The flow: a feature branch deploys nothing — it is tested through its pull
+# request. A merge to develop deploys staging; a merge to main deploys
+# production. Both pass the same gate first.
 on:
   push:
-    branches: ["**"]
+    branches: [develop, main]
   pull_request:
 
 # Fail closed: least privilege, cancel superseded runs, cap every job.
@@ -11,7 +14,8 @@ permissions:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+  # A superseded PR run is waste; a deploy cut off mid-upload is not.
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 env:
   NODE_VERSION: "22"
@@ -73,7 +77,6 @@ jobs:
 
   browser:
     name: axe, journey, zoom, targets
-    if: github.event_name == 'pull_request' || github.ref == 'refs/heads/main'
     needs: verify
     runs-on: ubuntu-latest
     timeout-minutes: 10
@@ -104,7 +107,6 @@ jobs:
 
   lighthouse:
     name: lighthouse budgets
-    if: github.event_name == 'pull_request' || github.ref == 'refs/heads/main'
     needs: verify
     runs-on: ubuntu-latest
     timeout-minutes: 10
@@ -125,14 +127,28 @@ jobs:
           path: .lighthouseci
           retention-days: 3
 
+  # One job for both environments: develop → staging, main → production.
+  # Each GitHub Environment holds its own secrets and variables under the same
+  # names, so the steps never branch on which one they are deploying.
+  # production carries a required reviewer; staging does not.
   deploy:
-    name: deploy to Cloudflare
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    name: deploy to ${{ github.ref == 'refs/heads/main' && 'production' || 'staging' }}
+    if: github.event_name == 'push'
     needs: [verify, browser, lighthouse]   # the gate: no green, no deploy
     runs-on: ubuntu-latest
-    timeout-minutes: 8
-    environment: production
+    timeout-minutes: 10
+    environment:
+      name: ${{ github.ref == 'refs/heads/main' && 'production' || 'staging' }}
+      url: ${{ vars.SITE_URL }}
+    env:
+      # Every QR code and canonical URL encodes this at build time.
+      SITE_URL: ${{ vars.SITE_URL }}
+      # Not `main && '' || 'staging'`: '' is falsy, so that yields 'staging' on main.
+      WRANGLER_ENV: ${{ github.ref != 'refs/heads/main' && 'staging' || '' }}
     steps:
+      - name: SITE_URL is set
+        run: |
+          test -n "$SITE_URL" || { echo "::error::Set the SITE_URL variable on this environment."; exit 1; }
       - uses: actions/checkout@v4
       # The real quartier. Private, read-only, and never uploaded as an artifact:
       # a public repository's Actions tab hands out artifacts to anyone.
@@ -151,48 +167,33 @@ jobs:
         env:
           CONTENT_DIR: content-private
           # Without this the beacon ships with an empty token: the script still
-          # loads, the production test still passes, and nothing is ever counted.
+          # loads, the smoke test still passes, and nothing is ever counted.
           PUBLIC_CF_BEACON_TOKEN: ${{ vars.PUBLIC_CF_BEACON_TOKEN }}
+      - run: node scripts/forbidden-dist.mjs
       - run: node scripts/budgets.mjs
-      # The only moment a browser sees the real quartier. It runs in-process on
-      # the runner and this job uploads nothing, so it gates the 200-row build
-      # without the artefact exposure that made `download-artifact` wrong above.
+      # Staging carries real neighbours too: keep it out of search engines, or
+      # a visitor lands on a test copy instead of the real directory.
+      - if: env.WRANGLER_ENV == 'staging'
+        run: |
+          printf '\n/*\n  X-Robots-Tag: noindex, nofollow\n' >> dist/_headers
+      # The only moment a browser sees the real quartier before it goes out. It
+      # runs in-process on the runner and this job uploads nothing, so it gates
+      # the real build without the artefact exposure of download-artifact.
       - uses: actions/cache@v4
         with:
           path: ~/.cache/ms-playwright
           key: playwright-chromium-${{ hashFiles('package-lock.json') }}
       - run: npx playwright install --with-deps chromium
       - run: npx playwright test tests/e2e/contenu.spec.ts
-      # Pin to a full commit SHA before first use; Dependabot's github-actions
+      # Pinned to a full commit SHA (v4.1.3); Dependabot's github-actions
       # ecosystem keeps it current. Tags are mutable, SHAs are not.
-      - uses: cloudflare/wrangler-action@v3
+      - uses: cloudflare/wrangler-action@953926a2e2182532811c01a25e53647d93bf07c0
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: deploy
-
-  smoke:
-    name: production smoke
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    needs: deploy
-    runs-on: ubuntu-latest
-    timeout-minutes: 6
-    env:
-      # Placeholder: the domain is not registered yet (spec §14). Task 16 sets
-      # this to the real domain in the same commit as astro.config.mjs's `site`
-      # and wrangler.toml's custom-domain route — never separately, or the QR
-      # codes, this smoke test and the deployed asset origin disagree.
-      URL_PROD: https://annuaire.lacartoucherie.fr
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: npm
-      - run: npm ci
-      - uses: actions/cache@v4
-        with:
-          path: ~/.cache/ms-playwright
-          key: playwright-chromium-${{ hashFiles('package-lock.json') }}
-      - run: npx playwright install --with-deps chromium
-      - run: npx playwright test tests/e2e/production.spec.ts
+          # --env "" names the top-level (production) Worker explicitly.
+          command: deploy --env "${{ env.WRANGLER_ENV }}"
+      # Against the live host this job just deployed: HTTPS, headers, no cookie.
+      - run: npx playwright test tests/e2e/deployed.spec.ts
+        env:
+          URL_DEPLOYED: ${{ vars.SITE_URL }}

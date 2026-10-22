@@ -99,6 +99,11 @@ first. There must be no second, ungated deploy path: Cloudflare Workers Builds d
 push regardless of CI status and must never be enabled on this project, or two deploy paths race
 and the ungated one wins.
 
+A feature branch deploys nothing — its pull request runs the gate. A merge to `develop` deploys
+staging; a merge to `main` deploys production, after a required approval. One `deploy` job does
+both: each GitHub Environment holds the same secret and variable names (`SITE_URL` among them,
+which every QR code encodes).
+
 `docs/go-live.md` is the ordered runbook for the first deploy — accounts, secrets, the domain
 cutover, post-deploy checks, and the manual checks nothing automated can replace.
 

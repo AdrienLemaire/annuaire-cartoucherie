@@ -21,7 +21,15 @@ html_handling = "drop-trailing-slash"
 # tells the asset server to actually serve it.
 not_found_handling = "404-page"
 
-# No [[routes]] custom-domain entry yet: the domain is not registered (spec §14).
-# Task 16 adds one here, matching astro.config.mjs's `site` and ci.yml's `smoke`
-# job's URL_PROD, once it is. Until then this Worker only has its
-# workers.dev subdomain.
+# Production: `wrangler deploy`, from main. Staging: `wrangler deploy --env
+# staging`, from develop — a second Worker that inherits [assets] above.
+#
+# No custom-domain route yet: the domain is not registered (spec §14). Once it
+# is, add one route per environment here, each matching its GitHub
+# Environment's SITE_URL variable — the value every QR code encodes:
+#   routes = [{ pattern = "<domain>", custom_domain = true }]
+#   [env.staging] routes = [{ pattern = "staging.<domain>", custom_domain = true }]
+# Until then each Worker only has its workers.dev subdomain.
+
+[env.staging]
+name = "annuaire-cartoucherie-staging"

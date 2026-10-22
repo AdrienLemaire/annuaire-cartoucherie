@@ -19,10 +19,10 @@ export default defineConfig({
     baseURL: "http://localhost:4321",
     ...(CHROMIUM_PATH ? { launchOptions: { executablePath: CHROMIUM_PATH } } : {}),
   },
-  // No local server when the target is production: the smoke job checks out and
-  // runs `playwright test tests/e2e/production.spec.ts` with no dist/ to serve,
-  // and an unconditional webServer aborts the run before the skip guard fires.
-  webServer: process.env.URL_PROD
+  // No local server when the target is a deployed site: the deploy job runs
+  // `playwright test tests/e2e/deployed.spec.ts` against the live host, and a
+  // local server would only be started for nothing.
+  webServer: process.env.URL_DEPLOYED
     ? undefined
     : {
         command: "npx astro preview --port 4321",

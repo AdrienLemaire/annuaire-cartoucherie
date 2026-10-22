@@ -1,10 +1,12 @@
 import { defineConfig } from "astro/config";
+import process from "node:process";
 import tailwindcss from "@tailwindcss/vite";
 
 export default defineConfig({
-  // The domain is not registered yet (spec §14). Task 16 replaces this value,
-  // and the QR codes of Task 9 encode whatever it says at build time.
-  site: "https://annuaire.lacartoucherie.fr",
+  // Every QR code and canonical URL encodes this at build time. The deploy
+  // job sets it per environment (staging, production); a local build points
+  // at the local preview, so no QR code ever carries a domain by accident.
+  site: process.env.SITE_URL ?? "http://localhost:4321",
   output: "static",
   // Matches wrangler.toml's html_handling = "drop-trailing-slash" (Task 16):
   // without this, Astro.url.pathname is "/annuaire/" for a directory-format

@@ -23,7 +23,7 @@
     "budgets": "node scripts/budgets.mjs",
     "lighthouse": "lhci autorun",
     "format": "prettier --write .",
-    "deploy": "test -n \"$CONTENT_DIR\" || { echo 'deploy: set CONTENT_DIR to the private checkout — never deploy the fixture'; exit 1; }; npm run build && npm run guard:dist && wrangler deploy",
+    "deploy": "test -n \"$CONTENT_DIR\" || { echo 'deploy: set CONTENT_DIR to the private checkout — never deploy the fixture'; exit 1; }; test -n \"$SITE_URL\" || { echo 'deploy: set SITE_URL to the URL this deploy serves — every QR code encodes it'; exit 1; }; npm run build && npm run guard:dist && wrangler deploy",
     "prepare": "husky"
   },
   "dependencies": {

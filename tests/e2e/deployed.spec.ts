@@ -1,10 +1,11 @@
-// tests/e2e/production.spec.ts
-// Runs against the deployed site only. It never names a member: production
-// contains real people and this file is public.
+// tests/e2e/deployed.spec.ts
+// Runs against a deployed site only — staging or production, right after the
+// deploy job uploads it. It never names a member: both contain real people
+// and this file is public.
 import { expect, test } from "@playwright/test";
 
-const BASE = process.env.URL_PROD;
-test.skip(!BASE, "URL_PROD is not set");
+const BASE = process.env.URL_DEPLOYED;
+test.skip(!BASE, "URL_DEPLOYED is not set");
 
 test("Serves the directory over HTTPS, with a working search index", async ({ page, request }) => {
   const response = await page.goto(BASE!);
