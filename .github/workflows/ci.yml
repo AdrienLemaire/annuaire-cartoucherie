@@ -92,7 +92,7 @@ jobs:
       # Chromium only. WebKit costs a minute to install and only approximates
       # Safari; real Safari is a human check on a real device.
       - name: cache Playwright browser
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: ~/.cache/ms-playwright
           key: playwright-chromium-${{ hashFiles('package-lock.json') }}
@@ -179,7 +179,7 @@ jobs:
       # The only moment a browser sees the real quartier before it goes out. It
       # runs in-process on the runner and this job uploads nothing, so it gates
       # the real build without the artefact exposure of download-artifact.
-      - uses: actions/cache@v4
+      - uses: actions/cache@v6
         with:
           path: ~/.cache/ms-playwright
           key: playwright-chromium-${{ hashFiles('package-lock.json') }}
