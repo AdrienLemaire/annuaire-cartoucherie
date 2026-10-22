@@ -2,9 +2,9 @@
 // src/pages/mentions-legales.astro
 // Legally required for a French site (spec §9). Every fact nobody has
 // supplied is a visible marker, never an invention (task-11 brief) — see
-// docs/mentions-legales-a-completer.md for the hand-off list. Publication
-// director and contact address are known (Adrien supplied both) and are
-// written as plain facts, not markers.
+// docs/mentions-legales-a-completer.md for the hand-off list. Editor,
+// publication director and contact address are known (Adrien supplied all
+// three) and are written as plain facts, not markers.
 import TextPage from "../layouts/TextPage.astro";
 import { COPY } from "../lib/copy";
 
@@ -13,14 +13,10 @@ const title = `${COPY.footerLegal} — ${COPY.brandEyebrow} ${COPY.brandName}`;
 
 <TextPage title={title} description={COPY.legalDescription} heading={COPY.footerLegal}>
   <h2 class="ff text-nom text-teal-900">{COPY.legalEditorTitle}</h2>
-  <p>
-    Ce site est édité par <mark>{COPY.legalMarker("nom et forme juridique de l'association")}</mark>,
-    dont le siège est <mark>{COPY.legalMarker("adresse du siège social")}</mark>, immatriculée sous le
-    numéro <mark>{COPY.legalMarker("SIRET ou numéro RNA de l'association")}</mark>.
-  </p>
+  <p>{COPY.legalAuthor}</p>
 
   <h2 class="ff text-nom text-teal-900">{COPY.legalDirectorTitle}</h2>
-  <p>{COPY.legalDirectorName}</p>
+  <p>{COPY.legalAuthor}</p>
 
   <h2 class="ff text-nom text-teal-900">{COPY.legalContactTitle}</h2>
   <p class="break-words">

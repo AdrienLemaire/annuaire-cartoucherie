@@ -2,13 +2,15 @@
 // src/pages/a-propos.astro
 // Credits live here rather than in a badge (spec §9).
 import TextPage from "../layouts/TextPage.astro";
+import VolunteerCredit from "../components/VolunteerCredit.astro";
 import { COPY } from "../lib/copy";
 
 const title = `${COPY.footerAbout} — ${COPY.brandEyebrow} ${COPY.brandName}`;
 ---
 
 <TextPage title={title} description={COPY.aboutDescription} heading={COPY.footerAbout}>
-  <p>{COPY.aboutIntro}</p>
+  <p><VolunteerCredit lead={COPY.aboutIntroLead} /></p>
+  <p>{COPY.aboutAuthorAvailable}</p>
 
   <h2 class="ff text-nom text-teal-900">{COPY.aboutCreditsTitle}</h2>
   <ul class="list-disc space-y-2 pl-5">

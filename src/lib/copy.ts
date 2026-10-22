@@ -23,6 +23,10 @@ function elideDe(nom: string): string {
   return /^[aeiouàâäéèêëïîôöùûüh]/i.test(nom) ? "d'" : "de ";
 }
 
+// The site's author and the association it was made for, linked from the
+// footer and /a-propos (VolunteerCredit.astro) and named on /mentions-legales.
+const AUTHOR = "Adrien Lemaire";
+
 export const COPY = {
   skipLink: "Aller au contenu",
   brandEyebrow: "Annuaire de",
@@ -71,15 +75,6 @@ export const COPY = {
   // false) — this string is its entire accessible name, matching
   // styleguide.html:880 verbatim (final-fixes-report.md, I11).
   searchSubmitAria: "Chercher dans l'annuaire",
-  // True as of Task 12 (task-11-report.md, "fix round 4", named this task as the one that
-  // would make it true again): src/pages/recherche.json.ts serves the whole member index as
-  // a static file, src/client/live-search.ts fetches it once per page load (cached across
-  // every keystroke) and calls search() — src/lib/search.ts, pure and isomorphic — entirely
-  // in the browser. Nothing there calls fetch a second time or builds a URL from the typed
-  // value, and SearchBar.astro's <input> carries no `name`, so even the no-JS GET fallback
-  // cannot put it on the wire. Verified against the built site: see task-12-report.md.
-  searchLocal:
-    "Ce que vous tapez ne quitte jamais votre téléphone : la recherche se fait dans la liste déjà chargée sur votre appareil.",
   searchEmpty: "Personne ne correspond à cette recherche.",
   // src/client/live-search.ts's own failure state (task-12 fix round 1): a first visit
   // on a weak connection is this project's founding scenario, so a failed/slow fetch of
@@ -223,11 +218,8 @@ export const COPY = {
     "Le repère du quartier : le classement est donc déjà juste. Vous pouvez aussi partir de là où vous êtes.",
   mapGeoTextYou: "Les distances ci-dessous sont recalculées à vol d'oiseau depuis là où vous êtes.",
   // carte.astro's own reassurance line under the Classer/Non merci buttons
-  // (docs/mockups/final/carte.html's own alerte row) — used to reuse
-  // searchLocal, which read fine generically but went specifically about
-  // "ce que vous tapez" once corrected for the search bar (task-11-report.md,
-  // "fix round 2"), and there is no typing on this panel. Split so each
-  // context states the fact it actually demonstrates: src/client/geolocate.ts
+  // (docs/mockups/final/carte.html's own alerte row). It states only the fact
+  // this panel demonstrates: src/client/geolocate.ts
   // never calls fetch, confirmed by reading the file — the haversine math
   // (src/lib/plan.ts) runs in the browser and nothing leaves it.
   mapGeoLocal:
@@ -272,9 +264,16 @@ export const COPY = {
   // string that would only ever say the same thing.
   aboutDescription:
     "Qui fait cet annuaire, les crédits des portraits, de la mascotte et de la carte.",
-  aboutIntro:
-    "Cet annuaire est fait bénévolement pour l'association de quartier de la Cartoucherie, à partir " +
-    "des portraits réunis par Sandra Carole.",
+  author: { name: AUTHOR, url: "https://www.linkedin.com/in/adrienlemaire/" },
+  association: {
+    name: "Les Entrepreneurs de la Cartoucherie",
+    url: "https://www.instagram.com/entrepreneurs_cartoucherie_/",
+  },
+  creditFor: "pour aider l'association",
+  aboutIntroLead: "Cet annuaire est fait bénévolement par",
+  aboutAuthorAvailable:
+    "Adrien est à l'écoute de nouvelles opportunités professionnelles : son parcours est sur " +
+    "LinkedIn, en suivant son nom ci-dessus.",
   aboutCreditsTitle: "Les crédits",
   aboutCreditPortraits: "Les portraits des voisins sont l'œuvre de Sandra Carole.",
   aboutCreditColly: "Colly, la mascotte du quartier, sera redessinée par",
@@ -304,10 +303,9 @@ export const COPY = {
     "L'accueil et l'annuaire sont mis en cache dès l'installation pour rester disponibles " +
     "hors connexion ; toute autre page consultée s'y ajoute au fil de la navigation. Cette " +
     "copie ne contient aucune information sur vous.",
-  // Same fact as searchLocal above (spec §5), worded for this list rather than reusing that
-  // string verbatim: it names the one network request the claim doesn't cover (the index
-  // download) instead of leaving it implicit. See searchLocal's own comment for the
-  // file:line evidence. No longer claims "une seule fois": public/sw.js's install step
+  // Spec §5: it names the one network request the claim doesn't cover (the index
+  // download) instead of leaving it implicit. SearchBar.astro's header comment carries
+  // the evidence. No longer claims "une seule fois": public/sw.js's install step
   // now also fetches /recherche.json once, in the background, to precache it — see
   // src/client/live-search.ts's own header comment for that download.
   privacyDoesSearch:
@@ -321,7 +319,7 @@ export const COPY = {
   // no more than that. Only "mesure la fréquentation" is verified against this
   // project's own code (src/client/analytics.ts, dist/_astro/analytics.*.js with a
   // token set — task-13-report.md). "Sans cookie" is covered by
-  // tests/e2e/production.spec.ts's own "Sets no cookie…" test, against the
+  // tests/e2e/deployed.spec.ts's own "Sets no cookie…" test, against the
   // deployed site — where the analytics beacon actually loads (locally none
   // does, so a local-only test of this claim would assert something no
   // configuration could make false; final-fixes-report.md, M20, deleted the
@@ -343,7 +341,8 @@ export const COPY = {
   legalDescription: "Éditeur, directeur de la publication, hébergeur et propriété intellectuelle.",
   legalEditorTitle: "Éditeur du site",
   legalDirectorTitle: "Directeur de la publication",
-  legalDirectorName: "Adrien Lemaire.",
+  // Editor and publication director are the same person (LCEN, non-professional).
+  legalAuthor: `${AUTHOR}.`,
   legalContactTitle: "Contact",
   legalHostTitle: "Hébergeur",
   legalHostIntro: "Ce site est hébergé par Cloudflare.",
@@ -397,9 +396,8 @@ export const COPY = {
   headerJoin: "Je veux y figurer",
   headerJoinSubject: "Je veux figurer dans l'annuaire",
   footerBrand: "Annuaire de la Cartoucherie",
-  footerBlurb:
-    "Fait bénévolement pour l'association de quartier, à partir des portraits réunis par " +
-    "Sandra Carole. Gratuit, sans publicité, sans compte à créer.",
+  footerCreditLead: "Fait bénévolement par",
+  footerFree: "Gratuit, sans publicité, sans compte à créer.",
   footerAddress: "Halle de la Cartoucherie · Tram T1, arrêt Cartoucherie · 31300 Toulouse",
   footerNavAria: "Liens de pied de page",
 

@@ -15,7 +15,9 @@
 // the visitor typed on the wire and in their browser history. Dropping
 // `name` makes that impossible rather than merely unused: a no-JS submit
 // now goes to `action` (the full /annuaire) with no query string at all.
-// See src/lib/copy.ts (searchLocal) for the claim this keeps true.
+// See src/lib/copy.ts (privacyDoesSearch) for the claim this keeps true:
+// src/pages/recherche.json.ts serves the index as a static file,
+// src/client/live-search.ts fetches it once and searches in the browser.
 import { COPY } from "../lib/copy";
 import Icon from "./Icon.astro";
 
@@ -104,7 +106,6 @@ const { withColly = false, action = "/annuaire" } = Astro.props;
           {COPY.searchSubmit}
         </button>
       </div>
-      <p class="mt-3 px-1 text-etiquette tracking-normal text-neutre-700">{COPY.searchLocal}</p>
     </form>
   </div>
 ) : (

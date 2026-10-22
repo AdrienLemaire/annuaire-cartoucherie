@@ -1,0 +1,18 @@
+---
+// src/components/VolunteerCredit.astro
+// « … par Adrien Lemaire pour aider l'association Les Entrepreneurs de la
+// Cartoucherie. » — the footer and /a-propos say it with a different lead,
+// so the two links live here once. Inline links in a sentence: no 44px
+// target is owed (WCAG 2.5.8 inline exception).
+import { COPY } from "../lib/copy";
+
+interface Props {
+  lead: string;
+}
+
+const { lead } = Astro.props;
+const link = "text-teal-700 underline underline-offset-4";
+---
+
+{lead}{" "}<a class={link} href={COPY.author.url}>{COPY.author.name}</a>{" "}
+{COPY.creditFor}{" "}<a class={link} href={COPY.association.url}>{COPY.association.name}</a>.

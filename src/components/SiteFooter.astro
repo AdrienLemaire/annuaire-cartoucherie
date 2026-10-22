@@ -5,6 +5,7 @@
 // per-page extras (the /membre variant adds a safe-area bottom pad and a
 // "Voir la carte" link; that belongs to the page that needs it, not here).
 import Icon from "./Icon.astro";
+import VolunteerCredit from "./VolunteerCredit.astro";
 import { COPY } from "../lib/copy";
 ---
 
@@ -15,7 +16,10 @@ import { COPY } from "../lib/copy";
         <Icon name="ventouse" class="w-7 h-7 text-teal-700" />
         <span class="ff text-[20px] text-teal-900">{COPY.footerBrand}</span>
       </p>
-      <p class="mt-3 text-[16px] text-neutre-700">{COPY.footerBlurb}</p>
+      <p class="mt-3 text-[16px] text-neutre-700">
+        <VolunteerCredit lead={COPY.footerCreditLead} />{" "}
+        {COPY.footerFree}
+      </p>
       <p class="mt-3 text-[16px] text-neutre-700">{COPY.footerAddress}</p>
     </div>
     <nav class="text-[16px]" aria-label={COPY.footerNavAria}>
