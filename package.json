@@ -41,25 +41,25 @@
     "zod": "^4.6.5"
   },
   "devDependencies": {
-    "@astrojs/check": "^0.9.10",
-    "@axe-core/playwright": "^4.13.0",
-    "@commitlint/cli": "^21.2.2",
+    "@astrojs/check": "^0.9.11",
+    "@axe-core/playwright": "^4.14.0",
+    "@commitlint/cli": "^21.2.4",
     "@commitlint/config-conventional": "^21.2.2",
     "@eslint/js": "^10.0.1",
     "@lhci/cli": "^0.15.1",
-    "@playwright/test": "^1.63.0",
+    "@playwright/test": "^1.64.1",
     "@types/qrcode": "^1.5.6",
-    "@vitest/coverage-v8": "^5.0.1",
-    "eslint": "^10.10.0",
-    "eslint-plugin-astro": "^3.2.0",
-    "eslint-plugin-sonarjs": "^4.2.1",
+    "@vitest/coverage-v8": "^5.0.5",
+    "eslint": "^10.13.0",
+    "eslint-plugin-astro": "^3.2.1",
+    "eslint-plugin-sonarjs": "^4.2.2",
     "husky": "^9.1.7",
-    "jscpd": "^5.2.1",
-    "prettier": "^3.9.7",
-    "prettier-plugin-astro": "^1.0.0",
+    "jscpd": "^5.4.1",
+    "prettier": "^3.9.10",
+    "prettier-plugin-astro": "^1.1.1",
     "typescript": "^6.0.3",
-    "typescript-eslint": "^8.70.0",
+    "typescript-eslint": "^8.71.2",
     "vitest": "^5.0.1",
-    "wrangler": "^4.133.0"
+    "wrangler": "^4.151.2"
   }
 }
