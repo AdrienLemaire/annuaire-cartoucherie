@@ -26,7 +26,7 @@ jobs:
     runs-on: ubuntu-latest        # never macos: it bills at 10x
     timeout-minutes: 8
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         # fetch-depth: 0 (final-fixes-report.md, I8): verify-history.mjs
         # greps `git log --all`, which sees only the one fetched commit on
         # the default shallow checkout — the check went green without
@@ -59,7 +59,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 3
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with: { fetch-depth: 0 }
       - uses: actions/setup-node@v4
         with:
@@ -81,7 +81,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
@@ -111,7 +111,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
@@ -149,10 +149,10 @@ jobs:
       - name: SITE_URL is set
         run: |
           test -n "$SITE_URL" || { echo "::error::Set the SITE_URL variable on this environment."; exit 1; }
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       # The real quartier. Private, read-only, and never uploaded as an artifact:
       # a public repository's Actions tab hands out artifacts to anyone.
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           repository: lacartoucherie/cartoucherie-donnees
           token: ${{ secrets.CONTENT_REPO_TOKEN }}
