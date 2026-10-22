@@ -37,6 +37,9 @@ export async function renderCard(name: string, trade: string): Promise<Buffer> {
           justifyContent: "flex-end",
           width: "1200px",
           height: "630px",
+          // satori 0.63 defaults to content-box: without this the padding pushes
+          // the trade line and the orange band off the 630 px canvas.
+          boxSizing: "border-box",
           padding: "64px",
           background: "#ffffff",
           borderBottom: "16px solid #f28318",
