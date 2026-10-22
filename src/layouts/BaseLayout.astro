@@ -101,8 +101,8 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
       // (node_modules/astro/dist/core/build/plugins/plugin-scripts.js,
       // shouldInlineScriptChunk). Both modules here are small enough on
       // their own to qualify, on all 29 pages — verified by building and
-      // grepping dist/*/index.html for a bodyless <script type="module">
-      // before this change. A dynamic import gives the chunk a
+      // grepping dist/*/index.html for an inline module script without
+      // src= before this change. A dynamic import gives the chunk a
       // dynamicImports entry, which disqualifies it unconditionally, so it
       // ships as the external, `'self'`-permitted file CSP actually allows.
     }

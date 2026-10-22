@@ -307,7 +307,7 @@ const pins = members.filter(isPinned).map((m) => ({
 
   {
     // Dynamic import, not a static one: a static `import "../client/geolocate"`
-    // here compiled to a bodyless <script type="module">…</script> with no
+    // here compiled to an inline module script with no
     // src= (Astro inlines any hoisted script whose own chunk statically
     // imports nothing else and stays under Vite's 4 KB assetsInlineLimit —
     // node_modules/astro/dist/core/build/plugins/plugin-scripts.js,
