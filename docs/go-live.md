@@ -58,16 +58,16 @@ what to do about it.
      (it's the URL inside that member's QR code — renaming it later means reprinting, not
      editing a file).
 
-   The CI deploy job hardcodes `lacartoucherie/cartoucherie-donnees` as the repository path
-   (`.github/workflows/ci.yml`, the `deploy` job's second checkout step). If the real owner is
-   different, edit that line first.
+   Create it under the same owner as this repository: the CI deploy job checks out
+   `<owner of this repo>/cartoucherie-donnees` (`.github/workflows/ci.yml`, the `deploy` job's
+   second checkout step).
 
    *If it fails later*: a malformed row in `members.json` doesn't corrupt the site — the build
    fails with the exact field and member named (`src/content/schemas.ts` validates every field;
    `scripts/sync-content.mjs` validates slugs and portrait files before that). Fix the row, push
    again.
 
-4. **If `lacartoucherie` (or whichever owner you used) is a GitHub organisation**, check its
+4. **If the owner is a GitHub organisation**, check its
    settings allow fine-grained personal access tokens before relying on one in the next step —
    some organisations block them by default. If blocked, either get an owner to allow them or
    use a classic PAT scoped as narrowly as GitHub allows.
