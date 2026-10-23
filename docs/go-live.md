@@ -14,14 +14,11 @@ Four things are undecided or missing. None of them are code problems, and none o
 guessed or invented on your behalf. Work through this list first; the numbered sequence below
 assumes all four are settled.
 
-1. **The domain is not registered.** Nothing is live anywhere. Every QR code the build emits
-   encodes `SITE_URL`, set per GitHub Environment (step 7); a local build falls back to
-   `http://localhost:4321`. **Once you print a QR code with a domain on
-   it, that domain is permanent for that piece of paper** — decide and register before printing
-   anything, not after.
-2. **No Cloudflare account is configured for this project.** `CLOUDFLARE_API_TOKEN` and
-   `CLOUDFLARE_ACCOUNT_ID` don't exist as GitHub secrets because there's no account to generate
-   them from yet.
+1. ~~**The domain is not registered.**~~ Registered 2026-10-23: `cartoucherie.fyi`, at Cloudflare.
+   Production is `https://www.cartoucherie.fyi`, staging `https://staging.cartoucherie.fyi`.
+   **Once you print a QR code, that domain is permanent for that piece of paper.**
+2. ~~**No Cloudflare account is configured for this project.**~~ Done 2026-10-23: account,
+   API token and account ID stored in both GitHub Environments.
 3. ~~**The licence and repository visibility are undecided.**~~ Decided 2026-10-23: AGPL-3.0
    (`LICENSE`), public repository.
 4. **Three legal-notice markers are unfilled.** `docs/mentions-legales-a-completer.md` is the
@@ -110,9 +107,9 @@ what to do about it.
 
 ### Wire the domain into the code
 
-10. **Once the domain from step 1 is registered**, add one custom-domain route per environment
-    in `wrangler.toml` — its own comment shows both lines — each matching that environment's
-    `SITE_URL`. Leave `html_handling = "drop-trailing-slash"` and `not_found_handling =
+10. **Custom domains are declared in `wrangler.toml`** (`routes`, one set per environment), each
+    matching that environment's `SITE_URL`; the first deploy creates the DNS records and
+    certificates. Leave `html_handling = "drop-trailing-slash"` and `not_found_handling =
     "404-page"` exactly as they are — both are load-bearing (see "Post-deploy checks" below).
 
     Then confirm a build encodes the URL you give it:
@@ -164,8 +161,7 @@ what to do about it.
     that disabling Workers Builds (step 8) protects — the same risk by a different door. If you
     ever must, use `npm run deploy`, which refuses to run without `CONTENT_DIR` and `SITE_URL`.
 
-14. **In the Cloudflare dashboard**: attach each environment's custom domain to its Worker, then
-    enable Web Analytics for each and copy each site token into that environment's
+14. **In the Cloudflare dashboard**: enable Web Analytics for each and copy each site token into that environment's
     `PUBLIC_CF_BEACON_TOKEN` variable. Staging sends `X-Robots-Tag: noindex` (added by the deploy
     job), so search engines never send a neighbour to the test copy.
 
