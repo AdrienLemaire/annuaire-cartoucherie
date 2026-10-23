@@ -1,4 +1,6 @@
-name = "annuaire-cartoucherie"
+# The Worker name is the first label of its workers.dev URL:
+# www.cartoucherie.workers.dev and staging.cartoucherie.workers.dev.
+name = "www"
 compatibility_date = "2026-09-01"
 
 [assets]
@@ -32,4 +34,4 @@ not_found_handling = "404-page"
 # Until then each Worker only has its workers.dev subdomain.
 
 [env.staging]
-name = "annuaire-cartoucherie-staging"
+name = "staging"
