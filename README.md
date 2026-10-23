@@ -123,4 +123,8 @@ into the build:
 
 ## Licence
 
-Not yet decided (see the plan's open items). Do not assume one.
+Copyright © 2026 Adrien Lemaire. The code is licensed under the
+[GNU Affero General Public License v3.0](LICENSE): anyone may reuse it, and anyone who runs
+a modified copy as a website must publish their changes.
+
+Member data is not part of this repository and not covered by this licence.

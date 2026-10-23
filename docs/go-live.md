@@ -22,13 +22,8 @@ assumes all four are settled.
 2. **No Cloudflare account is configured for this project.** `CLOUDFLARE_API_TOKEN` and
    `CLOUDFLARE_ACCOUNT_ID` don't exist as GitHub secrets because there's no account to generate
    them from yet.
-3. **The licence and repository visibility are undecided.** No `LICENSE` file exists, which
-   defaults to all-rights-reserved — the opposite of what a public repository should say, and
-   the private-content mechanism (step 3 below) assumes this repository is public. Choose
-   between **AGPL-3.0** (a genuine open-source licence; keeps this project eligible for
-   Cloudflare's non-profit credit programmes) and **PolyForm Noncommercial 1.0.0**
-   (source-available only, not open source by the OSD's own definition; forfeits those
-   credits). This is a real decision with a real tradeoff, not a formality.
+3. ~~**The licence and repository visibility are undecided.**~~ Decided 2026-10-23: AGPL-3.0
+   (`LICENSE`), public repository.
 4. **Three legal-notice markers are unfilled.** `docs/mentions-legales-a-completer.md` is the
    single list — Cloudflare's exact contracting entity and its address, and the name of the
    illustrator redrawing the mascot. **Do not duplicate that list here**; open the file itself, it explains
