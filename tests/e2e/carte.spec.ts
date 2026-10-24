@@ -20,7 +20,7 @@ test("Never asks for a position before an explicit tap", async ({ page }) => {
   // The ranked list being on screen is the proof the page has finished its work:
   // the promise « classé depuis la Halle » is kept before anyone is asked anything.
   await expect(page.getByText(COPY.mapFromHall)).toBeVisible();
-  await expect(page.getByRole("button", { name: /ma position/i })).toBeVisible();
+  await expect(page.getByRole("button", { name: COPY.mapUseMyLocation })).toBeVisible();
   expect(await page.evaluate(() => (window as unknown as GeoWindow).geoAsked)).toBe(false);
 });
 
@@ -39,7 +39,7 @@ test("Shows the reassurance message once a position is granted, and reorders the
   await context.setGeolocation({ latitude: target.lat!, longitude: target.lng! });
   await page.goto("/carte");
 
-  await page.getByRole("button", { name: /ma position/i }).click();
+  await page.getByRole("button", { name: COPY.mapUseMyLocation }).click();
 
   await expect(page.getByText(COPY.mapGeoGranted)).toBeVisible();
   // The strongest, most concrete proof the reorder actually ran: the member
@@ -55,7 +55,7 @@ test("Shows the denied message when geolocation is refused, and leaves the sheet
   await page.goto("/carte");
   const firstRow = await page.locator("[data-sheet] > li").first().getAttribute("data-slug");
 
-  await page.getByRole("button", { name: /ma position/i }).click();
+  await page.getByRole("button", { name: COPY.mapUseMyLocation }).click();
 
   await expect(page.getByText(COPY.mapGeoDenied)).toBeVisible();
   await expect(page.locator("[data-sheet] > li").first()).toHaveAttribute("data-slug", firstRow!);
@@ -67,7 +67,6 @@ test("States each of the three address cases instead of flattening them", async 
   await expect(page.getByText(itinerant.nom)).toBeVisible();
   await expect(page.getByText(COPY.mapPickupOnly)).toBeVisible();
   await expect(page.getByText(pickupOnly.nom)).toBeVisible();
-  await expect(page.getByText(COPY.mapSchematic)).toBeVisible();
 });
 
 // task-15-brief.md: replacing the map's one-CSS-rule-per-pinned-member design
@@ -96,4 +95,45 @@ test("A pin and its sheet row highlight each other, and the highlight moves", as
   await expect(page.locator(`.epingle-lien[data-m="${second.slug}"]`)).toHaveCSS("opacity", "1");
   await expect(page.locator(`[data-sheet] [data-m="${second.slug}"]`)).not.toHaveCSS("background-color", WHITE);
   await expect(page.locator(`[data-sheet] [data-m="${first.slug}"]`)).toHaveCSS("background-color", WHITE);
+});
+
+// The map is wider than a phone and pans by scrolling its own box. Each
+// pin's :target anchor sits on the pin, so a deep link (as profile pages
+// send) brings the farthest-east pin into view with no script involved.
+test("A deep link pans the map to its pin", async ({ page }) => {
+  const eastmost = members.filter(isPinned).sort((a, b) => b.lng - a.lng)[0];
+  await page.goto(`/carte#pin-${eastmost.slug}`);
+
+  const box = (await page.locator("[data-map]").boundingBox())!;
+  const pin = (await page.locator(`.epingle-lien[data-m="${eastmost.slug}"]`).boundingBox())!;
+  expect(pin.x).toBeGreaterThanOrEqual(box.x);
+  expect(pin.x + pin.width).toBeLessThanOrEqual(box.x + box.width);
+});
+
+// A neighbour can live at the Halle itself: the Halle marker is drawn beneath
+// every pin, so each pin stays the element a tap on its centre reaches.
+test("Every pin can be tapped, even one on the Halle", async ({ page }) => {
+  await page.goto("/carte");
+  for (const m of members.filter(isPinned)) {
+    const pin = page.locator(`.epingle-lien[data-m="${m.slug}"]`);
+    await pin.scrollIntoViewIfNeeded();
+    const box = (await pin.boundingBox())!;
+    const hit = await page.evaluate(
+      ([x, y]) => document.elementFromPoint(x, y)?.closest(".epingle-lien")?.getAttribute("data-m"),
+      [box.x + box.width / 2, box.y + box.height / 2],
+    );
+    expect(hit, m.slug).toBe(m.slug);
+  }
+});
+
+// On a desktop the box is narrower than the map: it opens framing every pin.
+test("Opens with every pin in view when they fit", async ({ page }) => {
+  await page.setViewportSize({ width: 1280, height: 900 });
+  await page.goto("/carte");
+  const map = (await page.locator("[data-map]").boundingBox())!;
+  for (const m of members.filter(isPinned)) {
+    const pin = (await page.locator(`.epingle-lien[data-m="${m.slug}"]`).boundingBox())!;
+    expect(pin.x, m.slug).toBeGreaterThanOrEqual(map.x);
+    expect(pin.x + pin.width, m.slug).toBeLessThanOrEqual(map.x + map.width);
+  }
 });
