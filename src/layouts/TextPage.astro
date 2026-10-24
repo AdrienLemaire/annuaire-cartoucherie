@@ -2,7 +2,8 @@
 // src/layouts/TextPage.astro
 // Shared shell for the editorial and legal pages (Task 11): a single readable
 // column, no chrome beyond BaseLayout's own header/footer. Pages own their
-// content; this layout only owns the measure.
+// content; this layout only owns the measure, and lets long French words
+// (« Confidentialité » at 200 % text zoom) hyphenate instead of overflowing.
 import BaseLayout from "./BaseLayout.astro";
 
 interface Props {
@@ -14,7 +15,7 @@ const { title, description, heading } = Astro.props;
 ---
 
 <BaseLayout title={title} description={description}>
-  <article class="mx-auto max-w-[38rem] px-4 py-8 text-corps leading-relaxed text-neutre-800">
+  <article class="mx-auto max-w-[38rem] px-4 py-8 break-words hyphens-auto text-corps leading-relaxed text-neutre-800">
     <h1 class="ff text-grand text-teal-900">{heading}</h1>
     <div class="mt-4 space-y-4">
       <slot />
