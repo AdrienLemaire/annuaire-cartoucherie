@@ -187,13 +187,13 @@ export const COPY = {
   qrAlt: (nom: string) => `QR code vers la fiche ${elideDe(nom)}${nom}`,
 
   mapTitle: "La carte du quartier",
-  mapSchematic: "Plan schématique : les positions sont indicatives.",
+  mapAttribution: "© les contributeurs d'OpenStreetMap",
   mapFromHall: "Classé depuis la Halle de la Cartoucherie",
   mapUseMyLocation: "Classer depuis ma position",
   mapTheyComeToYou: "Ils viennent chez vous",
   mapPickupOnly: "Adresse de retrait, pas de point sur la carte",
   mapYouAreHere: "Vous êtes ici",
-  mapLocatePin: (nom: string) => `Situer ${nom} sur le plan`,
+  mapLocatePin: (nom: string) => `Situer ${nom} sur la carte`,
   // « la » agrees with « l'épingle » (the pin, feminine), not with the member —
   // docs/mockups/final/carte.html renders this same "la situer" for men too
   // (Yanis Belhadj's own pin, line 555), so it is not a missed agree() call.
@@ -246,12 +246,7 @@ export const COPY = {
     count === 1
       ? `${count} ${noun} se déplace : ${capitalize(pronoun)} est plus bas.`
       : `${count} ${noun} se déplacent : ${capitalize(pronoun)} sont plus bas.`,
-  // The plan SVG's own role="img" aria-label (docs/mockups/final/carte.html):
-  // the one accessible summary of a decorative illustration whose baked-in
-  // street/landmark <text> labels are art, not UI copy, and so stay literal.
-  mapPlanAlt:
-    "Plan schématique du quartier de la Cartoucherie : la Halle au centre, la rue Paul Mesplé au sud, " +
-    "l'avenue de Grande-Bretagne à l'est, la route de Bayonne au nord et la ligne de tram T1 à l'ouest.",
+  mapPlanAlt: "Carte du quartier de la Cartoucherie autour de la Halle",
   // The card's own no-address line, one member at a time: styleguide block 12
   // (line 1086, « accordé au genre ») renders "Elle vient chez vous" for a
   // woman, annuaire.html renders "Il vient chez vous" for a man — mapTheyComeToYou
