@@ -21,12 +21,10 @@ assumes all four are settled.
    API token and account ID stored in both GitHub Environments.
 3. ~~**The licence and repository visibility are undecided.**~~ Decided 2026-10-23: AGPL-3.0
    (`LICENSE`), public repository.
-4. **Three legal-notice markers are unfilled.** `docs/mentions-legales-a-completer.md` is the
-   single list — Cloudflare's exact contracting entity and its address, and the name of the
-   illustrator redrawing the mascot. **Do not duplicate that list here**; open the file itself, it explains
-   what each line needs and where to get it. Going live with the markers still visible on the
-   page (they render as `⟨à compléter : …⟩`) is an acceptable soft launch. Inventing any of them —
-   guessing an address or an entity name — is not, ever.
+4. ~~**Three legal-notice markers are unfilled.**~~ Done 2026-10-24: the host is Cloudflare, Inc.,
+   101 Townsend St., San Francisco (named in cloudflare.com/terms, §20); the Colly illustrator
+   credit is left out until that person is known. The contact address,
+   `COPY.contactEmail`, is printed on paper once flyers exist: changing it later doesn't reach them.
 
 ## The sequence
 
