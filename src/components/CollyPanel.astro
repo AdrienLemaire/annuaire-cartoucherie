@@ -23,19 +23,11 @@
 // is deleted from public/colly/ with them; colly-couleur.* stays, since
 // SearchBar.astro still uses it.
 //
-// "salut"'s `eyebrow` (task-7 fix round 1): index.html:908 and
-// styleguide.html:1753 both render "La mascotte du quartier" above this
-// pose's title, which the first build of this component dropped. Restored
-// verbatim, with the title's own top margin brought from mt-6 to mt-2 to
-// match the mockup's spacing once the eyebrow sits above it.
-//
 // task-15-report.md, fix round 1: every pose's <img> is now the <picture>'s
 // fallback, alongside a WebP <source> — see SearchBar.astro's own comment on
 // colly-couleur for the reasoning. Same dimensions, same visible quality at
 // the small size a disc actually renders these at, both formats re-encoded,
 // neither a resize or a redraw.
-import { COPY } from "../lib/copy";
-
 const PANELS = {
   salut: {
     dims: { width: 320, height: 305 },
@@ -43,8 +35,7 @@ const PANELS = {
     disc: "mx-auto w-[168px] h-[168px] rounded-full bg-sable-200 overflow-hidden grid place-items-center",
     discStyle: "box-shadow: inset 0 0 0 2px var(--color-sable-300), 0 0 0 8px var(--color-sable-50)",
     img: "croquis w-[190px] h-auto",
-    eyebrow: COPY.collyMascotEyebrow as string,
-    title: "ff mt-2 text-[32px] leading-tight text-teal-950",
+    title: "ff mt-6 text-[32px] leading-tight text-teal-950",
     text: "mt-3 text-corps text-teal-950",
   },
   triste: {
@@ -53,7 +44,6 @@ const PANELS = {
     disc: "mx-auto w-[132px] h-[132px] rounded-full bg-teal-50 overflow-hidden grid place-items-center",
     discStyle: "",
     img: "croquis w-[150px] h-auto -mt-2",
-    eyebrow: null as string | null,
     title: "ff mt-3 text-[26px] text-teal-900",
     text: "mt-2 text-corps text-neutre-800",
   },
@@ -62,7 +52,7 @@ const PANELS = {
 interface Props {
   pose: "salut" | "triste";
   title: string;
-  text: string;
+  text?: string;
 }
 const { pose, title, text } = Astro.props;
 const p = PANELS[pose];
@@ -90,9 +80,8 @@ const hasVentouses = pose === "salut";
             </picture>
           </div>
           <div>
-            {p.eyebrow && <p class="mt-6 text-etiquette font-semibold uppercase text-sable-800">{p.eyebrow}</p>}
             <h2 id={headingId} class={p.title}>{title}</h2>
-            <p class={p.text}>{text}</p>
+            {text && <p class={p.text}>{text}</p>}
             <slot />
           </div>
         </div>
@@ -107,7 +96,7 @@ const hasVentouses = pose === "salut";
         </div>
         <div>
           <h2 id={headingId} class={p.title}>{title}</h2>
-          <p class={p.text}>{text}</p>
+          {text && <p class={p.text}>{text}</p>}
           <slot />
         </div>
       </>
