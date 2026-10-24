@@ -3,6 +3,7 @@ import {
   formatDistance, formatMemberCount, formatNote, groupPronoun, hasAddress, memberUrl, sortByCountDesc, sortByDistance, withCounts,
 } from "../../src/lib/members";
 import type { Category } from "../../src/content/schemas";
+import { COPY } from "../../src/lib/copy";
 import { member } from "./factory";
 
 describe("Member helpers", () => {
@@ -92,5 +93,12 @@ describe("Group pronoun", () => {
     expect(groupPronoun(["h"])).toBe("il");
     expect(groupPronoun(["f", "f"])).toBe("elles");
     expect(groupPronoun(["f", "h"])).toBe("ils");
+  });
+});
+
+describe("Distance from the Halle", () => {
+  it("Says « À la Halle » for a member based in it, not « À 0 m »", () => {
+    expect(COPY.profileDistanceFromHall("0 m")).toBe("À la Halle");
+    expect(COPY.profileDistanceFromHall("310 m")).toBe("À 310 m de la Halle");
   });
 });
