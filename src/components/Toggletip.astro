@@ -1,0 +1,45 @@
+---
+// src/components/Toggletip.astro
+// Occasionally useful help, tucked behind a small "?" a visitor taps — never
+// hover, which phones do not have (WCAG 1.4.13). Native popover, no script:
+// the CSP forbids inline JS, and popover="auto" already gives light dismiss,
+// Escape and focus return for free. The default top-layer placement (centred
+// on screen) is deliberate: no anchor maths, and it cannot overflow sideways
+// at 200 % text zoom. `id` must be unique on the page.
+import Icon from "./Icon.astro";
+import { COPY } from "../lib/copy";
+
+interface Props {
+  id: string;
+  label: string;
+}
+const { id, label } = Astro.props;
+---
+
+<button
+  type="button"
+  popovertarget={id}
+  aria-label={label}
+  class="inline-grid place-items-center w-11 h-11 shrink-0 rounded-full text-teal-700 hover:bg-teal-50"
+>
+  <span
+    aria-hidden="true"
+    class="grid place-items-center w-6 h-6 rounded-full border-[1.5px] border-current text-[15px] font-bold leading-none"
+  >?</span>
+</button>
+<div
+  id={id}
+  popover="auto"
+  class="m-auto w-[min(30rem,calc(100vw-2rem))] rounded-[20px] bg-white p-5 text-corps text-neutre-800 shadow-[var(--shadow-flottant)] backdrop:bg-teal-950/30"
+>
+  <button
+    type="button"
+    popovertarget={id}
+    popovertargetaction="hide"
+    aria-label={COPY.toggletipClose}
+    class="float-right -mt-3 -mr-3 ml-2 grid place-items-center w-11 h-11 rounded-full text-teal-700 hover:bg-teal-50"
+  >
+    <Icon name="fermer" class="w-5 h-5" />
+  </button>
+  <slot />
+</div>

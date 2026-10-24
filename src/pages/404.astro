@@ -6,7 +6,7 @@
 // directory, or a mistyped shared link all land here, and the person doing
 // the landing has already done everything right. Cloudflare's own default
 // 404 is an unbranded English error page with nothing to do next; this one
-// keeps BaseLayout's header/footer, explains what happened in French, and
+// keeps BaseLayout's header/footer, says what happened in one sentence, and
 // gives the same two ways onward as annuaire.astro's own "no results" state
 // (CollyPanel's "triste" pose, reused rather than re-invented): search
 // again, or go to the directory directly.
@@ -31,7 +31,7 @@ import { COPY } from "../lib/copy";
     <h1 class="ff break-words text-nom text-teal-900">{COPY.notFoundTitle}</h1>
 
     <div data-browse class="mt-6">
-      <CollyPanel pose="triste" title={COPY.notFoundCollyTitle} text={COPY.notFoundCollyText} />
+      <CollyPanel pose="triste" title={COPY.notFoundCollyTitle} />
     </div>
 
     <div class="mt-2">
