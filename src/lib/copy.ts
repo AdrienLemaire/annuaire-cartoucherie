@@ -256,8 +256,6 @@ export const COPY = {
   aboutCreditOpenSource: "Bibliothèques open source : Astro, Tailwind CSS, daisyUI, Zod et qrcode.",
 
   privacyDescription: "Ce que ce site collecte et ce qu'il ne collecte pas.",
-  privacyIntro:
-    "Ce site est volontairement simple : voici, sans détour, ce qu'il fait et ce qu'il ne fait pas.",
   privacyDoesTitle: "Ce que ce site fait",
   // "ne dépose rien" stopped being true the moment public/sw.js started caching pages
   // for the offline scenario (Task 13) — this now names what actually matters (no
@@ -265,43 +263,29 @@ export const COPY = {
   // leaving it unmentioned.
   privacyDoesBrowsing:
     "Parcourir l'annuaire, une fiche ou la carte ne vous fait suivre par aucun traceur.",
-  // public/sw.js's networkFirst() only ever writes to the cache with a page it just
-  // fetched successfully (never with placeholder or visitor data), so "cette copie" is
-  // exactly the bytes of the page itself — see that function's own comment. Named
-  // precisely (final-fixes-report.md, M19): sw.js's own SHELL precaches "/" and
-  // "/annuaire" on install, regardless of whether either was ever visited — the
-  // previous wording claimed offline access depended on having consulted a page first,
-  // which was true only for every OTHER page.
+  // public/sw.js precaches "/" and "/annuaire" on install (SHELL), then adds each page
+  // it fetches successfully — never visitor data (final-fixes-report.md, M19).
   privacyDoesOffline:
-    "L'accueil et l'annuaire sont mis en cache dès l'installation pour rester disponibles " +
-    "hors connexion ; toute autre page consultée s'y ajoute au fil de la navigation. Cette " +
-    "copie ne contient aucune information sur vous.",
+    "L'accueil, l'annuaire et les pages consultées sont gardés en cache pour marcher hors " +
+    "connexion. Ce cache ne contient rien sur vous.",
   // Spec §5: it names the one network request the claim doesn't cover (the index
   // download) instead of leaving it implicit. SearchBar.astro's header comment carries
   // the evidence. No longer claims "une seule fois": public/sw.js's install step
   // now also fetches /recherche.json once, in the background, to precache it — see
   // src/client/live-search.ts's own header comment for that download.
   privacyDoesSearch:
-    "La recherche télécharge la liste du quartier, comme n'importe quelle page ; " +
-    "ce que vous tapez ensuite n'est jamais envoyé où que ce soit.",
+    "La recherche télécharge la liste du quartier ; ce que vous tapez n'est jamais envoyé.",
   privacyDoesGeo:
-    "Sur la carte, votre position n'est utilisée que si vous appuyez sur « Classer depuis ma " +
-    "position » ; le calcul des distances se fait dans votre navigateur et votre position n'est " +
-    "jamais envoyée ailleurs.",
+    "Votre position n'est utilisée que sur la carte, si vous la demandez, et ne quitte jamais " +
+    "votre téléphone.",
   // The narrow, true claim (task-13 dispatch): what Cloudflare Web Analytics is, and
   // no more than that. Only "mesure la fréquentation" is verified against this
-  // project's own code (src/client/analytics.ts, dist/_astro/analytics.*.js with a
-  // token set — task-13-report.md). "Sans cookie" is covered by
-  // tests/e2e/deployed.spec.ts's own "Sets no cookie…" test, against the
-  // deployed site — where the analytics beacon actually loads (locally none
-  // does, so a local-only test of this claim would assert something no
-  // configuration could make false; final-fixes-report.md, M20, deleted the
-  // one that did). "Sans traceur inter-sites" and "sans profil
-  // individuel" are Cloudflare's own documented properties of the product, not
-  // something this repository's code proves — stated on that basis, not overclaimed.
+  // project's own code (src/client/analytics.ts). "No cookie" is privacyDoesNotCookie's,
+  // checked by tests/e2e/deployed.spec.ts; "sans traceur inter-sites" and "sans profil
+  // individuel" are Cloudflare's own documented properties of the product.
   privacyDoesAnalytics:
-    "Cloudflare Web Analytics mesure la fréquentation de ce site, sans cookie, sans traceur " +
-    "qui vous suivrait d'un site à l'autre et sans profil individuel construit sur vous.",
+    "Cloudflare Web Analytics mesure la fréquentation, sans traceur d'un site à l'autre ni " +
+    "profil individuel.",
   privacyDoesNotTitle: "Ce que ce site ne fait pas",
   privacyDoesNotCookie: "Aucun cookie n'est déposé.",
   privacyDoesNotAccount: "Aucun compte n'est nécessaire pour consulter l'annuaire.",
@@ -310,6 +294,7 @@ export const COPY = {
   // Narrowed to régie publicitaire only: the audience-measurement half of this claim
   // moved to privacyDoesAnalytics above, where it belongs now that it exists.
   privacyDoesNotAds: "Aucune régie publicitaire n'est installée sur ce site.",
+  privacyContact: "Une question sur vos données ou sur une fiche :",
 
   legalDescription: "Éditeur, directeur de la publication, hébergeur et propriété intellectuelle.",
   legalEditorTitle: "Éditeur et directeur de la publication",
