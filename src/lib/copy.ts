@@ -156,7 +156,9 @@ export const COPY = {
   // than text, precisely so this phrase is free to share a substring with it.
   profileRatingSr: "sur 5 —",
   profileReviewCount: (n: number) => `${n} avis du quartier`,
-  profileDistanceFromHall: (distance: string) => `À ${distance} de la Halle`,
+  // « À 0 m de la Halle » reads like a glitch for a member based in the Halle.
+  profileDistanceFromHall: (distance: string) =>
+    distance === "0 m" ? "À la Halle" : `À ${distance} de la Halle`,
   profileEmail: "E-mail",
   profileSite: "Son site",
   profileInstagram: "Instagram",
