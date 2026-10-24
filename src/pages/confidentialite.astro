@@ -12,8 +12,6 @@ const title = `${COPY.footerPrivacy} — ${COPY.brandEyebrow} ${COPY.brandName}`
 ---
 
 <TextPage title={title} description={COPY.privacyDescription} heading={COPY.footerPrivacy}>
-  <p>{COPY.privacyIntro}</p>
-
   <h2 class="ff text-nom text-teal-900">{COPY.privacyDoesTitle}</h2>
   <ul class="list-disc space-y-2 pl-5">
     <li>{COPY.privacyDoesBrowsing}</li>
@@ -30,4 +28,11 @@ const title = `${COPY.footerPrivacy} — ${COPY.brandEyebrow} ${COPY.brandName}`
     <li>{COPY.privacyDoesNotFont}</li>
     <li>{COPY.privacyDoesNotAds}</li>
   </ul>
+
+  <p class="break-words">
+    {COPY.privacyContact}{" "}
+    <a class="text-teal-700 underline underline-offset-4" href={`mailto:${COPY.contactEmail}`}>
+      {COPY.contactEmail}
+    </a>
+  </p>
 </TextPage>
