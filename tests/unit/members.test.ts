@@ -90,5 +90,7 @@ describe("Distance from the Halle", () => {
   it("Says « À la Halle » for a member based in it, not « À 0 m »", () => {
     expect(COPY.profileDistanceFromHall("0 m")).toBe("À la Halle");
     expect(COPY.profileDistanceFromHall("310 m")).toBe("À 310 m de la Halle");
+    expect(COPY.cardDistance("0 m")).toBe("La Halle");
+    expect(COPY.cardDistance("310 m")).toBe("310 m");
   });
 });

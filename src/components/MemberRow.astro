@@ -81,7 +81,7 @@ const telDisplay = member.tel ? formatTelDisplay(member.tel) : null;
           )}
           <span class="inline-flex items-center gap-1">
             <Icon name="pin" class="w-4 h-4 text-teal-600" />
-            <span class="dist">{member.distance}</span>
+            <span class="dist">{COPY.cardDistance(member.distance)}</span>
           </span>
         </p>
         {!isPinned(member) && (
@@ -133,7 +133,7 @@ const telDisplay = member.tel ? formatTelDisplay(member.tel) : null;
               fixed ? (
                 <span class="inline-flex items-center gap-1">
                   <Icon name="pin" class="w-4 h-4 text-teal-600" />
-                  {member.distance}
+                  {COPY.cardDistance(member.distance)}
                 </span>
               ) : (
                 <span class="inline-flex items-center gap-1 font-semibold text-teal-800">
