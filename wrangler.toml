@@ -1,7 +1,20 @@
-# The Worker name is the first label of its workers.dev URL:
-# www.cartoucherie.workers.dev and staging.cartoucherie.workers.dev.
 name = "www"
 compatibility_date = "2026-09-01"
+
+# Production: `wrangler deploy`, from main. Staging: `wrangler deploy --env
+# staging`, from develop — a second Worker that inherits [assets] above.
+#
+# Each route must match its GitHub Environment's SITE_URL variable — the value
+# every QR code encodes. The first deploy creates the DNS records and
+# certificates. The apex is attached too, so a typed « cartoucherie.fyi » works;
+# its canonical link points at www.
+routes = [
+  { pattern = "www.cartoucherie.fyi", custom_domain = true },
+  { pattern = "cartoucherie.fyi", custom_domain = true },
+]
+# One address per environment: no second, ungated copy on workers.dev.
+workers_dev = false
+preview_urls = false
 
 [assets]
 directory = "./dist"
@@ -13,7 +26,7 @@ directory = "./dist"
 # request in Chrome, so the entry is silently useless offline. "drop-trailing-
 # slash" makes /annuaire itself the canonical, directly-served URL (redirecting
 # /annuaire/ -> /annuaire instead), matching the service worker's precache list
-# exactly. Re-check with `curl -sI <domain>/annuaire` after every deploy.
+# exactly. Re-check with `curl -sI https://www.cartoucherie.fyi/annuaire` after every deploy.
 html_handling = "drop-trailing-slash"
 # Default "none" serves an empty body on a 404 status for any unmatched path
 # (verified with `wrangler dev`, task-16-report.md fix round 1) — Cloudflare
@@ -23,15 +36,8 @@ html_handling = "drop-trailing-slash"
 # tells the asset server to actually serve it.
 not_found_handling = "404-page"
 
-# Production: `wrangler deploy`, from main. Staging: `wrangler deploy --env
-# staging`, from develop — a second Worker that inherits [assets] above.
-#
-# No custom-domain route yet: the domain is not registered (spec §14). Once it
-# is, add one route per environment here, each matching its GitHub
-# Environment's SITE_URL variable — the value every QR code encodes:
-#   routes = [{ pattern = "<domain>", custom_domain = true }]
-#   [env.staging] routes = [{ pattern = "staging.<domain>", custom_domain = true }]
-# Until then each Worker only has its workers.dev subdomain.
-
 [env.staging]
 name = "staging"
+routes = [{ pattern = "staging.cartoucherie.fyi", custom_domain = true }]
+workers_dev = false
+preview_urls = false
