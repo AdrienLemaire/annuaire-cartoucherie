@@ -27,6 +27,7 @@
  * count alone, no list), since Plan 1 has no review records to list either
  * way.
  */
+import Toggletip from "./Toggletip.astro";
 import { COPY } from "../lib/copy";
 import type { Gender } from "../content/schemas";
 
@@ -41,7 +42,15 @@ const { slug, rating, reviewCount, genre } = Astro.props;
 
 <section id="avis" class="bg-neutre-100" aria-labelledby="reviews-title">
   <div class="mx-auto max-w-[1160px] px-5 py-8">
-    <h2 id="reviews-title" class="ff text-nom text-teal-900">{COPY.reviewsTitle}</h2>
+    <div class="flex items-center gap-1">
+      <h2 id="reviews-title" class="ff text-nom text-teal-900">{COPY.reviewsTitle}</h2>
+      <Toggletip id="reviews-help" label={COPY.reviewsHelp}>
+        <p>{COPY.reviewsHow}</p>
+        <p class="mt-3">
+          <a class="font-semibold text-teal-800 underline" href="/avis">{COPY.footerReviews}</a>
+        </p>
+      </Toggletip>
+    </div>
     <div class="filet mt-2.5 mb-4 h-[3px] w-16 rounded-full"></div>
 
     <div
@@ -53,10 +62,6 @@ const { slug, rating, reviewCount, genre } = Astro.props;
     >
       <p class="text-corps text-neutre-700">
         {reviewCount > 0 ? COPY.profileReviewCount(reviewCount) : COPY.reviewsNone}
-      </p>
-      <p class="mt-2 text-[16px] text-neutre-600">{COPY.reviewsHow}</p>
-      <p class="mt-2">
-        <a class="font-semibold text-teal-800 underline" href="/avis">{COPY.reviewsPolicy}</a>
       </p>
     </div>
   </div>

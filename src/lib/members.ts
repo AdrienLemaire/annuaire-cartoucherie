@@ -34,9 +34,8 @@ export function sortByDistance<T extends Pick<Member, "distance">>(members: T[])
 }
 
 /**
- * annuaire.astro's own chip rail (final-fixes-report.md, I3): COPY.directoryDetailDefault
- * says « du plus fourni au plus rare », but the code shipped categories.json's own
- * curated order. The mockup (annuaire.html:368-388) sorts by member count, descending,
+ * annuaire.astro's own chip rail (final-fixes-report.md, I3), most populated first
+ * rather than categories.json's own curated order. The mockup (annuaire.html:368-388) sorts by member count, descending,
  * and ties five 2-count and two 1-count categories in French alphabetical order —
  * a decision that could have gone the other way (curated order, insertion order,
  * id order), so it earns naming here rather than living inline in a page.
