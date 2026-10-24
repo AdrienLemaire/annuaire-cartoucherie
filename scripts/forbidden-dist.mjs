@@ -126,8 +126,12 @@ if (failed) {
   );
 }
 
+// Dead code is a property of the code, not of the content: which icons render
+// depends on what each real neighbour publishes (no phone → no #i-tel). The
+// fixture build exercises every icon; the deploy build passes --real-content.
+const realContent = process.argv.includes("--real-content");
 const dead = [...definedSymbols].filter((id) => !referencedSymbols.has(id)).sort();
-if (dead.length > 0) {
+if (!realContent && dead.length > 0) {
   console.error(`\nforbidden-dist: sprite symbol(s) defined but never referenced by any <use>: ${dead.join(", ")}`);
   console.error("Remove them from IconSprite.astro's own <defs>, or use them.");
   failed = true;
