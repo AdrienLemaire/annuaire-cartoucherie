@@ -49,7 +49,7 @@ import MemberCard from "../components/MemberCard.astro";
 import MemberRow from "../components/MemberRow.astro";
 import { COPY } from "../lib/copy";
 import { loadCategories, loadMembers } from "../lib/collections";
-import { hasAddress, memberCountParts, groupPronoun, sortByDistance } from "../lib/members";
+import { hasAddress, memberCountParts, sortByDistance } from "../lib/members";
 import { HALL, isPinned, projectOnMap } from "../lib/plan";
 import Quartier from "../assets/quartier.svg";
 
@@ -65,11 +65,6 @@ const addressParts = memberCountParts(
   withAddress.length,
   withAddress.map((m) => m.genre),
 );
-const itinerantParts = memberCountParts(
-  withoutAddress.length,
-  withoutAddress.map((m) => m.genre),
-);
-const itinerantPronoun = groupPronoun(withoutAddress.map((m) => m.genre));
 
 // isPinned (src/lib/plan.ts) is the one place that decides "is there a public
 // point to show".
@@ -90,51 +85,38 @@ const pins = members.filter(isPinned).map((m) => ({
     <h1 class="ff text-nom sm:text-grand text-teal-900">{COPY.mapTitle}</h1>
     <p class="mt-2.5 text-corps text-neutre-800 max-w-[62ch]">
       {COPY.mapIntroAddress(addressParts.count, addressParts.noun)}
-      {withoutAddress.length > 0 && ` ${COPY.mapIntroItinerant(itinerantParts.count, itinerantParts.noun, itinerantPronoun)}`}
+      {withoutAddress.length > 0 && ` ${COPY.mapIntroItinerant(withoutAddress.length)}`}
     </p>
 
-    <div data-geo-panel class="mt-4 rounded-[20px] bg-teal-50 p-4 sm:p-5">
-      <div class="flex items-start gap-3">
-        <span class="pastille pastille--teal w-10 h-10 bg-white text-teal-700 shrink-0 mt-0.5">
-          <Icon name="pin" class="w-5 h-5" />
-        </span>
-        <div class="min-w-0">
-          <p class="text-corps font-semibold text-teal-900">
-            <span data-geo-title-hall>{COPY.mapGeoTitle}</span>
-            <span data-geo-title-you hidden>{COPY.mapFromYou}</span>
-          </p>
-          <p class="mt-0.5 text-[16px] text-neutre-800 max-w-[52ch]">
-            <span data-geo-text-hall>{COPY.mapGeoText}</span>
-            <span data-geo-text-you hidden>{COPY.mapGeoTextYou}</span>
-          </p>
-        </div>
-      </div>
-      <div class="mt-3.5 flex flex-wrap items-center gap-2.5">
-        <button
-          type="button"
-          data-geolocate
-          class="inline-flex items-center gap-2 min-h-[48px] px-5 rounded-full text-corps font-semibold text-white bg-teal-700 hover:bg-teal-600"
-        >
-          <Icon name="signal" class="w-[18px] h-[18px]" />
-          {COPY.mapUseMyLocation}
-        </button>
-        <button
-          type="button"
-          data-geo-decline
-          class="inline-flex items-center gap-2 min-h-[44px] px-4 rounded-full text-corps font-semibold text-teal-700 hover:bg-teal-100"
-        >
-          {COPY.mapDecline}
-        </button>
-      </div>
-      <p class="mt-2.5 flex items-start gap-2 text-[16px] text-neutre-800">
-        <Icon name="alerte" class="w-[18px] h-[18px] shrink-0 mt-0.5 text-teal-600" />
+    <div class="mt-4 flex flex-wrap items-center gap-2.5">
+      <button
+        type="button"
+        data-geolocate
+        class="inline-flex items-center gap-2 min-h-[48px] px-5 rounded-full text-corps font-semibold text-white bg-teal-700 hover:bg-teal-600"
+      >
+        <Icon name="signal" class="w-[18px] h-[18px]" />
+        {COPY.mapUseMyLocation}
+      </button>
+      <button
+        type="button"
+        popovertarget="geo-prive"
+        class="inline-flex items-center gap-1.5 min-h-[44px] px-3 rounded-full text-[16px] font-semibold text-teal-700 hover:bg-teal-50"
+      >
+        <Icon name="alerte" class="w-[18px] h-[18px]" />
+        {COPY.mapGeoPrivacy}
+      </button>
+      <p
+        id="geo-prive"
+        popover
+        class="m-auto max-w-[32ch] rounded-[20px] bg-white p-5 text-corps text-teal-900 shadow-[var(--shadow-flottant)] backdrop:bg-teal-950/30"
+      >
         {COPY.mapGeoLocal}
       </p>
-      <p data-geo-status role="status" hidden class="mt-3 rounded-[14px] bg-white px-4 py-3 text-corps text-teal-900">
-        <span data-geo-granted hidden>{COPY.mapGeoGranted}</span>
-        <span data-geo-denied hidden>{COPY.mapGeoDenied}</span>
-      </p>
     </div>
+    <p data-geo-status role="status" hidden class="mt-3 rounded-[14px] bg-teal-50 px-4 py-3 text-corps text-teal-900">
+      <span data-geo-granted hidden>{COPY.mapGeoGranted}</span>
+      <span data-geo-denied hidden>{COPY.mapGeoDenied}</span>
+    </p>
   </div>
 
   <div
@@ -163,7 +145,7 @@ const pins = members.filter(isPinned).map((m) => ({
             class="absolute whitespace-nowrap rounded-full bg-white px-2.5 py-1 text-[16px] font-semibold text-teal-800 pointer-events-none"
             style={`left:calc(${hall.left}% - 18px); top:${hall.top}%; transform:translate(-100%,-50%); box-shadow: var(--shadow-carte)`}
           >
-            {COPY.mapYouAreHere}
+            {COPY.mapHall}
           </p>
 
           {
@@ -177,7 +159,7 @@ const pins = members.filter(isPinned).map((m) => ({
                 <a
                   data-m={p.member.slug}
                   href={`#pin-${p.member.slug}`}
-                  class="epingle-lien absolute grid place-items-center w-11 h-11 -ml-[22px] -mt-[22px]"
+                  class="epingle-lien absolute z-10 grid place-items-center w-11 h-11 -ml-[22px] -mt-[22px]"
                   style={`left:${p.position.left}%; top:${p.position.top}%`}
                   aria-label={COPY.mapPinAria(p.member.nom, p.member.metier, p.member.distance)}
                 >
@@ -212,16 +194,10 @@ const pins = members.filter(isPinned).map((m) => ({
     </div>
 
     <div class="feuille relative mt-6 lg:mt-0">
-      <div class="flex flex-wrap items-end justify-between gap-x-4 gap-y-1">
-        <h2 id="t-proches" class="ff min-w-0 break-words text-nom text-teal-900">
-          <span data-from-hall>{COPY.mapFromHall}</span>
-          <span data-from-you hidden>{COPY.mapFromYou}</span>
-        </h2>
-        <p class="text-[16px] text-neutre-700">
-          <span data-origin-hall>{COPY.mapOriginHall(addressParts.count, addressParts.noun)}</span>
-          <span data-origin-you hidden>{COPY.mapOriginYou(addressParts.count, addressParts.noun)}</span>
-        </p>
-      </div>
+      <h2 id="t-proches" class="ff min-w-0 break-words text-nom text-teal-900">
+        <span data-from-hall>{COPY.mapFromHall}</span>
+        <span data-from-you hidden>{COPY.mapFromYou}</span>
+      </h2>
       <div class="filet h-[3px] w-16 rounded-full mt-2.5 mb-5" />
       <ol data-sheet aria-labelledby="t-proches" class="flex flex-col gap-3 list-none p-0 m-0">
         {
