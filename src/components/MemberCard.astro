@@ -72,11 +72,13 @@ const homeIcon = fixed ? undefined : homeServiceIcon(member, categories);
           <p class="break-words mt-1 text-corps font-semibold text-neutre-900">{member.metier}</p>
           <p class="break-words mt-1.5 text-[16px] leading-snug text-neutre-700">{member.accroche}</p>
           <p class="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1 text-[16px] text-neutre-700">
-            <span class="inline-flex items-center gap-1">
-              <Icon name="etoile" class="w-4 h-4 text-sable-700" />
-              {formatNote(member.note)}
-              <span class="sr-only"> {COPY.ratingOutOf}</span> <span class="text-neutre-600">({member.nbAvis})</span>
-            </span>
+            {member.nbAvis > 0 && (
+              <span class="inline-flex items-center gap-1">
+                <Icon name="etoile" class="w-4 h-4 text-sable-700" />
+                {formatNote(member.note)}
+                <span class="sr-only"> {COPY.ratingOutOf}</span> <span class="text-neutre-600">({member.nbAvis})</span>
+              </span>
+            )}
             <span class="inline-flex items-center gap-1">
               <Icon name="pin" class="w-4 h-4 text-teal-600" />
               {member.distance}
@@ -102,11 +104,13 @@ const homeIcon = fixed ? undefined : homeServiceIcon(member, categories);
           {homeIcon && <Icon raw={homeIcon} class="w-4 h-4 shrink-0 text-teal-600" />}
           {COPY.comesToYou(agree(member.genre, "elle"))}
         </p>
-        <p class="mt-1.5 inline-flex items-center gap-1 text-[16px] text-neutre-700">
-          <Icon name="etoile" class="w-4 h-4 text-sable-700" />
-          {formatNote(member.note)}
-          <span class="sr-only"> {COPY.ratingOutOf}</span> <span class="text-neutre-600">({member.nbAvis})</span>
-        </p>
+        {member.nbAvis > 0 && (
+          <p class="mt-1.5 inline-flex items-center gap-1 text-[16px] text-neutre-700">
+            <Icon name="etoile" class="w-4 h-4 text-sable-700" />
+            {formatNote(member.note)}
+            <span class="sr-only"> {COPY.ratingOutOf}</span> <span class="text-neutre-600">({member.nbAvis})</span>
+          </p>
+        )}
       </article>
     )
   }

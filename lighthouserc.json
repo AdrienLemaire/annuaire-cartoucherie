@@ -9,7 +9,7 @@
         "/membre/camille-roussel",
         "/carte"
       ],
-      "numberOfRuns": 3
+      "numberOfRuns": 5
     },
     "assert": {
       "aggregationMethod": "median-run",

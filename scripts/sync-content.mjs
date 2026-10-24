@@ -4,11 +4,13 @@
 // to the fictional fixture, so `npm run dev` and every test run on invented
 // people; CI sets it to a private checkout before the production build.
 import { cpSync, existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
-import { join } from "node:path";
+import { join, parse } from "node:path";
+import sharp from "sharp";
 
 const SOURCE = process.env.CONTENT_DIR ?? "tests/fixtures";
 const membersFrom = join(SOURCE, "members.json");
 const portraitsFrom = join(SOURCE, "portraits");
+const slidesFrom = join(SOURCE, "carrousels");
 
 if (!existsSync(membersFrom)) {
   console.error(`sync-content: no members.json in ${SOURCE}. Set CONTENT_DIR.`);
@@ -39,6 +41,12 @@ membres.forEach((m, i) => {
     console.error(`sync-content: ${row} names a missing portrait.`);
     process.exit(1);
   }
+  (m.carrousel ?? []).forEach((slide, j) => {
+    if (!existsSync(join(slidesFrom, slide.fichier ?? ""))) {
+      console.error(`sync-content: ${row}, slide ${j + 1}, names a missing carousel image.`);
+      process.exit(1);
+    }
+  });
 });
 
 mkdirSync("src/content", { recursive: true });
@@ -46,4 +54,19 @@ writeFileSync("src/content/members.json", raw);
 rmSync("public/portraits", { recursive: true, force: true });
 mkdirSync("public/portraits", { recursive: true });
 cpSync(portraitsFrom, "public/portraits", { recursive: true });
+
+// Carousel slides arrive as 1080×1350 exports (one was a 1.1 MB PNG). Re-encoded
+// once here to the 720 px the profile shows at most, as WebP: the heaviest-image
+// budget is 100 KB. The profile page reads /carrousels/<name>.webp.
+rmSync("public/carrousels", { recursive: true, force: true });
+mkdirSync("public/carrousels", { recursive: true });
+const slides = membres.flatMap((m) => m.carrousel ?? []);
+await Promise.all(
+  slides.map((slide) =>
+    sharp(join(slidesFrom, slide.fichier))
+      .resize({ width: 720 })
+      .webp({ quality: 72 })
+      .toFile(join("public/carrousels", `${parse(slide.fichier).name}.webp`)),
+  ),
+);
 console.log(`sync-content: ${membres.length} members from ${SOURCE}`);

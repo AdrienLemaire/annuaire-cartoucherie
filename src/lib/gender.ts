@@ -7,7 +7,7 @@ const FORMS = {
   la: { f: "la", h: "le" },
   voisine: { f: "voisine", h: "voisin" },
   inscrite: { f: "inscrite", h: "inscrit" },
-  // Third-person plural — src/lib/members.ts's own pluralPronoun, for a group
+  // Third-person plural — src/lib/members.ts's own groupPronoun, for a group
   // rather than one member: "elles" only if every genre in the group is "f",
   // same all-or-nothing rule memberCountParts already uses for "voisine(s)".
   ils: { f: "elles", h: "ils" },

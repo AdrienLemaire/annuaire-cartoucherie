@@ -18,7 +18,7 @@ concurrency:
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 env:
-  NODE_VERSION: "22"
+  NODE_VERSION: "24"
 
 jobs:
   verify:
@@ -26,14 +26,14 @@ jobs:
     runs-on: ubuntu-latest        # never macos: it bills at 10x
     timeout-minutes: 8
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         # fetch-depth: 0 (final-fixes-report.md, I8): verify-history.mjs
         # greps `git log --all`, which sees only the one fetched commit on
         # the default shallow checkout — the check went green without
         # examining any history at all, exactly the failure its own header
         # comment warns about. Full history is the whole point here.
         with: { fetch-depth: 0 }
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: npm
@@ -47,7 +47,7 @@ jobs:
       - run: node scripts/forbidden-dist.mjs
       - run: node scripts/budgets.mjs
       - run: npm audit --omit=dev --audit-level=high
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: dist
           path: dist
@@ -59,9 +59,9 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 3
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with: { fetch-depth: 0 }
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: npm
@@ -81,24 +81,24 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: npm
       - run: npm ci
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v8
         with: { name: dist, path: dist }
       # Chromium only. WebKit costs a minute to install and only approximates
       # Safari; real Safari is a human check on a real device.
       - name: cache Playwright browser
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: ~/.cache/ms-playwright
           key: playwright-chromium-${{ hashFiles('package-lock.json') }}
       - run: npx playwright install --with-deps chromium
       - run: npx playwright test
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: failure()
         with:
           name: playwright-report
@@ -109,18 +109,18 @@ jobs:
     name: lighthouse budgets
     needs: verify
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15   # 5 runs × 5 URLs
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: npm
       - run: npm ci
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v8
         with: { name: dist, path: dist }
       - run: npx lhci autorun
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: failure()
         with:
           name: lighthouse
@@ -132,7 +132,6 @@ jobs:
   # names, so the steps never branch on which one they are deploying.
   # production carries a required reviewer; staging does not.
   deploy:
-    name: deploy to ${{ github.ref == 'refs/heads/main' && 'production' || 'staging' }}
     if: github.event_name == 'push'
     needs: [verify, browser, lighthouse]   # the gate: no green, no deploy
     runs-on: ubuntu-latest
@@ -149,16 +148,17 @@ jobs:
       - name: SITE_URL is set
         run: |
           test -n "$SITE_URL" || { echo "::error::Set the SITE_URL variable on this environment."; exit 1; }
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       # The real quartier. Private, read-only, and never uploaded as an artifact:
       # a public repository's Actions tab hands out artifacts to anyone.
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
-          repository: lacartoucherie/cartoucherie-donnees
+          # Same owner as this repository: wherever the code lives, the data lives.
+          repository: ${{ github.repository_owner }}/cartoucherie-donnees
           token: ${{ secrets.CONTENT_REPO_TOKEN }}
           path: content-private
           persist-credentials: false
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: npm
@@ -169,7 +169,7 @@ jobs:
           # Without this the beacon ships with an empty token: the script still
           # loads, the smoke test still passes, and nothing is ever counted.
           PUBLIC_CF_BEACON_TOKEN: ${{ vars.PUBLIC_CF_BEACON_TOKEN }}
-      - run: node scripts/forbidden-dist.mjs
+      - run: node scripts/forbidden-dist.mjs --real-content
       - run: node scripts/budgets.mjs
       # Staging carries real neighbours too: keep it out of search engines, or
       # a visitor lands on a test copy instead of the real directory.
@@ -179,7 +179,7 @@ jobs:
       # The only moment a browser sees the real quartier before it goes out. It
       # runs in-process on the runner and this job uploads nothing, so it gates
       # the real build without the artefact exposure of download-artifact.
-      - uses: actions/cache@v4
+      - uses: actions/cache@v6
         with:
           path: ~/.cache/ms-playwright
           key: playwright-chromium-${{ hashFiles('package-lock.json') }}
@@ -193,6 +193,10 @@ jobs:
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           # --env "" names the top-level (production) Worker explicitly.
           command: deploy --env "${{ env.WRANGLER_ENV }}"
+      # A hostname attached by this very deploy takes a moment to resolve (the
+      # first staging deploy failed on ERR_NAME_NOT_RESOLVED). A readiness gate,
+      # not a test retry: wait up to two minutes for the host to answer at all.
+      - run: timeout 120 bash -c 'until curl -sf -o /dev/null "$SITE_URL"; do sleep 5; done'
       # Against the live host this job just deployed: HTTPS, headers, no cookie.
       - run: npx playwright test tests/e2e/deployed.spec.ts
         env:

@@ -9,6 +9,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import CallButton from "../../components/CallButton.astro";
 import CategoryChip from "../../components/CategoryChip.astro";
 import Icon from "../../components/Icon.astro";
+import PortraitCarousel from "../../components/PortraitCarousel.astro";
 import QrCard from "../../components/QrCard.astro";
 import ReviewsSlot from "../../components/ReviewsSlot.astro";
 import { mailtoHref } from "../../lib/contact";
@@ -96,14 +97,20 @@ const primaryIcon = chips[0]?.icon;
         }
         <p class="mt-4 max-w-[56ch] text-[19px] leading-relaxed text-neutre-900">{member.accroche}</p>
         <p class="mt-5 flex flex-wrap items-center gap-x-5 gap-y-2.5 text-[16px] text-neutre-700">
-          <a
-            href="#avis"
-            class="inline-flex min-h-[44px] items-center gap-1.5 text-teal-700 underline decoration-teal-300 underline-offset-4 hover:decoration-teal-600"
-          >
-            <Icon name="etoile" class="h-[18px] w-[18px] text-sable-700" />
-            <strong class="font-semibold text-neutre-900">{formatNote(member.note)}</strong>
-            <span class="sr-only"> {COPY.profileRatingSr}</span> {COPY.profileReviewCount(member.nbAvis)}
-          </a>
+          {
+            // « 0,0 » reads as a bad score, not as « nobody has reviewed yet »;
+            // the Avis section further down already says that in words.
+            member.nbAvis > 0 && (
+              <a
+                href="#avis"
+                class="inline-flex min-h-[44px] items-center gap-1.5 text-teal-700 underline decoration-teal-300 underline-offset-4 hover:decoration-teal-600"
+              >
+                <Icon name="etoile" class="h-[18px] w-[18px] text-sable-700" />
+                <strong class="font-semibold text-neutre-900">{formatNote(member.note)}</strong>
+                <span class="sr-only"> {COPY.profileRatingSr}</span> {COPY.profileReviewCount(member.nbAvis)}
+              </a>
+            )
+          }
           <span class="inline-flex items-center gap-1.5">
             {fixed ? (
               <>
@@ -149,6 +156,7 @@ const primaryIcon = chips[0]?.icon;
       <h2 id="t-portrait" class="ff text-nom text-teal-900">{COPY.profilePortrait}</h2>
       <div class="filet mt-2.5 mb-5 h-[3px] w-16 rounded-full"></div>
       <p class="max-w-[62ch] text-[19px] leading-relaxed text-neutre-900">{member.bio}</p>
+      {member.carrousel.length > 0 && <PortraitCarousel slides={member.carrousel} />}
     </div>
   </section>
 

@@ -14,27 +14,17 @@ Four things are undecided or missing. None of them are code problems, and none o
 guessed or invented on your behalf. Work through this list first; the numbered sequence below
 assumes all four are settled.
 
-1. **The domain is not registered.** Nothing is live anywhere. Every QR code the build emits
-   encodes `SITE_URL`, set per GitHub Environment (step 7); a local build falls back to
-   `http://localhost:4321`. **Once you print a QR code with a domain on
-   it, that domain is permanent for that piece of paper** — decide and register before printing
-   anything, not after.
-2. **No Cloudflare account is configured for this project.** `CLOUDFLARE_API_TOKEN` and
-   `CLOUDFLARE_ACCOUNT_ID` don't exist as GitHub secrets because there's no account to generate
-   them from yet.
-3. **The licence and repository visibility are undecided.** No `LICENSE` file exists, which
-   defaults to all-rights-reserved — the opposite of what a public repository should say, and
-   the private-content mechanism (step 3 below) assumes this repository is public. Choose
-   between **AGPL-3.0** (a genuine open-source licence; keeps this project eligible for
-   Cloudflare's non-profit credit programmes) and **PolyForm Noncommercial 1.0.0**
-   (source-available only, not open source by the OSD's own definition; forfeits those
-   credits). This is a real decision with a real tradeoff, not a formality.
-4. **Three legal-notice markers are unfilled.** `docs/mentions-legales-a-completer.md` is the
-   single list — Cloudflare's exact contracting entity and its address, and the name of the
-   illustrator redrawing the mascot. **Do not duplicate that list here**; open the file itself, it explains
-   what each line needs and where to get it. Going live with the markers still visible on the
-   page (they render as `⟨à compléter : …⟩`) is an acceptable soft launch. Inventing any of them —
-   guessing an address or an entity name — is not, ever.
+1. ~~**The domain is not registered.**~~ Registered 2026-10-23: `cartoucherie.fyi`, at Cloudflare.
+   Production is `https://www.cartoucherie.fyi`, staging `https://staging.cartoucherie.fyi`.
+   **Once you print a QR code, that domain is permanent for that piece of paper.**
+2. ~~**No Cloudflare account is configured for this project.**~~ Done 2026-10-23: account,
+   API token and account ID stored in both GitHub Environments.
+3. ~~**The licence and repository visibility are undecided.**~~ Decided 2026-10-23: AGPL-3.0
+   (`LICENSE`), public repository.
+4. ~~**Three legal-notice markers are unfilled.**~~ Done 2026-10-24: the host is Cloudflare, Inc.,
+   101 Townsend St., San Francisco (named in cloudflare.com/terms, §20); the Colly illustrator
+   credit is left out until that person is known. The contact address,
+   `COPY.contactEmail`, is printed on paper once flyers exist: changing it later doesn't reach them.
 
 ## The sequence
 
@@ -58,16 +48,16 @@ what to do about it.
      (it's the URL inside that member's QR code — renaming it later means reprinting, not
      editing a file).
 
-   The CI deploy job hardcodes `lacartoucherie/cartoucherie-donnees` as the repository path
-   (`.github/workflows/ci.yml`, the `deploy` job's second checkout step). If the real owner is
-   different, edit that line first.
+   Create it under the same owner as this repository: the CI deploy job checks out
+   `<owner of this repo>/cartoucherie-donnees` (`.github/workflows/ci.yml`, the `deploy` job's
+   second checkout step).
 
    *If it fails later*: a malformed row in `members.json` doesn't corrupt the site — the build
    fails with the exact field and member named (`src/content/schemas.ts` validates every field;
    `scripts/sync-content.mjs` validates slugs and portrait files before that). Fix the row, push
    again.
 
-4. **If `lacartoucherie` (or whichever owner you used) is a GitHub organisation**, check its
+4. **If the owner is a GitHub organisation**, check its
    settings allow fine-grained personal access tokens before relying on one in the next step —
    some organisations block them by default. If blocked, either get an owner to allow them or
    use a classic PAT scoped as narrowly as GitHub allows.
@@ -115,9 +105,9 @@ what to do about it.
 
 ### Wire the domain into the code
 
-10. **Once the domain from step 1 is registered**, add one custom-domain route per environment
-    in `wrangler.toml` — its own comment shows both lines — each matching that environment's
-    `SITE_URL`. Leave `html_handling = "drop-trailing-slash"` and `not_found_handling =
+10. **Custom domains are declared in `wrangler.toml`** (`routes`, one set per environment), each
+    matching that environment's `SITE_URL`; the first deploy creates the DNS records and
+    certificates. Leave `html_handling = "drop-trailing-slash"` and `not_found_handling =
     "404-page"` exactly as they are — both are load-bearing (see "Post-deploy checks" below).
 
     Then confirm a build encodes the URL you give it:
@@ -169,8 +159,7 @@ what to do about it.
     that disabling Workers Builds (step 8) protects — the same risk by a different door. If you
     ever must, use `npm run deploy`, which refuses to run without `CONTENT_DIR` and `SITE_URL`.
 
-14. **In the Cloudflare dashboard**: attach each environment's custom domain to its Worker, then
-    enable Web Analytics for each and copy each site token into that environment's
+14. **In the Cloudflare dashboard**: enable Web Analytics for each and copy each site token into that environment's
     `PUBLIC_CF_BEACON_TOKEN` variable. Staging sends `X-Robots-Tag: noindex` (added by the deploy
     job), so search engines never send a neighbour to the test copy.
 

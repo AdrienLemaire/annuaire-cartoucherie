@@ -1,10 +1,9 @@
 ---
 // src/pages/mentions-legales.astro
-// Legally required for a French site (spec §9). Every fact nobody has
-// supplied is a visible marker, never an invention (task-11 brief) — see
-// docs/mentions-legales-a-completer.md for the hand-off list. Editor,
-// publication director and contact address are known (Adrien supplied all
-// three) and are written as plain facts, not markers.
+// Legally required for a French site (spec §9). Every fact is supplied or
+// sourced, never invented (task-11 brief): editor, publication director and
+// contact address come from Adrien; the host is the contracting entity named in
+// Cloudflare's self-serve terms (cloudflare.com/terms, §20).
 import TextPage from "../layouts/TextPage.astro";
 import { COPY } from "../lib/copy";
 
@@ -26,9 +25,7 @@ const title = `${COPY.footerLegal} — ${COPY.brandEyebrow} ${COPY.brandName}`;
   </p>
 
   <h2 class="ff text-nom text-teal-900">{COPY.legalHostTitle}</h2>
-  <p>
-    {COPY.legalHostIntro} <mark>{COPY.legalMarker("raison sociale exacte de l'entité Cloudflare, telle qu'indiquée dans les conditions de service du compte")}</mark>, <mark>{COPY.legalMarker("adresse de cette entité")}</mark>.
-  </p>
+  <p>{COPY.legalHost}</p>
 
   <h2 class="ff text-nom text-teal-900">{COPY.legalIpTitle}</h2>
   <p>{COPY.legalIpText}</p>

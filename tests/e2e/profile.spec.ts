@@ -1,7 +1,9 @@
 // tests/e2e/profile.spec.ts
 import { expect, test } from "@playwright/test";
-import { feminine, fullyContactable, masculineWithoutSite } from "./fixture";
+import { feminine, fullyContactable, masculineWithoutSite, unreviewed, withCarousel } from "./fixture";
 import { agree } from "../../src/lib/gender";
+import { COPY } from "../../src/lib/copy";
+import { formatNote } from "../../src/lib/members";
 
 test("Carries the contact details in full, readable text", async ({ page }) => {
   const m = fullyContactable;
@@ -42,4 +44,28 @@ test("Reserves the reviews slot Plan 2 replaces", async ({ page }) => {
   const slot = page.locator("[data-reviews-slot]");
   await expect(slot).toHaveAttribute("data-slug", m.slug);
   await expect(slot).toHaveAttribute("data-review-count", String(m.nbAvis));
+});
+
+// « 0,0 » reads as a bad score; before the first review the page says so in
+// words instead.
+test("Shows no score before the first review", async ({ page }) => {
+  await page.goto(`/membre/${unreviewed.slug}`);
+  await expect(page.getByText(COPY.reviewsNone)).toBeVisible();
+  await expect(page.getByText(formatNote(0), { exact: true })).toHaveCount(0);
+});
+
+// The slides are text set in images: their words must also exist as text, for a
+// screen reader and for someone reading at 200 % zoom.
+test("Shows the portrait carousel with its slides' words in text", async ({ page }) => {
+  const slides = withCarousel.carrousel;
+  await page.goto(`/membre/${withCarousel.slug}`);
+  const carousel = page.getByRole("list", { name: COPY.carouselLabel });
+  await expect(carousel.getByRole("img")).toHaveCount(slides.length);
+  await page.getByText(COPY.carouselReadText).click();
+  for (const slide of slides) await expect(page.getByText(slide.texte)).toBeVisible();
+});
+
+test("Shows no carousel for a neighbour without slides", async ({ page }) => {
+  await page.goto(`/membre/${unreviewed.slug}`);
+  await expect(page.getByRole("list", { name: COPY.carouselLabel })).toHaveCount(0);
 });

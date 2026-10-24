@@ -56,7 +56,7 @@ export function withCounts(categories: Category[], members: Member[]): CategoryW
 export type MemberCountParts = { count: number; noun: string };
 
 // French keeps the feminine only when nobody in the group is masculine — the
-// one rule memberCountParts and pluralPronoun both apply, so it lives once.
+// one rule memberCountParts and groupPronoun both apply, so it lives once.
 function groupGender(genders: Gender[]): Gender {
   return genders.length > 0 && genders.every((g) => g === "f") ? "f" : "h";
 }
@@ -75,12 +75,12 @@ export function memberCountParts(count: number, genders: Gender[]): MemberCountP
 }
 
 /**
- * « ils »/« elles » for a group — carte.astro's own two count-dependent intro
- * sentences (docs/mockups/final/carte.html:448-449) are the only callers.
- * Same all-or-nothing rule as memberCountParts' own noun.
+ * « elle »/« il » for one person, « elles »/« ils » for a group — carte.astro's
+ * own two count-dependent intro sentences (docs/mockups/final/carte.html:448-449)
+ * are the only callers. Same all-or-nothing rule as memberCountParts' own noun.
  */
-export function pluralPronoun(genders: Gender[]): string {
-  return agree(groupGender(genders), "ils");
+export function groupPronoun(genders: Gender[]): string {
+  return agree(groupGender(genders), genders.length === 1 ? "elle" : "ils");
 }
 
 /**
@@ -116,6 +116,14 @@ export function displayUrl(url: string): string {
 }
 
 /** « 4,8 », « 5,0 » — the French decimal comma, always one digit (styleguide block 12). */
+/**
+ * Where a carousel slide is served from. scripts/sync-content.mjs writes every
+ * slide as <name>.webp, whatever its source format — keep the two in step.
+ */
+export function slideSrc(fichier: string): string {
+  return `/carrousels/${fichier.replace(/\.[a-z]+$/, "")}.webp`;
+}
+
 export function formatNote(note: number): string {
   return note.toFixed(1).replace(".", ",");
 }

@@ -137,6 +137,11 @@ export const COPY = {
 
   profileContact: (article: string) => `${capitalize(article)} contacter`,
   profilePortrait: "Son portrait",
+  // The member's Instagram portrait carousel (PortraitCarousel.astro).
+  carouselLabel: "Sa présentation en images, à faire défiler",
+  carouselSlideAlt: (n: number, total: number) => `Diapositive ${n} sur ${total}`,
+  carouselCount: (n: number, total: number) => `${n} / ${total}`,
+  carouselReadText: "Lire le texte des diapositives",
   profileOffers: (pronoun: string) => `Ce qu'${pronoun} propose`,
   profileWhere: (article: string) => `Où ${article} trouver`,
   // membre.html's own « Où la trouver » deep link (line 497): gendered like
@@ -176,9 +181,11 @@ export const COPY = {
   reviewsPolicy: "Les avis, comment ça marche",
 
   qrTitle: "Son QR code",
-  qrExplain:
-    "À imprimer et à poser sur son comptoir, ou à coller au dos de ses cartes de visite. " +
-    "Il mène directement ici, sans passer par l'accueil.",
+  // Read by residents first: the code shares this page with whoever scans it.
+  // The member, landing on their own page, is told what it is for in one line.
+  qrExplain: "Pour partager cette fiche, faites scanner ce code : il ouvre cette page sur le téléphone de votre voisin.",
+  qrForMember: (prenom: string) =>
+    `Vous êtes ${prenom} ? Téléchargez-le pour votre vitrine ou vos cartes de visite.`,
   qrDownload: "Télécharger le QR code",
   qrAlt: (nom: string) => `QR code vers la fiche ${elideDe(nom)}${nom}`,
 
@@ -236,9 +243,12 @@ export const COPY = {
   // honestly rather than the page quietly starting to lie.
   mapOriginHall: (count: number, noun: string) => `${count} ${noun} · depuis la Halle`,
   mapOriginYou: (count: number, noun: string) => `${count} ${noun} · depuis votre position`,
-  mapIntroAddress: (count: number, noun: string) => `${count} ${noun} ont une adresse ici.`,
+  mapIntroAddress: (count: number, noun: string) =>
+    `${count} ${noun} ${count === 1 ? "a" : "ont"} une adresse ici.`,
   mapIntroItinerant: (count: number, noun: string, pronoun: string) =>
-    `${count} ${noun} se déplacent : ${capitalize(pronoun)} sont plus bas.`,
+    count === 1
+      ? `${count} ${noun} se déplace : ${capitalize(pronoun)} est plus bas.`
+      : `${count} ${noun} se déplacent : ${capitalize(pronoun)} sont plus bas.`,
   // The plan SVG's own role="img" aria-label (docs/mockups/final/carte.html):
   // the one accessible summary of a decorative illustration whose baked-in
   // street/landmark <text> labels are art, not UI copy, and so stay literal.
@@ -275,8 +285,6 @@ export const COPY = {
     "Adrien est à l'écoute de nouvelles opportunités professionnelles : son parcours est sur " +
     "LinkedIn, en suivant son nom ci-dessus.",
   aboutCreditsTitle: "Les crédits",
-  aboutCreditPortraits: "Les portraits des voisins sont l'œuvre de Sandra Carole.",
-  aboutCreditColly: "Colly, la mascotte du quartier, sera redessinée par",
   aboutCreditMap: "Les itinéraires s'appuient sur OpenStreetMap.",
   aboutCreditOpenSource:
     "Ce site tourne grâce à des bibliothèques open source, dont Astro, Tailwind CSS, daisyUI, Zod " +
@@ -345,16 +353,12 @@ export const COPY = {
   legalAuthor: `${AUTHOR}.`,
   legalContactTitle: "Contact",
   legalHostTitle: "Hébergeur",
-  legalHostIntro: "Ce site est hébergé par Cloudflare.",
+  legalHost: "Ce site est hébergé par Cloudflare, Inc., 101 Townsend St., San Francisco, CA 94107, États-Unis.",
   legalIpTitle: "Propriété intellectuelle",
   legalIpText:
     "Sauf mention contraire, les textes, la mise en page et les portraits de ce site appartiennent " +
     "à l'association ou sont utilisés avec l'autorisation de leurs auteurs (voir la page « À " +
     "propos » pour le détail des crédits). Toute reproduction sans autorisation est interdite.",
-  // The one marker glyph, shared by every unknown on /mentions-legales and
-  // /a-propos so docs/mentions-legales-a-completer.md's own list and the page
-  // never drift apart.
-  legalMarker: (what: string) => `⟨à compléter : ${what}⟩`,
 
   // Future tense throughout this section but reviewsReportText below
   // (final-fixes-report.md, I12): reviews are not built yet (avis.astro's own

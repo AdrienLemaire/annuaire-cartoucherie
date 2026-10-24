@@ -295,6 +295,7 @@ for older residents, on small screens, with large text and screen readers.
   Sandra edits without a developer. Still to be reviewed with her.
 - Domain name not yet chosen or registered
 - Cloudflare account and MCP server not yet configured
+- **Decided 2026-10-23: AGPL-3.0, public repository.** The reasoning that led there:
 - Licence and repository visibility undecided, and the two goals stated so far conflict.
   "Open source with non-commercial reuse only" is a contradiction: a field-of-use
   restriction fails the Open Source Definition §6, so the result is *source-available*, not
