@@ -154,7 +154,7 @@ const pins = members.filter(isPinned).map((m) => ({
                     {p.icon && <Icon raw={p.icon} class="w-[18px] h-[18px]" />}
                   </span>
                   <span class={`etiq ${p.position.etiqClass}`} aria-hidden="true">
-                    {p.member.nom} · {p.member.distance}
+                    {p.member.nom} · {COPY.cardDistance(p.member.distance)}
                   </span>
                 </a>
               </>
