@@ -133,5 +133,6 @@ const arrow =
 </div>
 
 <script>
-  import "../client/carousel";
+  // Dynamic, so Vite ships it as a file: an inlined script is CSP-blocked.
+  void import("../client/carousel");
 </script>
