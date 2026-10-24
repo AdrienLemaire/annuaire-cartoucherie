@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import {
-  formatDistance, formatMemberCount, formatNote, groupPronoun, hasAddress, memberUrl, sortByCountDesc, sortByDistance, withCounts,
+  formatDistance, formatMemberCount, formatNote, hasAddress, memberUrl, sortByCountDesc, sortByDistance, withCounts,
 } from "../../src/lib/members";
 import type { Category } from "../../src/content/schemas";
 import { COPY } from "../../src/lib/copy";
@@ -83,16 +83,6 @@ describe("Member helpers", () => {
   it("Formats a distance the way the fixture's own field does", () => {
     expect(formatDistance(63)).toBe("60 m");
     expect(formatDistance(1234)).toBe("1,2 km");
-  });
-});
-
-describe("Group pronoun", () => {
-  // One neighbour is « elle », not « elles »: the map's intro sentence names her.
-  it("Speaks of one person in the singular", () => {
-    expect(groupPronoun(["f"])).toBe("elle");
-    expect(groupPronoun(["h"])).toBe("il");
-    expect(groupPronoun(["f", "f"])).toBe("elles");
-    expect(groupPronoun(["f", "h"])).toBe("ils");
   });
 });
 

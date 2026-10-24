@@ -9,7 +9,7 @@
 import type { Member } from "../content/schemas";
 
 // The Halle de la Cartoucherie: the origin the sheet is ranked from and the
-// map's « vous êtes ici » marker.
+// map's « La Halle » marker.
 export const HALL = { lat: 43.6006, lng: 1.4108 };
 
 // The district the map covers. Fixed, never derived from member data:
