@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { reorderFromPoint } from "../../src/lib/plan";
+import { MAP_BOUNDS, projectOnMap, reorderFromPoint } from "../../src/lib/plan";
 
 // Synthetic rows, not tests/fixtures/members.json: memberSchema permits a real
 // distance with null coordinates (an address never geocoded), a state the
@@ -34,5 +34,14 @@ describe("reorderFromPoint", () => {
       { slug: "a", metres: null },
       { slug: "b", metres: null },
     ]);
+  });
+});
+
+// The map covers fixed bounds. A neighbour outside them stops the build
+// instead of being clamped onto the wrong street or silently left off the map.
+describe("projectOnMap", () => {
+  it("Refuses a point the map does not cover", () => {
+    const outside = { slug: "far", lat: MAP_BOUNDS.north + 0.001, lng: MAP_BOUNDS.west };
+    expect(() => projectOnMap(outside)).toThrow(/far/);
   });
 });

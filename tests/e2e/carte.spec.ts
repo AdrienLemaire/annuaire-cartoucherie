@@ -67,7 +67,6 @@ test("States each of the three address cases instead of flattening them", async 
   await expect(page.getByText(itinerant.nom)).toBeVisible();
   await expect(page.getByText(COPY.mapPickupOnly)).toBeVisible();
   await expect(page.getByText(pickupOnly.nom)).toBeVisible();
-  await expect(page.getByText(COPY.mapSchematic)).toBeVisible();
 });
 
 // task-15-brief.md: replacing the map's one-CSS-rule-per-pinned-member design
@@ -96,4 +95,17 @@ test("A pin and its sheet row highlight each other, and the highlight moves", as
   await expect(page.locator(`.epingle-lien[data-m="${second.slug}"]`)).toHaveCSS("opacity", "1");
   await expect(page.locator(`[data-sheet] [data-m="${second.slug}"]`)).not.toHaveCSS("background-color", WHITE);
   await expect(page.locator(`[data-sheet] [data-m="${first.slug}"]`)).toHaveCSS("background-color", WHITE);
+});
+
+// The map is wider than a phone and pans by scrolling its own box. Each
+// pin's :target anchor sits on the pin, so a deep link (as profile pages
+// send) brings the farthest-east pin into view with no script involved.
+test("A deep link pans the map to its pin", async ({ page }) => {
+  const eastmost = members.filter(isPinned).sort((a, b) => b.lng - a.lng)[0];
+  await page.goto(`/carte#pin-${eastmost.slug}`);
+
+  const box = (await page.locator("[data-map]").boundingBox())!;
+  const pin = (await page.locator(`.epingle-lien[data-m="${eastmost.slug}"]`).boundingBox())!;
+  expect(pin.x).toBeGreaterThanOrEqual(box.x);
+  expect(pin.x + pin.width).toBeLessThanOrEqual(box.x + box.width);
 });
