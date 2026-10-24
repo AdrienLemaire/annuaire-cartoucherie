@@ -150,7 +150,7 @@ iOS Safari zooms the page on focus.
 RGAA binds public bodies and large companies, not a neighbourhood association — WCAG 2.2 AA
 here is a choice about the users, which is the better reason to hold it.
 
-**Performance — gated at 0.95, median of three runs.** The site will usually score 100, but
+**Performance — gated at 0.95, median of five runs.** The site will usually score 100, but
 the 95→100 band is Lantern simulation reacting to CPU contention on a shared runner, not
 quality. A fall from 100 to 97 is *investigate*, never *block*. The real gates are the
 metrics underneath — LCP ≤ 2.0 s, FCP ≤ 1.5 s, CLS ≤ 0.02, TBT ≤ 150 ms — and the byte
