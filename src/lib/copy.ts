@@ -278,7 +278,6 @@ export const COPY = {
     "Adrien est à l'écoute de nouvelles opportunités professionnelles : son parcours est sur " +
     "LinkedIn, en suivant son nom ci-dessus.",
   aboutCreditsTitle: "Les crédits",
-  aboutCreditPortraits: "Les portraits des voisins sont l'œuvre de Sandra Carole.",
   aboutCreditColly: "Colly, la mascotte du quartier, sera redessinée par",
   aboutCreditMap: "Les itinéraires s'appuient sur OpenStreetMap.",
   aboutCreditOpenSource:

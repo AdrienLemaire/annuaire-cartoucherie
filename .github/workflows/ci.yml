@@ -169,7 +169,7 @@ jobs:
           # Without this the beacon ships with an empty token: the script still
           # loads, the smoke test still passes, and nothing is ever counted.
           PUBLIC_CF_BEACON_TOKEN: ${{ vars.PUBLIC_CF_BEACON_TOKEN }}
-      - run: node scripts/forbidden-dist.mjs
+      - run: node scripts/forbidden-dist.mjs --real-content
       - run: node scripts/budgets.mjs
       # Staging carries real neighbours too: keep it out of search engines, or
       # a visitor lands on a test copy instead of the real directory.
