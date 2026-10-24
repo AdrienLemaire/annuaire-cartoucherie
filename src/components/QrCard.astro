@@ -1,42 +1,38 @@
 ---
 // src/components/QrCard.astro
-// membre.html:598-621 ("Son QR code"): the card only — the section's own h2
-// and filet stay in the page, matching how every other profile section is
-// composed (a shared <h2 class="ff text-nom text-teal-900"> pattern that a
-// single-purpose card component would just have to repeat). The QR image is
-// a build-time file (src/pages/qr/[slug].svg.ts), never generated or
-// downloaded by a script — the STANDARDS §3 rule task-9-brief.md names.
+// The profile's QR code and its download link, nothing else: a resident shows
+// it to a neighbour to scan, the member downloads it for a shop window. It sits
+// in the identity card (beside it on desktop, behind a button on a phone). The
+// QR image is a build-time file (src/pages/qr/[slug].svg.ts), never generated
+// or downloaded by a script — the STANDARDS §3 rule.
 import Icon from "./Icon.astro";
 import { COPY } from "../lib/copy";
-import { displayUrl, firstName } from "../lib/members";
 
 interface Props {
   slug: string;
   nom: string;
-  url: string;
+  size: number;
 }
-const { slug, nom, url } = Astro.props;
+const { slug, nom, size } = Astro.props;
 const file = `/qr/${slug}.svg`;
 ---
 
-<div class="carte flex flex-col gap-5 rounded-[20px] bg-white p-5 sm:flex-row sm:items-center">
-  <div
-    class="mx-auto shrink-0 rounded-[14px] bg-white p-2.5 sm:mx-0"
+<div class="flex flex-col items-center gap-1">
+  <img
+    src={file}
+    alt={COPY.qrAlt(nom)}
+    width={size}
+    height={size}
+    class="rounded-[12px] bg-white p-2"
     style="box-shadow: inset 0 0 0 1px var(--color-neutre-300)"
+  />
+  <a
+    href={file}
+    download={`qr-${slug}.svg`}
+    aria-label={COPY.qrDownload}
+    class="inline-flex min-h-[44px] items-center gap-1.5 text-[16px] font-semibold text-teal-700 underline decoration-teal-300 underline-offset-4 hover:decoration-teal-600"
   >
-    <img src={file} alt={COPY.qrAlt(nom)} width="168" height="168" />
-  </div>
-  <div class="min-w-0">
-    <p class="max-w-[48ch] text-corps text-neutre-900">{COPY.qrExplain}</p>
-    <p class="mt-2 max-w-[48ch] text-[16px] text-neutre-700">{COPY.qrForMember(firstName(nom))}</p>
-    <p class="mt-2 break-words text-[16px] text-neutre-700">{displayUrl(url)}</p>
-    <a
-      href={file}
-      download={`qr-${slug}.svg`}
-      class="mt-4 inline-flex max-w-full min-h-[48px] items-center gap-2 rounded-full bg-teal-700 px-5 text-corps font-semibold text-white hover:bg-teal-600"
-    >
-      <Icon name="dl" class="w-[18px] h-[18px]" />
-      {COPY.qrDownload}
-    </a>
-  </div>
+    <Icon name="dl" class="size-[18px]" />
+    {COPY.qrDownloadShort}
+  </a>
 </div>

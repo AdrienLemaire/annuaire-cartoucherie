@@ -138,10 +138,10 @@ export const COPY = {
   profileContact: (article: string) => `${capitalize(article)} contacter`,
   profilePortrait: "Son portrait",
   // The member's Instagram portrait carousel (PortraitCarousel.astro).
-  carouselLabel: "Sa présentation en images, à faire défiler",
-  carouselSlideAlt: (n: number, total: number) => `Diapositive ${n} sur ${total}`,
-  carouselCount: (n: number, total: number) => `${n} / ${total}`,
-  carouselReadText: "Lire le texte des diapositives",
+  carouselLabel: "Sa présentation en images",
+  carouselPrevious: "Image précédente",
+  carouselNext: "Image suivante",
+  carouselClose: "Fermer",
   profileOffers: (pronoun: string) => `Ce qu'${pronoun} propose`,
   profileWhere: (article: string) => `Où ${article} trouver`,
   // membre.html's own « Où la trouver » deep link (line 497): gendered like
@@ -180,13 +180,10 @@ export const COPY = {
   reviewsHow: "Les avis seront signés par des voisins, relus par l'association, et jamais achetés.",
   reviewsPolicy: "Les avis, comment ça marche",
 
-  qrTitle: "Son QR code",
-  // Read by residents first: the code shares this page with whoever scans it.
-  // The member, landing on their own page, is told what it is for in one line.
-  qrExplain: "Pour partager cette fiche, faites scanner ce code : il ouvre cette page sur le téléphone de votre voisin.",
-  qrForMember: (prenom: string) =>
-    `Vous êtes ${prenom} ? Téléchargez-le pour votre vitrine ou vos cartes de visite.`,
+  // The QR code needs no explanation: everyone in the quartier arrived by one.
+  qrShow: "QR code",
   qrDownload: "Télécharger le QR code",
+  qrDownloadShort: "Télécharger",
   qrAlt: (nom: string) => `QR code vers la fiche ${elideDe(nom)}${nom}`,
 
   mapTitle: "La carte du quartier",

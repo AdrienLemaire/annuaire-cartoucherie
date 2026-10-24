@@ -56,17 +56,20 @@ mkdirSync("public/portraits", { recursive: true });
 cpSync(portraitsFrom, "public/portraits", { recursive: true });
 
 // Carousel slides arrive as 1080×1350 exports (one was a 1.1 MB PNG). Re-encoded
-// once here to the 720 px the profile shows at most, as WebP: the heaviest-image
-// budget is 100 KB. The profile page reads /carrousels/<name>.webp.
+// once here as WebP, at 720 px for the page and 1080 px for full screen: the
+// heaviest-image budget is 100 KB. slideSrc (src/lib/members.ts) reads
+// /carrousels/<name>-<width>.webp.
 rmSync("public/carrousels", { recursive: true, force: true });
 mkdirSync("public/carrousels", { recursive: true });
 const slides = membres.flatMap((m) => m.carrousel ?? []);
 await Promise.all(
-  slides.map((slide) =>
-    sharp(join(slidesFrom, slide.fichier))
-      .resize({ width: 720 })
-      .webp({ quality: 72 })
-      .toFile(join("public/carrousels", `${parse(slide.fichier).name}.webp`)),
+  slides.flatMap((slide) =>
+    [720, 1080].map((width) =>
+      sharp(join(slidesFrom, slide.fichier))
+        .resize({ width })
+        .webp({ quality: 72 })
+        .toFile(join("public/carrousels", `${parse(slide.fichier).name}-${width}.webp`)),
+    ),
   ),
 );
 console.log(`sync-content: ${membres.length} members from ${SOURCE}`);
