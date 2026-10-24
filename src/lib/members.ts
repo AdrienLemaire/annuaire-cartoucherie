@@ -104,25 +104,15 @@ export function memberUrl(slug: string, site: string): string {
 }
 
 /**
- * The same URL, without its scheme — membre.html:614's own display value
- * (QrCard.astro, final-fixes-report.md M17): printed beside a QR code,
- * "https://" is noise nobody reads aloud or types. Takes the full URL memberUrl
- * already built rather than reconstructing it, so the QR code and the text
- * beside it can never point at two different things.
+ * Where a carousel slide is served from, at one of the two widths
+ * scripts/sync-content.mjs writes (<name>-720.webp for the page, <name>-1080.webp
+ * full screen), whatever its source format — keep the two in step.
  */
-export function displayUrl(url: string): string {
-  const u = new URL(url);
-  return `${u.host}${u.pathname}`;
+export function slideSrc(fichier: string, width: 720 | 1080): string {
+  return `/carrousels/${fichier.replace(/\.[a-z]+$/, "")}-${width}.webp`;
 }
 
 /** « 4,8 », « 5,0 » — the French decimal comma, always one digit (styleguide block 12). */
-/**
- * Where a carousel slide is served from. scripts/sync-content.mjs writes every
- * slide as <name>.webp, whatever its source format — keep the two in step.
- */
-export function slideSrc(fichier: string): string {
-  return `/carrousels/${fichier.replace(/\.[a-z]+$/, "")}.webp`;
-}
 
 export function formatNote(note: number): string {
   return note.toFixed(1).replace(".", ",");
