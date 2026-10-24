@@ -54,15 +54,39 @@ test("Shows no score before the first review", async ({ page }) => {
   await expect(page.getByText(formatNote(0), { exact: true })).toHaveCount(0);
 });
 
-// The slides are text set in images: their words must also exist as text, for a
-// screen reader and for someone reading at 200 % zoom.
-test("Shows the portrait carousel with its slides' words in text", async ({ page }) => {
-  const slides = withCarousel.carrousel;
+// The slides are text set in images: their words are the images' alt text, so a
+// screen reader reads them without a visible transcript on the page.
+test("Gives each carousel slide its words as alt text", async ({ page }) => {
   await page.goto(`/membre/${withCarousel.slug}`);
   const carousel = page.getByRole("list", { name: COPY.carouselLabel });
-  await expect(carousel.getByRole("img")).toHaveCount(slides.length);
-  await page.getByText(COPY.carouselReadText).click();
-  for (const slide of slides) await expect(page.getByText(slide.texte)).toBeVisible();
+  for (const slide of withCarousel.carrousel) {
+    await expect(carousel.getByRole("img", { name: slide.texte })).toHaveCount(1);
+  }
+});
+
+// Instagram's gesture: tapping a slide opens it full screen, on that slide.
+test("Opens a tapped slide full screen", async ({ page }) => {
+  const second = withCarousel.carrousel[1];
+  await page.goto(`/membre/${withCarousel.slug}`);
+  const carousel = page.getByRole("list", { name: COPY.carouselLabel });
+  await carousel.getByRole("img").first().scrollIntoViewIfNeeded();
+  await carousel.evaluate((el) => el.scrollTo({ left: el.clientWidth, behavior: "instant" }));
+  await carousel.getByRole("img", { name: second.texte }).click();
+  const dialog = page.getByRole("dialog", { name: COPY.carouselLabel });
+  await expect(dialog.getByRole("img", { name: second.texte })).toBeInViewport();
+  await page.keyboard.press("Escape");
+  await expect(dialog).toBeHidden();
+});
+
+// The QR code sits beside the name on a large screen; on a phone it waits
+// behind a button rather than pushing the contact details down.
+test("Shows the QR code behind a button on a phone", async ({ page, isMobile }) => {
+  test.skip(!isMobile, "a phone layout");
+  await page.goto(`/membre/${feminine.slug}`);
+  const qr = page.getByRole("img", { name: COPY.qrAlt(feminine.nom) });
+  await expect(qr).toHaveCount(0);
+  await page.getByRole("button", { name: COPY.qrShow }).click();
+  await expect(qr).toBeVisible();
 });
 
 test("Shows no carousel for a neighbour without slides", async ({ page }) => {

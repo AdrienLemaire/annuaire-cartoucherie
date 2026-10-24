@@ -14,6 +14,8 @@ const PAGES = [
   `/membre/${withCarousel.slug}`,
   "/carte",
   "/categorie/sante-bien-etre",
+  "/mentions-legales",
+  "/confidentialite",
   "/ce-slug-n-existe-pas",
 ];
 

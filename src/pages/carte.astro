@@ -5,10 +5,16 @@
 // own sample code are named in task-10-report.md, per the fidelity rule
 // (task-10-brief.md, "The fidelity rule").
 //
-// The plan is schematic (COPY.mapSchematic): a pin's on-plan position is a pure
-// projection of the member's real lat/lng (src/lib/plan.ts), not the mockup's
-// own hand-placed, hand-jittered specimen coordinates, which no general formula
-// reproduces and which would not generalise past this fixture.
+// The map is real: OpenStreetMap streets, tram, river and parks inside fixed
+// bounds (src/assets/quartier.svg, rendered once by scripts/map-svg.mjs),
+// inlined and drawn 1:1 in a horizontally scrolling box, so street names stay
+// legible and 44 px pins stay apart on a phone. Each pin is the member's real
+// lat/lng in Web Mercator (src/lib/plan.ts). Inline SVG, not Leaflet or
+// MapLibre (either alone exceeds the 40 KB JS budget) nor a raster tile image
+// (it became the LCP element and broke the 2 s LCP budget): zero JS, no
+// third-party request at runtime, sharp under pinch-zoom. Panning is the
+// box's own scroll; a `#pin-<slug>` fragment scrolls it to the pin with no
+// script, since each pin's .ancre sits on the pin itself.
 //
 // The plan pin, its label and its sheet row used to be linked by :target alone,
 // with one generated CSS rule block per pinned member (task-10-brief.md, "No
@@ -39,12 +45,14 @@
 //     with JavaScript disabled.
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Icon from "../components/Icon.astro";
+import Toggletip from "../components/Toggletip.astro";
 import MemberCard from "../components/MemberCard.astro";
 import MemberRow from "../components/MemberRow.astro";
 import { COPY } from "../lib/copy";
 import { loadCategories, loadMembers } from "../lib/collections";
-import { hasAddress, memberCountParts, groupPronoun, sortByDistance } from "../lib/members";
-import { isPinned, projectOnPlan } from "../lib/plan";
+import { hasAddress, memberCountParts, sortByDistance } from "../lib/members";
+import { HALL, isPinned, projectOnMap } from "../lib/plan";
+import Quartier from "../assets/quartier.svg";
 
 const [members, categories] = await Promise.all([loadMembers(), loadCategories()]);
 
@@ -58,17 +66,13 @@ const addressParts = memberCountParts(
   withAddress.length,
   withAddress.map((m) => m.genre),
 );
-const itinerantParts = memberCountParts(
-  withoutAddress.length,
-  withoutAddress.map((m) => m.genre),
-);
-const itinerantPronoun = groupPronoun(withoutAddress.map((m) => m.genre));
 
 // isPinned (src/lib/plan.ts) is the one place that decides "is there a public
 // point to show".
+const hall = projectOnMap({ slug: "halle", ...HALL });
 const pins = members.filter(isPinned).map((m) => ({
   member: m,
-  position: projectOnPlan(m)!,
+  position: projectOnMap(m),
   icon: categories.find((c) => c.slug === m.categories[0])?.icon,
 }));
 ---
@@ -82,51 +86,24 @@ const pins = members.filter(isPinned).map((m) => ({
     <h1 class="ff text-nom sm:text-grand text-teal-900">{COPY.mapTitle}</h1>
     <p class="mt-2.5 text-corps text-neutre-800 max-w-[62ch]">
       {COPY.mapIntroAddress(addressParts.count, addressParts.noun)}
-      {withoutAddress.length > 0 && ` ${COPY.mapIntroItinerant(itinerantParts.count, itinerantParts.noun, itinerantPronoun)}`}
+      {withoutAddress.length > 0 && ` ${COPY.mapIntroItinerant(withoutAddress.length)}`}
     </p>
 
-    <div data-geo-panel class="mt-4 rounded-[20px] bg-teal-50 p-4 sm:p-5">
-      <div class="flex items-start gap-3">
-        <span class="pastille pastille--teal w-10 h-10 bg-white text-teal-700 shrink-0 mt-0.5">
-          <Icon name="pin" class="w-5 h-5" />
-        </span>
-        <div class="min-w-0">
-          <p class="text-corps font-semibold text-teal-900">
-            <span data-geo-title-hall>{COPY.mapGeoTitle}</span>
-            <span data-geo-title-you hidden>{COPY.mapFromYou}</span>
-          </p>
-          <p class="mt-0.5 text-[16px] text-neutre-800 max-w-[52ch]">
-            <span data-geo-text-hall>{COPY.mapGeoText}</span>
-            <span data-geo-text-you hidden>{COPY.mapGeoTextYou}</span>
-          </p>
-        </div>
-      </div>
-      <div class="mt-3.5 flex flex-wrap items-center gap-2.5">
-        <button
-          type="button"
-          data-geolocate
-          class="inline-flex items-center gap-2 min-h-[48px] px-5 rounded-full text-corps font-semibold text-white bg-teal-700 hover:bg-teal-600"
-        >
-          <Icon name="signal" class="w-[18px] h-[18px]" />
-          {COPY.mapUseMyLocation}
-        </button>
-        <button
-          type="button"
-          data-geo-decline
-          class="inline-flex items-center gap-2 min-h-[44px] px-4 rounded-full text-corps font-semibold text-teal-700 hover:bg-teal-100"
-        >
-          {COPY.mapDecline}
-        </button>
-      </div>
-      <p class="mt-2.5 flex items-start gap-2 text-[16px] text-neutre-800">
-        <Icon name="alerte" class="w-[18px] h-[18px] shrink-0 mt-0.5 text-teal-600" />
-        {COPY.mapGeoLocal}
-      </p>
-      <p data-geo-status role="status" hidden class="mt-3 rounded-[14px] bg-white px-4 py-3 text-corps text-teal-900">
-        <span data-geo-granted hidden>{COPY.mapGeoGranted}</span>
-        <span data-geo-denied hidden>{COPY.mapGeoDenied}</span>
-      </p>
+    <div class="mt-4 flex flex-wrap items-center gap-2.5">
+      <button
+        type="button"
+        data-geolocate
+        class="inline-flex items-center gap-2 min-h-[48px] px-5 rounded-full text-corps font-semibold text-white bg-teal-700 hover:bg-teal-600"
+      >
+        <Icon name="signal" class="w-[18px] h-[18px]" />
+        {COPY.mapUseMyLocation}
+      </button>
+      <Toggletip id="geo-prive" label={COPY.mapGeoPrivacy}>{COPY.mapGeoLocal}</Toggletip>
     </div>
+    <p data-geo-status role="status" hidden class="mt-3 rounded-[14px] bg-teal-50 px-4 py-3 text-corps text-teal-900">
+      <span data-geo-granted hidden>{COPY.mapGeoGranted}</span>
+      <span data-geo-denied hidden>{COPY.mapGeoDenied}</span>
+    </p>
   </div>
 
   <div
@@ -135,124 +112,64 @@ const pins = members.filter(isPinned).map((m) => ({
   >
     <div class="colonne-plan lg:sticky lg:top-24">
       <div
-        class="plan relative overflow-hidden bg-neutre-200 -mx-5 sm:mx-0 rounded-none sm:rounded-[22px]"
-        style="aspect-ratio:390/400; box-shadow: inset 0 0 0 1px var(--color-neutre-300)"
+        data-map
+        class="overflow-x-auto bg-neutre-200 -mx-5 sm:mx-0 rounded-none sm:rounded-[22px] sm:border sm:border-neutre-300"
       >
-        <svg viewBox="0 0 390 400" class="absolute inset-0 w-full h-full" role="img" aria-label={COPY.mapPlanAlt}>
-          <rect width="390" height="400" fill="var(--color-neutre-200)" />
-          <g fill="var(--color-neutre-300)">
-            <rect x="14" y="206" width="66" height="46" rx="9" />
-            <rect x="150" y="86" width="84" height="30" rx="9" />
-            <rect x="252" y="86" width="58" height="54" rx="9" />
-            <rect x="20" y="346" width="116" height="40" rx="9" />
-            <rect x="150" y="352" width="100" height="36" rx="9" />
-            <rect x="14" y="10" width="52" height="24" rx="8" />
-          </g>
-          <rect x="268" y="348" width="110" height="44" rx="14" fill="var(--color-sauge-100)" />
-          <rect x="16" y="266" width="58" height="42" rx="14" fill="var(--color-sauge-100)" />
-          <g fill="none" stroke="var(--color-neutre-400)" stroke-width="22" stroke-linecap="round">
-            <path d="M10 72 L250 16" />
-            <path d="M8 318 L382 332" />
-            <path d="M316 12 L344 380" />
-            <path d="M24 118 L100 190" />
-          </g>
-          <g fill="none" stroke="#ffffff" stroke-width="18" stroke-linecap="round">
-            <path d="M10 72 L250 16" />
-            <path d="M8 318 L382 332" />
-            <path d="M316 12 L344 380" />
-            <path d="M24 118 L100 190" />
-          </g>
-          <path
-            d="M30 392 L74 300 L100 206 L118 96 L130 16"
-            fill="none"
-            stroke="var(--color-teal-200)"
-            stroke-width="8"
-            stroke-linecap="round"
-          />
-          <path
-            d="M30 392 L74 300 L100 206 L118 96 L130 16"
-            fill="none"
-            stroke="var(--color-teal-600)"
-            stroke-width="2"
-            stroke-dasharray="7 7"
-          />
-          <g fill="#ffffff" stroke="var(--color-teal-600)" stroke-width="2.4">
-            <circle cx="87" cy="252" r="5.6" />
-            <circle cx="122" cy="80" r="5.6" />
-          </g>
-          <path
-            d="M132 232 L132 192 A63 52 0 0 1 258 192 L258 232 Z"
-            fill="var(--color-sauge-200)"
-            stroke="var(--color-teal-700)"
-            stroke-width="2"
-          />
-          <path
-            d="M166 232 L166 204 A29 24 0 0 1 224 204 L224 232 Z"
-            fill="none"
-            stroke="var(--color-teal-600)"
-            stroke-width="1.6"
-            opacity=".5"
-          />
-          <g font-family="var(--font-sans)" font-weight="600">
-            <text x="195" y="224" text-anchor="middle" font-size="16" fill="var(--color-teal-800)">La Halle</text>
-            <text x="134" y="50" font-size="13" fill="var(--color-neutre-700)" transform="rotate(-13 134 50)">
-              route de Bayonne
-            </text>
-            <text x="12" y="356" font-size="13" fill="var(--color-neutre-700)" transform="rotate(2 12 356)">
-              rue Paul Mesplé
-            </text>
-            <text font-size="13" fill="var(--color-neutre-700)" transform="translate(366,150) rotate(90)">
-              avenue de Grande-Bretagne
-            </text>
-            <text x="10" y="290" font-size="13" fill="var(--color-teal-700)">T1 · arrêt Cartoucherie</text>
-          </g>
-        </svg>
+        <div class="plan relative w-max">
+          <Quartier role="img" aria-label={COPY.mapPlanAlt} class="block max-w-none" />
 
-        <span
-          class="absolute grid place-items-center w-11 h-11 -ml-[22px] -mt-[22px] pointer-events-none"
-          style="left:44%; top:62.5%"
-        >
           <span
-            class="block w-[18px] h-[18px] rounded-full bg-teal-700"
-            style="box-shadow: 0 0 0 4px #fff, 0 0 0 7px oklch(53% .09 196/.35)"
-          />
-        </span>
-        <p
-          class="absolute whitespace-nowrap rounded-full bg-white px-2.5 py-1 text-[16px] font-semibold text-teal-800 pointer-events-none"
-          style="left:40%; top:62.5%; transform:translate(-100%,-50%); box-shadow: var(--shadow-carte)"
-        >
-          {COPY.mapYouAreHere}
-        </p>
+            data-halle
+            class="absolute grid place-items-center w-11 h-11 -ml-[22px] -mt-[22px] pointer-events-none"
+            style={`left:${hall.left}%; top:${hall.top}%`}
+          >
+            <span
+              class="block w-[18px] h-[18px] rounded-full bg-teal-700"
+              style="box-shadow: 0 0 0 4px #fff, 0 0 0 7px oklch(53% .09 196/.35)"
+            />
+          </span>
+          <p
+            class="absolute whitespace-nowrap rounded-full bg-white px-2.5 py-1 text-[16px] font-semibold text-teal-800 pointer-events-none"
+            style={`left:calc(${hall.left}% - 18px); top:${hall.top}%; transform:translate(-100%,-50%); box-shadow: var(--shadow-carte)`}
+          >
+            {COPY.mapHall}
+          </p>
 
-        {
-          // .ancre immediately precedes its own .epingle-lien: the sole reason
-          // this pairing works with one generic CSS rule instead of one
-          // generated per member (see this file's own header comment and
-          // <style is:global> below, ".ancre:target + .epingle-lien").
-          pins.map((p) => (
-            <>
-              <span class="ancre" id={`pin-${p.member.slug}`} />
-              <a
-                data-m={p.member.slug}
-                href={`#pin-${p.member.slug}`}
-                class="epingle-lien absolute grid place-items-center w-11 h-11 -ml-[22px] -mt-[22px]"
-                style={`left:${p.position.left}%; top:${p.position.top}%`}
-                aria-label={COPY.mapPinAria(p.member.nom, p.member.metier, p.member.distance)}
-              >
-                <span class="epingle grid place-items-center w-9 h-9 rounded-full bg-white text-teal-700">
-                  {p.icon && <Icon raw={p.icon} class="w-[18px] h-[18px]" />}
-                </span>
-                <span class={`etiq ${p.position.etiqClass}`} aria-hidden="true">
-                  {p.member.nom} · {p.member.distance}
-                </span>
-              </a>
-            </>
-          ))
-        }
+          {
+            // .ancre immediately precedes its own .epingle-lien: the sole reason
+            // this pairing works with one generic CSS rule instead of one
+            // generated per member (see this file's own header comment and
+            // <style is:global> below, ".ancre:target + .epingle-lien").
+            pins.map((p) => (
+              <>
+                <span class="ancre" id={`pin-${p.member.slug}`} style={`left:${p.position.left}%; top:${p.position.top}%`} />
+                <a
+                  data-m={p.member.slug}
+                  href={`#pin-${p.member.slug}`}
+                  class="epingle-lien absolute z-10 grid place-items-center w-11 h-11 -ml-[22px] -mt-[22px]"
+                  style={`left:${p.position.left}%; top:${p.position.top}%`}
+                  aria-label={COPY.mapPinAria(p.member.nom, p.member.metier, p.member.distance)}
+                >
+                  <span class="epingle grid place-items-center w-9 h-9 rounded-full bg-white text-teal-700">
+                    {p.icon && <Icon raw={p.icon} class="w-[18px] h-[18px]" />}
+                  </span>
+                  <span class={`etiq ${p.position.etiqClass}`} aria-hidden="true">
+                    {p.member.nom} · {p.member.distance}
+                  </span>
+                </a>
+              </>
+            ))
+          }
+        </div>
       </div>
 
       <p class="mt-2.5 flex flex-wrap items-center justify-between gap-x-4 gap-y-1 text-[16px] text-neutre-700">
-        <span>{COPY.mapSchematic}</span>
+        <a
+          href="https://www.openstreetmap.org/copyright"
+          class="inline-flex items-center min-h-[44px] underline underline-offset-4 decoration-neutre-400 hover:decoration-neutre-700"
+        >
+          {COPY.mapAttribution}
+        </a>
         <a
           href="#quartier"
           class="reset inline-flex items-center gap-1.5 min-h-[44px] font-semibold text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600"
@@ -264,16 +181,10 @@ const pins = members.filter(isPinned).map((m) => ({
     </div>
 
     <div class="feuille relative mt-6 lg:mt-0">
-      <div class="flex flex-wrap items-end justify-between gap-x-4 gap-y-1">
-        <h2 id="t-proches" class="ff min-w-0 break-words text-nom text-teal-900">
-          <span data-from-hall>{COPY.mapFromHall}</span>
-          <span data-from-you hidden>{COPY.mapFromYou}</span>
-        </h2>
-        <p class="text-[16px] text-neutre-700">
-          <span data-origin-hall>{COPY.mapOriginHall(addressParts.count, addressParts.noun)}</span>
-          <span data-origin-you hidden>{COPY.mapOriginYou(addressParts.count, addressParts.noun)}</span>
-        </p>
-      </div>
+      <h2 id="t-proches" class="ff min-w-0 break-words text-nom text-teal-900">
+        <span data-from-hall>{COPY.mapFromHall}</span>
+        <span data-from-you hidden>{COPY.mapFromYou}</span>
+      </h2>
       <div class="filet h-[3px] w-16 rounded-full mt-2.5 mb-5" />
       <ol data-sheet aria-labelledby="t-proches" class="flex flex-col gap-3 list-none p-0 m-0">
         {
@@ -331,21 +242,65 @@ const pins = members.filter(isPinned).map((m) => ({
   </script>
 
   <style is:global>
-    /* les ancres de :target ne prennent aucune place ; elles ne servent qu'à
-       nommer une épingle dans l'URL. L'en-tête colle, d'où la marge de défilement.
-       Chaque ancre précède directement son épingle dans le DOM (voir la boucle
-       pins.map ci-dessus) : elle se positionne donc par rapport à .plan, pas à
-       #quartier, qui garde position:relative pour les règles :has() ci-dessous. */
+    /* les ancres de :target ne prennent aucune place ; elles nomment une épingle
+       dans l'URL et sont posées sur elle (style en ligne, par rapport à .plan) :
+       suivre #pin-<slug> fait défiler la page ET la fenêtre de la carte jusqu'à
+       l'épingle, sans script. Les marges la gardent loin des bords et sous l'en-tête
+       collant. #quartier garde position:relative pour les règles :has() ci-dessous. */
     #quartier {
       position: relative;
     }
     .ancre {
       position: absolute;
-      top: 0;
-      left: 0;
       width: 0;
       height: 0;
-      scroll-margin-top: 84px;
+      scroll-margin-block: 40vh;
+      scroll-margin-inline: min(40vw, 200px);
+    }
+
+    /* le fond de carte (src/assets/quartier.svg) : ses classes nomment ce que
+       chaque tracé représente, les couleurs restent celles du thème */
+    .plan svg path {
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .plan svg .g {
+      fill: var(--color-sauge-100);
+    }
+    .plan svg .w {
+      fill: var(--color-teal-100);
+    }
+    .plan svg .s,
+    .plan svg .r,
+    .plan svg .p {
+      stroke: #fff;
+    }
+    .plan svg .s {
+      stroke-width: 3;
+    }
+    .plan svg .r {
+      stroke-width: 7;
+    }
+    .plan svg .p {
+      stroke-width: 11;
+    }
+    .plan svg .m {
+      stroke: var(--color-neutre-300);
+      stroke-width: 12;
+    }
+    .plan svg .t {
+      stroke: var(--color-teal-600);
+      stroke-width: 2;
+      stroke-dasharray: 7 7;
+    }
+    .plan svg .rues {
+      font-family: var(--font-sans);
+      font-weight: 600;
+      fill: var(--color-neutre-700);
+      stroke: var(--color-neutre-200);
+      stroke-width: 3;
+      paint-order: stroke;
     }
 
     /* une épingle : disque blanc, anneau teal. L'état sélectionné — le SEUL objet

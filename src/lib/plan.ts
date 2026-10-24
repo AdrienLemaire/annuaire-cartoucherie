@@ -1,65 +1,64 @@
 // src/lib/plan.ts
-// The schematic quartier plan carte.astro draws (docs/mockups/final/carte.html):
-// a member's real lat/lng projected onto the plan as a left/top percentage pair.
-// The plan pin itself still needs no script to move — carte.astro's own
-// <style is:global> links it to its :target'd .ancre generically; only the
-// sheet row's highlight is JS (src/client/carte-select.ts), and only
-// src/client/geolocate.ts ever reorders the sheet. Why the pin used to need
-// generated, per-member CSS and no longer does: carte.astro's own header
-// comment (task-15-report.md).
+// The quartier map carte.astro draws: OpenStreetMap streets inside fixed bounds
+// (src/assets/quartier.svg, rendered by scripts/map-svg.mjs) with each
+// member's real lat/lng projected onto it in Web Mercator, as a left/top
+// percentage pair. The pin needs no script — carte.astro's own
+// <style is:global> links it to its :target'd .ancre; only the sheet row's
+// highlight is JS (src/client/carte-select.ts), and only
+// src/client/geolocate.ts ever reorders the sheet.
 import type { Member } from "../content/schemas";
 
-// The Halle de la Cartoucherie: the plan's own visual anchor (the mockup's own
-// "vous êtes ici" marker) and the origin projectOnPlan measures every pin
-// from.
+// The Halle de la Cartoucherie: the origin the sheet is ranked from and the
+// map's « La Halle » marker.
 export const HALL = { lat: 43.6006, lng: 1.4108 };
 
-// The Halle glyph's own fixed position inside the hand-drawn SVG background
-// (docs/mockups/final/carte.html's 390×400 viewBox, copied verbatim into
-// carte.astro): every pin is placed relative to it, in percent, rather than to
-// the viewBox's geometric centre, which the glyph does not sit at.
-const ORIGIN = { left: 44, top: 62.5 };
+// The district the map covers. Fixed, never derived from member data:
+// the committed map must not change with the private content.
+export const MAP_BOUNDS = { south: 43.5975, west: 1.403, north: 43.608, east: 1.4185 };
 
-// A radial square-root scale, not a linear one: several fixture members sit
-// within 60-150 m of the Halle, close enough that a linear metres-to-percent
-// scale stacks their pins (and their 44px tap targets, docs/STANDARDS.md's own
-// floor) on top of each other. A square root spreads nearby points apart more
-// than it spreads distant ones — still monotonic, so relative order survives —
-// while SQRT_SCALE is tuned to keep the farthest fixture member
-// (marc-ollivier, ~800 m) inside an 8-92% band. The plan is schematic and says
-// so (COPY.mapSchematic): this is not a projection a visitor could measure a
-// distance from.
-const SQRT_SCALE = 42 / Math.sqrt(800);
-const MIN_PERCENT = 8;
-const MAX_PERCENT = 92;
+// Zoom whose Web Mercator pixels the map is drawn in, 1:1: ~1.7 m per CSS pixel, so two
+// members 80 m apart keep their 44 px tap targets apart.
+export const MAP_ZOOM = 16;
 
-function clamp(n: number): number {
-  return Math.min(MAX_PERCENT, Math.max(MIN_PERCENT, n));
+/** Web Mercator world pixel at MAP_ZOOM: the map's own coordinate space. */
+export function mercatorPixel(lat: number, lng: number): { x: number; y: number } {
+  const world = 256 * 2 ** MAP_ZOOM;
+  const rad = (lat * Math.PI) / 180;
+  return {
+    x: ((lng + 180) / 360) * world,
+    y: ((1 - Math.log(Math.tan(rad) + 1 / Math.cos(rad)) / Math.PI) / 2) * world,
+  };
 }
 
-export type PlanPosition = { left: number; top: number; etiqClass: "etiq--g" | "etiq--c" | "etiq--d" };
+const TOP_LEFT = mercatorPixel(MAP_BOUNDS.north, MAP_BOUNDS.west);
+const BOTTOM_RIGHT = mercatorPixel(MAP_BOUNDS.south, MAP_BOUNDS.east);
+
+export type MapPosition = { left: number; top: number; etiqClass: "etiq--g" | "etiq--c" | "etiq--d" };
 
 /**
- * A public point exists for this member: carte.astro needs exactly this set
- * (the plan's pins), so it is decided once here rather than the same
- * three-field check drifting between callers.
+ * A public point exists for this member: carte.astro's pins and MemberRow's
+ * « Situer » link need exactly this set, so it is decided once here.
  */
-export function isPinned(member: Pick<Member, "surCarte" | "lat" | "lng">): boolean {
+export function isPinned<T extends Pick<Member, "surCarte" | "lat" | "lng">>(
+  member: T,
+): member is T & { lat: number; lng: number } {
   return member.surCarte && member.lat !== null && member.lng !== null;
 }
 
-/** Where a member's pin sits on the schematic plan, or null with no coordinates to place it. */
-export function projectOnPlan(point: Pick<Member, "lat" | "lng">): PlanPosition | null {
-  if (point.lat === null || point.lng === null) return null;
-  const metresPerDegreeLat = 111_320;
-  const metresPerDegreeLng = 111_320 * Math.cos((HALL.lat * Math.PI) / 180);
-  const dx = (point.lng - HALL.lng) * metresPerDegreeLng;
-  const dy = (point.lat - HALL.lat) * metresPerDegreeLat; // north is up: higher lat, smaller top
-  const distance = Math.hypot(dx, dy);
-  const angle = Math.atan2(dy, dx);
-  const scaled = Math.sqrt(distance) * SQRT_SCALE;
-  const left = clamp(ORIGIN.left + scaled * Math.cos(angle));
-  const top = clamp(ORIGIN.top - scaled * Math.sin(angle));
+/**
+ * Where a member sits on the map, in percent of its width and height.
+ * Throws for a point outside MAP_BOUNDS: the build stops rather than pinning
+ * a neighbour on the wrong spot or dropping them from the map unannounced —
+ * widen MAP_BOUNDS and rerun scripts/map-svg.mjs instead.
+ */
+export function projectOnMap(point: { slug: string; lat: number; lng: number }): MapPosition {
+  const b = MAP_BOUNDS;
+  if (point.lat < b.south || point.lat > b.north || point.lng < b.west || point.lng > b.east) {
+    throw new RangeError(`${point.slug} lies outside MAP_BOUNDS (src/lib/plan.ts)`);
+  }
+  const { x, y } = mercatorPixel(point.lat, point.lng);
+  const left = (100 * (x - TOP_LEFT.x)) / (BOTTOM_RIGHT.x - TOP_LEFT.x);
+  const top = (100 * (y - TOP_LEFT.y)) / (BOTTOM_RIGHT.y - TOP_LEFT.y);
   const etiqClass = left < 25 ? "etiq--g" : left > 75 ? "etiq--d" : "etiq--c";
   return { left, top, etiqClass };
 }

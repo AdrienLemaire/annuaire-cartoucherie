@@ -34,9 +34,8 @@ export function sortByDistance<T extends Pick<Member, "distance">>(members: T[])
 }
 
 /**
- * annuaire.astro's own chip rail (final-fixes-report.md, I3): COPY.directoryDetailDefault
- * says « du plus fourni au plus rare », but the code shipped categories.json's own
- * curated order. The mockup (annuaire.html:368-388) sorts by member count, descending,
+ * annuaire.astro's own chip rail (final-fixes-report.md, I3), most populated first
+ * rather than categories.json's own curated order. The mockup (annuaire.html:368-388) sorts by member count, descending,
  * and ties five 2-count and two 1-count categories in French alphabetical order —
  * a decision that could have gone the other way (curated order, insertion order,
  * id order), so it earns naming here rather than living inline in a page.
@@ -56,7 +55,7 @@ export function withCounts(categories: Category[], members: Member[]): CategoryW
 export type MemberCountParts = { count: number; noun: string };
 
 // French keeps the feminine only when nobody in the group is masculine — the
-// one rule memberCountParts and groupPronoun both apply, so it lives once.
+// one rule every group count applies, so it lives once.
 function groupGender(genders: Gender[]): Gender {
   return genders.length > 0 && genders.every((g) => g === "f") ? "f" : "h";
 }
@@ -72,15 +71,6 @@ function groupGender(genders: Gender[]): Gender {
 export function memberCountParts(count: number, genders: Gender[]): MemberCountParts {
   const noun = agree(groupGender(genders), "voisine");
   return { count, noun: count === 1 ? noun : `${noun}s` };
-}
-
-/**
- * « elle »/« il » for one person, « elles »/« ils » for a group — carte.astro's
- * own two count-dependent intro sentences (docs/mockups/final/carte.html:448-449)
- * are the only callers. Same all-or-nothing rule as memberCountParts' own noun.
- */
-export function groupPronoun(genders: Gender[]): string {
-  return agree(groupGender(genders), genders.length === 1 ? "elle" : "ils");
 }
 
 /**
@@ -104,25 +94,15 @@ export function memberUrl(slug: string, site: string): string {
 }
 
 /**
- * The same URL, without its scheme — membre.html:614's own display value
- * (QrCard.astro, final-fixes-report.md M17): printed beside a QR code,
- * "https://" is noise nobody reads aloud or types. Takes the full URL memberUrl
- * already built rather than reconstructing it, so the QR code and the text
- * beside it can never point at two different things.
+ * Where a carousel slide is served from, at one of the two widths
+ * scripts/sync-content.mjs writes (<name>-720.webp for the page, <name>-1080.webp
+ * full screen), whatever its source format — keep the two in step.
  */
-export function displayUrl(url: string): string {
-  const u = new URL(url);
-  return `${u.host}${u.pathname}`;
+export function slideSrc(fichier: string, width: 720 | 1080): string {
+  return `/carrousels/${fichier.replace(/\.[a-z]+$/, "")}-${width}.webp`;
 }
 
 /** « 4,8 », « 5,0 » — the French decimal comma, always one digit (styleguide block 12). */
-/**
- * Where a carousel slide is served from. scripts/sync-content.mjs writes every
- * slide as <name>.webp, whatever its source format — keep the two in step.
- */
-export function slideSrc(fichier: string): string {
-  return `/carrousels/${fichier.replace(/\.[a-z]+$/, "")}.webp`;
-}
 
 export function formatNote(note: number): string {
   return note.toFixed(1).replace(".", ",");
