@@ -355,10 +355,12 @@ export const COPY = {
   legalHostTitle: "Hébergeur",
   legalHost: "Ce site est hébergé par Cloudflare, Inc., 101 Townsend St., San Francisco, CA 94107, États-Unis.",
   legalIpTitle: "Propriété intellectuelle",
+  // Each profile belongs to the entrepreneur it presents, not to the association
+  // and not to the editor. Until accounts exist (roadmap), changes go by email.
   legalIpText:
-    "Sauf mention contraire, les textes, la mise en page et les portraits de ce site appartiennent " +
-    "à l'association ou sont utilisés avec l'autorisation de leurs auteurs (voir la page « À " +
-    "propos » pour le détail des crédits). Toute reproduction sans autorisation est interdite.",
+    "Chaque fiche appartient à la personne qu'elle présente : ses textes, photos et visuels sont " +
+    "publiés avec son accord. Elle peut les faire modifier ou retirer à tout moment, sur simple " +
+    "demande à l'adresse de contact ci-dessus. Toute reproduction sans son autorisation est interdite.",
 
   // Future tense throughout this section but reviewsReportText below
   // (final-fixes-report.md, I12): reviews are not built yet (avis.astro's own
