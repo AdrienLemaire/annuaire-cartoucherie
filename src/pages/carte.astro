@@ -43,7 +43,7 @@ import MemberCard from "../components/MemberCard.astro";
 import MemberRow from "../components/MemberRow.astro";
 import { COPY } from "../lib/copy";
 import { loadCategories, loadMembers } from "../lib/collections";
-import { hasAddress, memberCountParts, pluralPronoun, sortByDistance } from "../lib/members";
+import { hasAddress, memberCountParts, groupPronoun, sortByDistance } from "../lib/members";
 import { isPinned, projectOnPlan } from "../lib/plan";
 
 const [members, categories] = await Promise.all([loadMembers(), loadCategories()]);
@@ -62,7 +62,7 @@ const itinerantParts = memberCountParts(
   withoutAddress.length,
   withoutAddress.map((m) => m.genre),
 );
-const itinerantPronoun = pluralPronoun(withoutAddress.map((m) => m.genre));
+const itinerantPronoun = groupPronoun(withoutAddress.map((m) => m.genre));
 
 // isPinned (src/lib/plan.ts) is the one place that decides "is there a public
 // point to show".

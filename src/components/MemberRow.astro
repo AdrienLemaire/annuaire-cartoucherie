@@ -72,11 +72,13 @@ const telDisplay = member.tel ? formatTelDisplay(member.tel) : null;
         </h3>
         <p class="text-[16px] text-neutre-800 leading-snug">{member.metier}</p>
         <p class="flex flex-wrap items-center gap-x-3 gap-y-1 text-[16px] text-neutre-700 mt-0.5">
-          <span class="inline-flex items-center gap-1">
-            <Icon name="etoile" class="w-4 h-4 text-sable-700" />
-            {formatNote(member.note)}
-            <span class="sr-only"> {COPY.ratingOutOf}</span> <span class="text-neutre-600">({member.nbAvis})</span>
-          </span>
+          {member.nbAvis > 0 && (
+            <span class="inline-flex items-center gap-1">
+              <Icon name="etoile" class="w-4 h-4 text-sable-700" />
+              {formatNote(member.note)}
+              <span class="sr-only"> {COPY.ratingOutOf}</span> <span class="text-neutre-600">({member.nbAvis})</span>
+            </span>
+          )}
           <span class="inline-flex items-center gap-1">
             <Icon name="pin" class="w-4 h-4 text-teal-600" />
             <span class="dist">{member.distance}</span>
@@ -120,11 +122,13 @@ const telDisplay = member.tel ? formatTelDisplay(member.tel) : null;
           </h3>
           <p class="text-corps text-neutre-800 leading-snug">{member.metier}</p>
           <p class="flex flex-wrap items-center gap-x-3 gap-y-1 text-[16px] text-neutre-700 mt-0.5">
-            <span class="inline-flex items-center gap-1">
-              <Icon name="etoile" class="w-4 h-4 text-sable-700" />
-              {formatNote(member.note)}
-              <span class="sr-only"> {COPY.ratingOutOf}</span> <span class="text-neutre-600">({member.nbAvis})</span>
-            </span>
+            {member.nbAvis > 0 && (
+              <span class="inline-flex items-center gap-1">
+                <Icon name="etoile" class="w-4 h-4 text-sable-700" />
+                {formatNote(member.note)}
+                <span class="sr-only"> {COPY.ratingOutOf}</span> <span class="text-neutre-600">({member.nbAvis})</span>
+              </span>
+            )}
             {
               fixed ? (
                 <span class="inline-flex items-center gap-1">

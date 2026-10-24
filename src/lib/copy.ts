@@ -236,9 +236,12 @@ export const COPY = {
   // honestly rather than the page quietly starting to lie.
   mapOriginHall: (count: number, noun: string) => `${count} ${noun} · depuis la Halle`,
   mapOriginYou: (count: number, noun: string) => `${count} ${noun} · depuis votre position`,
-  mapIntroAddress: (count: number, noun: string) => `${count} ${noun} ont une adresse ici.`,
+  mapIntroAddress: (count: number, noun: string) =>
+    `${count} ${noun} ${count === 1 ? "a" : "ont"} une adresse ici.`,
   mapIntroItinerant: (count: number, noun: string, pronoun: string) =>
-    `${count} ${noun} se déplacent : ${capitalize(pronoun)} sont plus bas.`,
+    count === 1
+      ? `${count} ${noun} se déplace : ${capitalize(pronoun)} est plus bas.`
+      : `${count} ${noun} se déplacent : ${capitalize(pronoun)} sont plus bas.`,
   // The plan SVG's own role="img" aria-label (docs/mockups/final/carte.html):
   // the one accessible summary of a decorative illustration whose baked-in
   // street/landmark <text> labels are art, not UI copy, and so stay literal.
