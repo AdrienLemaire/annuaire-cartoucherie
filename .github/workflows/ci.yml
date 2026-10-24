@@ -142,8 +142,11 @@ jobs:
     env:
       # Every QR code and canonical URL encodes this at build time.
       SITE_URL: ${{ vars.SITE_URL }}
-      # Not `main && '' || 'staging'`: '' is falsy, so that yields 'staging' on main.
-      WRANGLER_ENV: ${{ github.ref != 'refs/heads/main' && 'staging' || '' }}
+      # Production is the top-level Worker: no --env at all. Not `--env ""`:
+      # wrangler-action drops the empty argument and wrangler rejects a bare
+      # --env (the first production deploy failed on it). Not `main && '' ||
+      # '--env staging'` either: '' is falsy, so that yields staging on main.
+      WRANGLER_ARGS: ${{ github.ref != 'refs/heads/main' && '--env staging' || '' }}
     steps:
       - name: SITE_URL is set
         run: |
@@ -173,7 +176,7 @@ jobs:
       - run: node scripts/budgets.mjs
       # Staging carries real neighbours too: keep it out of search engines, or
       # a visitor lands on a test copy instead of the real directory.
-      - if: env.WRANGLER_ENV == 'staging'
+      - if: github.ref != 'refs/heads/main'
         run: |
           printf '\n/*\n  X-Robots-Tag: noindex, nofollow\n' >> dist/_headers
       # The only moment a browser sees the real quartier before it goes out. It
@@ -191,8 +194,7 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          # --env "" names the top-level (production) Worker explicitly.
-          command: deploy --env "${{ env.WRANGLER_ENV }}"
+          command: deploy ${{ env.WRANGLER_ARGS }}
       # A hostname attached by this very deploy takes a moment to resolve (the
       # first staging deploy failed on ERR_NAME_NOT_RESOLVED). A readiness gate,
       # not a test retry: wait up to two minutes for the host to answer at all.
