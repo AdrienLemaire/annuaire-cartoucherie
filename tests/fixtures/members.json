@@ -85,7 +85,12 @@
       "photo": "lea-fontaine.jpg",
       "note": 4.9,
       "nbAvis": 15,
-      "surCarte": true
+      "surCarte": true,
+      "carrousel": [
+        { "fichier": "lea-fontaine-1.jpg", "texte": "Rencontre avec Léa." },
+        { "fichier": "lea-fontaine-2.jpg", "texte": "Pourquoi entreprendre ? Pour dessiner les affiches du quartier." },
+        { "fichier": "lea-fontaine-3.jpg", "texte": "Mon atelier en bref : identité visuelle, illustration, affiches." }
+      ]
     },
     {
       "slug": "marc-ollivier",

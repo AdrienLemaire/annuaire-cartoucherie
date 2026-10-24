@@ -137,6 +137,11 @@ export const COPY = {
 
   profileContact: (article: string) => `${capitalize(article)} contacter`,
   profilePortrait: "Son portrait",
+  // The member's Instagram portrait carousel (PortraitCarousel.astro).
+  carouselLabel: "Sa présentation en images, à faire défiler",
+  carouselSlideAlt: (n: number, total: number) => `Diapositive ${n} sur ${total}`,
+  carouselCount: (n: number, total: number) => `${n} / ${total}`,
+  carouselReadText: "Lire le texte des diapositives",
   profileOffers: (pronoun: string) => `Ce qu'${pronoun} propose`,
   profileWhere: (article: string) => `Où ${article} trouver`,
   // membre.html's own « Où la trouver » deep link (line 497): gendered like

@@ -1,12 +1,22 @@
 // The project's type origin. `z` comes from "zod", NEVER from "astro:content":
 // the latter drags the content runtime into the browser bundle, and src/lib is
-// isomorphic. Field names stay French because Sandra edits the JSON by hand.
+// isomorphic. Field names stay French because the JSON is edited by hand.
 import { z } from "zod";
 
 export const genderSchema = z.enum(["f", "h"]);
 export type Gender = z.infer<typeof genderSchema>;
 
 const SLUG = /^[a-z0-9-]+$/;
+const IMAGE_FILE = /^[a-z0-9-]+\.(jpg|png|webp)$/;
+
+// One slide of the member's Instagram portrait carousel. `texte` is the slide's
+// own words, transcribed: the slides are text set in images, which a screen
+// reader cannot read and a 200 % zoom blurs.
+export const slideSchema = z.object({
+  fichier: z.string().regex(IMAGE_FILE, "fichier: a file name under carrousels/, not a URL"),
+  texte: z.string().min(1),
+});
+export type Slide = z.infer<typeof slideSchema>;
 
 export const memberSchema = z.object({
   // Hand-written and permanent: it is the QR URL (spec §6). Never derived.
@@ -33,6 +43,7 @@ export const memberSchema = z.object({
   note: z.number().min(0).max(5),
   nbAvis: z.number().int().min(0),
   surCarte: z.boolean(),
+  carrousel: z.array(slideSchema).default([]),
 });
 export type Member = z.infer<typeof memberSchema>;
 

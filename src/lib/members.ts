@@ -116,6 +116,14 @@ export function displayUrl(url: string): string {
 }
 
 /** « 4,8 », « 5,0 » — the French decimal comma, always one digit (styleguide block 12). */
+/**
+ * Where a carousel slide is served from. scripts/sync-content.mjs writes every
+ * slide as <name>.webp, whatever its source format — keep the two in step.
+ */
+export function slideSrc(fichier: string): string {
+  return `/carrousels/${fichier.replace(/\.[a-z]+$/, "")}.webp`;
+}
+
 export function formatNote(note: number): string {
   return note.toFixed(1).replace(".", ",");
 }
