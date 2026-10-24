@@ -285,7 +285,6 @@ export const COPY = {
     "Adrien est à l'écoute de nouvelles opportunités professionnelles : son parcours est sur " +
     "LinkedIn, en suivant son nom ci-dessus.",
   aboutCreditsTitle: "Les crédits",
-  aboutCreditColly: "Colly, la mascotte du quartier, sera redessinée par",
   aboutCreditMap: "Les itinéraires s'appuient sur OpenStreetMap.",
   aboutCreditOpenSource:
     "Ce site tourne grâce à des bibliothèques open source, dont Astro, Tailwind CSS, daisyUI, Zod " +
@@ -354,16 +353,12 @@ export const COPY = {
   legalAuthor: `${AUTHOR}.`,
   legalContactTitle: "Contact",
   legalHostTitle: "Hébergeur",
-  legalHostIntro: "Ce site est hébergé par Cloudflare.",
+  legalHost: "Ce site est hébergé par Cloudflare, Inc., 101 Townsend St., San Francisco, CA 94107, États-Unis.",
   legalIpTitle: "Propriété intellectuelle",
   legalIpText:
     "Sauf mention contraire, les textes, la mise en page et les portraits de ce site appartiennent " +
     "à l'association ou sont utilisés avec l'autorisation de leurs auteurs (voir la page « À " +
     "propos » pour le détail des crédits). Toute reproduction sans autorisation est interdite.",
-  // The one marker glyph, shared by every unknown on /mentions-legales and
-  // /a-propos so docs/mentions-legales-a-completer.md's own list and the page
-  // never drift apart.
-  legalMarker: (what: string) => `⟨à compléter : ${what}⟩`,
 
   // Future tense throughout this section but reviewsReportText below
   // (final-fixes-report.md, I12): reviews are not built yet (avis.astro's own
