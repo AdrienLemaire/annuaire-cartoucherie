@@ -1,7 +1,7 @@
 // tests/e2e/a11y.spec.ts
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "@playwright/test";
-import { feminine } from "./fixture";
+import { feminine, withCarousel } from "./fixture";
 
 // A nonexistent slug, not the literal "/404": a real visitor never types that
 // path, they land on one that doesn't exist (a stale printed QR, a mistyped
@@ -11,6 +11,7 @@ const PAGES = [
   "/",
   "/annuaire",
   `/membre/${feminine.slug}`,
+  `/membre/${withCarousel.slug}`,
   "/carte",
   "/categorie/sante-bien-etre",
   "/ce-slug-n-existe-pas",

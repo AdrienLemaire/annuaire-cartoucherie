@@ -8,7 +8,7 @@
 // looks green without meaning anything (task-14-report.md, fix round 1).
 import { execFileSync } from "node:child_process";
 
-const PATTERN = /members\.json|portraits\//;
+const PATTERN = /members\.json|portraits\/|carrousels\//;
 
 // tests/fixtures/ is a prefix, deliberately: it is the single, designated
 // container for the fictional fixture (CLAUDE.md, task-14-brief.md), governed

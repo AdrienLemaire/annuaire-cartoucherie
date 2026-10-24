@@ -193,6 +193,10 @@ jobs:
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           # --env "" names the top-level (production) Worker explicitly.
           command: deploy --env "${{ env.WRANGLER_ENV }}"
+      # A hostname attached by this very deploy takes a moment to resolve (the
+      # first staging deploy failed on ERR_NAME_NOT_RESOLVED). A readiness gate,
+      # not a test retry: wait up to two minutes for the host to answer at all.
+      - run: timeout 120 bash -c 'until curl -sf -o /dev/null "$SITE_URL"; do sleep 5; done'
       # Against the live host this job just deployed: HTTPS, headers, no cookie.
       - run: npx playwright test tests/e2e/deployed.spec.ts
         env:

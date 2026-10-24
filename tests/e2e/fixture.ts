@@ -38,5 +38,8 @@ export const pickupOnly = pick((m) => hasAddress(m) && !m.surCarte, "with an add
 /** Nobody has reviewed yet: no « 0,0 » score anywhere. */
 export const unreviewed = pick((m) => m.nbAvis === 0, "with no review yet");
 
+/** Her Instagram portrait carousel: slides, and their words in text. */
+export const withCarousel = pick((m) => (m.carrousel ?? []).length > 0, "with a portrait carousel");
+
 // Every export here is used by a spec. An unused one is a selector nobody needs:
 // delete it rather than keeping it « for later ».

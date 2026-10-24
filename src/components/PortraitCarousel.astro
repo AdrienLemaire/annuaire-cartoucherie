@@ -1,0 +1,55 @@
+---
+// src/components/PortraitCarousel.astro
+// The member's Instagram portrait carousel, rebuilt from its slides rather than
+// embedded: Instagram's embed needs a third-party script the CSP blocks, sets
+// cookies the privacy page promises never to set, and weighs about 1 MB.
+// No mockup covers this block; it borrows the profile's own card language.
+//
+// Plain CSS scroll-snap, no JavaScript: the finger swipes like on Instagram, and
+// « n / N » under each slide does what Instagram's dots do. The scroller is
+// focusable (tabindex) so a keyboard can scroll it — axe's
+// scrollable-region-focusable. Slides are text set in images, so their words
+// follow in a disclosure, for screen readers and for 200 % zoom alike.
+import type { Slide } from "../content/schemas";
+import { COPY } from "../lib/copy";
+import { slideSrc } from "../lib/members";
+
+interface Props {
+  slides: Slide[];
+}
+const { slides } = Astro.props;
+const total = slides.length;
+---
+
+<ul
+  class="-mx-5 mt-6 flex snap-x snap-mandatory scroll-px-5 gap-3 overflow-x-auto px-5 pb-2 focus-visible:outline-2 focus-visible:outline-teal-700"
+  tabindex="0"
+  aria-label={COPY.carouselLabel}
+>
+  {
+    slides.map((slide, i) => (
+      <li class="w-[78%] max-w-[340px] shrink-0 snap-start">
+        <img
+          src={slideSrc(slide.fichier)}
+          alt={COPY.carouselSlideAlt(i + 1, total)}
+          width="720"
+          height="900"
+          loading="lazy"
+          decoding="async"
+          class="carte h-auto w-full rounded-[16px] bg-white"
+        />
+        <p class="tnum mt-2 text-center text-[16px] text-neutre-700" aria-hidden="true">
+          {COPY.carouselCount(i + 1, total)}
+        </p>
+      </li>
+    ))
+  }
+</ul>
+<details class="mt-3">
+  <summary class="inline-flex min-h-[44px] cursor-pointer items-center text-corps font-semibold text-teal-700 underline decoration-teal-300 underline-offset-4 hover:decoration-teal-600">
+    {COPY.carouselReadText}
+  </summary>
+  <ol class="mt-2 max-w-[62ch] list-decimal space-y-2 pl-6 text-[18px] leading-relaxed text-neutre-900">
+    {slides.map((slide) => <li>{slide.texte}</li>)}
+  </ol>
+</details>

@@ -8,7 +8,7 @@
 // downloaded by a script — the STANDARDS §3 rule task-9-brief.md names.
 import Icon from "./Icon.astro";
 import { COPY } from "../lib/copy";
-import { displayUrl } from "../lib/members";
+import { displayUrl, firstName } from "../lib/members";
 
 interface Props {
   slug: string;
@@ -28,6 +28,7 @@ const file = `/qr/${slug}.svg`;
   </div>
   <div class="min-w-0">
     <p class="max-w-[48ch] text-corps text-neutre-900">{COPY.qrExplain}</p>
+    <p class="mt-2 max-w-[48ch] text-[16px] text-neutre-700">{COPY.qrForMember(firstName(nom))}</p>
     <p class="mt-2 break-words text-[16px] text-neutre-700">{displayUrl(url)}</p>
     <a
       href={file}
