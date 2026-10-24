@@ -56,7 +56,7 @@ export function withCounts(categories: Category[], members: Member[]): CategoryW
 export type MemberCountParts = { count: number; noun: string };
 
 // French keeps the feminine only when nobody in the group is masculine — the
-// one rule memberCountParts and groupPronoun both apply, so it lives once.
+// one rule every group count applies, so it lives once.
 function groupGender(genders: Gender[]): Gender {
   return genders.length > 0 && genders.every((g) => g === "f") ? "f" : "h";
 }
@@ -72,15 +72,6 @@ function groupGender(genders: Gender[]): Gender {
 export function memberCountParts(count: number, genders: Gender[]): MemberCountParts {
   const noun = agree(groupGender(genders), "voisine");
   return { count, noun: count === 1 ? noun : `${noun}s` };
-}
-
-/**
- * « elle »/« il » for one person, « elles »/« ils » for a group — carte.astro's
- * own two count-dependent intro sentences (docs/mockups/final/carte.html:448-449)
- * are the only callers. Same all-or-nothing rule as memberCountParts' own noun.
- */
-export function groupPronoun(genders: Gender[]): string {
-  return agree(groupGender(genders), genders.length === 1 ? "elle" : "ils");
 }
 
 /**

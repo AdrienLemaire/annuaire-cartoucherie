@@ -44,19 +44,10 @@ function reorder(from: { lat: number; lng: number }): void {
   });
 }
 
-// Each selector pair is two spans carte.astro already wrote, one hidden — this
-// function only ever toggles which one is visible, never composes text. Called
-// once per pair (the sheet heading, the geo panel's own title, its body text,
-// the sheet's origin line): four independent swaps, since three of the four
-// carry different wording pre/post-grant even though two happen to read
-// identically after ("Classé depuis votre position" is mapFromYou in both).
-function swap(fromSelector: string, toSelector: string, toGranted: boolean): void {
-  document.querySelectorAll<HTMLElement>(fromSelector).forEach((el) => {
-    el.hidden = toGranted;
-  });
-  document.querySelectorAll<HTMLElement>(toSelector).forEach((el) => {
-    el.hidden = !toGranted;
-  });
+// The sheet heading: two spans carte.astro already wrote, one hidden.
+function showSheetFromYou(): void {
+  document.querySelector<HTMLElement>("[data-from-hall]")?.setAttribute("hidden", "");
+  document.querySelector<HTMLElement>("[data-from-you]")?.removeAttribute("hidden");
 }
 
 function showStatus(kind: "granted" | "denied"): void {
@@ -71,10 +62,7 @@ document.querySelector("[data-geolocate]")?.addEventListener("click", () => {
   navigator.geolocation.getCurrentPosition(
     (position) => {
       reorder({ lat: position.coords.latitude, lng: position.coords.longitude });
-      swap("[data-from-hall]", "[data-from-you]", true);
-      swap("[data-geo-title-hall]", "[data-geo-title-you]", true);
-      swap("[data-geo-text-hall]", "[data-geo-text-you]", true);
-      swap("[data-origin-hall]", "[data-origin-you]", true);
+      showSheetFromYou();
       showStatus("granted");
     },
     // A refusal or an unavailable position leaves the list exactly as it was
@@ -84,12 +72,4 @@ document.querySelector("[data-geolocate]")?.addEventListener("click", () => {
     () => showStatus("denied"),
     { enableHighAccuracy: false, timeout: 8000 },
   );
-});
-
-// « Non merci, je reste sur la Halle » (task-10-report.md, finding 1): never
-// touches navigator.geolocation. Dismisses the whole explanatory panel —
-// its job (asking) is done once a visitor has answered — and leaves every
-// row exactly where carte.astro put it.
-document.querySelector("[data-geo-decline]")?.addEventListener("click", () => {
-  document.querySelector<HTMLElement>("[data-geo-panel]")?.setAttribute("hidden", "");
 });

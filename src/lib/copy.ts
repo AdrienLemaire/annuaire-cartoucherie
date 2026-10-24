@@ -187,71 +187,31 @@ export const COPY = {
   qrAlt: (nom: string) => `QR code vers la fiche ${elideDe(nom)}${nom}`,
 
   mapTitle: "La carte du quartier",
-  mapSchematic: "Plan schématique : les positions sont indicatives.",
-  mapFromHall: "Classé depuis la Halle de la Cartoucherie",
+  mapAttribution: "© les contributeurs d'OpenStreetMap",
+  mapFromHall: "Classé depuis la Halle",
   mapUseMyLocation: "Classer depuis ma position",
   mapTheyComeToYou: "Ils viennent chez vous",
   mapPickupOnly: "Adresse de retrait, pas de point sur la carte",
-  mapYouAreHere: "Vous êtes ici",
-  mapLocatePin: (nom: string) => `Situer ${nom} sur le plan`,
+  mapHall: "La Halle",
+  mapLocatePin: (nom: string) => `Situer ${nom} sur la carte`,
   // « la » agrees with « l'épingle » (the pin, feminine), not with the member —
   // docs/mockups/final/carte.html renders this same "la situer" for men too
   // (Yanis Belhadj's own pin, line 555), so it is not a missed agree() call.
   mapPinAria: (nom: string, metier: string, distance: string) =>
     `${nom}, ${metier}, à ${distance} — la situer dans la liste`,
   mapClearSelection: "Tout réafficher",
-  // src/client/geolocate.ts's own heading swap and status line, once a visitor
-  // grants or declines their position — never composed by the script itself
-  // (category-filter.ts's own precedent: a script toggles hidden, it does not
-  // build a sentence). Drops the mockup's own hardcoded "dix" (member count).
+  // src/client/geolocate.ts toggles these spans, it never composes text.
   mapFromYou: "Classé depuis votre position",
-  mapGeoGranted:
-    "Position reçue. Les distances ci-dessous viennent d'être recalculées ici, dans le navigateur.",
-  mapGeoDenied: "Position indisponible : le classement reste mesuré depuis la Halle.",
-  // The geo panel's own explanatory pair (docs/mockups/final/carte.html:457-461,
-  // ids geo-titre/geo-texte) — restored per task-10-report.md finding 1: the
-  // button is the consent, and consent needs to say what it is consenting to
-  // before the tap. mapGeoTitle is deliberately its own key, shorter than
-  // mapFromHall (the sheet's own heading, task-10-brief.md's own instruction):
-  // the mockup's geo-titre never carried the "de la Cartoucherie" suffix, and
-  // reusing mapFromHall here made tests/e2e/carte.spec.ts's own
-  // page.getByText(COPY.mapFromHall) ambiguous between the two. The post-grant
-  // half of the pair is identical in both places, so mapFromYou is reused.
-  mapGeoTitle: "Classé depuis la Halle",
-  mapGeoText:
-    "Le repère du quartier : le classement est donc déjà juste. Vous pouvez aussi partir de là où vous êtes.",
-  mapGeoTextYou: "Les distances ci-dessous sont recalculées à vol d'oiseau depuis là où vous êtes.",
-  // carte.astro's own reassurance line under the Classer/Non merci buttons
-  // (docs/mockups/final/carte.html's own alerte row). It states only the fact
-  // this panel demonstrates: src/client/geolocate.ts
-  // never calls fetch, confirmed by reading the file — the haversine math
-  // (src/lib/plan.ts) runs in the browser and nothing leaves it.
-  mapGeoLocal:
-    "Elle n'est jamais envoyée ailleurs : le calcul des distances se fait ici, sur votre téléphone.",
-  // « Non merci, je reste sur la Halle » (carte.html's own geo-refuser) — the
-  // visible way to say no without the browser's own permission prompt being
-  // the only exit. Never requests a position; src/client/geolocate.ts's own
-  // handler only hides the panel.
-  mapDecline: "Non merci, je reste sur la Halle",
-  // The sheet's own origin line (carte.html:647, id="origine") and the page's
-  // own intro (carte.html:448-449) — both count-dependent. Never the mockup's
-  // hardcoded "Dix"/"Deux": count and noun are memberCountParts' own output
-  // (carte.astro's frontmatter), so a neighbour Sandra adds later is counted
-  // honestly rather than the page quietly starting to lie.
-  mapOriginHall: (count: number, noun: string) => `${count} ${noun} · depuis la Halle`,
-  mapOriginYou: (count: number, noun: string) => `${count} ${noun} · depuis votre position`,
+  mapGeoGranted: "Position reçue : liste reclassée.",
+  mapGeoDenied: "Position indisponible.",
+  // The privacy promise, one tap away (a popover), not always-visible prose.
+  mapGeoPrivacy: "Et ma position ?",
+  mapGeoLocal: "Votre position ne quitte pas votre téléphone : les distances sont calculées ici.",
   mapIntroAddress: (count: number, noun: string) =>
     `${count} ${noun} ${count === 1 ? "a" : "ont"} une adresse ici.`,
-  mapIntroItinerant: (count: number, noun: string, pronoun: string) =>
-    count === 1
-      ? `${count} ${noun} se déplace : ${capitalize(pronoun)} est plus bas.`
-      : `${count} ${noun} se déplacent : ${capitalize(pronoun)} sont plus bas.`,
-  // The plan SVG's own role="img" aria-label (docs/mockups/final/carte.html):
-  // the one accessible summary of a decorative illustration whose baked-in
-  // street/landmark <text> labels are art, not UI copy, and so stay literal.
-  mapPlanAlt:
-    "Plan schématique du quartier de la Cartoucherie : la Halle au centre, la rue Paul Mesplé au sud, " +
-    "l'avenue de Grande-Bretagne à l'est, la route de Bayonne au nord et la ligne de tram T1 à l'ouest.",
+  mapIntroItinerant: (count: number) =>
+    count === 1 ? "1 autre vient chez vous." : `${count} autres viennent chez vous.`,
+  mapPlanAlt: "Carte du quartier de la Cartoucherie autour de la Halle",
   // The card's own no-address line, one member at a time: styleguide block 12
   // (line 1086, « accordé au genre ») renders "Elle vient chez vous" for a
   // woman, annuaire.html renders "Il vient chez vous" for a man — mapTheyComeToYou
