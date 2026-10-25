@@ -12,7 +12,7 @@ import { COPY } from "../lib/copy";
 // exactly what a preload (found before the CSS's own @font-face is parsed)
 // fixes. `?url` resolves to the same hashed, cache-busted path global.css's
 // own @font-face already emits, so this never drifts from it by hand.
-import fraunces from "../fonts/fraunces-latin.woff2?url";
+import literata from "../fonts/literata-latin.woff2?url";
 import sourceSans from "../fonts/source-sans-3-latin.woff2?url";
 
 interface Props {
@@ -39,7 +39,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <link rel="preload" href={sourceSans} as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href={fraunces} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={literata} as="font" type="font/woff2" crossorigin />
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />

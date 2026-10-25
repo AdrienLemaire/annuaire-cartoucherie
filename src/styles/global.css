@@ -46,7 +46,7 @@
    latin-ext deliberately, so a neighbour named Łukasz or Öztürk renders
    correctly in their own directory. The wght axis (200–900) stays fully
    variable and untouched: body text genuinely uses more than one weight,
-   unlike Fraunces's SOFT/WONK/wght below. Regenerate by copying straight
+   unlike Literata's pinned wght below. Regenerate by copying straight
    from the package if it updates — no fontTools involved, just fewer
    files:
      cp node_modules/@fontsource-variable/source-sans-3/files/source-sans-3-latin-wght-normal.woff2 src/fonts/source-sans-3-latin.woff2
@@ -68,48 +68,42 @@
   unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
 }
 
-/* Fraunces: a self-hosted, hand-instanced build, not the npm package.
-   `.ff` below pins SOFT 55 / WONK 0 and never varies font-weight from 600 —
-   confirmed by grepping every `.ff` usage in docs/mockups/final/*.html and
-   every .astro file under src/; none override the weight, and of the four
-   axes only opsz is ever driven by anything but that fixed pin. The stock
-   @fontsource-variable/fraunces/full.css ships all four axes (opsz, wght,
-   SOFT, WONK) variable — 226 KB for latin+latin-ext — which pays for
-   flexibility nothing in this design uses. `opsz` stays variable: the
-   browser drives it automatically (font-optical-sizing:auto, the CSS
-   default) across the 18–72px range .ff actually spans, and pinning it
-   measurably changes rendered width (up to 7.3% at 72px) — proven by
-   rendering the original against the instanced build at every size .ff is
-   used at in the shipped codebase, not assumed.
+/* Literata: a self-hosted, hand-instanced build, not the npm package.
+   It replaced Fraunces, whose J (a kinked stem ending in a ball) read as
+   wobbly at 72px; Fraunces has no plainer alternate. `.ff` never varies
+   font-weight from 600, so wght is pinned. opsz is pinned at 36 too: keeping
+   the axis costs 88 KB against 38 KB and breaks the 150 KB font budget, and
+   36 renders practically identically to auto opsz across the 19–72px range
+   .ff spans (compared side by side at 19, 40 and 72px).
 
-   Regenerate when Fraunces updates (fontTools, not in package.json — a
+   Regenerate when Literata updates (fontTools, not in package.json — a
    one-off, not a build step, so CI never needs Python):
-     python3 -m venv /tmp/fraunces-venv && /tmp/fraunces-venv/bin/pip install fonttools brotli
-     SRC=node_modules/@fontsource-variable/fraunces/files
+     python3 -m venv /tmp/literata-venv && /tmp/literata-venv/bin/pip install fonttools brotli
+     SRC=node_modules/@fontsource-variable/literata/files
      for sub in latin latin-ext; do
-       /tmp/fraunces-venv/bin/fonttools varLib.instancer -o /tmp/$sub.woff2 \
-         "$SRC/fraunces-$sub-full-normal.woff2" SOFT=55 WONK=0 wght=600
-       /tmp/fraunces-venv/bin/pyftsubset /tmp/$sub.woff2 \
+       /tmp/literata-venv/bin/fonttools varLib.instancer -o /tmp/$sub.ttf \
+         "$SRC/literata-$sub-standard-normal.woff2" wght=600 opsz=36
+       /tmp/literata-venv/bin/pyftsubset /tmp/$sub.ttf \
          --unicodes='*' --layout-features='*' --no-glyph-names --flavor=woff2 \
-         --output-file=src/fonts/fraunces-$sub.woff2
+         --output-file=src/fonts/literata-$sub.woff2
      done
    `--unicodes='*' --layout-features='*'` keep every glyph and every
    kerning/layout feature already in the source file (drops only internal
    glyph-name strings) — coverage and kerning are unchanged, only bytes. */
 @font-face {
-  font-family: "Fraunces Variable";
+  font-family: "Literata 600";
   font-style: normal;
   font-weight: 600;
   font-display: swap;
-  src: url("../fonts/fraunces-latin.woff2") format("woff2-variations");
+  src: url("../fonts/literata-latin.woff2") format("woff2");
   unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
 }
 @font-face {
-  font-family: "Fraunces Variable";
+  font-family: "Literata 600";
   font-style: normal;
   font-weight: 600;
   font-display: swap;
-  src: url("../fonts/fraunces-latin-ext.woff2") format("woff2-variations");
+  src: url("../fonts/literata-latin-ext.woff2") format("woff2");
   unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
 }
 
@@ -202,14 +196,13 @@
 
 
 @theme static {
-  /* "Fraunces Variable" / "Source Sans 3 Variable", not the mockup's Google
-     Fonts family names ("Fraunces" / "Source Sans 3"). Source Sans 3 keeps
-     @fontsource-variable's own registered name; Fraunces is now a local,
-     hand-instanced @font-face (see its comment above) that reuses the same
-     name for continuity. The bare Google Fonts names would silently fall
-     through to the Georgia/system-ui fallback — self-hosted, declared,
-     never actually painted. */
-  --font-display: "Fraunces Variable", "Iowan Old Style", Georgia, serif;
+  /* "Literata 600" / "Source Sans 3 Variable", not the mockup's Google
+     Fonts family names ("Literata" / "Source Sans 3"). Source Sans 3 keeps
+     @fontsource-variable's own registered name; Literata is a local,
+     hand-instanced @font-face (see its comment above) named for what it
+     holds. The bare Google Fonts names would silently fall through to the
+     Georgia/system-ui fallback — self-hosted, declared, never painted. */
+  --font-display: "Literata 600", "Iowan Old Style", Georgia, serif;
   --font-sans:    "Source Sans 3 Variable", system-ui, sans-serif;
 
   /* l'échelle · quarte juste 1,333 depuis 17 px — 8 pas, amplitude 4,5× */
@@ -273,14 +266,15 @@
 html{ -webkit-text-size-adjust:100%; }
 body{ font-family:var(--font-sans); font-size:17px; line-height:1.55; color:var(--color-neutre-900); background:#fff; }
 
-/* Fraunces sur trois axes. WONK est épinglé à 0 : l'italique bancal est
-   exactement ce qui ferait basculer la page du côté « livre pour enfants ».
-   font-synthesis-weight:none — the self-hosted build above ships only
+/* font-synthesis-weight:none — the self-hosted build above ships only
    weight 600 (see the @font-face comment). If a later change asks .ff for
    any other weight, this stops the browser from faking it with a
    synthetic bold; regenerate the instanced .woff2 files for the real
-   weight instead of letting a mismatch render silently. */
-.ff{ font-family:var(--font-display); font-variation-settings:"SOFT" 55,"WONK" 0; font-weight:600; font-synthesis-weight:none; letter-spacing:-0.015em; }
+   weight instead of letting a mismatch render silently.
+   overflow-wrap:break-word — at 200 % text zoom on a phone, one heading word
+   (« L'annuaire ») is wider than its column; it breaks rather than pushing
+   the page sideways. Nothing that fits is ever touched. */
+.ff{ font-family:var(--font-display); font-weight:600; font-synthesis-weight:none; letter-spacing:-0.015em; overflow-wrap:break-word; }
 
 /* un seul anneau de focus, partout, sans exception (couleurs.md §7) */
 :where(a,button,input,textarea,select,summary,[tabindex]):focus-visible{
