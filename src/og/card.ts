@@ -3,7 +3,8 @@
 // (eslint.config.mjs restricts src/lib, not src/og). Renders the WhatsApp/
 // social preview card for a member's profile (spec §5) — no network fetch,
 // no astro:content: it takes name and trade as plain strings so it stays
-// testable without the content layer.
+// testable without the content layer. The home page's card reuses it with
+// the collective's credit as its eyebrow.
 import { readFileSync } from "node:fs";
 import satori from "satori";
 import sharp from "sharp";
@@ -26,7 +27,11 @@ async function font(): Promise<Buffer> {
   return fraunces;
 }
 
-export async function renderCard(name: string, trade: string): Promise<Buffer> {
+export async function renderCard(
+  name: string,
+  trade: string,
+  eyebrow = "Annuaire de la Cartoucherie",
+): Promise<Buffer> {
   const svg = await satori(
     {
       type: "div",
@@ -49,7 +54,7 @@ export async function renderCard(name: string, trade: string): Promise<Buffer> {
             type: "div",
             props: {
               style: { fontSize: 34, color: "#44706f" },
-              children: "Annuaire de la Cartoucherie",
+              children: eyebrow,
             },
           },
           {

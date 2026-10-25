@@ -7,21 +7,25 @@
 // frontmatter binds data, it does not compute it.
 // The empty category (task-6 brief: "the empty category is shown, not
 // hidden") renders greyed with no link and a mailto: to offer a name —
-// the one place a visitor can suggest a neighbour.
+// the one place a visitor can suggest a neighbour. While the directory is
+// small (groupsEmptyCategories), the empty ones share a single closing line.
 import { COPY } from "../lib/copy";
 import { mailtoHref } from "../lib/contact";
-import { formatMemberCount } from "../lib/members";
+import { formatMemberCount, groupsEmptyCategories } from "../lib/members";
 import type { CategoryWithCount } from "../lib/members";
 
 interface Props {
   categories: CategoryWithCount[];
+  memberCount: number;
 }
-const { categories } = Astro.props;
+const { categories, memberCount } = Astro.props;
+const grouped = groupsEmptyCategories(memberCount) ? categories.filter((c) => c.count === 0) : [];
+const listed = categories.filter((c) => !grouped.includes(c));
 ---
 
 <ol class="list-none m-0 p-0 [counter-reset:besoin] sm:grid sm:grid-cols-2 sm:gap-x-8">
   {
-    categories.map((c) => (
+    listed.map((c) => (
       <li class="[counter-increment:besoin]">
         {c.count === 0 ? (
           <div class="flex items-start gap-3 px-5 py-1.5 min-h-[56px]">
@@ -54,3 +58,16 @@ const { categories } = Astro.props;
     ))
   }
 </ol>
+{
+  grouped.length > 0 && (
+    <p class="px-5 py-3 text-[16px] leading-[1.3] text-neutre-700">
+      {COPY.needsEmptyGroup(grouped.map((c) => c.nom))}{" "}
+      <a
+        class="font-semibold text-teal-700 underline decoration-teal-300 underline-offset-4 hover:decoration-teal-600"
+        href={mailtoHref(COPY.searchNoMatchSubject)}
+      >
+        {COPY.searchSuggest}
+      </a>
+    </p>
+  )
+}
