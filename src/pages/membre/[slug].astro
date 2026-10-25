@@ -32,7 +32,7 @@ const pronoun = agree(member.genre, "elle");
 const article = agree(member.genre, "la");
 const fixed = hasAddress(member);
 
-// The three canaux membre.html's own "La contacter" carries in full, readable
+// The canaux membre.html's own "La contacter" carries in full, readable
 // text — never behind an icon alone, never truncated. A null field renders
 // nothing at all (task-9-brief.md, composition authority list), so this
 // filters before the template ever sees it, rather than branching three times.
@@ -44,6 +44,12 @@ const contacts = [
     icon: "insta",
     text: member.instagram && `@${member.instagram}`,
     href: member.instagram && `https://instagram.com/${member.instagram}`,
+  },
+  {
+    label: COPY.profileLinkedin,
+    icon: "linkedin",
+    text: member.linkedin && member.nom,
+    href: member.linkedin && `https://www.linkedin.com/in/${member.linkedin}/`,
   },
 ].filter((c): c is typeof c & { text: string; href: string } => Boolean(c.text && c.href));
 
