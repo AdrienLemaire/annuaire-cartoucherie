@@ -12,6 +12,7 @@
 // search form as /annuaire, in the same header slot: one system, not two —
 // the search is never a mechanism this page's own filtering rivals.
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import Icon from "../../components/Icon.astro";
 import MemberRow from "../../components/MemberRow.astro";
 import SearchBar from "../../components/SearchBar.astro";
 import SearchResults from "../../components/SearchResults.astro";
@@ -60,8 +61,9 @@ const count = formatMemberCount(category.count, category.genders);
         // category's own count sitting above live results from every category,
         // the same rule annuaire.astro's own count line already follows.
       }
-      <p class="mt-2 text-chapo text-neutre-800">
-        {category.nom} · {count}
+      <p class="mt-2 flex items-center gap-2 text-chapo text-neutre-800">
+        <Icon raw={category.icon} class="h-6 w-6 shrink-0 text-sauge-700" />
+        <span>{category.nom} · {count}</span>
       </p>
       {
         category.count === 0 ? (
