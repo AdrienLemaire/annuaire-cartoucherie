@@ -10,21 +10,17 @@ import satori from "satori";
 import sharp from "sharp";
 import { decompress } from "wawoff2";
 
-// Not the variable face the brief pointed at: @shuding/opentype.js (satori's
-// bundled font parser, 0.33.4) throws `Cannot read properties of undefined
-// (reading '257')` in parseFvarAxis on
-// fraunces-latin-wght-normal.woff2's fvar table — reproduced, not assumed.
-// @fontsource/fraunces (the static-weight package, not @fontsource-variable/…)
-// ships a plain, non-variable 600 instance with no fvar table to trip that
-// parser. Confirmed against node_modules/@fontsource/fraunces/files/.
-const WOFF2 = "node_modules/@fontsource/fraunces/files/fraunces-latin-600-normal.woff2";
+// The site's own heading face. Both of its axes are pinned (see global.css),
+// so it carries no fvar table: satori's bundled parser, @shuding/opentype.js
+// 0.33.4, throws in parseFvarAxis on a variable font's fvar.
+const WOFF2 = "src/fonts/literata-latin.woff2";
 
 // satori reads ttf/otf/woff, never woff2 — decompressed once, in memory, and
 // reused across every member's card in the same build.
-let fraunces: Buffer | null = null;
+let literata: Buffer | null = null;
 async function font(): Promise<Buffer> {
-  fraunces ??= Buffer.from(await decompress(readFileSync(WOFF2)));
-  return fraunces;
+  literata ??= Buffer.from(await decompress(readFileSync(WOFF2)));
+  return literata;
 }
 
 export async function renderCard(
@@ -60,7 +56,7 @@ export async function renderCard(
           {
             type: "div",
             props: {
-              style: { fontFamily: "Fraunces", fontSize: 86, color: "#123b3c", marginTop: 12 },
+              style: { fontFamily: "Literata", fontSize: 86, color: "#123b3c", marginTop: 12 },
               children: name,
             },
           },
@@ -74,7 +70,7 @@ export async function renderCard(
     {
       width: 1200,
       height: 630,
-      fonts: [{ name: "Fraunces", data: await font(), weight: 600, style: "normal" }],
+      fonts: [{ name: "Literata", data: await font(), weight: 600, style: "normal" }],
     },
   );
   return sharp(Buffer.from(svg)).png().toBuffer();
