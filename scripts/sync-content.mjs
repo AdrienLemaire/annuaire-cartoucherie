@@ -3,7 +3,7 @@
 // Puts member content where the content layer expects it. CONTENT_DIR defaults
 // to the fictional fixture, so `npm run dev` and every test run on invented
 // people; CI sets it to a private checkout before the production build.
-import { cpSync, existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { join, parse } from "node:path";
 import sharp from "sharp";
 
@@ -51,9 +51,22 @@ membres.forEach((m, i) => {
 
 mkdirSync("src/content", { recursive: true });
 writeFileSync("src/content/members.json", raw);
+
+// Portraits arrive at any size, from 128 px Instagram crops to 1440 px
+// originals. Re-encoded to at most 384 px, 2× the profile's 176 px arch, so a
+// retina screen stays sharp and the 100 KB image budget holds. Never enlarged:
+// a 128 px source stays 128 px. sharp drops EXIF, so no camera or GPS data ships.
 rmSync("public/portraits", { recursive: true, force: true });
 mkdirSync("public/portraits", { recursive: true });
-cpSync(portraitsFrom, "public/portraits", { recursive: true });
+await Promise.all(
+  membres.map((m) =>
+    sharp(join(portraitsFrom, m.photo))
+      .rotate()
+      .resize(384, 384, { fit: "cover", withoutEnlargement: true })
+      .toFormat(parse(m.photo).ext === ".webp" ? "webp" : "jpeg", { quality: 78, mozjpeg: true })
+      .toFile(join("public/portraits", m.photo)),
+  ),
+);
 
 // Carousel slides arrive as 1080×1350 exports (one was a 1.1 MB PNG). Re-encoded
 // once here as WebP, at 720 px for the page and 1080 px for full screen: the
