@@ -40,5 +40,5 @@ test("The same journey in three gestures, through the search field", async ({ pa
   await page.goto("/");
   await page.getByRole("searchbox").fill(members[0].metier);
   await page.locator("[data-result]").first().click();
-  await expect(page.locator('a[href^="tel:"]').first()).toBeVisible();
+  await expect(page.locator('a[href^="tel:"]').last()).toBeVisible();
 });

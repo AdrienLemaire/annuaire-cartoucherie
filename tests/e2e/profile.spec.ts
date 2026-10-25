@@ -4,6 +4,7 @@ import { feminine, fullyContactable, masculineWithoutSite, unreviewed, withCarou
 import { agree } from "../../src/lib/gender";
 import { COPY } from "../../src/lib/copy";
 import { formatNote } from "../../src/lib/members";
+import { formatTelDisplay, formatTelHref } from "../../src/lib/phone";
 
 test("Carries the contact details in full, readable text", async ({ page }) => {
   const m = fullyContactable;
@@ -12,6 +13,20 @@ test("Carries the contact details in full, readable text", async ({ page }) => {
   await expect(page.getByText(m.site!, { exact: false })).toBeVisible();
   await expect(page.getByText(`@${m.instagram!}`, { exact: false })).toBeVisible();
   await expect(page.locator('a[href^="tel:"]').last()).toBeVisible();
+});
+
+// Members asked for « Appeler » without their number on display.
+test("Keeps the number off the page until asked, and still dials", async ({ page }) => {
+  const m = feminine;
+  const digits = formatTelDisplay(m.tel!);
+  await page.goto(`/membre/${m.slug}`);
+  await expect(page.getByText(digits)).toBeHidden();
+  const call = page.locator('a[href^="tel:"]').last();
+  await expect(call).toHaveAttribute("href", `tel:${formatTelHref(m.tel!)}`);
+  await expect(call).not.toContainText(/\d/);
+
+  await page.getByText(COPY.profileShowPhone).click();
+  await expect(page.getByText(digits)).toBeVisible();
 });
 
 test("Renders nothing at all for a field the member left empty", async ({ page }) => {

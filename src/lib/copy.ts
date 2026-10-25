@@ -44,14 +44,21 @@ export const COPY = {
 
   homeTitle: "Je cherche…",
   homeIntro: "Les voisines et voisins qui habitent ou travaillent à la Cartoucherie.",
+  // The collective the directory grew out of, credited without taking the name.
+  homeBy: "Porté par les Entrepreneurs de la Cartoucherie",
+  homeTitleTag: "Annuaire de la Cartoucherie — par les Entrepreneurs de la Cartoucherie",
+  homeDescription:
+    "Les voisines et voisins qui habitent ou travaillent à la Cartoucherie, à Toulouse, " +
+    "réunis par les Entrepreneurs de la Cartoucherie.",
   homeCollySays: "Dites-lui ce qu'il vous faut.",
   homeOrPick: "…ou choisissez la fin :",
   homeNeighbours: "Vos voisins",
   homeSeeAllNeighbours: (voisins: string) => `Voir les ${voisins}`,
-  // /annuaire's meta description.
-  homeBrowseListText: (count: number) => `Les ${count} fiches, filtrables par métier.`,
-  // /carte's meta description (carte.astro).
-  homeBrowseMapText: (onMap: number, total: number) => `${onMap} fiches sur ${total} ont un point.`,
+  directoryDescription: "Les voisines et voisins de la Cartoucherie, à Toulouse, par métier.",
+  mapDescription:
+    "Les voisines et voisins de la Cartoucherie sur la carte du quartier, autour de la Halle.",
+  categoryDescription: (nom: string, motsCles: string[]) =>
+    `${nom} à la Cartoucherie, Toulouse : ${motsCles.slice(0, 3).join(", ")}.`,
   homeCollyTitle: "Colly reste collée aux bons endroits.",
   homeCollyText:
     "Elle vit dans les poutres de la Halle et connaît tout le monde : cet annuaire, c'est son " +
@@ -71,7 +78,7 @@ export const COPY = {
   // *second* visit. One short, true sentence; the next keystroke already retries
   // (loadIndex resets its cached promise on rejection), so no separate button is needed.
   searchLoadError: "La liste n'a pas pu être chargée. Réessayez.",
-  searchSuggest: "Vous connaissez quelqu'un ?",
+  searchSuggest: "Vous connaissez quelqu'un\u00a0?",
   // The mailto: subject when a visitor offers a name for an empty category
   // (NeedsIndex, task-6 brief) — one string, so the format lives here and
   // never in a component's frontmatter.
@@ -111,6 +118,9 @@ export const COPY = {
   // so the approved mockup's own layout stays byte-for-byte unchanged.
   directoryListHeading: "Liste des voisins",
   countNobody: "personne encore inscrit·e",
+  // Until the directory is big enough, empty categories share one line instead of
+  // six greyed rows that make it look deserted.
+  needsEmptyGroup: (noms: string[]) => `Encore personne pour ${noms.join(", ")}.`,
 
   profileContact: (article: string) => `${capitalize(article)} contacter`,
   profilePortrait: "Son portrait",
@@ -140,13 +150,17 @@ export const COPY = {
   profileSite: "Son site",
   profileInstagram: "Instagram",
   profileCall: "Appeler",
+  profilePhone: "Téléphone",
+  // The number stays one tap away rather than printed on the page (fewer
+  // spam calls, and nothing for a search engine to show).
+  profileShowPhone: "Voir le numéro",
   profileWrong: "Cette fiche n'est pas correcte",
   profileWrongSubject: (nom: string) => `Correction — fiche ${elideDe(nom)}${nom}`,
-  // The row's own call chip (annuaire.html:424) speaks the full name and
-  // number in its aria-label rather than the button's own visible "Appeler",
-  // so a screen-reader user picks the right row out of a list of identical
-  // buttons.
-  callAria: (nom: string, telDisplay: string) => `Appeler ${nom} au ${telDisplay}`,
+  // The row's own call chip (annuaire.html:424) speaks the name in its
+  // aria-label rather than the button's own visible "Appeler", so a
+  // screen-reader user picks the right row out of a list of identical
+  // buttons. Not the number: it is never printed outside the profile's reveal.
+  callAria: (nom: string) => `Appeler ${nom}`,
   // The sr-only tail of a star rating (styleguide block 12: "4,8<sr-only> sur
   // 5,</sr-only> (12)") — one string, so MemberCard and MemberRow never fork it.
   ratingOutOf: "sur 5,",

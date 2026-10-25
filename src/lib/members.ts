@@ -44,6 +44,15 @@ export function sortByCountDesc<T extends Pick<CategoryWithCount, "count" | "nom
   return [...categories].sort((a, b) => b.count - a.count || a.nom.localeCompare(b.nom, "fr"));
 }
 
+/**
+ * Below this many profiles, empty categories share one line rather than a
+ * greyed row each: six « personne encore » rows out of ten made a young
+ * directory look deserted. Past it, every category gets its own row again.
+ */
+export function groupsEmptyCategories(memberCount: number): boolean {
+  return memberCount < 30;
+}
+
 /** Every category, counted. The empty one stays: it is shown, not hidden. */
 export function withCounts(categories: Category[], members: Member[]): CategoryWithCount[] {
   return categories.map((c) => {

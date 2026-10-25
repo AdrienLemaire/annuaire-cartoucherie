@@ -46,7 +46,13 @@ import SearchResults from "../components/SearchResults.astro";
 import { COPY } from "../lib/copy";
 import { mailtoHref } from "../lib/contact";
 import { loadCategories, loadMembers } from "../lib/collections";
-import { formatMemberCount, memberCountParts, sortByCountDesc, withCounts } from "../lib/members";
+import {
+  formatMemberCount,
+  groupsEmptyCategories,
+  memberCountParts,
+  sortByCountDesc,
+  withCounts,
+} from "../lib/members";
 
 const [members, categories] = await Promise.all([loadMembers(), loadCategories()]);
 const counted = withCounts(categories, members);
@@ -58,11 +64,14 @@ const empty = counted.filter((c) => c.count === 0);
 // Most populated first: sortByCountDesc, not categories.json's own curated
 // order (final-fixes-report.md, I3).
 const populated = sortByCountDesc(counted.filter((c) => c.count > 0));
+// While the directory is small, empty chips are left out of the rail; a
+// shared ?cat= link to one still gets its [data-empty-for] explanation below.
+const emptyChips = groupsEmptyCategories(members.length) ? [] : empty;
 ---
 
 <BaseLayout
   title={`${COPY.directoryTitle} — Annuaire de la Cartoucherie`}
-  description={COPY.homeBrowseListText(members.length)}
+  description={COPY.directoryDescription}
 >
   <Fragment slot="header-extra">
     <div class="max-w-[720px]">
@@ -127,7 +136,7 @@ const populated = sortByCountDesc(counted.filter((c) => c.count > 0));
             // Non-interactive: annuaire.html's own chip-vide, and NeedsIndex.astro's
             // precedent for the same zero-count case — greyed, no href, so the
             // visitor never taps into an empty category expecting a result.
-            empty.map((c) => (
+            emptyChips.map((c) => (
               <li>
                 <span class="chip-vide whitespace-nowrap inline-flex items-center gap-2 rounded-selector bg-neutre-100 px-3.5 py-2 min-h-[44px] text-[16px] font-semibold text-neutre-600">
                   <Icon raw={c.icon} class="w-[18px] h-[18px]" />

@@ -40,8 +40,8 @@ const voisinsCount = formatMemberCount(
 ---
 
 <BaseLayout
-  title="Annuaire de la Cartoucherie"
-  description={COPY.homeIntro}
+  title={COPY.homeTitleTag}
+  description={COPY.homeDescription}
   header={{ variant: "join" }}
 >
   <section class="mx-auto max-w-[1160px] px-5 pt-8" aria-labelledby="t-cherche">
@@ -52,6 +52,7 @@ const voisinsCount = formatMemberCount(
       {COPY.homeTitle}
     </h1>
     <p class="mt-4 text-chapo text-neutre-800 max-w-[34ch]">{COPY.homeIntro}</p>
+    <p class="mt-2 text-[16px] font-semibold text-teal-700">{COPY.homeBy}</p>
     <SearchBar withColly={true} />
     <SearchResults class="mt-4 grid gap-3" />
   </section>
@@ -64,7 +65,7 @@ const voisinsCount = formatMemberCount(
       >
         {COPY.homeOrPick}
       </h2>
-      <NeedsIndex categories={counted} />
+      <NeedsIndex categories={counted} memberCount={members.length} />
     </nav>
   </div>
 

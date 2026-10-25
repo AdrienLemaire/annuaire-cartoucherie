@@ -17,6 +17,7 @@ import { COPY } from "../../lib/copy";
 import { loadCategories, loadMembers } from "../../lib/collections";
 import { agree } from "../../lib/gender";
 import { formatNote, hasAddress } from "../../lib/members";
+import { formatTelDisplay, formatTelHref } from "../../lib/phone";
 
 export async function getStaticPaths() {
   const [members, categories] = await Promise.all([loadMembers(), loadCategories()]);
@@ -59,13 +60,8 @@ const primaryIcon = chips[0]?.icon;
   description={member.accroche}
   header={{ href: "/annuaire", label: COPY.headerBackDirectory, srOnly: COPY.headerBackDirectorySr }}
   bodyClass="pb-[calc(96px+var(--safe-bottom))]"
+  ogImage={`/og/${member.slug}.png`}
 >
-  <Fragment slot="head">
-    <meta property="og:image" content={new URL(`/og/${member.slug}.png`, Astro.site).href} />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
-    <meta name="twitter:card" content="summary_large_image" />
-  </Fragment>
 
   <section aria-labelledby="nom-membre">
     <div class="ventouses relative overflow-hidden rounded-b-[34px] bg-sable-200 pt-9 pb-11">
@@ -152,7 +148,35 @@ const primaryIcon = chips[0]?.icon;
   <section class="mx-auto max-w-[1160px] px-5 py-8" aria-labelledby="t-contact">
     <h2 id="t-contact" class="ff text-nom text-teal-900">{COPY.profileContact(article)}</h2>
     <div class="filet mt-2.5 mb-5 h-[3px] w-16 rounded-full"></div>
-    <ul class="m-0 grid grid-cols-1 list-none gap-2.5 p-0 sm:grid-cols-3">
+    <ul class="m-0 grid grid-cols-1 list-none gap-2.5 p-0 sm:grid-cols-2">
+      {
+        // A native <details>, so the reveal needs no script. The sticky
+        // « Appeler » bar dials without it; this is for reading the number out
+        // to a landline or writing it down.
+        member.tel && (
+          <li>
+            <details class="group carte h-full rounded-[16px] bg-white px-4 py-3">
+              <summary class="flex min-h-[40px] cursor-pointer list-none items-center gap-3.5 [&::-webkit-details-marker]:hidden">
+                <span class="pastille pastille--teal h-10 w-10 shrink-0 bg-teal-50 text-teal-700">
+                  <Icon name="tel" class="h-5 w-5" />
+                </span>
+                <span class="min-w-0">
+                  <span class="block text-[16px] text-neutre-700">{COPY.profilePhone}</span>
+                  <span class="block text-corps font-semibold text-teal-800 underline decoration-teal-300 underline-offset-4 group-open:hidden">
+                    {COPY.profileShowPhone}
+                  </span>
+                </span>
+              </summary>
+              <a
+                href={`tel:${formatTelHref(member.tel)}`}
+                class="tnum ml-[3.375rem] inline-flex min-h-[44px] items-center text-corps font-semibold text-teal-800"
+              >
+                {formatTelDisplay(member.tel)}
+              </a>
+            </details>
+          </li>
+        )
+      }
       {
         contacts.map((c) => (
           <li>
@@ -250,5 +274,5 @@ const primaryIcon = chips[0]?.icon;
     </a>
   </p>
 
-  <CallButton member={member} sticky withNumber />
+  <CallButton member={member} sticky />
 </BaseLayout>

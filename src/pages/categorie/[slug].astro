@@ -38,7 +38,7 @@ const count = formatMemberCount(category.count, category.genders);
 
 <BaseLayout
   title={`${category.nom} — Annuaire de la Cartoucherie`}
-  description={category.besoin}
+  description={COPY.categoryDescription(category.nom, category.motsCles)}
   header={{ href: "/annuaire", label: COPY.headerBackDirectory, srOnly: COPY.headerBackDirectorySr }}
 >
   <Fragment slot="header-extra">
