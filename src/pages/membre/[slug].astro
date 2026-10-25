@@ -152,7 +152,8 @@ const primaryIcon = chips[0]?.icon;
       {
         // A native <details>, so the reveal needs no script. The sticky
         // « Appeler » bar dials without it; this is for reading the number out
-        // to a landline or writing it down.
+        // to a landline or writing it down. data-nosnippet keeps Google from
+        // quoting it in results; the tel: href still carries it for scrapers.
         member.tel && (
           <li>
             <details class="group carte h-full rounded-[16px] bg-white px-4 py-3">
@@ -171,7 +172,7 @@ const primaryIcon = chips[0]?.icon;
                 href={`tel:${formatTelHref(member.tel)}`}
                 class="tnum ml-[3.375rem] inline-flex min-h-[44px] items-center text-corps font-semibold text-teal-800"
               >
-                {formatTelDisplay(member.tel)}
+                <span data-nosnippet>{formatTelDisplay(member.tel)}</span>
               </a>
             </details>
           </li>

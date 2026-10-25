@@ -151,8 +151,8 @@ export const COPY = {
   profileInstagram: "Instagram",
   profileCall: "Appeler",
   profilePhone: "Téléphone",
-  // The number stays one tap away rather than printed on the page (fewer
-  // spam calls, and nothing for a search engine to show).
+  // The number stays one tap away rather than printed on the page. It still
+  // sits in the tel: href, so this curbs display, not a determined scraper.
   profileShowPhone: "Voir le numéro",
   profileWrong: "Cette fiche n'est pas correcte",
   profileWrongSubject: (nom: string) => `Correction — fiche ${elideDe(nom)}${nom}`,
