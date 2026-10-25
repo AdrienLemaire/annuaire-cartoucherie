@@ -46,8 +46,9 @@ Full reasoning in `docs/STANDARDS.md`; these are the ones broken most often.
   gets — text, computed style, a URL — never on a class name.
 - **No barrel files**, no `utils.ts`, no one-line wrappers, no interface for a single
   implementation.
-- **Never truncate a member's name.** Never enlarge a portrait past ×1.4 — sources are
-  128×128 and a blurry face destroys the trust the page is building.
+- **Never truncate a member's name.** Never enlarge a portrait past ×1.4 — many sources
+  are 128×128 Instagram crops (`sync-content` caps the rest at 384 px), and a blurry face
+  destroys the trust the page is building.
 - **French agrees with each member's `genre`** — « Ce qu'**elle** propose », « Où **la**
   trouver », « 1 voisin**e** ». `src/lib/gender.ts` is the only owner of the forms table.
 - **« voisins », never « membres »**, in user-facing copy. « Avis du quartier », never « avis
