@@ -27,6 +27,9 @@ function elideDe(nom: string): string {
 // footer and /a-propos (VolunteerCredit.astro) and named on /mentions-legales.
 const AUTHOR = "Adrien Lemaire";
 
+// A member based in the Halle: « 0 m » and « À 0 m de la Halle » read like a glitch.
+const atHall = (distance: string): boolean => distance === "0 m";
+
 export const COPY = {
   skipLink: "Aller au contenu",
   toggletipClose: "Fermer",
@@ -130,9 +133,9 @@ export const COPY = {
   // than text, precisely so this phrase is free to share a substring with it.
   profileRatingSr: "sur 5 —",
   profileReviewCount: (n: number) => `${n} avis du quartier`,
-  // « À 0 m de la Halle » reads like a glitch for a member based in the Halle.
   profileDistanceFromHall: (distance: string) =>
-    distance === "0 m" ? "À la Halle" : `À ${distance} de la Halle`,
+    atHall(distance) ? "À la Halle" : `À ${distance} de la Halle`,
+  cardDistance: (distance: string) => (atHall(distance) ? "La Halle" : distance),
   profileEmail: "E-mail",
   profileSite: "Son site",
   profileInstagram: "Instagram",
@@ -173,7 +176,7 @@ export const COPY = {
   // docs/mockups/final/carte.html renders this same "la situer" for men too
   // (Yanis Belhadj's own pin, line 555), so it is not a missed agree() call.
   mapPinAria: (nom: string, metier: string, distance: string) =>
-    `${nom}, ${metier}, à ${distance} — la situer dans la liste`,
+    `${nom}, ${metier}, ${atHall(distance) ? "à la Halle" : `à ${distance}`} — la situer dans la liste`,
   mapClearSelection: "Tout réafficher",
   // src/client/geolocate.ts toggles these spans, it never composes text.
   mapFromYou: "Classé depuis votre position",
