@@ -37,6 +37,13 @@ export const memberSchema = z.object({
   email: z.email().nullable(),
   site: z.string().nullable(),
   instagram: z.string().nullable(),
+  // The name after linkedin.com/in/. Defaults to null so rows written before
+  // the field existed stay valid.
+  linkedin: z
+    .string()
+    .regex(/^[\w-]+$/, "linkedin: the name after linkedin.com/in/, not a URL")
+    .nullable()
+    .default(null),
   // A file name under public/portraits/, never a URL: the repo holds no remote
   // portrait fetches and the build never goes to the network.
   photo: z.string().regex(/^[a-z0-9-]+\.(jpg|webp)$/, "photo: a file name, not a URL"),

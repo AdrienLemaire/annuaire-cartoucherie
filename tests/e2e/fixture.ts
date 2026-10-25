@@ -14,9 +14,9 @@ function pick(predicate: (m: Member) => boolean, what: string): Member {
   return found;
 }
 
-/** Full contact card: phone, email, site and Instagram all present. */
+/** Full contact card: phone, email, site, Instagram and LinkedIn all present. */
 export const fullyContactable = pick(
-  (m) => Boolean(m.tel && m.email && m.site && m.instagram),
+  (m) => Boolean(m.tel && m.email && m.site && m.instagram && m.linkedin),
   "with every contact field",
 );
 

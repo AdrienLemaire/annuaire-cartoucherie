@@ -24,7 +24,7 @@ import Icon from "./Icon.astro";
 import { COPY } from "../lib/copy";
 import { agree } from "../lib/gender";
 import { formatNote, hasAddress, homeServiceIcon } from "../lib/members";
-import { formatTelDisplay, formatTelHref } from "../lib/phone";
+import { formatTelHref } from "../lib/phone";
 import { isPinned } from "../lib/plan";
 import type { Category, Member } from "../content/schemas";
 
@@ -44,7 +44,6 @@ const chips = categories.filter((c) => member.categories.includes(c.slug));
 const fixed = hasAddress(member);
 const homeIcon = fixed ? undefined : homeServiceIcon(member, categories);
 const telHref = member.tel ? formatTelHref(member.tel) : null;
-const telDisplay = member.tel ? formatTelDisplay(member.tel) : null;
 ---
 
 {
@@ -157,11 +156,11 @@ const telDisplay = member.tel ? formatTelDisplay(member.tel) : null;
                 ))}
               </ul>
             )}
-            {telHref && telDisplay && (
+            {telHref && (
               <a
                 href={`tel:${telHref}`}
                 class="ml-auto inline-flex items-center gap-2 min-h-[44px] px-3.5 rounded-full text-[16px] font-semibold text-teal-700 bg-teal-50 hover:bg-teal-100"
-                aria-label={COPY.callAria(member.nom, telDisplay)}
+                aria-label={COPY.callAria(member.nom)}
               >
                 <Icon name="tel" class="w-5 h-5 shrink-0" />
                 {COPY.profileCall}
