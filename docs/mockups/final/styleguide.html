@@ -8,7 +8,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..800,0..100,0..1&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,600&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
 
 <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
 <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
@@ -113,7 +113,7 @@
      ═══════════════════════════════════════════════════════════════════════ -->
 <style type="text/tailwindcss" id="src-theme-typo">
 @theme static {
-  --font-display: "Fraunces", "Iowan Old Style", Georgia, serif;
+  --font-display: "Literata", "Iowan Old Style", Georgia, serif;
   --font-sans:    "Source Sans 3", system-ui, sans-serif;
   --font-mono:    "IBM Plex Mono", ui-monospace, monospace;
 
@@ -213,9 +213,7 @@
 html{ -webkit-text-size-adjust:100%; }
 body{ font-family:var(--font-sans); font-size:17px; line-height:1.55; color:var(--color-neutre-900); background:#fff; }
 
-/* Fraunces sur trois axes. WONK est épinglé à 0 : l'italique bancal est
-   exactement ce qui ferait basculer la page du côté « livre pour enfants ». */
-.ff{ font-family:var(--font-display); font-variation-settings:"SOFT" 55,"WONK" 0; font-weight:600; letter-spacing:-0.015em; }
+.ff{ font-family:var(--font-display); font-variation-settings:"opsz" 36; font-weight:600; letter-spacing:-0.015em; }
 
 /* un seul anneau de focus, partout, sans exception (couleurs.md §7) */
 :where(a,button,input,textarea,select,summary,[tabindex]):focus-visible{
@@ -508,11 +506,10 @@ body{ font-family:var(--font-sans); font-size:17px; line-height:1.55; color:var(
   <p class="text-etiquette font-semibold uppercase text-sauge-800">Fondations</p>
   <h2 data-court="L'échelle de type" class="ff mt-1.5 text-nom text-teal-900">L'échelle typographique</h2>
   <p class="mt-3 text-corps text-neutre-800 max-w-[72ch]">
-    <strong class="font-semibold text-neutre-900">Fraunces</strong> pour les titres —
-    <code class="font-mono text-[15px] text-teal-800">SOFT 55</code>, et surtout
-    <code class="font-mono text-[15px] text-teal-800">WONK 0</code> : l'axe bancal est
-    précisément ce qui ferait basculer une page tenue par une mascotte du côté du livre
-    d'images. <strong class="font-semibold text-neutre-900">Source Sans 3</strong> pour tout le
+    <strong class="font-semibold text-neutre-900">Literata</strong> pour les titres, en
+    graisse 600 et <code class="font-mono text-[15px] text-teal-800">opsz 36</code> : un
+    serif chaleureux au J droit, là où celui de Fraunces ondulait à 72 px.
+    <strong class="font-semibold text-neutre-900">Source Sans 3</strong> pour tout le
     reste : humaniste large, dessiné pour l'écran et pour le français accentué.
     L'échelle vient de <em>typo</em> — quarte juste depuis 17 px, huit pas,
     <strong class="font-semibold text-neutre-900">amplitude 72/16 = 4,5×</strong>.
@@ -2211,7 +2208,7 @@ body{ font-family:var(--font-sans); font-size:17px; line-height:1.55; color:var(
       : '<p class="' + e[2] + ' text-' + e[0] + ' text-teal-800">' + e[4] + '</p>';
     d.innerHTML =
       '<p class="tnum text-[16px] text-neutre-700"><code class="font-mono text-[15px] text-teal-800">text-' + e[0] +
-      '</code><br><span class="text-neutre-600">' + e[1] + ' px · ' + (e[2] ? 'Fraunces' : 'Source\u00a0Sans\u00a03') + '</span></p>' +
+      '</code><br><span class="text-neutre-600">' + e[1] + ' px · ' + (e[2] ? 'Literata' : 'Source\u00a0Sans\u00a03') + '</span></p>' +
       '<div class="min-w-0">' + ech + '<p class="mt-1 text-[16px] text-neutre-700">' + e[3] + '</p></div>';
     he.appendChild(d);
   });
@@ -2274,7 +2271,7 @@ body{ font-family:var(--font-sans); font-size:17px; line-height:1.55; color:var(
       var idx = document.getElementById('index-besoins');
       var h = idx ? idx.offsetHeight : 0;
       d.textContent =
-        'Fraunces ' + larg('"Fraunces",Georgia,serif', 600) +
+        'Literata ' + larg('"Literata",Georgia,serif', 600) +
         ' | Georgia ' + larg('Georgia,serif', 600) +
         ' | SourceSans3 ' + larg('"Source Sans 3",Arial', 400) +
         ' | Arial ' + larg('Arial', 400) +
