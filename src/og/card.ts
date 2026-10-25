@@ -47,7 +47,7 @@ export async function renderCard(
           boxSizing: "border-box",
           padding: "64px",
           background: "#ffffff",
-          borderBottom: "16px solid #f28318",
+          borderBottom: "16px solid #f87d3b",
         },
         children: [
           {

@@ -128,17 +128,17 @@
   --color-teal-950: oklch(19.0% 0.030 201);
 
   /* ── orange · action ─────────────────────────────────────── */
-  --color-orange-50:  oklch(97.8% 0.018 75);
-  --color-orange-100: oklch(95.0% 0.042 72);
-  --color-orange-200: oklch(90.0% 0.078 68);
-  --color-orange-300: oklch(84.0% 0.110 64);
-  --color-orange-400: oklch(78.0% 0.145 60);
-  --color-orange-500: oklch(72.0% 0.170 56);
-  --color-orange-600: oklch(65.0% 0.178 50);
-  --color-orange-700: oklch(56.0% 0.172 44);
-  --color-orange-800: oklch(46.0% 0.140 40);
-  --color-orange-900: oklch(37.0% 0.108 38);
-  --color-orange-950: oklch(27.0% 0.078 36);
+  --color-orange-50:  oklch(97.8% 0.014 65);
+  --color-orange-100: oklch(95.0% 0.032 62);
+  --color-orange-200: oklch(90.0% 0.063 58);
+  --color-orange-300: oklch(84.0% 0.101 54);
+  --color-orange-400: oklch(78.0% 0.142 50);
+  --color-orange-500: oklch(72.0% 0.170 46);
+  --color-orange-600: oklch(65.0% 0.178 40);
+  --color-orange-700: oklch(56.0% 0.172 34);
+  --color-orange-800: oklch(46.0% 0.140 30);
+  --color-orange-900: oklch(37.0% 0.108 28);
+  --color-orange-950: oklch(27.0% 0.078 26);
 
   /* ── sauge · taxonomie ───────────────────────────────────── */
   --color-sauge-50:  oklch(97.5% 0.012 170);
@@ -196,8 +196,8 @@
   --shadow-carte:       0 1px 2px oklch(17.5% .03 202/.05), 0 4px 12px -2px oklch(17.5% .03 202/.09);
   --shadow-carte-hover: 0 2px 4px oklch(17.5% .03 202/.06), 0 14px 32px -8px oklch(17.5% .03 202/.16);
   --shadow-flottant:    0 4px 8px oklch(17.5% .03 202/.06), 0 28px 64px -20px oklch(17.5% .03 202/.28);
-  --shadow-cta:         0 2px 4px oklch(37% .108 38/.28), 0 10px 24px -8px oklch(37% .108 38/.38);
-  --shadow-cta-press:   0 1px 2px oklch(37% .108 38/.34);
+  --shadow-cta:         0 2px 4px oklch(37% .108 28/.28), 0 10px 24px -8px oklch(37% .108 28/.38);
+  --shadow-cta-press:   0 1px 2px oklch(37% .108 28/.34);
 }
 
 
@@ -301,11 +301,11 @@ body{ font-family:var(--font-sans); font-size:17px; line-height:1.55; color:var(
 .cta{
   background-image: var(--gradient-cta);
   color: var(--color-teal-950);
-  box-shadow: var(--shadow-cta), inset 0 0 0 1px oklch(56% .172 44/.6);
+  box-shadow: var(--shadow-cta), inset 0 0 0 1px oklch(56% .172 34/.6);
 }
 .cta:hover{ background-image: linear-gradient(180deg, var(--color-orange-300), var(--color-orange-400) 55%, var(--color-orange-500)); }
 .cta:active{ background-image: linear-gradient(180deg, var(--color-orange-500), var(--color-orange-600));
-             transform:translateY(1px); box-shadow:var(--shadow-cta-press), inset 0 0 0 1px oklch(56% .172 44/.6); }
+             transform:translateY(1px); box-shadow:var(--shadow-cta-press), inset 0 0 0 1px oklch(56% .172 34/.6); }
 
 /* ── LE MOTIF VENTOUSE ──────────────────────────────────────────────────────
    Trois cercles concentriques. Le même dessin sert de symbole, de puce, de
