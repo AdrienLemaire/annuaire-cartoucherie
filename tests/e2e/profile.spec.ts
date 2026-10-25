@@ -12,6 +12,10 @@ test("Carries the contact details in full, readable text", async ({ page }) => {
   await expect(page.getByText(m.email!, { exact: false })).toBeVisible();
   await expect(page.getByText(m.site!, { exact: false })).toBeVisible();
   await expect(page.getByText(`@${m.instagram!}`, { exact: false })).toBeVisible();
+  await expect(page.getByRole("link", { name: COPY.profileLinkedin })).toHaveAttribute(
+    "href",
+    `https://www.linkedin.com/in/${m.linkedin!}/`,
+  );
   await expect(page.locator('a[href^="tel:"]').last()).toBeVisible();
 });
 

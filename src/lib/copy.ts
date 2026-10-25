@@ -149,6 +149,7 @@ export const COPY = {
   profileEmail: "E-mail",
   profileSite: "Son site",
   profileInstagram: "Instagram",
+  profileLinkedin: "LinkedIn",
   profileCall: "Appeler",
   profilePhone: "Téléphone",
   // The number stays one tap away rather than printed on the page. It still
