@@ -1,7 +1,7 @@
-# v2 — Profile fields for self-service creation (draft)
+# v2 — Profile fields for self-service creation
 
 Date: 2026-10-26
-Status: draft, open decisions listed in §6. Feeds the v2 spec (`docs/ROADMAP.md`).
+Status: fields decided with Adrien on 2026-10-26 (§6). Feeds the v2 spec (`docs/ROADMAP.md`).
 
 What a new entrepreneur must give us so their profile can be published without an editor, and
 how each field is collected. Built from four reviews: the code (`src/content/schemas.ts` and
@@ -20,16 +20,21 @@ in this repository is much shorter and is not a guide.
 | `nom`          | « Votre nom, tel qu'il doit apparaître »                | yes               | Trim, collapse spaces. Never truncated. Soft limit ~40 (the OG card wraps past ~25).                                                                                                    |
 | `genre`        | « Sur votre fiche, on écrit : elle / il »               | yes               | A wording choice, never "sexe" or a civil title. Drives every agreement through `src/lib/gender.ts`.                                                                                    |
 | `metier`       | « Votre métier, en quelques mots »                      | yes               | Real 18–43 chars. Soft limit 45.                                                                                                                                                        |
+| `enseigne`     | « Le nom de votre activité, si elle en a un »           | no                | Business name, e.g. « Atelier Fictif ». Today it only appears inside `bio`.                                                                                                             |
 | `categories`   | Checkboxes showing each category's « Je cherche… »      | yes, 1–2          | Validated against `categories.json` (unknown slugs are dropped silently today). The first one sets the icons. « Aucune ne convient » sends a note to Adrien.                            |
 | `accroche`     | « En une phrase : ce que vous faites pour vos voisins » | yes               | First person. Real 125–165 chars. It is also the meta description: soft limit 160, hard 200.                                                                                            |
 | `bio`          | « Présentez-vous comme à un voisin »                    | yes               | First person. Real 470–570 chars. Prompts in a toggletip: depuis quand, pour qui, comment ça se passe. Soft 600, hard 800.                                                              |
-| `services`     | « Ce que vous proposez », one line each                 | see §6            | Each ≤ 75 chars (real 13–74). Real profiles have 4–6; the styleguide says 3 at most.                                                                                                    |
+| `services`     | « Ce que vous proposez », one line each                 | yes, 1–6          | Each ≤ 75 chars (real 13–74, 4–6 per profile). The styleguide's « trois maximum » is lifted to 6.                                                                                       |
+| `tarifs`       | « Vos tarifs »                                          | no                | Short free text: « Séance d'1 h : 50 € », « Sur devis ». ≤ 120 chars.                                                                                                                   |
+| `horaires`     | « Quand vous trouver ? »                                | no                | Short free text: « Du mardi au samedi, 9 h–18 h », « Sur rendez-vous ». ≤ 120 chars.                                                                                                    |
+| `reservation`  | « Un lien pour prendre rendez-vous »                    | no                | `https://` URL (Calendly, Planity…).                                                                                                                                                    |
+| `langues`      | « Vous parlez aussi… »                                  | no                | Checkboxes of common languages plus « Autre ». French is implied.                                                                                                                       |
 | Where you work | « Je reçois à une adresse » / « Je me déplace »         | yes               | Replaces typing `distance`. See §2.                                                                                                                                                     |
 | `adresse`      | Street with typeahead, optional « Précision »           | if « reçoit »     | Display text. Geocoded separately (§2).                                                                                                                                                 |
 | Zone           | « Où intervenez-vous ? »                                | if « se déplace » | Free text, e.g. « Dans tout le quartier ». Stored in `adresse` today.                                                                                                                   |
 | `surCarte`     | « Afficher ma fiche sur le plan du quartier »           | —                 | Off by default for a home address.                                                                                                                                                      |
-| `tel`          | « Le numéro où vos voisins peuvent vous appeler »       | see §6            | Accept `+33`, dots, no spaces. Store `06 12 34 56 78`. French numbers only.                                                                                                             |
-| `email`        | « L'adresse e-mail affichée sur votre fiche »           | see §6            | Separate from the sign-in email, with a « même adresse » shortcut. Typo warning (gmial.com).                                                                                            |
+| `tel`          | « Le numéro où vos voisins peuvent vous appeler »       | one of tel/email  | Accept `+33`, dots, no spaces. Store `06 12 34 56 78`. French numbers only.                                                                                                             |
+| `email`        | « L'adresse e-mail affichée sur votre fiche »           | one of tel/email  | Separate from the sign-in email, with a « même adresse » shortcut. Typo warning (gmial.com).                                                                                            |
 | `site`         | « Votre site internet »                                 | no                | Accept any paste; store host and path only.                                                                                                                                             |
 | `instagram`    | « Votre compte Instagram »                              | no                | Accept `@x`, `x` or a URL; store the handle.                                                                                                                                            |
 | `linkedin`     | « Votre profil LinkedIn »                               | no                | Extract what follows `/in/`. Percent-encoded accents fail today's regex: decode or widen it.                                                                                            |
@@ -95,16 +100,15 @@ can serve as their notice.
 - Carousel resizing neither rotates per EXIF nor refuses to enlarge.
 - `firstName()` takes the first word of `nom`, so « Jean Marc » becomes « Appeler Jean ».
 
-## 6. Open decisions
+## 6. Decisions (Adrien, 2026-10-26)
 
-1. **Publish immediately, or after Adrien approves?** Recommended: approval for a new profile
-   (a `pending` status), so a stranger or out-of-area business can't appear unchecked.
-2. **Contact**: require a phone number, or at least one of phone or email?
-3. **Services**: allow up to 6 like the real profiles, or cap at 3 like the styleguide?
-4. **Carousel**: stays the association's (Sandra's Instagram portraits), or members upload
-   their own photos?
-5. **Business name** (enseigne): a new field? Today it only appears inside `bio` or `metier`,
-   while site, email, Instagram and Google reviews are usually the business's.
-6. **Fields no profile has yet**: opening hours, prices, booking link, languages. The mockup
-   shows a « Tarifs » line and a « comment venir » line that never shipped.
-7. **Who is the data controller** named on the notice: Adrien, or an association?
+1. **A new profile waits for Adrien's approval** (`pending` status). Once approved, the owner's
+   edits go live directly.
+2. **Contact**: at least one of phone or email.
+3. **Services**: 1 to 6, as the live profiles have.
+4. **Carousel**: stays the association's. New members get their portrait only; Adrien adds
+   Sandra's slides and their alt text later.
+5. **New fields**: business name, prices and opening hours as short free text, a booking link,
+   languages spoken (§1). None of the live profiles has them, and the profile page has no place
+   for them yet: the v2 spec decides where they render.
+6. **Data controller** named on the notice: Adrien.
