@@ -1,5 +1,8 @@
 # Annuaire de la Cartoucherie — Plan 1: the static directory
 
+**Status: complete, live since 2026-10-26.** What shipped, what changed and what comes next:
+`docs/ROADMAP.md`. The step checkboxes below were never ticked and are not a progress record.
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Ship a deployed, browsable, French-language directory of the Cartoucherie's entrepreneurs — all four discovery surfaces, faithful to the approved mockups, excellent on a phone — with no database and no accounts, and with no real member data anywhere in the repository.
@@ -3600,7 +3603,7 @@ Checked against spec §12 and `docs/STANDARDS.md`:
 - [ ] One iPhone 14 screenshot, looked at by a person, showing nothing under the home indicator
 - [ ] One side-by-side against each of the four mockups, looked at by a person
 
-**Pending a decision, not asserted either way: spec §12's "200 profiles live."** Adrien may be reducing launch scope to a handful of real profiles, which would change nothing in this plan — the build reads whatever `members.json` holds — but changes what "done" means. Nothing in the code, the tests or the budgets hardcodes a member count; keep it that way until the number is decided.
+**Spec §12's "200 profiles live" was dropped on 2026-10-26:** v1 launched with 6, and the directory grows through v2 self-editing (`docs/ROADMAP.md`). Nothing in the code, the tests or the budgets hardcodes a member count; keep it that way.
 
 **Not in Plan 1, by design:** reviews, accounts and `/admin` (Plan 2); MapLibre replacing the schematic map; R2 and the AVIF/WebP pipeline for portraits; D1 as the build's source (v2, spec §5).
 
@@ -3610,5 +3613,5 @@ Checked against spec §12 and `docs/STANDARDS.md`:
 2. **The private content repository.** `cartoucherie-donnees` must exist, with a `CONTENT_REPO_TOKEN` scoped to it, before the first production deploy — Task 14.
 3. **Mentions légales.** Association name, legal form, registered address, SIRET or RNA, publication director, contact email, and Cloudflare's current legal entity — `docs/mentions-legales-a-completer.md`.
 4. **Licence and repository visibility.** Public is assumed throughout, and Task 14's whole mechanism depends on it. AGPL-3.0 keeps the Cloudflare non-profit credits; PolyForm Noncommercial forfeits them (spec §14).
-5. **How many profiles at launch?** Spec §12 says 200; the scope may be shrinking to a handful. It changes no code, but it changes the Definition of Done.
+5. ~~**How many profiles at launch?**~~ Decided 2026-10-26: 6 at launch, growing through v2 self-editing (`docs/ROADMAP.md`).
 6. **When do Sandra's real portraits arrive?** They lift the ×1.37 upscale ceiling that currently constrains every photographic decision on the site.
