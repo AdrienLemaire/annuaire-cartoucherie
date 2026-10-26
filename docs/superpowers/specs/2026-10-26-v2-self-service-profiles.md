@@ -87,7 +87,7 @@ visitor ─▶ every public page ──▶ static assets (unchanged, free, no Wo
     Every other path stays a pure asset request (v1 §5).
   - Images are re-encoded on the phone (§6). The Worker only checks type and size and stores
     the bytes.
-  - **Budget: 5 ms of CPU per request**, half the limit, measured on staging (§13 step 0).
+  - **Budget: 5 ms of CPU per request**, half the limit. Measured: the design fits (§13 step 0).
 - **The build keeps its shape.** A new `export-content` step reads approved profiles, photos and
   slides from D1 and writes them in the layout `CONTENT_DIR` has today. `sync-content` and every
   page stay unchanged. The private repository is archived once the export is proven.
@@ -98,7 +98,10 @@ visitor ─▶ every public page ──▶ static assets (unchanged, free, no Wo
   CSP, HSTS and nosniff headers in middleware, plus `Cache-Control: no-store`.
 - **Service worker.** It never caches `/espace`, `/admin` or `/api`.
 
-## 6. Data model (D1, Drizzle)
+## 6. Data model (D1, plain SQL)
+
+Prepared statements and `wrangler d1 migrations`, as measured in §13 step 0. Drizzle is not
+adopted: its CPU cost was never measured, and the Worker has a handful of queries.
 
 - **`profiles`**
   - Every field of today's `Member` schema, plus the five new ones (fields doc §1).
@@ -109,13 +112,14 @@ visitor ─▶ every public page ──▶ static assets (unchanged, free, no Wo
   - `consents`: terms version and date, photo authorisation, rights attestation, 18+.
 - **`profile_categories`**: 1–2 rows per profile, checked against `categories.json`.
 - **`images`**
-  - `profile_id`, `kind` (`portrait` | `slide`), `position`, `alt` (slides), the JPEG bytes.
+  - `profile_id`, `kind` (`portrait` | `slide`), `position`, `alt` (slides), the JPEG as base64
+    text. The phone encodes it and the Worker stores the string untouched: 2 ms of CPU, where
+    binding raw bytes to D1 cost 7–9 ms (§13 step 0). It also exports as plain text.
   - Re-encoded on the phone before upload: portrait ~768 px, slide 1080 px wide. Each well under
     D1's 2 MB value limit.
   - 200 profiles with their slides stay around 100 MB, under the free plan's 500 MB per
     database.
-- **Better Auth tables**: user, session, account, verification, passkey. Plus a `role` column
-  on user.
+- **`users`** (`email`, `role`: `member` | `admin`), **`sign_in_tokens`**, **`sessions`** (§8).
 
 Why D1 rather than R2: R2 is reported (third-party guides, to confirm on Cloudflare's billing
 pages) to ask for a payment card and bill past its free tier, which breaks
@@ -173,8 +177,11 @@ sign-in. What v2 adds:
   - A magic link is one random token and a D1 write.
   - Sessions are random tokens looked up in D1 on each request: waiting time, not CPU. No
     signed token to verify.
-  - Better Auth stays the choice if step 0 measures it inside the budget. Otherwise, a
-    hand-written magic link: a token table and a session table.
+  - **Hand-written, not Better Auth** (measured, §13 step 0). Better Auth added 5–15 ms of CPU
+    to every request, even a plain session check. The hand-written version is three tables
+    (`users`, `sign_in_tokens`, `sessions`): a 32-byte random token, stored as its SHA-256 and
+    valid 15 minutes, exchanged once for a 30-day session token in a `HttpOnly; Secure;
+SameSite=Lax; Path=/api` cookie.
 
 - **Who signs in.** Entrepreneurs and Adrien only. The sign-in link appears in the footer and on
   a new « Vous êtes entrepreneur du quartier ? » call to action on `/a-propos`, never in the
@@ -247,12 +254,22 @@ New components go into `styleguide.html` first.
 
 ## 13. Migration
 
-0. **Before anything else: measure CPU on staging.** A throwaway Worker on
-   `staging.cartoucherie.fyi`, with D1 and Better Auth: request a magic link, sign in, save a
-   form step, upload a 768 px portrait, list a queue. Read each request's CPU time in Workers
-   Logs. Each must stay under 5 ms. Over budget: replace Better Auth with the hand-written
-   version, or redesign that one request. Workers Paid ($5/month, 30 s of CPU, uncapped
-   overage) only if both fail, and only with Adrien's agreement, since it breaks v1 §3.
+0. **CPU measured on Workers Free — done 2026-10-26.** A throwaway Worker on `workers.dev`
+   with D1, deleted afterwards. CPU per request, median of 10 (max), from Workers Logs:
+
+   | Request                                         | Better Auth 1.7.7 | Hand-written |
+   | ----------------------------------------------- | ----------------- | ------------ |
+   | Request a magic link                            | 7 ms (12)         | 1 ms (5)     |
+   | Open the magic link                             | 16 ms (49)        | 2.5 ms (4)   |
+   | Check a session                                 | 6 ms (16)         | 0 ms (3)     |
+   | Save a step: session, `memberSchema`, D1 upsert | 9.5 ms (17)       | 1 ms (10)    |
+   | List the queue                                  | 8 ms (48)         | 1 ms (1)     |
+   | Store a 120 KB portrait as raw bytes            | 12.5 ms (18)      | 8 ms (14)    |
+   | Store it as base64 text                         | —                 | 2 ms (3)     |
+
+   The first requests after a deploy cost more (Better Auth: 35–99 ms). No request was stopped:
+   Cloudflare tolerates occasional overruns, but v2 must not rely on that. Hence §8's
+   hand-written sign-in and §6's base64 images. Workers Paid is not needed.
 
 1. Create the production and staging D1 databases. Staging gets the fictional fixture only.
 2. Import `cartoucherie-donnees`: the 6 profiles as `published` with no owner, their portraits,
@@ -296,7 +313,5 @@ New components go into `styleguide.html` first.
 - Decide whether LinkedIn handles with accents are decoded or the rule is widened.
 - The DSFR form patterns could not be read (403): review them by hand before the form mockups.
 - To verify in the plan:
-  - **Image export.** Check how the D1 HTTP API returns image bytes (likely JSON number arrays,
-    several times larger). Store them base64 or export in batches if needed.
   - **Turnstile** renders an iframe: its two pages also need `frame-src challenges.cloudflare.com`.
   - **Dispatch token.** Confirm on GitHub's docs that `workflow_dispatch` needs only Actions: write.

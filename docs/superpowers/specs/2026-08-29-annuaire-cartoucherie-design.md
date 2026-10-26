@@ -109,7 +109,7 @@ messages and documentation are English. Engineering standards: `docs/STANDARDS.m
 | Database | Cloudflare D1 (SQLite) | 5 GB / 5M row reads per day free; same vendor, same failure semantics |
 | ORM | Drizzle | Typed schema and migrations against D1 |
 | File storage | ~~Cloudflare R2~~ D1, from v2 | R2 asks for a card and bills past its free tier; see the v2 spec §6 |
-| Auth | Better Auth | D1 is a first-class database since 1.5; no auth vendor, no MAU cliff |
+| Auth | ~~Better Auth~~ hand-written magic link, from v2 | Better Auth cost 5–15 ms of CPU per request against Workers Free's 10 ms; see the v2 spec §13 |
 | Email | Brevo | 300/day free, French company with EU data processing, stops rather than bills |
 | Maps | MapLibre + OpenStreetMap | No API key, no cost, no Google |
 | Analytics | Cloudflare Web Analytics | Free, cookieless, therefore no consent banner |
