@@ -9,7 +9,7 @@ Last updated: 2026-10-26.
 | Version      | What it delivers                                                                                         | Status                                                       |
 | ------------ | -------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------ |
 | **v1**       | The static directory: browse, search, filter, map, call a neighbour                                      | ✅ **Live** since 2026-10-26 on https://www.cartoucherie.fyi |
-| **v2**       | Entrepreneurs create an account and fill in their own profile                                            | ⏭️ **Next**: spec not yet written                            |
+| **v2**       | Entrepreneurs create an account and fill in their own profile                                            | ⏭️ **Next**: spec drafted                                    |
 | **After v2** | Neighbourhood reviews, synced favourites, `/admin`                                                       | 💡 Proposed, not scheduled                                   |
 | **v3**       | Events                                                                                                   | 💡 Not started                                               |
 | **Later**    | Payments to businesses; messaging stays unscheduled until residents want it here rather than in WhatsApp | 💡 Not started                                               |
@@ -51,24 +51,17 @@ The spec put accounts, favourites, reviews and 200 profiles in v1. They did not 
   (`src/components/ReviewsSlot.astro`).
 - **LCP budget:** CI gates LCP at 2.5 s (`lighthouserc.json`), not Plan 1's 2.0 s.
 
-## v2: self-editing (next)
+## v2: self-service profiles (next)
 
-Entrepreneurs create an account and fill in their own profile, then edit it. When they save,
-they see their own profile updated straight away, while the public site rebuilds.
+Spec: `docs/superpowers/specs/2026-10-26-v2-self-service-profiles.md`, with the field list in
+`2026-10-26-v2-profile-fields.md`. Entrepreneurs create an account and fill in their own
+profile; Adrien approves new profiles, and later edits go live directly. No claiming flow: Adrien
+links the 6 existing profiles to their owners by hand.
 
-No claiming flow: Adrien links the 6 existing profiles to their owners' accounts by hand once
-those accounts exist (decided 2026-10-26).
-
-Decided (`docs/superpowers/specs/2026-10-26-v2-profile-fields.md`): every field a new profile
-collects and how; a new profile waits for Adrien's approval, later edits go live directly; the
-carousel stays with the association.
-
-Questions the v2 spec must still answer:
-
-- Where do the new fields (business name, prices, hours, booking link, languages) render?
-- How does the editor nudge a member with no Google listing to create one and paste its link?
-- How does a profile's data move from `cartoucherie-donnees` to D1 (spec §5)? Until then,
-  Adrien edits profiles by hand.
-
-Expected new pieces: D1, sign-in (magic link through Brevo, then passkeys; spec §7), and SPF
-and DKIM on `cartoucherie.fyi`.
+| Step                                                        | Status                             |
+| ----------------------------------------------------------- | ---------------------------------- |
+| Field list and decisions                                    | ✅ Done (2026-10-26)               |
+| v2 spec                                                     | 📝 Draft, awaiting Adrien's review |
+| Mockups: form, `/espace`, profile with new fields, `/admin` | ⏳ Not started                     |
+| Implementation plan                                         | ⏳ Not started                     |
+| Build, migration of the 6 profiles to D1, invitations       | ⏳ Not started                     |

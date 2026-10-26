@@ -108,7 +108,7 @@ messages and documentation are English. Engineering standards: `docs/STANDARDS.m
 | Hosting | Cloudflare Workers | Static asset requests are free and unlimited; no egress billing on any plan; $5/mo flat ceiling if ever exceeded |
 | Database | Cloudflare D1 (SQLite) | 5 GB / 5M row reads per day free; same vendor, same failure semantics |
 | ORM | Drizzle | Typed schema and migrations against D1 |
-| File storage | Cloudflare R2 | 10 GB free, zero egress fees |
+| File storage | ~~Cloudflare R2~~ D1, from v2 | R2 asks for a card and bills past its free tier; see the v2 spec §6 |
 | Auth | Better Auth | D1 is a first-class database since 1.5; no auth vendor, no MAU cliff |
 | Email | Brevo | 300/day free, French company with EU data processing, stops rather than bills |
 | Maps | MapLibre + OpenStreetMap | No API key, no cost, no Google |

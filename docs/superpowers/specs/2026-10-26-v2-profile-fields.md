@@ -1,7 +1,7 @@
 # v2 — Profile fields for self-service creation
 
 Date: 2026-10-26
-Status: fields decided with Adrien on 2026-10-26 (§6). Feeds the v2 spec (`docs/ROADMAP.md`).
+Status: fields decided with Adrien on 2026-10-26 (§6). Feeds the v2 spec (`2026-10-26-v2-self-service-profiles.md`).
 
 What a new entrepreneur must give us so their profile can be published without an editor, and
 how each field is collected. Built from four reviews: the code (`src/content/schemas.ts` and
@@ -112,3 +112,5 @@ can serve as their notice.
    languages spoken (§1). None of the live profiles has them, and the profile page has no place
    for them yet: the v2 spec decides where they render.
 6. **Data controller** named on the notice: Adrien.
+7. **Categories**: 1 or 2 per profile.
+8. **Photos and slides** are stored in D1, not R2 (v2 spec §6).
