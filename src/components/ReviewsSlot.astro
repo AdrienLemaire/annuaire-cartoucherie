@@ -26,7 +26,12 @@
  * reviewCount === 0 ("Aucun avis pour l'instant.") and reviewCount > 0 (the
  * count alone, no list), since Plan 1 has no review records to list either
  * way.
+ *
+ * googleReviews sits OUTSIDE the slot: Plan 2 replaces the slot's contents,
+ * and the member's Google reviews stay a link out (Google's terms forbid
+ * showing them here), kept apart from the neighbourhood's own.
  */
+import Icon from "./Icon.astro";
 import Toggletip from "./Toggletip.astro";
 import { COPY } from "../lib/copy";
 import type { Gender } from "../content/schemas";
@@ -36,8 +41,9 @@ interface Props {
   rating: number;
   reviewCount: number;
   genre: Gender;
+  googleReviews: string | null;
 }
-const { slug, rating, reviewCount, genre } = Astro.props;
+const { slug, rating, reviewCount, genre, googleReviews } = Astro.props;
 ---
 
 <section id="avis" class="bg-neutre-100" aria-labelledby="reviews-title">
@@ -64,5 +70,14 @@ const { slug, rating, reviewCount, genre } = Astro.props;
         {reviewCount > 0 ? COPY.profileReviewCount(reviewCount) : COPY.reviewsNone}
       </p>
     </div>
+    {googleReviews && (
+      <a
+        href={googleReviews}
+        class="mt-4 inline-flex min-h-12 items-center gap-2 text-corps font-semibold text-teal-800 underline"
+      >
+        <Icon name="etoile" class="h-5 w-5" />
+        {COPY.profileGoogleReviews}
+      </a>
+    )}
   </div>
 </section>
