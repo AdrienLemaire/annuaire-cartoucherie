@@ -20,7 +20,7 @@ The visitor's experience does not change: the public site stays static, cookie-f
 
 ### In v2
 
-- Accounts for entrepreneurs: magic link by email, passkeys as an upgrade
+- Accounts for entrepreneurs: magic link by email
 - A step-by-step profile form with a live preview (`/espace`)
 - An approval queue for new profiles, and editing that goes live directly once approved
 - « Supprimer ma fiche »
@@ -35,6 +35,8 @@ The visitor's experience does not change: the public site stays static, cookie-f
 - **Claiming a profile.** Adrien links the 6 seeded profiles to their owners by hand in
   `/admin`, once those owners have an account.
 - Resident accounts, reviews, synced favourites: after v2 (`docs/ROADMAP.md`).
+- Passkeys: after v2. Verifying one is the heaviest step of sign-in (§5), and the magic link
+  is enough to start.
 - Social sign-in (v1 spec §7 still applies).
 - Payments, events, messaging.
 
@@ -65,7 +67,7 @@ The visitor's experience does not change: the public site stays static, cookie-f
 ## 5. Architecture
 
 ```
-entrepreneur ─▶ /espace, /api/*  ──▶  Worker (Astro, on demand)  ──▶  D1 (profiles, photos, auth)
+entrepreneur ─▶ /espace, /admin (static pages) ─▶ /api/* ─▶ Worker (JSON only) ─▶ D1 (profiles, photos, auth)
                                                 │
                        approved edit or approval │ workflow_dispatch
                                                 ▼
@@ -73,17 +75,25 @@ entrepreneur ─▶ /espace, /api/*  ──▶  Worker (Astro, on demand)  ─�
 visitor ─▶ every public page ──▶ static assets (unchanged, free, no Worker invoked)
 ```
 
-- **Astro gains the Cloudflare adapter.** Public pages stay prerendered. Only `/espace/*`,
-  `/admin/*` and `/api/*` set `prerender = false` and run in the Worker. These are
-  authenticated, low-traffic routes, so the v1 rule that browsing must stay in the free static
-  tier (v1 §5) holds. **To verify in the plan:** a prerendered page is served as an asset
-  without invoking the Worker.
+- **The Worker answers JSON, nothing else.** Workers Free allows 10 ms of CPU per request and
+  stops a Worker that keeps exceeding it. Time spent waiting on D1, Brevo or the geocoder does
+  not count; rendering, crypto and a large bundle's startup do. So:
+  - `/espace` and `/admin` are prerendered pages like the rest of the site: served as assets,
+    no Worker CPU. They fetch and send JSON.
+  - The Worker is a small hand-written module, not Astro's server mode: sign-in, sessions,
+    save a step, store an image, proxy the geocoder, list and act on the queue.
+  - `wrangler.toml` gains `main` and `run_worker_first = ["/api/*"]`, because
+    `not_found_handling = "404-page"` would otherwise answer unknown paths before the Worker.
+    Every other path stays a pure asset request (v1 §5).
+  - Images are re-encoded on the phone (§6). The Worker only checks type and size and stores
+    the bytes.
+  - **Budget: 5 ms of CPU per request**, half the limit, measured on staging (§13 step 0).
 - **The build keeps its shape.** A new `export-content` step reads approved profiles, photos and
   slides from D1 and writes them in the layout `CONTENT_DIR` has today. `sync-content` and every
   page stay unchanged. The private repository is archived once the export is proven.
-- **Preview renders the real components.** The editor's preview is server-rendered by the Worker
-  from the draft with the same `MemberCard` and profile components, so it cannot drift from the
-  public page.
+- **Preview runs in the browser.** The form draws the card and profile header from the draft,
+  with the same markup the public components emit. A test renders the fixture profiles both
+  ways and compares the text, so the preview cannot drift from the public page.
 - **Headers.** `public/_headers` does not apply to Worker responses. Dynamic routes set the same
   CSP, HSTS and nosniff headers in middleware, plus `Cache-Control: no-store`.
 - **Service worker.** It never caches `/espace`, `/admin` or `/api`.
@@ -155,14 +165,22 @@ at 0 until reviews exist.
 
 ## 8. Authentication
 
-v1 spec §7 holds: magic link via Brevo, passkeys offered after the first sign-in, no social
+v1 spec §7 holds, except passkeys, which wait until after v2: magic link via Brevo, no social
 sign-in. What v2 adds:
+
+- **Cheap by design** (§5's 5 ms budget):
+  - No password, so no password hashing, the usual cause of CPU overruns.
+  - A magic link is one random token and a D1 write.
+  - Sessions are random tokens looked up in D1 on each request: waiting time, not CPU. No
+    signed token to verify.
+  - Better Auth stays the choice if step 0 measures it inside the budget. Otherwise, a
+    hand-written magic link: a token table and a session table.
 
 - **Who signs in.** Entrepreneurs and Adrien only. The sign-in link appears in the footer and on
   a new « Vous êtes entrepreneur du quartier ? » call to action on `/a-propos`, never in the
   visitor's path.
 - **Cookies.** The session cookie is strictly necessary, so the CNIL exempts it from consent. It
-  is set only on `/espace`, `/admin` and `/api` responses. Public pages stay cookie-free, and the
+  is set only on `/api` responses, scoped to `Path=/api`. Public pages stay cookie-free, and the
   existing assertion keeps checking them.
 - **Turnstile** guards the sign-in email and the submission. It is the only third-party script
   allowed. `npm run guard` and the CSP admit `challenges.cloudflare.com` on those two pages only.
@@ -199,7 +217,8 @@ What this spec adds:
   (same phone or similar name).
 - **Profiles**: search, hide or unhide, link an owner by email, upload and order carousel
   slides with their alt text.
-- Role-gated in the Worker. No other user can reach it, even by guessing the URL.
+- The page is an empty static shell. Every `/api/admin/*` call checks the `admin` role in the
+  Worker, so guessing the URL shows nothing.
 
 ## 11. Changes to v1 pages
 
@@ -228,6 +247,13 @@ New components go into `styleguide.html` first.
 
 ## 13. Migration
 
+0. **Before anything else: measure CPU on staging.** A throwaway Worker on
+   `staging.cartoucherie.fyi`, with D1 and Better Auth: request a magic link, sign in, save a
+   form step, upload a 768 px portrait, list a queue. Read each request's CPU time in Workers
+   Logs. Each must stay under 5 ms. Over budget: replace Better Auth with the hand-written
+   version, or redesign that one request. Workers Paid ($5/month, 30 s of CPU, uncapped
+   overage) only if both fail, and only with Adrien's agreement, since it breaks v1 §3.
+
 1. Create the production and staging D1 databases. Staging gets the fictional fixture only.
 2. Import `cartoucherie-donnees`: the 6 profiles as `published` with no owner, their portraits,
    and their slides with alt text. Each profile's `adresse` is geocoded again, and `distance`
@@ -245,6 +271,8 @@ New components go into `styleguide.html` first.
 - Playwright, the second core flow from v1 §11, now: **sign in → fill in the form → submit →
   Adrien approves → the profile is public**. Runs against a local D1, with the magic link read
   from a test-only mail sink.
+- The preview against the public page: the fixture profiles rendered both ways, same text.
+- CPU: step 0's measurements repeated on staging before launch, every request under 5 ms.
 - The existing public-page tests run unchanged against the exported content. Zero cookies on
   public pages stays asserted.
 
@@ -268,9 +296,6 @@ New components go into `styleguide.html` first.
 - Decide whether LinkedIn handles with accents are decoded or the rule is widened.
 - The DSFR form patterns could not be read (403): review them by hand before the form mockups.
 - To verify in the plan:
-  - **CPU.** Workers Free allows 10 ms of CPU per request and fails beyond it. Check that
-    server-rendering the preview and Better Auth fit; otherwise move the preview to the client or
-    budget Workers Paid.
   - **Image export.** Check how the D1 HTTP API returns image bytes (likely JSON number arrays,
     several times larger). Store them base64 or export in batches if needed.
   - **Turnstile** renders an iframe: its two pages also need `frame-src challenges.cloudflare.com`.
