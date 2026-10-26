@@ -58,10 +58,11 @@ Spec: `docs/superpowers/specs/2026-10-26-v2-self-service-profiles.md`, with the 
 profile; Adrien approves new profiles, and later edits go live directly. No claiming flow: Adrien
 links the 6 existing profiles to their owners by hand.
 
-| Step                                                        | Status                             |
-| ----------------------------------------------------------- | ---------------------------------- |
-| Field list and decisions                                    | ✅ Done (2026-10-26)               |
-| v2 spec                                                     | 📝 Draft, awaiting Adrien's review |
-| Mockups: form, `/espace`, profile with new fields, `/admin` | ⏳ Not started                     |
-| Implementation plan                                         | ⏳ Not started                     |
-| Build, migration of the 6 profiles to D1, invitations       | ⏳ Not started                     |
+| Step                                                            | Status                             |
+| --------------------------------------------------------------- | ---------------------------------- |
+| Field list and decisions                                        | ✅ Done (2026-10-26)               |
+| v2 spec                                                         | 📝 Draft, awaiting Adrien's review |
+| CPU test on staging (spec §13 step 0): every request under 5 ms | ⏳ Next                            |
+| Mockups: form, `/espace`, profile with new fields, `/admin`     | ⏳ Not started                     |
+| Implementation plan                                             | ⏳ Not started                     |
+| Build, migration of the 6 profiles to D1, invitations           | ⏳ Not started                     |
