@@ -59,12 +59,13 @@ they see their own profile updated straight away, while the public site rebuilds
 No claiming flow: Adrien links the 6 existing profiles to their owners' accounts by hand once
 those accounts exist (decided 2026-10-26).
 
-Questions the v2 spec must answer first:
+Decided (`docs/superpowers/specs/2026-10-26-v2-profile-fields.md`): every field a new profile
+collects and how; a new profile waits for Adrien's approval, later edits go live directly; the
+carousel stays with the association.
 
-- Which fields does a new profile need, and how is each one collected? Draft:
-  `docs/superpowers/specs/2026-10-26-v2-profile-fields.md`.
-- Which fields can they edit themselves, and which stay with Adrien?
-- Do changes go live immediately, or after Adrien checks them?
+Questions the v2 spec must still answer:
+
+- Where do the new fields (business name, prices, hours, booking link, languages) render?
 - How does the editor nudge a member with no Google listing to create one and paste its link?
 - How does a profile's data move from `cartoucherie-donnees` to D1 (spec §5)? Until then,
   Adrien edits profiles by hand.
