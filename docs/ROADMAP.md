@@ -61,7 +61,8 @@ those accounts exist (decided 2026-10-26).
 
 Questions the v2 spec must answer first:
 
-- Which fields does a new profile need, and how is each one collected (being researched)?
+- Which fields does a new profile need, and how is each one collected? Draft:
+  `docs/superpowers/specs/2026-10-26-v2-profile-fields.md`.
 - Which fields can they edit themselves, and which stay with Adrien?
 - Do changes go live immediately, or after Adrien checks them?
 - How does the editor nudge a member with no Google listing to create one and paste its link?
