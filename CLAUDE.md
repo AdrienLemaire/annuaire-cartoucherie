@@ -7,6 +7,7 @@ connection, maybe at 70 with the text size turned up. Every decision serves that
 **The app is in French. The code is in English.** UI copy, content and user-facing strings
 are French; identifiers, comments, filenames, test descriptions, commits and docs are English.
 
+- Roadmap and status: `docs/ROADMAP.md`
 - Design: `docs/superpowers/specs/2026-08-29-annuaire-cartoucherie-design.md`
 - Plan: `docs/superpowers/plans/2026-09-14-annuaire-statique.md`
 - Standards: `docs/STANDARDS.md`

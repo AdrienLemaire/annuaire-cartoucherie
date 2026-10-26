@@ -19,6 +19,7 @@ Read these before changing behaviour — they are the source of truth. This file
 commands, not their reasoning, with one deliberate exception: the three silent failures below,
 kept here too because they have each cost real time rediscovering more than once.
 
+- `docs/ROADMAP.md` — what is live, what comes next, and how the scope changed.
 - `docs/superpowers/specs/2026-08-29-annuaire-cartoucherie-design.md` — the product spec: scope,
   constraints, data model, definition of done.
 - `docs/superpowers/plans/2026-09-14-annuaire-statique.md` — the implementation plan, task by

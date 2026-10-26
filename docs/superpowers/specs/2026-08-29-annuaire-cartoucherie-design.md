@@ -1,7 +1,8 @@
 # Annuaire de la Cartoucherie — Design (v1)
 
 Date: 2026-08-29
-Status: approved, pending implementation plan
+Status: v1 live since 2026-10-26, with a narrower scope than §2 and §12 describe. Progress
+and the re-scoping are tracked in `docs/ROADMAP.md`.
 
 ## 1. Purpose
 
@@ -274,6 +275,9 @@ for older residents, on small screens, with large text and screen readers.
 
 ## 12. Definition of done (v1)
 
+The original target, kept for reference. v1 shipped with 6 profiles and without the
+sign-in-then-review flow; `docs/ROADMAP.md` records what changed.
+
 - 200 profiles live
 - All four discovery surfaces working
 - Lighthouse on mobile: accessibility, best practices and SEO at 1.0, performance ≥ 0.95
@@ -284,12 +288,7 @@ for older residents, on small screens, with large text and screen readers.
 
 ## 13. Roadmap
 
-- **v2** — claim your profile and self-editing; owner sees their own profile rendered
-  dynamically so edits appear instantly while the public copy rebuilds. The editor
-  nudges a member with no Google listing to create one and paste its link (`avisGoogle`)
-- **v3** — events
-- **Later** — payments to businesses; community/messaging remains unscheduled until
-  there is evidence residents want it in the app rather than in WhatsApp
+Moved to `docs/ROADMAP.md`, which tracks what each version delivers and where it stands.
 
 ## 14. Open items for implementation planning
 
