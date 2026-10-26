@@ -44,6 +44,15 @@ export const memberSchema = z.object({
     .regex(/^[\w-]+$/, "linkedin: the name after linkedin.com/in/, not a URL")
     .nullable()
     .default(null),
+  // The member's Google Maps link, copied while on its reviews tab. A link out
+  // only: Google's terms forbid showing the reviews themselves. The query is
+  // only Google's tracking (entry, g_ep), so it is dropped.
+  avisGoogle: z
+    .string()
+    .regex(/^https:\/\/www\.google\.com\/maps\/\S+$/, "avisGoogle: a https://www.google.com/maps/ link")
+    .transform((url) => url.split(/[?#]/)[0])
+    .nullable()
+    .default(null),
   // A file name under public/portraits/, never a URL: the repo holds no remote
   // portrait fetches and the build never goes to the network.
   photo: z.string().regex(/^[a-z0-9-]+\.(jpg|webp)$/, "photo: a file name, not a URL"),
