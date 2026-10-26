@@ -67,7 +67,7 @@ The visitor's experience does not change: the public site stays static, cookie-f
 ```
 entrepreneur ─▶ /espace, /api/*  ──▶  Worker (Astro, on demand)  ──▶  D1 (profiles, photos, auth)
                                                 │
-                       approved edit or approval │ repository_dispatch
+                       approved edit or approval │ workflow_dispatch
                                                 ▼
                      GitHub Actions « content deploy »: export D1 ─▶ CONTENT_DIR ─▶ build ─▶ assets
 visitor ─▶ every public page ──▶ static assets (unchanged, free, no Worker invoked)
@@ -102,11 +102,13 @@ visitor ─▶ every public page ──▶ static assets (unchanged, free, no Wo
   - `profile_id`, `kind` (`portrait` | `slide`), `position`, `alt` (slides), the JPEG bytes.
   - Re-encoded on the phone before upload: portrait ~768 px, slide 1080 px wide. Each well under
     D1's 2 MB value limit.
-  - 200 profiles with their slides stay around 100 MB of the free 5 GB.
+  - 200 profiles with their slides stay around 100 MB, under the free plan's 500 MB per
+    database.
 - **Better Auth tables**: user, session, account, verification, passkey. Plus a `role` column
   on user.
 
-Why D1 rather than R2: R2 asks for a payment card and bills past its free tier, which breaks
+Why D1 rather than R2: R2 is reported (third-party guides, to confirm on Cloudflare's billing
+pages) to ask for a payment card and bill past its free tier, which breaks
 v1 §3's « stop, never bill » rule. D1 on the free plan stops at its limits. One store instead of
 two. v1 §4's R2 line is superseded.
 
@@ -121,13 +123,26 @@ at 0 until reviews exist.
 - **Later edits** to a `published` profile save straight to D1 and trigger a content deploy. The
   owner sees the result in `/espace` immediately; the public page follows when the deploy ends.
 - **Content deploy** (new workflow, environment `production-content`, no reviewer):
-  - Triggered by the Worker through `repository_dispatch`, with a fine-grained token limited to
-    that one action on this repository.
-  - Checks out `main` exactly as last approved, exports D1, builds, runs the content checks
-    (`budgets`, `contenu.spec.ts`), deploys, and runs the smoke test.
-  - A `concurrency` group without `cancel-in-progress`: one deploy runs, at most one waits, so
-    a burst of saves coalesces into two deploys and a running `wrangler deploy` is never killed.
-  - Code still reaches production only through the gated deploy.
+  - Triggered by the Worker through `workflow_dispatch`, with a fine-grained token holding only
+    Actions: write on this repository. Not `repository_dispatch`, which needs Contents: write:
+    a token able to push code must never sit in the Worker.
+  - **Builds the code last approved, not `main`'s head.** Between a merge and Adrien's approval,
+    or after he rejects a deploy, `main` holds unapproved code. The gated deploy records the SHA
+    it deployed (a moved `deployed/production` tag), and the content deploy checks out that tag
+    when the job starts.
+  - Exports D1, builds, runs the content checks (`budgets`, `contenu.spec.ts`), deploys, and runs
+    the smoke test.
+  - **One `concurrency` group shared with the gated deploy**, without `cancel-in-progress`: one
+    deploy runs and at most one waits. A burst of saves coalesces, a running `wrangler deploy` is
+    never killed, and a content deploy built from older code can never finish after a code
+    deploy and roll it back.
+  - **Both deploys export from D1** once migrated. A code deploy that still read the archived
+    private repository would wipe every member edit.
+  - A failed content deploy emails Adrien. The member's edit stays saved and goes out with the
+    next successful deploy.
+- **Every save is validated with the build's own `memberSchema`** in the Worker, plus the map
+  bounds, so D1 can never hold a row the build would reject. One bad row would otherwise stop
+  every deploy, code included, for everyone.
 - **The export never ships unapproved data.** Only `published` profiles are exported. Rows are
   never printed in CI logs (the repository is public), and errors name a row number only, as
   `sync-content` does today. The D1 API token is read-only.
@@ -219,7 +234,7 @@ New components go into `styleguide.html` first.
    is computed.
 3. Prove that a build from the export renders the same pages as a build from the private
    repository: same URLs, and identical text on every profile.
-4. Switch CI to the export, then archive `cartoucherie-donnees` (read-only, kept as a backup).
+4. Switch both deploy workflows, gated and content, to the export, then archive `cartoucherie-donnees` (read-only, kept as a backup).
 5. Invite the 6 owners by email. The invitation also serves as the GDPR art. 14 notice they are
    owed for data collected indirectly. Adrien links each account once they sign in.
 
@@ -252,3 +267,11 @@ New components go into `styleguide.html` first.
 - Confirm on a real phone where a Google Maps share link redirects.
 - Decide whether LinkedIn handles with accents are decoded or the rule is widened.
 - The DSFR form patterns could not be read (403): review them by hand before the form mockups.
+- To verify in the plan:
+  - **CPU.** Workers Free allows 10 ms of CPU per request and fails beyond it. Check that
+    server-rendering the preview and Better Auth fit; otherwise move the preview to the client or
+    budget Workers Paid.
+  - **Image export.** Check how the D1 HTTP API returns image bytes (likely JSON number arrays,
+    several times larger). Store them base64 or export in batches if needed.
+  - **Turnstile** renders an iframe: its two pages also need `frame-src challenges.cloudflare.com`.
+  - **Dispatch token.** Confirm on GitHub's docs that `workflow_dispatch` needs only Actions: write.
