@@ -225,6 +225,12 @@ bots. One review per user per member.
 In a neighbourhood where everyone knows each other, social pressure does most of the
 moderation work; the queue exists for the exceptions.
 
+**Google reviews are a link out, never shown here** (decided 2026-10-26). Google's EEA
+Places terms do not permit a third-party directory to display a business's rating or
+reviews, copying them breaks the no-caching clause, and Google's own widget breaks the CSP
+and the no-cookie rule. A member's optional `avisGoogle` (their Maps link, reviews tab)
+renders « Voir ses avis sur Google » under « Avis du quartier », outside the reviews slot.
+
 ## 9. Pages
 
 `/` landing · `/annuaire` full grid · `/categorie/[slug]` · `/carte` map ·
@@ -279,7 +285,8 @@ for older residents, on small screens, with large text and screen readers.
 ## 13. Roadmap
 
 - **v2** — claim your profile and self-editing; owner sees their own profile rendered
-  dynamically so edits appear instantly while the public copy rebuilds
+  dynamically so edits appear instantly while the public copy rebuilds. The editor
+  nudges a member with no Google listing to create one and paste its link (`avisGoogle`)
 - **v3** — events
 - **Later** — payments to businesses; community/messaging remains unscheduled until
   there is evidence residents want it in the app rather than in WhatsApp
