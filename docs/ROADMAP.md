@@ -9,7 +9,7 @@ Last updated: 2026-10-26.
 | Version      | What it delivers                                                                                         | Status                                                       |
 | ------------ | -------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------ |
 | **v1**       | The static directory: browse, search, filter, map, call a neighbour                                      | ✅ **Live** since 2026-10-26 on https://www.cartoucherie.fyi |
-| **v2**       | Entrepreneurs claim their profile and edit it themselves                                                 | ⏭️ **Next**: spec not yet written                            |
+| **v2**       | Entrepreneurs create an account and fill in their own profile                                            | ⏭️ **Next**: spec not yet written                            |
 | **After v2** | Neighbourhood reviews, synced favourites, `/admin`                                                       | 💡 Proposed, not scheduled                                   |
 | **v3**       | Events                                                                                                   | 💡 Not started                                               |
 | **Later**    | Payments to businesses; messaging stays unscheduled until residents want it here rather than in WhatsApp | 💡 Not started                                               |
@@ -53,13 +53,15 @@ The spec put accounts, favourites, reviews and 200 profiles in v1. They did not 
 
 ## v2: self-editing (next)
 
-Entrepreneurs create an account, claim their existing profile (or create one), and edit it.
-When they save, they see their own profile updated straight away, while the public site
-rebuilds.
+Entrepreneurs create an account and fill in their own profile, then edit it. When they save,
+they see their own profile updated straight away, while the public site rebuilds.
+
+No claiming flow: Adrien links the 6 existing profiles to their owners' accounts by hand once
+those accounts exist (decided 2026-10-26).
 
 Questions the v2 spec must answer first:
 
-- How does someone prove an existing profile is theirs?
+- Which fields does a new profile need, and how is each one collected (being researched)?
 - Which fields can they edit themselves, and which stay with Adrien?
 - Do changes go live immediately, or after Adrien checks them?
 - How does the editor nudge a member with no Google listing to create one and paste its link?
