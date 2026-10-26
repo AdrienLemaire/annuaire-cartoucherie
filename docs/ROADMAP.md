@@ -6,13 +6,13 @@ and each version gets its own spec and plan when its turn comes.
 
 Last updated: 2026-10-26.
 
-| Version      | What it delivers                                                                                | Status                                                       |
-| ------------ | ----------------------------------------------------------------------------------------------- | ------------------------------------------------------------ |
-| **v1**       | The static directory: browse, search, filter, map, call a neighbour                             | ✅ **Live** since 2026-10-26 on https://www.cartoucherie.fyi |
-| **v2**       | Entrepreneurs claim their profile and edit it themselves                                        | ⏭️ **Next**: spec not yet written                            |
-| **After v2** | Neighbourhood reviews, synced favourites, `/admin`                                              | 💡 Proposed, not scheduled                                   |
-| **v3**       | Events                                                                                          | 💡 Not started                                               |
-| **Later**    | Payments to businesses; messaging stays unscheduled until residents ask for it outside WhatsApp | 💡 Not started                                               |
+| Version      | What it delivers                                                                                         | Status                                                       |
+| ------------ | -------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------ |
+| **v1**       | The static directory: browse, search, filter, map, call a neighbour                                      | ✅ **Live** since 2026-10-26 on https://www.cartoucherie.fyi |
+| **v2**       | Entrepreneurs claim their profile and edit it themselves                                                 | ⏭️ **Next**: spec not yet written                            |
+| **After v2** | Neighbourhood reviews, synced favourites, `/admin`                                                       | 💡 Proposed, not scheduled                                   |
+| **v3**       | Events                                                                                                   | 💡 Not started                                               |
+| **Later**    | Payments to businesses; messaging stays unscheduled until residents want it here rather than in WhatsApp | 💡 Not started                                               |
 
 ## v1: the static directory (done)
 
