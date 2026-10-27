@@ -18,7 +18,7 @@ in this repository is much shorter and is not a guide.
 | Field          | Asked as                                                | Required          | Rule / normalisation                                                                                                                                                                    |
 | -------------- | ------------------------------------------------------- | ----------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `nom`          | « Votre nom, tel qu'il doit apparaître »                | yes               | Trim, collapse spaces. Never truncated. Soft limit ~40 (the OG card wraps past ~25).                                                                                                    |
-| `genre`        | « Sur votre fiche, on écrit : elle / il »               | yes               | A wording choice, never "sexe" or a civil title. Drives every agreement through `src/lib/gender.ts`.                                                                                    |
+| `genre`        | « Sur votre fiche, on écrit : elle / il / iel »         | yes               | A wording choice, never "sexe" or a civil title. `f`, `h` or `n`. Drives every agreement through `src/lib/gender.ts` (§7).                                                              |
 | `metier`       | « Votre métier, en quelques mots »                      | yes               | Real 18–43 chars. Soft limit 45.                                                                                                                                                        |
 | `enseigne`     | « Le nom de votre activité, si elle en a un »           | no                | Business name, e.g. « Atelier Fictif ». Today it only appears inside `bio`.                                                                                                             |
 | `categories`   | Checkboxes showing each category's « Je cherche… »      | yes, 1–2          | Validated against `categories.json` (unknown slugs are dropped silently today). The first one sets the icons. « Aucune ne convient » sends a note to Adrien.                            |
@@ -39,6 +39,8 @@ in this repository is much shorter and is not a guide.
 | `instagram`    | « Votre compte Instagram »                              | no                | Accept `@x`, `x` or a URL; store the handle.                                                                                                                                            |
 | `linkedin`     | « Votre profil LinkedIn »                               | no                | Extract what follows `/in/`. Percent-encoded accents fail today's regex: decode or widen it.                                                                                            |
 | `avisGoogle`   | « Votre fiche Google (pour vos avis) »                  | no                | A phone shares `maps.app.goo.gl/…`: the Worker resolves it, accepts only a `google.com/maps` target, then applies today's rule. No listing: a link to create a Google Business Profile. |
+| `histoire`     | Six questions, « Votre histoire » (§7)                  | no                | Become the generated carousel slides.                                                                                                                                                   |
+| `lieux`        | « Vos lieux favoris à la Cartoucherie »                 | no                | 1–5 places (§7).                                                                                                                                                                        |
 | `photo`        | « Une photo de vous »                                   | yes               | See §3.                                                                                                                                                                                 |
 
 ## 2. Fields derived, never asked
@@ -100,17 +102,59 @@ can serve as their notice.
 - Carousel resizing neither rotates per EXIF nor refuses to enlarge.
 - `firstName()` takes the first word of `nom`, so « Jean Marc » becomes « Appeler Jean ».
 
+## 7. Story, favourite places and « iel » (decided 2026-10-27)
+
+**« iel ».** `genre` gains `n`. The forms table in `src/lib/gender.ts` gets a third column:
+« iel » (« Iel vient chez vous », « Ce qu'iel propose »), « lae » (« Où lae trouver », read more
+cleanly by screen readers than « læ »), « voisin·e », « inscrit·e ». Counts of several
+neighbours keep today's plural rule.
+
+**Votre histoire.** Six optional questions, each one generated slide (v2 spec §11). Every answer
+is first person, French, shown on the slide and used as its alt text.
+
+| Slide                                      | Prompt                                                                               | Limit |
+| ------------------------------------------ | ------------------------------------------------------------------------------------ | ----- |
+| Pourquoi entreprendre ?                    | « Qu'est-ce qui vous a donné envie de vous lancer ? »                                | 300   |
+| Mon déclic                                 | « Le moment où vous avez su que c'était le bon chemin »                              | 300   |
+| Mon activité en bref                       | « Ce que vous faites, pour qui, comment »                                            | 300   |
+| Les entrepreneurs de la Cartoucherie & moi | « Ce que le réseau vous apporte, et l'impact que vous voulez avoir sur le quartier » | 300   |
+| Mes lieux favoris                          | Built from `lieux` below, plus an optional sentence                                  | 160   |
+| Mon motto                                  | « Votre phrase, celle qui vous ressemble »                                           | 120   |
+
+Limits are hard, in characters: a slide must stay readable at Instagram size. The real slides
+run 94–567, so the longest ones would be split by an editor today. Each slide takes an optional
+photo, re-encoded on the phone like the portrait; without one, the slide uses the house design.
+The first slide, « À la rencontre de <nom> », is always generated from the portrait. The 6
+existing profiles keep Sandra's slides.
+
+**Lieux favoris.** 1–5 places, each with an optional « pourquoi » of 80 characters.
+
+- Picked by typeahead from a build-time snapshot of the named OpenStreetMap places inside
+  `MAP_BOUNDS` (158 on 2026-10-27: cafés, restaurants, parks, gyms, shops), fetched by the same
+  Overpass mechanism as `scripts/map-svg.mjs`, under the same ODbL attribution. No runtime
+  dependency, no third party in the browser.
+- Not in the list: « Placer sur la carte ». The member taps the map, names the place and picks a
+  type (café, restaurant, parc, boutique, sport, culture, autre). Adrien approves it with the
+  profile; adding it to OpenStreetMap himself fixes the snapshot for everyone.
+- Shown with a type icon in the site's style, never a logo: other businesses' logos raise
+  copyright and trademark questions and would be blurry screenshots. A place that is a member's
+  business shows that member's portrait and links to their profile.
+- Google is not used: Places search bills per call and limits storing positions, and its script
+  sets cookies.
+
 ## 6. Decisions (Adrien, 2026-10-26)
 
 1. **A new profile waits for Adrien's approval** (`pending` status). Once approved, the owner's
    edits go live directly.
 2. **Contact**: at least one of phone or email.
 3. **Services**: 1 to 6, as the live profiles have.
-4. **Carousel**: stays the association's. New members get their portrait only; Adrien adds
-   Sandra's slides and their alt text later.
+4. **Carousel**: generated by the site from « Votre histoire » (§7, decided 2026-10-27). The 6
+   existing profiles keep Sandra's slides, uploaded by Adrien.
 5. **New fields**: business name, prices and opening hours as short free text, a booking link,
    languages spoken (§1). None of the live profiles has them, and the profile page has no place
    for them yet: the v2 spec decides where they render.
 6. **Data controller** named on the notice: Adrien.
 7. **Categories**: 1 or 2 per profile.
 8. **Photos and slides** are stored in D1, not R2 (v2 spec §6).
+9. **« iel »** offered alongside elle and il, with iel forms (§7).
+10. **Favourite places** from OpenStreetMap, placed on the map as a « Lieux préférés » layer (§7).

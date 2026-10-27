@@ -25,8 +25,11 @@ The visitor's experience does not change: the public site stays static, cookie-f
 - An approval queue for new profiles, and editing that goes live directly once approved
 - « Supprimer ma fiche »
 - `/admin` for Adrien: approve or refuse with a reason, hide a profile, link a seeded profile
-  to its owner, upload the association's carousel slides
+  to its owner, upload Sandra's slides for the existing profiles, approve new places
 - Five new optional fields: business name, prices, opening hours, booking link, languages
+- « Votre histoire »: six optional questions the site turns into carousel slides
+- Favourite places, and a « Lieux préférés » layer on `/carte`
+- « iel » alongside elle and il
 - Moving every profile, photo and slide from `cartoucherie-donnees` into D1
 - A content-only production deploy, so member edits do not wait for a code review
 
@@ -42,19 +45,26 @@ The visitor's experience does not change: the public site stays static, cookie-f
 
 ## 3. Decisions taken (2026-10-26)
 
-| Decision                     | Choice                                              |
-| ---------------------------- | --------------------------------------------------- |
-| New profile                  | Waits for Adrien's approval (`pending`)             |
-| Edits to an approved profile | Live directly, through the content-only deploy (§7) |
-| Contact                      | At least one of phone or email                      |
-| Categories                   | 1 or 2                                              |
-| Services                     | 1 to 6                                              |
-| Carousel                     | The association's; uploaded by Adrien in `/admin`   |
-| Prices, hours                | Short free text                                     |
-| Data controller              | Adrien                                              |
-| Photos and slides            | Stored in D1, not R2 (§6)                           |
-| Staging                      | Its own D1, fictional data only                     |
-| Mockups                      | Approved before implementation, as in v1 (§12)      |
+| Decision                       | Choice                                                                       |
+| ------------------------------ | ---------------------------------------------------------------------------- |
+| New profile                    | Waits for Adrien's approval (`pending`)                                      |
+| Edits to an approved profile   | Live directly, through the content-only deploy (§7)                          |
+| Contact                        | At least one of phone or email                                               |
+| Categories                     | 1 or 2                                                                       |
+| Services                       | 1 to 6                                                                       |
+| Carousel                       | Generated from « Votre histoire »; Sandra's kept for the 6 existing profiles |
+| Gender                         | elle, il or iel                                                              |
+| Favourite places               | OpenStreetMap snapshot, or a pin Adrien approves                             |
+| After « Supprimer ma fiche »   | The account stays, without a profile                                         |
+| Editing while pending          | Keeps its place in the queue; Adrien sees the latest version                 |
+| Failed content deploy          | « Mise en ligne en cours… » stays; Adrien gets an email                      |
+| Deleting a profile             | Also sends a one-line confirmation email                                     |
+| Hiding a profile with no owner | The reason is recorded in `/admin`; Adrien tells the person                  |
+| Prices, hours                  | Short free text                                                              |
+| Data controller                | Adrien                                                                       |
+| Photos and slides              | Stored in D1, not R2 (§6)                                                    |
+| Staging                        | Its own D1, fictional data only                                              |
+| Mockups                        | Approved before implementation, as in v1 (§12)                               |
 
 ## 4. Who uses it
 
@@ -112,13 +122,16 @@ adopted: its CPU cost was never measured, and the Worker has a handful of querie
   - `consents`: terms version and date, photo authorisation, rights attestation, 18+.
 - **`profile_categories`**: 1–2 rows per profile, checked against `categories.json`.
 - **`images`**
-  - `profile_id`, `kind` (`portrait` | `slide`), `position`, `alt` (slides), the JPEG as base64
+  - `profile_id`, `kind` (`portrait` | `slide` | `story`), `position`, `alt` (slides), the JPEG as base64
     text. The phone encodes it and the Worker stores the string untouched: 2 ms of CPU, where
     binding raw bytes to D1 cost 7–9 ms (§13 step 0). It also exports as plain text.
   - Re-encoded on the phone before upload: portrait ~768 px, slide 1080 px wide. Each well under
     D1's 2 MB value limit.
   - 200 profiles with their slides stay around 100 MB, under the free plan's 500 MB per
     database.
+- **`story_answers`**: `profile_id`, `question` (one of six), `text`, optional `image_id`.
+- **`places`**: `name`, `type`, `lat`, `lng`, `source` (`osm` with its id, or `member`),
+  `status` (`approved` | `pending`). **`profile_places`**: 1–5 per profile, `position`, `why`.
 - **`users`** (`email`, `role`: `member` | `admin`), **`sign_in_tokens`**, **`sessions`** (§8).
 
 Why D1 rather than R2: R2 is reported (third-party guides, to confirm on Cloudflare's billing
@@ -213,6 +226,9 @@ What this spec adds:
   - « Je n'en ai pas » shows one sentence on why it helps and a link to create a Google Business
     Profile.
   - `/espace` keeps a dismissable reminder until a link is pasted.
+- **« Votre histoire » and « Lieux favoris »** come after the required steps, all optional,
+  each with the slide it produces as its preview. Places: typeahead over the OpenStreetMap
+  snapshot, or « Placer sur la carte » (fields doc §7).
 - **Consents** on the last step: the short GDPR notice linked to `/confidentialite`; the photo
   authorisation and the rights attestation as separate checkboxes; « J'ai 18 ans ou plus ».
 
@@ -222,8 +238,10 @@ What this spec adds:
   reason.
 - **Flags**: out-of-area address, « aucune catégorie ne convient » notes, possible duplicates
   (same phone or similar name).
-- **Profiles**: search, hide or unhide, link an owner by email, upload and order carousel
-  slides with their alt text.
+- **Profiles**: search, hide or unhide, link an owner by email, upload and order Sandra's
+  slides with their alt text for the existing profiles.
+- **Places**: member-placed pins arrive with their profile; approve, rename, move or merge them
+  into an existing place.
 - The page is an empty static shell. Every `/api/admin/*` call checks the `admin` role in the
   Worker, so guessing the URL shows nothing.
 
@@ -233,6 +251,13 @@ What this spec adds:
   - Business name beside the job title.
   - « Tarifs » and « Horaires » lines, the booking link as a button, and « Parle aussi : … ».
   - Placement decided by the mockups (§12).
+- **Generated slides.** At build, like the Open Graph images (satori + sharp): « À la rencontre
+  de <nom> » from the portrait, then one 1080×1350 slide per answered question, shown in the
+  profile's carousel and downloadable for Instagram. The answer is the alt text. Build time is
+  budgeted in the plan; slides are regenerated only when their profile changes.
+- **`/carte`**: a « Lieux préférés » layer. Each place shows its type icon; tapping it lists the
+  entrepreneurs who named it. Off by default if it crowds the members' pins (mockups decide).
+- **`src/lib/gender.ts`**: a third column for « iel » (fields doc §7).
 - **`surCarte: false`** must also leave out `data-lat` and `data-lng` from `/carte`'s HTML.
   Today the coordinates stay in the page.
 - **`/confidentialite`** rewritten: account data, the art. 13 notice, retention (inactive
@@ -248,7 +273,8 @@ As in v1, HTML mockups in `docs/mockups/` and approved by Adrien before implemen
 1. The form, on a 360 px phone: every step, errors, the photo crop, check-answers
 2. `/espace` once published: the preview, the Google reminder, « Supprimer ma fiche »
 3. The profile page with the five new fields, filled and empty
-4. `/admin`: queue, refusal, profile list with slides
+4. `/admin`: queue, refusal, profile list with slides, place approval
+5. The generated slides, and `/carte` with the « Lieux préférés » layer
 
 New components go into `styleguide.html` first.
 
