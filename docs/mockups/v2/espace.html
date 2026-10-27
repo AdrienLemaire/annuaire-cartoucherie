@@ -1,0 +1,1829 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="cartoucherie">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mon espace — Annuaire de la Cartoucherie</title>
+<meta name="description" content="Maquette v2 : /espace, l'espace de l'entrepreneur une fois sa fiche envoyée — en attente, refusée, en ligne, mise en ligne, suppression, déconnexion.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cg fill='none' stroke='%232a5f66' stroke-width='2.1'%3E%3Ccircle cx='16' cy='16' r='13.2'/%3E%3Ccircle cx='16' cy='16' r='7.4'/%3E%3Ccircle cx='16' cy='16' r='2.2' fill='%232a5f66' stroke='none'/%3E%3C/g%3E%3C/svg%3E">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,600&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+
+<link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+<!-- Les quatre fondations, copiees verbatim de final/styleguide.html.
+     @theme *static* : sans « static », Tailwind elague les variables qu'aucun
+     utilitaire n'utilise et .cta, .filet, .pastille perdent leurs couleurs en silence. -->
+<style type="text/tailwindcss" id="src-theme-couleurs">
+@theme static {
+  /* ── teal · identité ─────────────────────────────────────── */
+  --color-teal-50:  oklch(98.0% 0.010 198);
+  --color-teal-100: oklch(95.5% 0.022 197);
+  --color-teal-200: oklch(91.0% 0.040 196);
+  --color-teal-300: oklch(84.0% 0.058 195);
+  --color-teal-400: oklch(74.0% 0.080 195);
+  --color-teal-500: oklch(63.0% 0.098 196);
+  --color-teal-600: oklch(53.0% 0.090 196);
+  --color-teal-700: oklch(44.0% 0.074 197);
+  --color-teal-800: oklch(35.0% 0.060 198);
+  --color-teal-900: oklch(27.0% 0.045 199);
+  --color-teal-950: oklch(19.0% 0.030 201);
+
+  /* ── orange · action ─────────────────────────────────────── */
+  --color-orange-50:  oklch(97.8% 0.014 65);
+  --color-orange-100: oklch(95.0% 0.032 62);
+  --color-orange-200: oklch(90.0% 0.063 58);
+  --color-orange-300: oklch(84.0% 0.101 54);
+  --color-orange-400: oklch(78.0% 0.142 50);
+  --color-orange-500: oklch(72.0% 0.170 46);
+  --color-orange-600: oklch(65.0% 0.178 40);
+  --color-orange-700: oklch(56.0% 0.172 34);
+  --color-orange-800: oklch(46.0% 0.140 30);
+  --color-orange-900: oklch(37.0% 0.108 28);
+  --color-orange-950: oklch(27.0% 0.078 26);
+
+  /* ── sauge · taxonomie ───────────────────────────────────── */
+  --color-sauge-50:  oklch(97.5% 0.012 170);
+  --color-sauge-100: oklch(94.5% 0.026 170);
+  --color-sauge-200: oklch(89.5% 0.050 170);
+  --color-sauge-300: oklch(82.0% 0.074 168);
+  --color-sauge-400: oklch(73.0% 0.100 164);
+  --color-sauge-500: oklch(64.0% 0.120 160);
+  --color-sauge-600: oklch(54.5% 0.122 156);
+  --color-sauge-700: oklch(45.5% 0.108 152);
+  --color-sauge-800: oklch(37.0% 0.088 150);
+  --color-sauge-900: oklch(29.0% 0.066 152);
+  --color-sauge-950: oklch(20.5% 0.044 156);
+
+  /* ── sable · illustration (50→600 : remplissage seul) ────── */
+  --color-sable-50:  oklch(98.2% 0.010 95);
+  --color-sable-100: oklch(96.0% 0.024 93);
+  --color-sable-200: oklch(92.5% 0.044 91);
+  --color-sable-300: oklch(88.0% 0.064 90);
+  --color-sable-400: oklch(82.0% 0.090 89);
+  --color-sable-500: oklch(76.0% 0.115 88);
+  --color-sable-600: oklch(68.0% 0.118 86);
+  --color-sable-700: oklch(57.5% 0.105 83);
+  --color-sable-800: oklch(47.0% 0.088 80);
+  --color-sable-900: oklch(37.5% 0.068 78);
+  --color-sable-950: oklch(27.0% 0.048 75);
+
+  /* ── neutre · structure, teintée teal ────────────────────── */
+  --color-neutre-50:  oklch(98.6% 0.004 200);
+  --color-neutre-100: oklch(97.2% 0.006 199);
+  --color-neutre-200: oklch(94.4% 0.008 198);
+  --color-neutre-300: oklch(89.8% 0.010 198);
+  --color-neutre-400: oklch(79.5% 0.013 197);
+  --color-neutre-500: oklch(66.5% 0.016 197);
+  --color-neutre-600: oklch(54.5% 0.019 198);
+  --color-neutre-700: oklch(44.0% 0.022 199);
+  --color-neutre-800: oklch(34.0% 0.025 200);
+  --color-neutre-900: oklch(25.5% 0.028 201);
+  --color-neutre-950: oklch(17.5% 0.030 202);
+
+  /* ── rouge · erreur ──────────────────────────────────────── */
+  --color-rouge-50:  oklch(97.6% 0.014 25);
+  --color-rouge-100: oklch(94.6% 0.029 24);
+  --color-rouge-200: oklch(89.0% 0.057 24);
+  --color-rouge-300: oklch(81.0% 0.100 24);
+  --color-rouge-400: oklch(70.0% 0.150 25);
+  --color-rouge-500: oklch(62.0% 0.190 26);
+  --color-rouge-600: oklch(54.0% 0.205 24);
+  --color-rouge-700: oklch(46.0% 0.180 22);
+  --color-rouge-800: oklch(38.0% 0.145 20);
+  --color-rouge-900: oklch(31.0% 0.115 18);
+  --color-rouge-950: oklch(22.0% 0.080 16);
+
+  /* ── profondeur ──────────────────────────────────────────── */
+  --shadow-carte:       0 1px 2px oklch(17.5% .03 202/.05), 0 4px 12px -2px oklch(17.5% .03 202/.09);
+  --shadow-carte-hover: 0 2px 4px oklch(17.5% .03 202/.06), 0 14px 32px -8px oklch(17.5% .03 202/.16);
+  --shadow-flottant:    0 4px 8px oklch(17.5% .03 202/.06), 0 28px 64px -20px oklch(17.5% .03 202/.28);
+  --shadow-cta:         0 2px 4px oklch(37% .108 28/.28), 0 10px 24px -8px oklch(37% .108 28/.38);
+  --shadow-cta-press:   0 1px 2px oklch(37% .108 28/.34);
+}
+</style>
+
+<style type="text/tailwindcss" id="src-theme-typo">
+@theme static {
+  --font-display: "Literata", "Iowan Old Style", Georgia, serif;
+  --font-sans:    "Source Sans 3", system-ui, sans-serif;
+  --font-mono:    "IBM Plex Mono", ui-monospace, monospace;
+
+  /* l'échelle · quarte juste 1,333 depuis 17 px — 8 pas, amplitude 4,5× */
+  --text-etiquette: 1rem;      /* 16 · capitales espacées, méta, comptes    */
+  --text-etiquette--line-height: 1.25;
+  --text-etiquette--letter-spacing: 0.14em;
+
+  --text-corps: 1.0625rem;     /* 17 · le corps de texte                    */
+  --text-corps--line-height: 1.55;
+
+  --text-chapo: 1.375rem;      /* 22 · chapô, accroche, sous-titre de bloc  */
+  --text-chapo--line-height: 1.4;
+
+  --text-besoin: 1.1875rem;    /* 19 · une ligne de l'index « Je cherche… » */
+  --text-besoin--line-height: 1.2;
+  --text-besoin--letter-spacing: -0.012em;
+
+  --text-nom: 1.875rem;        /* 30 · titre de section, nom sur une carte  */
+  --text-nom--line-height: 1.08;
+  --text-nom--letter-spacing: -0.018em;
+
+  --text-grand: 2.5rem;        /* 40 · le nom sur la fiche membre           */
+  --text-grand--line-height: 1.0;
+  --text-grand--letter-spacing: -0.022em;
+
+  --text-enorme: 3.375rem;     /* 54 · les nombres du quartier              */
+  --text-enorme--line-height: 0.94;
+  --text-enorme--letter-spacing: -0.028em;
+
+  --text-cri: 4.5rem;          /* 72 · « Je cherche… », une fois par site   */
+  --text-cri--line-height: 0.9;
+  --text-cri--letter-spacing: -0.032em;
+}
+</style>
+
+<style type="text/tailwindcss" id="src-theme-daisy">
+[data-theme="cartoucherie"] {
+  color-scheme: light;
+
+  --color-base-100:          #ffffff;                 /* la page, blanche  */
+  --color-base-200:          oklch(97.2% 0.006 199);  /* neutre-100        */
+  --color-base-300:          oklch(94.4% 0.008 198);  /* neutre-200        */
+  --color-base-content:      oklch(25.5% 0.028 201);  /* neutre-900        */
+
+  --color-primary:           oklch(44.0% 0.074 197);  /* teal-700          */
+  --color-primary-content:   #ffffff;
+
+  --color-secondary:         oklch(94.5% 0.026 170);  /* sauge-100 teinté  */
+  --color-secondary-content: oklch(19.0% 0.030 201);  /* teal-950          */
+
+  --color-accent:            oklch(72.0% 0.170 46);   /* orange-500 · CTA  */
+  --color-accent-content:    oklch(19.0% 0.030 201);  /* teal-950          */
+
+  --color-neutral:           oklch(25.5% 0.028 201);  /* neutre-900        */
+  --color-neutral-content:   oklch(98.6% 0.004 200);  /* neutre-50         */
+
+  --color-info:              oklch(53.0% 0.090 196);  /* teal-600          */
+  --color-info-content:      #ffffff;
+
+  --color-success:           oklch(45.5% 0.108 152);  /* sauge-700         */
+  --color-success-content:   #ffffff;
+
+  --color-warning:           oklch(76.0% 0.115 88);   /* sable-500         */
+  --color-warning-content:   oklch(19.0% 0.030 201);  /* teal-950          */
+
+  --color-error:             oklch(54.0% 0.205 24);   /* rouge-600         */
+  --color-error-content:     #ffffff;
+
+  --radius-selector: 2rem;      /* pastilles, bascules, badges */
+  --radius-field:    0.75rem;   /* champs, boutons             */
+  --radius-box:      1.25rem;   /* cartes, modales, feuilles   */
+  --size-selector:   0.28125rem;
+  --size-field:      0.28125rem;
+  --border:          1px;
+  --depth:           1;
+  --noise:           0;
+}
+</style>
+
+<style id="src-css-produit">
+:root{
+  --gradient-aube:  linear-gradient(168deg, var(--color-teal-50) 0%, #ffffff 44%, var(--color-orange-50) 100%);
+  --gradient-cta:   linear-gradient(180deg, var(--color-orange-400), var(--color-orange-500) 55%, var(--color-orange-600));
+  --gradient-colly: radial-gradient(120% 90% at 30% 15%, var(--color-sable-100), var(--color-sauge-100) 62%, var(--color-teal-100));
+  --gradient-filet: linear-gradient(90deg, var(--color-teal-600), var(--color-sauge-500) 46%, var(--color-orange-500));
+}
+
+html{ -webkit-text-size-adjust:100%; }
+body{ font-family:var(--font-sans); font-size:17px; line-height:1.55; color:var(--color-neutre-900); background:#fff; }
+
+.ff{ font-family:var(--font-display); font-variation-settings:"opsz" 36; font-weight:600; letter-spacing:-0.015em; }
+
+/* un seul anneau de focus, partout, sans exception (couleurs.md §7) */
+:where(a,button,input,textarea,select,summary,[tabindex]):focus-visible{
+  outline:2px solid var(--color-teal-600); outline-offset:2px; border-radius:6px;
+}
+
+/* les quatre dégradés sanctionnés */
+.filet{ background-image:var(--gradient-filet); }
+.aube{ background-image:var(--gradient-aube); }
+.colly-fond{ background-image:var(--gradient-colly); }
+
+/* les trois marches d'élévation */
+.carte{ box-shadow: var(--shadow-carte), inset 0 0 0 1px oklch(17.5% .03 202/.07); }
+.carte:hover{ box-shadow: var(--shadow-carte-hover), inset 0 0 0 1px oklch(17.5% .03 202/.07); }
+.flottant{ box-shadow: var(--shadow-flottant), inset 0 0 0 1px oklch(17.5% .03 202/.07); }
+
+/* le CTA orange — la seule grande surface chaude de l'interface */
+.cta{
+  background-image: var(--gradient-cta);
+  color: var(--color-teal-950);
+  box-shadow: var(--shadow-cta), inset 0 0 0 1px oklch(56% .172 34/.6);
+}
+.cta:hover{ background-image: linear-gradient(180deg, var(--color-orange-300), var(--color-orange-400) 55%, var(--color-orange-500)); }
+.cta:active{ background-image: linear-gradient(180deg, var(--color-orange-500), var(--color-orange-600));
+             transform:translateY(1px); box-shadow:var(--shadow-cta-press), inset 0 0 0 1px oklch(56% .172 34/.6); }
+
+/* ── LE MOTIF VENTOUSE ──────────────────────────────────────────────────────
+   Trois cercles concentriques. Le même dessin sert de symbole, de puce, de
+   médaillon d'icône et de papier peint. Une seule forme tient l'identité.  */
+.ventouses{
+  --v: oklch(68% .118 86 / .26);          /* sable-600 à 26 % : décoratif seul */
+  background-image:
+    radial-gradient(circle at 50% 50%, transparent 0 12.5px, var(--v) 12.5px 14px, transparent 14px),
+    radial-gradient(circle at 50% 50%, transparent 0 7px,   var(--v) 7px 8.4px,   transparent 8.4px),
+    radial-gradient(circle at 50% 50%, var(--v) 0 2.6px, transparent 2.6px);
+  background-size:56px 56px;
+}
+.ventouses--teal{ --v: oklch(53% .09 196 / .16); }
+
+/* la ventouse en médaillon : anneau + halo + anneau, autour de n'importe quoi */
+.pastille{
+  display:grid; place-items:center; flex:none; border-radius:9999px;
+  box-shadow: inset 0 0 0 1.5px var(--color-sauge-400),
+              0 0 0 4px var(--color-sauge-50),
+              0 0 0 5.5px var(--color-sauge-300);
+}
+.pastille--teal{
+  box-shadow: inset 0 0 0 1.5px var(--color-teal-300),
+              0 0 0 4px var(--color-teal-50),
+              0 0 0 5.5px var(--color-teal-200);
+}
+
+/* l'arche de la Halle : demi-cercle en haut, base droite */
+.arche{ border-radius:999px 999px 22px 22px; }
+
+/* la pastille de catégorie */
+.chip{ background:var(--color-sauge-100); color:var(--color-sauge-800); }
+
+/* ── LE HALO ────────────────────────────────────────────────────────────────
+   Le portrait du membre lui-même, agrandi et flouté, multiplié sur le lavis.
+   Chaque fiche hérite de l'ambiance colorée de la personne qu'elle décrit,
+   sans un seul octet d'illustration supplémentaire.                       */
+.halo-fond{ position:absolute; inset:0; overflow:hidden; isolation:isolate; }
+.halo{ position:absolute; background-size:cover; background-position:50% 35%;
+       filter: blur(54px) saturate(2.6) contrast(1.16); mix-blend-mode:multiply; }
+
+/* les croquis au crayon, fondus dans leur panneau : le papier devient la
+   couleur du fond, il ne reste que le graphite */
+.croquis{ mix-blend-mode:multiply; filter:grayscale(1) contrast(1.16) brightness(1.07); }
+
+/* une ligne de l'index « Je cherche… » : le survol allume le numéro,
+   il ne dessine pas une boîte. Dix boîtes empilées, c'est une grille. */
+.besoin{ transition: background-color .18s ease; }
+.besoin:hover, .besoin:focus-visible{ background-color: var(--color-teal-50); }
+.besoin:hover .num, .besoin:focus-visible .num{ color: var(--color-orange-800); }
+.num{ transition: color .18s ease; }
+
+/* la ligne de liste d'un voisin : le lien du nom couvre toute la carte,
+   sauf le bouton d'appel qui remonte en z-10 */
+.carte-lien{ transition: box-shadow .18s ease; }
+
+.tnum{ font-variant-numeric: tabular-nums; }
+
+@media (prefers-reduced-motion: reduce){ *{ transition:none !important; animation:none !important; } }
+</style>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     FONDATION 5 — v2, les fiches en libre-service. Ce qu'ajoutent le
+     formulaire, l'espace membre et l'admin. Mêmes jetons, aucune couleur neuve.
+     ═══════════════════════════════════════════════════════════════════════ -->
+<style id="src-css-v2">
+/* le champ : l'anneau neutre-500 de « Les petites pièces », en classe.
+   L'état vit sur le conteneur, pour que le champ, le compteur et le
+   message changent ensemble. */
+.champ{ background:#fff; box-shadow: inset 0 0 0 1.5px var(--color-neutre-500); }
+textarea.champ{ field-sizing: content; resize: vertical; }
+[data-etat="long"]   .champ{ background:var(--color-sable-50); box-shadow: inset 0 0 0 1.5px var(--color-sable-700); }
+[data-etat="erreur"] .champ{ background:var(--color-rouge-50); box-shadow: inset 0 0 0 1.5px var(--color-rouge-600); }
+.compteur{ color:var(--color-neutre-700); }
+[data-etat="long"]   .compteur{ color:var(--color-sable-800); font-weight:600; }
+[data-etat="erreur"] .compteur{ color:var(--color-rouge-700); font-weight:600; }
+
+/* la bulle d'aide : un panneau dans le flux, pas une infobulle flottante.
+   Elle ne déborde jamais d'un écran de 360 px, même à 200 % de zoom. */
+.bulle{ position:relative; }
+.bulle::before{ content:""; position:absolute; top:-6px; right:var(--fleche, 8px);
+  width:13px; height:13px; background:inherit; transform:rotate(45deg); border-radius:3px 0 0 0; }
+
+/* la case et le rond : natifs, redessinés. Le rond coché EST la ventouse —
+   anneau, blanc, point. Sélection = teal : l'orange reste au bouton. */
+.case, .rond{ appearance:none; -webkit-appearance:none; flex:none; margin:0; cursor:pointer;
+  width:26px; height:26px; background:#fff; box-shadow: inset 0 0 0 1.5px var(--color-neutre-500);
+  transition: background-color .15s ease, box-shadow .15s ease; }
+.case{ border-radius:7px; }
+.rond{ border-radius:999px; }
+.case:checked{ box-shadow:none; background: var(--color-teal-700) no-repeat center / 18px
+  url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m5 12.6 4.4 4.4L19 7.4'/%3E%3C/svg%3E"); }
+.rond:checked{ box-shadow:none;
+  background: radial-gradient(circle, var(--color-teal-700) 0 4.4px, #fff 4.9px 7.6px, var(--color-teal-700) 8.1px); }
+
+/* la carte de choix : toute la carte est l'étiquette, donc la cible */
+.choix{ min-height:64px; padding:14px 16px;
+  border-radius:16px; background:#fff; cursor:pointer;
+  box-shadow: var(--shadow-carte), inset 0 0 0 1.5px var(--color-neutre-300);
+  transition: box-shadow .15s ease, background-color .15s ease; }
+.choix:hover{ box-shadow: var(--shadow-carte), inset 0 0 0 1.5px var(--color-teal-400); }
+.choix:has(:checked){ background:var(--color-teal-50);
+  box-shadow: var(--shadow-carte), inset 0 0 0 2px var(--color-teal-600); }
+.choix:has(:focus-visible){ outline:2px solid var(--color-teal-600); outline-offset:2px; }
+/* « Aucune ne convient » : en pointillés, hors de la liste officielle */
+.choix--libre, .choix--libre:hover{ background:transparent; box-shadow:none;
+  outline:1.5px dashed var(--color-neutre-500); outline-offset:-1.5px; }
+.choix--libre:has(:checked){ background:var(--color-teal-50); outline:2px solid var(--color-teal-600); }
+
+/* le groupe en erreur : le filet de 3 px, à gauche, comme une marge corrigée */
+.groupe-erreur{ box-shadow: inset 3px 0 0 var(--color-rouge-600); padding-left:15px; }
+
+/* deux médaillons de plus pour la ventouse */
+.pastille--sable{ box-shadow: inset 0 0 0 1.5px var(--color-sable-400), 0 0 0 4px var(--color-sable-50), 0 0 0 5.5px var(--color-sable-300); }
+.pastille--rouge{ box-shadow: inset 0 0 0 1.5px var(--color-rouge-300), 0 0 0 4px var(--color-rouge-50), 0 0 0 5.5px var(--color-rouge-200); }
+
+/* la ventouse qui respire : « enregistrement », « mise en ligne » */
+.respire{ animation: respire 1.6s ease-in-out infinite; transform-origin:center; }
+@keyframes respire{ 0%,100%{ transform:scale(.82); opacity:.55 } 50%{ transform:scale(1); opacity:1 } }
+
+/* le cadre de recadrage : l'arche de la fiche, découpée dans le carré.
+   Le voile sombre est l'ombre portée de l'arche elle-même. */
+.recadrage{ position:relative; overflow:hidden; border-radius:14px; }
+.recadrage > img{ display:block; width:100%; height:100%; object-fit:cover; }
+.recadrage__arche{ position:absolute; inset:0 8.5%; border-radius:999px 999px 18px 18px;
+  box-shadow: 0 0 0 999px oklch(19% .03 201 / .66), inset 0 0 0 2px #fff; }
+.recadrage__visage{ position:absolute; left:50%; top:9%; width:46%; height:40%; translate:-50% 0;
+  border-radius:50%; border:2px dashed oklch(100% 0 0 / .9); }
+
+/* l'aperçu : un puits de ventouses teal — « ceci n'est pas encore en ligne » */
+.puits{ background-color:var(--color-neutre-100); }
+</style>
+
+<!-- ═══════════ la planche elle-même — pas le produit ═══════════ -->
+<style>
+  /* le fond neutre-100 de la planche : les écrans blancs se détachent (même
+     exemption que le catalogue). Chaque écran est un téléphone de 360 px. */
+  .doc{ background: var(--color-neutre-100); }
+  .planche{ display:flex; flex-wrap:wrap; gap:32px 28px; align-items:flex-start; }
+  .cadre{ margin:0; width:360px; max-width:100%; }
+  .legende{ display:flex; align-items:baseline; gap:10px; padding:0 4px 10px;
+            font-size:16px; font-weight:600; color:var(--color-teal-900); }
+  .legende .tnum{ font-family:var(--font-display); font-size:22px; color:var(--color-sauge-800); }
+  .legende-bas{ padding:10px 4px 0; font-size:16px; line-height:1.4; color:var(--color-neutre-700); }
+  /* contain:layout fait de l'écran le bloc conteneur des barres « fixed » ;
+     overflow:clip coupe sans créer de conteneur de défilement. */
+  .ecran{ position:relative; contain:layout; overflow:clip; width:360px; max-width:100%;
+          background:#fff; border-radius:18px;
+          box-shadow: 0 0 0 1px var(--color-neutre-300), var(--shadow-carte); }
+  .ecran > *{ font-size:17px; }
+  .ecran--large{ width:1240px; max-width:none; }
+  .cadre:has(.ecran--large){ width:auto; }
+  /* l'en-tête collant le reste dans le produit ; sur la planche, il resterait
+     collé à la fenêtre au-dessus des autres écrans */
+  .ecran header.sticky{ position:relative; }
+  @media (max-width:639px){ .ecran{ border-radius:0; } }
+
+  /* nouveau · l'emplacement du widget Turnstile (300 × 65, la taille du vrai) */
+  .turnstile{ display:flex; align-items:center; gap:12px; width:300px; max-width:100%; height:65px;
+              padding:0 14px; border-radius:6px; background:var(--color-neutre-50);
+              box-shadow: inset 0 0 0 1px var(--color-neutre-300); }
+  .turnstile__case{ width:26px; height:26px; flex:none; border-radius:4px; background:#fff;
+                    box-shadow: inset 0 0 0 1.5px var(--color-neutre-500); }
+
+  /* nouveau · le bouton destructeur : un seul usage, « Supprimer ma fiche ».
+     Blanc sur rouge-600 = la paire error/error-content du thème (5,63:1, AA). */
+  .detruire{ background:var(--color-rouge-600); color:#fff;
+             box-shadow: 0 2px 4px oklch(38% .145 20/.25), 0 10px 24px -8px oklch(38% .145 20/.35); }
+  .detruire:hover{ background:var(--color-rouge-700); }
+  .detruire:active{ transform:translateY(1px); }
+</style>
+
+</head>
+
+<body class="doc font-sans text-neutre-900 antialiased">
+
+<svg width="0" height="0" class="hidden" aria-hidden="true" focusable="false" id="src-sprite"><defs>
+<symbol id="i-ventouse" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.1"><circle cx="16" cy="16" r="13.2"/><circle cx="16" cy="16" r="7.4"/><circle cx="16" cy="16" r="2.2" fill="currentColor" stroke="none"/></symbol>
+<symbol id="i-loupe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m16.6 16.6 4.4 4.4"/></symbol>
+<symbol id="i-tel" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6.6 3.5h2.9l1.5 4-2 1.4a12.4 12.4 0 0 0 6.1 6.1l1.4-2 4 1.5v2.9a2 2 0 0 1-2.2 2A16.6 16.6 0 0 1 4.6 5.7a2 2 0 0 1 2-2.2Z"/></symbol>
+<symbol id="i-mail" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="m3.8 7 8.2 5.8L20.2 7"/></symbol>
+<symbol id="i-globe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="12" r="8.6"/><path d="M3.4 12h17.2M12 3.4c4.4 4.8 4.4 12.4 0 17.2-4.4-4.8-4.4-12.4 0-17.2Z"/></symbol>
+<symbol id="i-insta" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><rect x="3.2" y="3.2" width="17.6" height="17.6" rx="5.2"/><circle cx="12" cy="12" r="4.1"/><circle cx="17.2" cy="6.8" r=".95" fill="currentColor" stroke="none"/></symbol>
+<symbol id="i-pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21.2s7.2-6.6 7.2-11.3a7.2 7.2 0 1 0-14.4 0C4.8 14.6 12 21.2 12 21.2Z"/><circle cx="12" cy="9.8" r="2.7"/></symbol>
+<symbol id="i-etoile" viewBox="0 0 24 24"><path fill="currentColor" d="m12 3.4 2.7 5.5 6 .9-4.3 4.2 1 6-5.4-2.8-5.4 2.8 1-6L3.3 9.8l6-.9z"/></symbol>
+<symbol id="i-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9.5 5 7 7-7 7"/></symbol>
+<symbol id="i-retour" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M19.5 12H5M11 6l-6 6 6 6"/></symbol>
+<symbol id="i-plume" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m4.5 19.5 4.2-.8L20.1 7.4a2.35 2.35 0 0 0-3.3-3.3L5.3 15.3l-.8 4.2Z"/><path d="m15.3 5.5 3.3 3.3"/></symbol>
+<symbol id="i-signal" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5.8 21.2V3.4M5.8 4h11.4l-2.3 4.3 2.3 4.3H5.8"/></symbol>
+<symbol id="i-fermer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="m6.5 6.5 11 11M17.5 6.5l-11 11"/></symbol>
+<symbol id="i-coeur" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20.4C10.3 19.2 4.2 15 4.2 10.6A4.4 4.4 0 0 1 12 7.8a4.4 4.4 0 0 1 7.8 2.8c0 4.4-6.1 8.6-7.8 9.8Z"/></symbol>
+<symbol id="i-dl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.6v11M7.4 10.2 12 14.8l4.6-4.6M4.4 19.6h15.2"/></symbol>
+<symbol id="i-groupe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8.4" r="3.4"/><path d="M2.8 20.2a6.2 6.2 0 0 1 12.4 0"/><path d="M16.4 5.4a3.4 3.4 0 0 1 0 6.6M17.6 14.6a6.2 6.2 0 0 1 3.6 5.6"/></symbol>
+<symbol id="i-visio" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="2.8" y="6" width="12.6" height="12" rx="2.8"/><path d="m15.4 12.6 5.8 3.6V7.8l-5.8 3.6Z"/></symbol>
+<symbol id="i-alerte" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7.6v5.2M12 16.3v.1"/></symbol>
+<!-- les dix catégories -->
+<symbol id="c-sante" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4.6 19.6C3.4 11 9.6 4.4 19.8 3.8c1 10.2-5.4 16.4-14 15.4Z"/><path d="M4.6 19.6 13 11.2"/></symbol>
+<symbol id="c-beaute" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="6.6" cy="17.8" r="2.6"/><circle cx="6.6" cy="6.2" r="2.6"/><path d="M8.6 7.9 20 19.4M8.6 16.1 20 4.6"/></symbol>
+<symbol id="c-artisanat" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m14.6 6.4-11 11 3 3 11-11"/><path d="m13.2 8.2 3 3"/><path d="m15 3.4 5.6 5.6-2.4 2.4-5.6-5.6z"/></symbol>
+<symbol id="c-alimentation" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3.8 14.6c0-4.4 3.7-7.8 8.2-7.8s8.2 3.4 8.2 7.8v1.6a2.4 2.4 0 0 1-2.4 2.4H6.2a2.4 2.4 0 0 1-2.4-2.4Z"/><path d="M9 8.2 8.2 17M12.6 7.4 12 17M16.2 9 15.8 17"/></symbol>
+<symbol id="c-conseil" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3.8 20.2h16.4"/><path d="M6.6 20.2v-6.6M11.4 20.2V8.4M16.2 20.2V4.6"/></symbol>
+<symbol id="c-numerique" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="2.8" y="4" width="18.4" height="12.6" rx="2.4"/><path d="M9.4 20.4h5.2M12 16.6v3.8"/><path d="m10.2 8.4-1.8 1.9 1.8 1.9M13.8 8.4l1.8 1.9-1.8 1.9"/></symbol>
+<symbol id="c-enfance" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M7.4 8.2V6.6a4.6 4.6 0 0 1 9.2 0v1.6"/><rect x="3.8" y="8.2" width="16.4" height="12" rx="3.2"/><path d="M9.4 14.2h5.2"/></symbol>
+<symbol id="c-sport" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="15.4" cy="4.9" r="2.1"/><path d="m12.4 21 2.2-6-3.6-2.6.9-4.8 3 3 3.1 1"/><path d="m8.2 21 2.6-5.2M11.9 8.6 8.4 10"/></symbol>
+<symbol id="c-art" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20.8a8.8 8.8 0 1 1 8.8-8.8c0 2-1.7 2.6-3.1 2.6h-1.3a2.3 2.3 0 0 0-2.3 2.3c0 .8.5 1.2.5 2 0 1.1-.9 1.9-2.6 1.9Z"/><circle cx="8" cy="9.4" r="1.1" fill="currentColor" stroke="none"/><circle cx="12.4" cy="7.4" r="1.1" fill="currentColor" stroke="none"/><circle cx="16.3" cy="9.8" r="1.1" fill="currentColor" stroke="none"/></symbol>
+<symbol id="c-domicile" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m3.4 11.2 8.6-7.4 8.6 7.4"/><path d="M6.2 9.6v10.6h11.6V9.6"/><path d="M10 20.2v-5.2h4v5.2"/></symbol>
+<!-- v2 · fiches en libre-service -->
+<symbol id="i-coche" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.6 4.4 4.4L19 7.4"/></symbol>
+<symbol id="i-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></symbol>
+<symbol id="i-horloge" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.6"/><path d="M12 7.4V12l3.2 2"/></symbol>
+<symbol id="i-oeil" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M2.6 12S6 5.6 12 5.6 21.4 12 21.4 12 18 18.4 12 18.4 2.6 12 2.6 12Z"/><circle cx="12" cy="12" r="3"/></symbol>
+<symbol id="i-photo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4.4 7.6h3l1.6-2.4h6l1.6 2.4h3a1.6 1.6 0 0 1 1.6 1.6v9a1.6 1.6 0 0 1-1.6 1.6H4.4a1.6 1.6 0 0 1-1.6-1.6v-9a1.6 1.6 0 0 1 1.6-1.6Z"/><circle cx="12" cy="13.4" r="3.6"/></symbol>
+<symbol id="i-corbeille" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4.6 6.8h14.8M9.4 6.8V4.6h5.2v2.2M6.6 6.8l.9 12.6a1.6 1.6 0 0 0 1.6 1.4h5.8a1.6 1.6 0 0 0 1.6-1.4l.9-12.6M10.2 10.6v6M13.8 10.6v6"/></symbol>
+<symbol id="c-logement" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="15.6" r="4.2"/><path d="m11 12.6 8.4-8.4"/><path d="m16.6 7 2.6 2.6"/><path d="m14 9.6 2 2"/></symbol>
+</defs></svg>
+
+<!-- ═══════════ la planche elle-même — pas le produit ═══════════ -->
+<header class="bg-white">
+  <div class="mx-auto max-w-[1280px] px-5 lg:px-8 pt-8 pb-9">
+    <p class="flex items-center gap-2.5">
+      <svg class="w-8 h-8 text-teal-700 shrink-0" aria-hidden="true"><use href="#i-ventouse"/></svg>
+      <span class="leading-none">
+        <span class="block text-[11.5px] uppercase tracking-[.18em] text-neutre-700 font-semibold">Annuaire de</span>
+        <span class="ff block text-[20px] text-teal-900 leading-tight">la Cartoucherie</span>
+      </span>
+    </p>
+    <p class="mt-7 text-etiquette font-semibold uppercase text-teal-700">Maquette v2 · <code class="font-mono normal-case tracking-normal">/espace</code></p>
+    <h1 class="ff mt-2 text-[clamp(2.5rem,9vw,4.5rem)] leading-[0.9] tracking-[-0.032em] text-teal-900 max-w-[16ch]">
+      L'espace de l'entrepreneur
+    </h1>
+    <p class="mt-6 text-chapo text-neutre-800 max-w-[58ch]">
+      Ce que voit une voisine ou un voisin une fois sa fiche envoyée&nbsp;: l'attente, le refus, la fiche en ligne,
+      la mise en ligne d'une modification, la suppression, et le retour après une déconnexion.
+    </p>
+    <p class="mt-4 text-corps text-neutre-700 max-w-[66ch]">
+      Chaque écran est un téléphone de <strong class="font-semibold text-neutre-900">360&nbsp;px</strong>, composé des blocs de
+      <code class="font-mono text-[15px] text-teal-800">final/styleguide.html</code>. Julien Marty (<em>il</em>, électricien,
+      se déplace) attend puis corrige&nbsp;; Camille Roussel (<em>elle</em>, sophrologue, reçoit au cabinet) est en ligne.
+      Données fictives, téléphones en <span class="tnum">06&nbsp;39&nbsp;98&nbsp;00&nbsp;xx</span>.
+    </p>
+    <nav aria-label="Les états" class="mt-6">
+      <ol class="flex flex-wrap gap-2 list-none p-0 m-0 text-[16px]">
+        <li><a href="#etat-1" class="inline-flex items-center min-h-[44px] px-4 rounded-full font-semibold text-teal-700 bg-teal-50 hover:bg-teal-100">1 · En attente</a></li>
+        <li><a href="#etat-2" class="inline-flex items-center min-h-[44px] px-4 rounded-full font-semibold text-teal-700 bg-teal-50 hover:bg-teal-100">2 · Refusée</a></li>
+        <li><a href="#etat-3" class="inline-flex items-center min-h-[44px] px-4 rounded-full font-semibold text-teal-700 bg-teal-50 hover:bg-teal-100">3 · En ligne</a></li>
+        <li><a href="#etat-4" class="inline-flex items-center min-h-[44px] px-4 rounded-full font-semibold text-teal-700 bg-teal-50 hover:bg-teal-100">4 · Mise en ligne</a></li>
+        <li><a href="#etat-5" class="inline-flex items-center min-h-[44px] px-4 rounded-full font-semibold text-teal-700 bg-teal-50 hover:bg-teal-100">5 · Supprimer</a></li>
+        <li><a href="#etat-6" class="inline-flex items-center min-h-[44px] px-4 rounded-full font-semibold text-teal-700 bg-teal-50 hover:bg-teal-100">6 · Déconnecté</a></li>
+        <li><a href="#etat-3-large" class="inline-flex items-center min-h-[44px] px-4 rounded-full font-semibold text-teal-700 bg-teal-50 hover:bg-teal-100">3 · Grand écran</a></li>
+      </ol>
+    </nav>
+  </div>
+</header>
+
+<main class="mx-auto max-w-[1600px] sm:px-6 lg:px-8 py-10 space-y-14">
+
+
+<!-- ╔═══════════════════════════════════════════════════════════════════════╗
+     ║  1 · EN ATTENTE DE VALIDATION — Julien Marty (il)                     ║
+     ╚═══════════════════════════════════════════════════════════════════════╝ -->
+<section id="etat-1" class="etat">
+  <div class="px-4 sm:px-0">
+    <p class="text-etiquette font-semibold uppercase text-sauge-800">État 1</p>
+    <h2 class="ff mt-1 text-nom text-teal-900">En attente de validation</h2>
+    <p class="mt-2 text-corps text-neutre-800 max-w-[70ch]">
+      Julien a envoyé sa fiche. Rien à faire, sauf s'il le veut&nbsp;: la regarder telle que ses voisins la verront,
+      ou corriger le brouillon — Adrien relira la dernière version.
+    </p>
+  </div>
+  <div class="planche mt-5">
+
+    <figure class="cadre">
+      <figcaption class="legende"><span class="tnum">1</span> En attente — l'espace de Julien</figcaption>
+      <div class="ecran">
+        <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-sm">
+          <div class="mx-auto max-w-[1160px] px-5 h-16 flex items-center justify-between gap-3">
+            <a href="../final/index.html" class="flex items-center gap-2.5 -ml-0.5" aria-label="Annuaire de la Cartoucherie, accueil">
+              <svg class="w-8 h-8 text-teal-700 shrink-0" aria-hidden="true"><use href="#i-ventouse"/></svg>
+              <span class="leading-none">
+                <span class="block text-[11.5px] uppercase tracking-[.18em] text-neutre-700 font-semibold">Annuaire de</span>
+                <span class="ff block text-[20px] text-teal-900 leading-tight">la Cartoucherie</span>
+              </span>
+            </a>
+            <a href="../final/index.html" class="inline-flex items-center gap-2 min-h-[44px] px-3.5 rounded-full text-etiquette tracking-normal font-semibold text-teal-700 hover:bg-teal-50">
+              <svg class="w-5 h-5" aria-hidden="true"><use href="#i-retour"/></svg>
+              <span>Annuaire</span><span class="sr-only">— retour à la liste des voisins</span>
+            </a>
+          </div>
+          <div class="filet h-[3px]"></div>
+        </header>
+
+        <div class="px-5 pt-7 pb-10">
+          <p class="text-etiquette font-semibold uppercase text-sauge-800">Mon espace</p>
+          <h1 class="ff mt-1.5 text-nom text-teal-900">Votre fiche</h1>
+
+          <div role="status" class="mt-5 flex items-start gap-4 rounded-[22px] bg-sable-100 p-5">
+            <span class="pastille pastille--sable w-11 h-11 mt-0.5 bg-white text-sable-800" aria-hidden="true"><svg class="w-[22px] h-[22px]"><use href="#i-horloge"/></svg></span>
+            <div class="min-w-0">
+              <p class="ff text-[22px] leading-tight text-teal-950">En attente de validation</p>
+              <p class="mt-1.5 text-[16px] leading-snug text-teal-950">Envoyée le 24 octobre. Adrien la relit et vous écrit par e-mail.</p>
+            </div>
+          </div>
+
+          <figure class="ventouses ventouses--teal mt-6 m-0 rounded-[24px] bg-neutre-100 p-3">
+            <figcaption class="flex items-center gap-2 px-1.5 pt-0.5 pb-3 text-[16px] font-semibold text-teal-800">
+              <svg class="w-5 h-5" aria-hidden="true"><use href="#i-oeil"/></svg>Ce que vos voisins verront
+            </figcaption>
+            <ul class="list-none m-0 p-0">
+              <li>
+                <article class="carte carte-lien colly-fond relative flex flex-col items-center rounded-[20px] px-4 py-5 text-center">
+                  <img src="https://randomuser.me/api/portraits/men/46.jpg" alt="Portrait de Julien Marty"
+                       width="128" height="128" loading="lazy"
+                       class="w-[124px] h-[124px] rounded-full object-cover shadow-carte"
+                       style="object-position:50% 22%; box-shadow: 0 0 0 3px #fff, var(--shadow-carte)">
+                  <h3 class="ff mt-3.5 text-[21px] leading-tight text-teal-900">
+                    <a href="#apercu-julien" class="before:absolute before:inset-0 before:content-['']">Julien Marty</a>
+                  </h3>
+                  <p class="mt-0.5 text-corps text-neutre-900">Électricien</p>
+                  <p class="mt-2 inline-flex items-center gap-1.5 text-[16px] font-semibold text-teal-800">
+                    <svg class="w-4 h-4 shrink-0 text-teal-600" aria-hidden="true"><use href="#c-domicile"/></svg>
+                    Il vient chez vous
+                  </p>
+                </article>
+              </li>
+            </ul>
+            <p class="px-1.5 pt-3 pb-0.5 text-[16px] text-neutre-700">Pas encore en ligne.</p>
+          </figure>
+
+          <div class="mt-5 flex flex-col items-start gap-3">
+            <a href="#apercu-julien" class="inline-flex items-center gap-2 min-h-[44px] px-4 rounded-full text-corps font-semibold text-teal-700 bg-teal-50 hover:bg-teal-100">
+              <svg class="w-5 h-5" aria-hidden="true"><use href="#i-oeil"/></svg>Voir toute la fiche
+            </a>
+            <a href="#etat-2" class="inline-flex items-center gap-2 min-h-[48px] px-5 rounded-full text-corps font-semibold text-white bg-teal-700 hover:bg-teal-600">
+              <svg class="w-5 h-5" aria-hidden="true"><use href="#i-plume"/></svg>Modifier ma fiche
+            </a>
+            <p class="text-[16px] text-neutre-700">Adrien relira la dernière version.</p>
+          </div>
+
+          <hr class="mt-9 border-0 border-t border-neutre-300">
+          <div class="flex flex-wrap items-center justify-between gap-x-6">
+<a href="#etat-5" class="mt-2 inline-flex items-center gap-2 min-h-[44px] text-[16px] font-semibold text-rouge-700 underline underline-offset-4 decoration-rouge-300 hover:decoration-rouge-600">
+            <svg class="w-5 h-5" aria-hidden="true"><use href="#i-corbeille"/></svg>Supprimer ma fiche
+          </a>
+<a href="#etat-6" class="mt-2 inline-flex items-center min-h-[44px] text-[16px] font-semibold text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">Se déconnecter</a>
+</div>
+        </div>
+      </div>
+    </figure>
+
+  </div>
+</section>
+
+
+<!-- ╔═══════════════════════════════════════════════════════════════════════╗
+     ║  2 · REFUSÉE — le motif, corriger, renvoyer                           ║
+     ╚═══════════════════════════════════════════════════════════════════════╝ -->
+<section id="etat-2" class="etat">
+  <div class="px-4 sm:px-0">
+    <p class="text-etiquette font-semibold uppercase text-sauge-800">État 2</p>
+    <h2 class="ff mt-1 text-nom text-teal-900">Refusée — corriger, renvoyer</h2>
+    <p class="mt-2 text-corps text-neutre-800 max-w-[70ch]">
+      Le motif d'Adrien, mot pour mot (DSA art.&nbsp;17) — le préréglage «&nbsp;Photo&nbsp;» de l'admin. «&nbsp;Corriger ma
+      fiche&nbsp;» ouvre l'étape en cause, avec le motif rappelé en haut. «&nbsp;Continuer&nbsp;» ramène à la relecture,
+      pas à l'étape 3&nbsp;: on ne refait pas tout le formulaire. La nouvelle photo redemande ses deux accords.
+    </p>
+  </div>
+  <div class="planche mt-5">
+
+    <!-- 2a · l'espace, refusée -->
+    <figure class="cadre">
+      <figcaption class="legende"><span class="tnum">2a</span> Refusée — le motif cité</figcaption>
+      <div class="ecran">
+        <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-sm">
+          <div class="mx-auto max-w-[1160px] px-5 h-16 flex items-center justify-between gap-3">
+            <a href="../final/index.html" class="flex items-center gap-2.5 -ml-0.5" aria-label="Annuaire de la Cartoucherie, accueil">
+              <svg class="w-8 h-8 text-teal-700 shrink-0" aria-hidden="true"><use href="#i-ventouse"/></svg>
+              <span class="leading-none">
+                <span class="block text-[11.5px] uppercase tracking-[.18em] text-neutre-700 font-semibold">Annuaire de</span>
+                <span class="ff block text-[20px] text-teal-900 leading-tight">la Cartoucherie</span>
+              </span>
+            </a>
+            <a href="../final/index.html" class="inline-flex items-center gap-2 min-h-[44px] px-3.5 rounded-full text-etiquette tracking-normal font-semibold text-teal-700 hover:bg-teal-50">
+              <svg class="w-5 h-5" aria-hidden="true"><use href="#i-retour"/></svg>
+              <span>Annuaire</span><span class="sr-only">— retour à la liste des voisins</span>
+            </a>
+          </div>
+          <div class="filet h-[3px]"></div>
+        </header>
+
+        <div class="px-5 pt-7 pb-10">
+          <p class="text-etiquette font-semibold uppercase text-sauge-800">Mon espace</p>
+          <h1 class="ff mt-1.5 text-nom text-teal-900">Votre fiche</h1>
+
+          <div role="status" class="mt-5 flex items-start gap-4 rounded-[22px] bg-rouge-50 p-5">
+            <span class="pastille pastille--rouge w-11 h-11 mt-0.5 bg-white text-rouge-700" aria-hidden="true"><svg class="w-[22px] h-[22px]"><use href="#i-alerte"/></svg></span>
+            <div class="min-w-0">
+              <p class="ff text-[22px] leading-tight text-teal-950">Refusée&nbsp;: à corriger</p>
+              <blockquote class="mt-2 mx-0 mb-0 border-l-[3px] border-rouge-300 pl-3 text-[16px] leading-snug text-teal-950">
+                «&nbsp;La photo ne convient pas&nbsp;: il en faut une de vous seul, de face, bien nette.&nbsp;»
+                <span class="mt-1 block text-neutre-700">— Adrien, le 25 octobre</span>
+              </blockquote>
+              <a href="#ecran-2b" class="mt-4 inline-flex items-center gap-2 min-h-[48px] px-5 rounded-full text-corps font-semibold text-white bg-teal-700 hover:bg-teal-600">
+                Corriger ma fiche<svg class="w-4 h-4" aria-hidden="true"><use href="#i-chev"/></svg>
+              </a>
+            </div>
+          </div>
+
+          <figure class="ventouses ventouses--teal mt-6 m-0 rounded-[24px] bg-neutre-100 p-3">
+            <figcaption class="flex items-center gap-2 px-1.5 pt-0.5 pb-3 text-[16px] font-semibold text-teal-800">
+              <svg class="w-5 h-5" aria-hidden="true"><use href="#i-oeil"/></svg>Ce que vos voisins verront
+            </figcaption>
+            <ul class="list-none m-0 p-0">
+              <li>
+                <article class="carte carte-lien colly-fond relative flex flex-col items-center rounded-[20px] px-4 py-5 text-center">
+                  <img src="https://randomuser.me/api/portraits/men/46.jpg" alt="Portrait de Julien Marty"
+                       width="128" height="128" loading="lazy"
+                       class="w-[124px] h-[124px] rounded-full object-cover shadow-carte"
+                       style="object-position:50% 22%; box-shadow: 0 0 0 3px #fff, var(--shadow-carte)">
+                  <h3 class="ff mt-3.5 text-[21px] leading-tight text-teal-900">
+                    <a href="#apercu-julien" class="before:absolute before:inset-0 before:content-['']">Julien Marty</a>
+                  </h3>
+                  <p class="mt-0.5 text-corps text-neutre-900">Électricien</p>
+                  <p class="mt-2 inline-flex items-center gap-1.5 text-[16px] font-semibold text-teal-800">
+                    <svg class="w-4 h-4 shrink-0 text-teal-600" aria-hidden="true"><use href="#c-domicile"/></svg>
+                    Il vient chez vous
+                  </p>
+                </article>
+              </li>
+            </ul>
+            <p class="px-1.5 pt-3 pb-0.5 text-[16px] text-neutre-700">Pas en ligne.</p>
+          </figure>
+
+          <hr class="mt-9 border-0 border-t border-neutre-300">
+          <div class="flex flex-wrap items-center justify-between gap-x-6">
+<a href="#etat-5" class="mt-2 inline-flex items-center gap-2 min-h-[44px] text-[16px] font-semibold text-rouge-700 underline underline-offset-4 decoration-rouge-300 hover:decoration-rouge-600">
+            <svg class="w-5 h-5" aria-hidden="true"><use href="#i-corbeille"/></svg>Supprimer ma fiche
+          </a>
+<a href="#etat-6" class="mt-2 inline-flex items-center min-h-[44px] text-[16px] font-semibold text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">Se déconnecter</a>
+</div>
+        </div>
+      </div>
+    </figure>
+
+    <!-- 2b · l'étape photo, en correction -->
+    <figure class="cadre" id="ecran-2b">
+      <figcaption class="legende"><span class="tnum">2b</span> «&nbsp;Corriger ma fiche&nbsp;» — l'étape en cause</figcaption>
+      <div class="ecran">
+        <form class="pb-[96px]" onsubmit="return false">
+          <header class="px-5 pt-2 pb-2 bg-white">
+            <div class="-mx-2 flex items-center justify-between gap-3">
+              <a href="#etat-2" class="inline-flex items-center gap-1.5 min-h-[44px] px-2 rounded-full text-corps font-semibold text-teal-700 hover:bg-teal-50">
+                <svg class="w-5 h-5" aria-hidden="true"><use href="#i-retour"/></svg>Retour
+              </a>
+              <p role="status" class="inline-flex items-center gap-1.5 px-2 text-[16px] text-sauge-800">
+                <svg class="w-[18px] h-[18px]" aria-hidden="true"><use href="#i-coche"/></svg>Brouillon enregistré
+              </p>
+            </div>
+            <p class="mt-4 text-etiquette font-semibold uppercase text-teal-700">Étape 2 sur 9</p>
+            <div class="mt-3 flex items-center" aria-hidden="true">
+              <span class="w-2.5 h-2.5 shrink-0 rounded-full bg-teal-700"></span><span class="h-[2px] flex-1 bg-teal-700"></span>
+              <svg class="w-5 h-5 shrink-0 text-teal-700"><use href="#i-ventouse"/></svg><span class="h-[2px] flex-1 bg-teal-700"></span>
+              <span class="w-2.5 h-2.5 shrink-0 rounded-full bg-teal-700"></span><span class="h-[2px] flex-1 bg-teal-700"></span>
+              <span class="w-2.5 h-2.5 shrink-0 rounded-full bg-teal-700"></span><span class="h-[2px] flex-1 bg-teal-700"></span>
+              <span class="w-2.5 h-2.5 shrink-0 rounded-full bg-teal-700"></span><span class="h-[2px] flex-1 bg-teal-700"></span>
+              <span class="w-2.5 h-2.5 shrink-0 rounded-full bg-teal-700"></span><span class="h-[2px] flex-1 bg-teal-700"></span>
+              <span class="w-2.5 h-2.5 shrink-0 rounded-full bg-teal-700"></span><span class="h-[2px] flex-1 bg-teal-700"></span>
+              <span class="w-2.5 h-2.5 shrink-0 rounded-full bg-teal-700"></span><span class="h-[2px] flex-1 bg-teal-700"></span>
+              <span class="w-2.5 h-2.5 shrink-0 rounded-full bg-teal-700"></span>
+            </div>
+            <h1 class="ff mt-6 text-nom text-teal-900">Une photo de vous</h1>
+          </header>
+
+          <div class="px-5">
+            <!-- nouveau : le motif rappelé sur l'étape qu'il concerne -->
+            <div class="mt-4 rounded-[18px] bg-rouge-50 p-4">
+              <p class="flex items-start gap-1.5 text-[16px] font-semibold text-rouge-700">
+                <svg class="w-[18px] h-[18px] shrink-0 mt-0.5" aria-hidden="true"><use href="#i-alerte"/></svg>Ce qu'Adrien demande
+              </p>
+              <blockquote class="mt-1.5 mx-0 mb-0 border-l-[3px] border-rouge-300 pl-3 text-[16px] leading-snug text-teal-950">
+                «&nbsp;La photo ne convient pas&nbsp;: il en faut une de vous seul, de face, bien nette.&nbsp;»
+              </blockquote>
+            </div>
+          </div>
+
+          <div class="p-5">
+            <div class="relative rounded-[24px] bg-teal-950 px-5 pt-6 pb-4 overflow-hidden">
+              <div class="ventouses ventouses--teal absolute inset-0" aria-hidden="true"></div>
+              <div class="recadrage relative mx-auto w-[176px] h-[176px]">
+                <img src="https://randomuser.me/api/portraits/men/46.jpg" alt="Votre photo, à recadrer" width="128" height="128">
+                <div class="recadrage__arche" aria-hidden="true"></div>
+                <div class="recadrage__visage" aria-hidden="true"></div>
+              </div>
+              <p class="relative mt-3 text-center text-[16px] text-teal-100">Le visage dans l'ovale. Glissez pour ajuster.</p>
+              <label class="relative mt-1 flex items-center gap-3 text-[16px] font-semibold text-white">
+                Zoom
+                <input type="range" min="1" max="2" step="0.05" value="1" class="flex-1 min-h-[44px] accent-teal-300">
+              </label>
+            </div>
+            <ul class="mt-5 flex items-end justify-center gap-6 list-none p-0 m-0 text-center text-[16px] text-neutre-700">
+              <li>
+                <img src="https://randomuser.me/api/portraits/men/46.jpg" alt="" width="128" height="128"
+                     class="arche mx-auto w-[64px] h-[78px] object-cover" style="object-position:50% 22%; box-shadow: 0 0 0 3px #fff, var(--shadow-carte)">
+                <span class="mt-2 block">Fiche</span>
+              </li>
+              <li>
+                <img src="https://randomuser.me/api/portraits/men/46.jpg" alt="" width="128" height="128"
+                     class="mx-auto w-[46px] h-[60px] rounded-[8px] object-cover" style="object-position:50% 25%; box-shadow: var(--shadow-carte)">
+                <span class="mt-2 block">Liste</span>
+              </li>
+              <li>
+                <img src="https://randomuser.me/api/portraits/men/46.jpg" alt="" width="128" height="128"
+                     class="mx-auto w-[52px] h-[52px] rounded-full object-cover" style="object-position:50% 22%; box-shadow: 0 0 0 3px #fff, var(--shadow-carte)">
+                <span class="mt-2 block">Plan</span>
+              </li>
+            </ul>
+            <div class="mt-5 text-center">
+              <label class="inline-flex items-center gap-2 min-h-[44px] px-4 rounded-full text-corps font-semibold text-teal-700 bg-teal-50 hover:bg-teal-100 cursor-pointer has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-teal-600">
+                Choisir une autre photo
+                <input type="file" accept="image/jpeg,image/png,image/webp" class="sr-only">
+              </label>
+            </div>
+          </div>
+
+          <div class="fixed bottom-0 inset-x-0 z-40 bg-white/95 backdrop-blur-sm"
+               style="box-shadow: 0 -4px 8px oklch(17.5% .03 202/.06), 0 -28px 64px -20px oklch(17.5% .03 202/.28)">
+            <div class="mx-auto max-w-[640px] px-4 py-3 flex items-center gap-3">
+              <a href="#etat-2" class="inline-flex items-center justify-center min-h-[54px] px-5 rounded-full text-corps font-semibold text-teal-700 bg-teal-50 hover:bg-teal-100">
+                Plus tard
+              </a>
+              <button type="submit"
+                      class="cta flex-1 inline-flex items-center justify-center gap-2 min-h-[54px] px-6 rounded-full text-[18px] font-bold tracking-tight transition">
+                Continuer<svg class="w-5 h-5" aria-hidden="true"><use href="#i-chev"/></svg>
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </figure>
+
+    <!-- 2c · la relecture et le renvoi -->
+    <figure class="cadre">
+      <figcaption class="legende"><span class="tnum">2c</span> Relecture, puis «&nbsp;Renvoyer ma fiche&nbsp;» → état 1</figcaption>
+      <div class="ecran">
+        <form class="pb-[124px]" onsubmit="return false">
+          <div class="px-5 pt-2">
+            <a href="#ecran-2b" class="-mx-2 inline-flex items-center gap-1.5 min-h-[44px] px-2 rounded-full text-corps font-semibold text-teal-700 hover:bg-teal-50">
+              <svg class="w-5 h-5" aria-hidden="true"><use href="#i-retour"/></svg>Retour
+            </a>
+          </div>
+          <div class="px-5 pt-4 pb-2">
+            <h1 class="ff text-nom text-teal-900">Vérifiez votre fiche</h1>
+            <h2 class="ff mt-7 text-[22px] text-teal-900">Vous</h2>
+            <dl class="mt-2 m-0 border-t border-neutre-300">
+              <div class="grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 py-3 border-b border-neutre-300">
+                <dt class="text-[16px] font-semibold text-neutre-700">Nom</dt>
+                <dd class="col-start-1 m-0 text-corps text-neutre-900">Julien Marty</dd>
+                <dd class="col-start-2 row-start-1 row-span-2 m-0"><a href="#etape-1" class="inline-flex items-center min-h-[44px] text-[16px] font-semibold text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">Modifier<span class="sr-only"> le nom</span></a></dd>
+              </div>
+              <div class="grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 py-3 border-b border-neutre-300">
+                <dt class="text-[16px] font-semibold text-neutre-700">On écrit</dt>
+                <dd class="col-start-1 m-0 text-corps text-neutre-900">il — «&nbsp;Ce qu'il propose&nbsp;»</dd>
+                <dd class="col-start-2 row-start-1 row-span-2 m-0"><a href="#etape-1" class="inline-flex items-center min-h-[44px] text-[16px] font-semibold text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">Modifier<span class="sr-only"> l'accord</span></a></dd>
+              </div>
+              <div class="grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 py-3 border-b border-neutre-300">
+                <dt class="text-[16px] font-semibold text-neutre-700">Photo</dt>
+                <dd class="col-start-1 m-0 mt-1.5"><img src="https://randomuser.me/api/portraits/men/46.jpg" alt="Votre photo" width="128" height="128" class="arche w-[56px] h-[68px] object-cover" style="object-position:50% 22%"></dd>
+                <dd class="col-start-2 row-start-1 row-span-2 m-0"><a href="#ecran-2b" class="inline-flex items-center min-h-[44px] text-[16px] font-semibold text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">Modifier<span class="sr-only"> la photo</span></a></dd>
+              </div>
+            </dl>
+            <h2 class="ff mt-8 text-[22px] text-teal-900">Votre activité</h2>
+            <dl class="mt-2 m-0 border-t border-neutre-300">
+              <div class="grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 py-3 border-b border-neutre-300">
+                <dt class="text-[16px] font-semibold text-neutre-700">Métier</dt>
+                <dd class="col-start-1 m-0 text-corps text-neutre-900">Électricien</dd>
+                <dd class="col-start-2 row-start-1 row-span-2 m-0"><a href="#etape-3" class="inline-flex items-center min-h-[44px] text-[16px] font-semibold text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">Modifier<span class="sr-only"> le métier</span></a></dd>
+              </div>
+              <div class="grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 py-3 border-b border-neutre-300">
+                <dt class="text-[16px] font-semibold text-neutre-700">Catégories</dt>
+                <dd class="col-start-1 m-0 mt-1 flex flex-wrap gap-1.5"><span class="chip inline-flex items-center gap-2 rounded-full px-3 py-1 text-[16px] font-semibold"><svg class="w-[18px] h-[18px]" aria-hidden="true"><use href="#c-artisanat"/></svg>Artisanat &amp; travaux</span><span class="chip inline-flex items-center gap-2 rounded-full px-3 py-1 text-[16px] font-semibold"><svg class="w-[18px] h-[18px]" aria-hidden="true"><use href="#c-domicile"/></svg>Services à domicile</span></dd>
+                <dd class="col-start-2 row-start-1 row-span-2 m-0"><a href="#etape-4" class="inline-flex items-center min-h-[44px] text-[16px] font-semibold text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">Modifier<span class="sr-only"> les catégories</span></a></dd>
+              </div>
+            </dl>
+            <h2 class="ff mt-8 text-[22px] text-teal-900">Vous trouver</h2>
+            <dl class="mt-2 m-0 border-t border-neutre-300">
+              <div class="grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 py-3 border-b border-neutre-300">
+                <dt class="text-[16px] font-semibold text-neutre-700">Où intervenez-vous</dt>
+                <dd class="col-start-1 m-0 text-corps text-neutre-900">Dans tout le quartier<span class="block text-[16px] text-neutre-700">Se déplace · pas d'adresse affichée</span></dd>
+                <dd class="col-start-2 row-start-1 row-span-2 m-0"><a href="#etape-8" class="inline-flex items-center min-h-[44px] text-[16px] font-semibold text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">Modifier<span class="sr-only"> la zone</span></a></dd>
+              </div>
+              <div class="grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 py-3 border-b border-neutre-300">
+                <dt class="text-[16px] font-semibold text-neutre-700">Téléphone</dt>
+                <dd class="col-start-1 m-0 text-corps tnum text-neutre-900">06&nbsp;39&nbsp;98&nbsp;00&nbsp;41</dd>
+                <dd class="col-start-2 row-start-1 row-span-2 m-0"><a href="#etape-9" class="inline-flex items-center min-h-[44px] text-[16px] font-semibold text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">Modifier<span class="sr-only"> le téléphone</span></a></dd>
+              </div>
+            </dl>
+
+            <fieldset class="mt-8 border-0 p-0 m-0">
+              <legend class="ff mb-4 text-[24px] leading-tight text-teal-900">Pour la nouvelle photo</legend>
+              <div class="grid gap-3">
+                <label class="choix flex gap-3.5 items-start">
+                  <input type="checkbox" name="r-accord-photo" class="case" checked>
+                  <span class="text-corps leading-snug text-neutre-900">J'autorise la publication de ma photo sur l'annuaire.</span>
+                </label>
+                <label class="choix flex gap-3.5 items-start">
+                  <input type="checkbox" name="r-accord-droits" class="case" checked>
+                  <span class="text-corps leading-snug text-neutre-900">Cette photo est de moi ou j'en ai les droits, et personne d'autre n'y figure.</span>
+                </label>
+              </div>
+            </fieldset>
+
+            <!-- nouveau : l'emplacement du widget Turnstile (§8 : il garde l'envoi) -->
+            <div class="turnstile mt-6" role="img" aria-label="Emplacement du contrôle anti-robot Cloudflare Turnstile">
+              <span class="turnstile__case" aria-hidden="true"></span>
+              <span class="text-[16px] text-neutre-700">Contrôle anti-robot</span>
+            </div>
+          </div>
+
+          <div class="fixed bottom-0 inset-x-0 z-40 bg-white/95 backdrop-blur-sm"
+               style="box-shadow: 0 -4px 8px oklch(17.5% .03 202/.06), 0 -28px 64px -20px oklch(17.5% .03 202/.28)">
+            <div class="mx-auto max-w-[640px] px-4 pt-2.5 pb-3">
+              <p class="text-center text-[16px] text-neutre-700">Adrien la relit avant de la publier.</p>
+              <button type="submit"
+                      class="cta mt-2 w-full inline-flex items-center justify-center gap-2 min-h-[54px] px-6 rounded-full text-[18px] font-bold tracking-tight transition">
+                Renvoyer ma fiche
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </figure>
+
+  </div>
+</section>
+
+
+<!-- ╔═══════════════════════════════════════════════════════════════════════╗
+     ║  3 · EN LIGNE — Camille Roussel (elle)                                ║
+     ╚═══════════════════════════════════════════════════════════════════════╝ -->
+<section id="etat-3" class="etat">
+  <div class="px-4 sm:px-0">
+    <p class="text-etiquette font-semibold uppercase text-sauge-800">État 3</p>
+    <h2 class="ff mt-1 text-nom text-teal-900">En ligne</h2>
+    <p class="mt-2 text-corps text-neutre-800 max-w-[70ch]">
+      La maison de Camille. De haut en bas&nbsp;: l'adresse de sa fiche, sa carte et son en-tête tels que le quartier les
+      voit, le rappel «&nbsp;fiche Google&nbsp;» (la seule apparition de Colly), chaque partie de la fiche avec le lien vers
+      son étape, le QR code à imprimer, et la suppression, tout en bas et à part.
+    </p>
+  </div>
+  <div class="planche mt-5">
+
+    <figure class="cadre">
+      <figcaption class="legende"><span class="tnum">3</span> En ligne — l'espace de Camille</figcaption>
+      <div class="ecran">
+        <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-sm">
+          <div class="mx-auto max-w-[1160px] px-5 h-16 flex items-center justify-between gap-3">
+            <a href="../final/index.html" class="flex items-center gap-2.5 -ml-0.5" aria-label="Annuaire de la Cartoucherie, accueil">
+              <svg class="w-8 h-8 text-teal-700 shrink-0" aria-hidden="true"><use href="#i-ventouse"/></svg>
+              <span class="leading-none">
+                <span class="block text-[11.5px] uppercase tracking-[.18em] text-neutre-700 font-semibold">Annuaire de</span>
+                <span class="ff block text-[20px] text-teal-900 leading-tight">la Cartoucherie</span>
+              </span>
+            </a>
+            <a href="../final/index.html" class="inline-flex items-center gap-2 min-h-[44px] px-3.5 rounded-full text-etiquette tracking-normal font-semibold text-teal-700 hover:bg-teal-50">
+              <svg class="w-5 h-5" aria-hidden="true"><use href="#i-retour"/></svg>
+              <span>Annuaire</span><span class="sr-only">— retour à la liste des voisins</span>
+            </a>
+          </div>
+          <div class="filet h-[3px]"></div>
+        </header>
+
+        <div class="px-5 pt-7 pb-10">
+          <p class="text-etiquette font-semibold uppercase text-sauge-800">Mon espace</p>
+          <h1 class="ff mt-1.5 text-nom text-teal-900">Votre fiche</h1>
+
+          <div role="status" class="mt-5 flex items-start gap-4 rounded-[22px] bg-sauge-50 p-5" style="box-shadow: inset 0 0 0 1px var(--color-sauge-200)">
+            <span class="pastille w-11 h-11 mt-0.5 bg-white text-sauge-700" aria-hidden="true"><svg class="w-[22px] h-[22px]"><use href="#i-coche"/></svg></span>
+            <div class="min-w-0">
+              <p class="ff text-[22px] leading-tight text-teal-950">En ligne</p>
+              <p class="mt-1.5 text-[16px] leading-snug text-teal-950 break-words">cartoucherie.fyi/membre/camille-roussel</p>
+              <a href="../final/membre.html" class="mt-2 inline-flex items-center gap-1.5 min-h-[44px] text-corps font-semibold text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">
+                Voir ma fiche<svg class="w-4 h-4" aria-hidden="true"><use href="#i-chev"/></svg>
+              </a>
+            </div>
+          </div>
+
+          <figure class="ventouses ventouses--teal mt-6 m-0 rounded-[24px] bg-neutre-100 p-3">
+            <figcaption class="flex items-center gap-2 px-1.5 pt-0.5 pb-3 text-[16px] font-semibold text-teal-800">
+              <svg class="w-5 h-5" aria-hidden="true"><use href="#i-oeil"/></svg>Ce que vos voisins voient
+            </figcaption>
+            <ul class="list-none m-0 p-0">
+              <li>
+                <article class="carte carte-lien relative flex min-h-[152px] rounded-[20px] bg-white overflow-hidden">
+                  <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Portrait de Camille Roussel"
+                       width="128" height="128" loading="lazy"
+                       class="w-[116px] shrink-0 self-stretch object-cover" style="object-position:50% 25%">
+                  <div class="flex-1 min-w-0 py-4 pl-4 pr-1 flex flex-col justify-center gap-1">
+                    <h3 class="ff text-[20px] leading-tight text-teal-900">
+                      <a href="../final/membre.html" class="before:absolute before:inset-0 before:content-['']">Camille Roussel</a>
+                    </h3>
+                    <p class="text-corps text-neutre-800 leading-snug">Sophrologue</p>
+                    <p class="flex flex-wrap items-center gap-x-3 gap-y-1 text-[16px] text-neutre-700 mt-0.5">
+                      <span class="inline-flex items-center gap-1"><svg class="w-4 h-4 text-teal-600" aria-hidden="true"><use href="#i-pin"/></svg>120 m</span>
+                    </p>
+                  </div>
+                  <a href="tel:+33639980017" class="relative z-10 shrink-0 self-center mr-2.5 grid place-items-center w-11 h-11 rounded-full text-teal-700 bg-teal-50 hover:bg-teal-100"
+                     aria-label="Appeler Camille Roussel au 06 39 98 00 17">
+                    <svg class="w-5 h-5" aria-hidden="true"><use href="#i-tel"/></svg>
+                  </a>
+                </article>
+              </li>
+            </ul>
+            <div class="mt-3 rounded-[20px] bg-white overflow-hidden pb-4">
+              <section>
+                <div class="ventouses relative bg-sable-200 pt-9 pb-11 rounded-b-[34px] overflow-hidden">
+                  <div class="flex justify-center">
+                    <img src="https://randomuser.me/api/portraits/women/44.jpg"
+                         alt="Portrait de Camille Roussel, sophrologue à la Cartoucherie"
+                         width="128" height="128"
+                         class="arche block w-[172px] h-[208px] object-cover bg-white"
+                         style="object-position:50% 22%; box-shadow: 0 0 0 6px #fff, var(--shadow-carte)">
+                  </div>
+                </div>
+                <div class="px-5 relative -mt-8">
+                  <div class="carte rounded-[24px] bg-white p-5">
+                    <p class="ff text-grand text-teal-900">Camille Roussel</p>
+                    <p class="mt-1.5 text-[20px] text-neutre-800">Sophrologue</p>
+                    <p class="mt-3 flex flex-wrap gap-2">
+                      <span class="chip inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 text-[16px] font-semibold">
+                        <svg class="w-[18px] h-[18px]" aria-hidden="true"><use href="#c-sante"/></svg>Santé &amp; bien-être
+                      </span>
+                    </p>
+                    <p class="mt-4 text-[19px] leading-relaxed text-neutre-900">
+                      Gestion du stress, sommeil et préparation aux examens, en cabinet ou en visio.
+                    </p>
+                    <p class="mt-5 flex flex-wrap items-center gap-x-5 gap-y-2.5 text-[16px] text-neutre-700">
+                      <span class="inline-flex items-center gap-1.5">
+                        <svg class="w-[18px] h-[18px] text-teal-600" aria-hidden="true"><use href="#i-pin"/></svg>
+                        À 120 m de la Halle
+                      </span>
+                    </p>
+                  </div>
+                </div>
+              </section>
+            </div>
+          </figure>
+
+          <aside data-rappel aria-labelledby="rappel-3" class="relative mt-6 rounded-[22px] bg-teal-50 p-5 pr-12">
+            <div class="flex items-start gap-4">
+              <div class="w-[72px] h-[72px] shrink-0 rounded-full bg-white overflow-hidden grid place-items-center"
+                   style="box-shadow: inset 0 0 0 1.5px var(--color-teal-200)">
+                <img src="../_shared/colly/colly-joyeux.png" alt="" width="260" height="260" class="croquis w-[88px] h-auto">
+              </div>
+              <div class="min-w-0">
+                <h2 id="rappel-3" class="ff text-[21px] leading-tight text-teal-950">Ajoutez votre fiche Google</h2>
+                <p class="mt-1.5 text-[16px] leading-snug text-teal-950">Vos voisins liront vos avis Google depuis votre fiche.</p>
+              </div>
+            </div>
+            <a href="#etape-9" class="mt-4 ml-[88px] inline-flex items-center gap-2 min-h-[48px] px-5 rounded-full text-corps font-semibold text-white bg-teal-700 hover:bg-teal-600">
+              Ajouter le lien
+            </a>
+            <button type="button" aria-label="Masquer ce rappel" onclick="this.closest('[data-rappel]').hidden = true"
+                    class="absolute top-2 right-2 grid place-items-center w-11 h-11 rounded-full text-teal-800 hover:bg-teal-100">
+              <svg class="w-5 h-5" aria-hidden="true"><use href="#i-fermer"/></svg>
+            </button>
+          </aside>
+
+          <h2 class="ff mt-10 text-[26px] leading-tight text-teal-900">Modifier ma fiche</h2>
+          <p class="mt-1 text-[16px] text-neutre-700">Chaque changement est en ligne quelques minutes après «&nbsp;Enregistrer&nbsp;».</p>
+          <h3 class="ff mt-6 text-[22px] text-teal-900">Vous</h3>
+          <dl class="mt-2 m-0 border-t border-neutre-300">
+            <div class="grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 py-3 border-b border-neutre-300">
+              <dt class="text-[16px] font-semibold text-neutre-700">Nom</dt>
+              <dd class="col-start-1 m-0 text-corps text-neutre-900">Camille Roussel</dd>
+              <dd class="col-start-2 row-start-1 row-span-2 m-0"><a href="#etape-1" class="inline-flex items-center min-h-[44px] text-[16px] font-semibold text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">Modifier<span class="sr-only"> le nom</span></a></dd>
+            </div>
+            <div class="grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 py-3 border-b border-neutre-300">
+              <dt class="text-[16px] font-semibold text-neutre-700">On écrit</dt>
+              <dd class="col-start-1 m-0 text-corps text-neutre-900">elle — «&nbsp;Ce qu'elle propose&nbsp;»</dd>
+              <dd class="col-start-2 row-start-1 row-span-2 m-0"><a href="#etape-1" class="inline-flex items-center min-h-[44px] text-[16px] font-semibold text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">Modifier<span class="sr-only"> l'accord</span></a></dd>
+            </div>
+            <div class="grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 py-3 border-b border-neutre-300">
+              <dt class="text-[16px] font-semibold text-neutre-700">Photo</dt>
+              <dd class="col-start-1 m-0 mt-1.5"><img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Votre photo" width="128" height="128" class="arche w-[56px] h-[68px] object-cover" style="object-position:50% 22%"></dd>
+              <dd class="col-start-2 row-start-1 row-span-2 m-0"><a href="#etape-2" class="inline-flex items-center min-h-[44px] text-[16px] font-semibold text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">Modifier<span class="sr-only"> la photo</span></a></dd>
+            </div>
+          </dl>
+          <h3 class="ff mt-8 text-[22px] text-teal-900">Votre activité</h3>
+          <dl class="mt-2 m-0 border-t border-neutre-300">
+            <div class="grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 py-3 border-b border-neutre-300">
+              <dt class="text-[16px] font-semibold text-neutre-700">Métier</dt>
+              <dd class="col-start-1 m-0 text-corps text-neutre-900">Sophrologue</dd>
+              <dd class="col-start-2 row-start-1 row-span-2 m-0"><a href="#etape-3" class="inline-flex items-center min-h-[44px] text-[16px] font-semibold text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">Modifier<span class="sr-only"> le métier</span></a></dd>
+            </div>
+            <div class="grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 py-3 border-b border-neutre-300">
+              <dt class="text-[16px] font-semibold text-neutre-700">Catégorie</dt>
+              <dd class="col-start-1 m-0 mt-1"><span class="chip inline-flex items-center gap-2 rounded-full px-3 py-1 text-[16px] font-semibold"><svg class="w-[18px] h-[18px]" aria-hidden="true"><use href="#c-sante"/></svg>Santé &amp; bien-être</span></dd>
+              <dd class="col-start-2 row-start-1 row-span-2 m-0"><a href="#etape-4" class="inline-flex items-center min-h-[44px] text-[16px] font-semibold text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">Modifier<span class="sr-only"> les catégories</span></a></dd>
+            </div>
+            <div class="grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 py-3 border-b border-neutre-300">
+              <dt class="text-[16px] font-semibold text-neutre-700">Accroche et présentation</dt>
+              <dd class="col-start-1 m-0 text-corps text-neutre-900">Gestion du stress, sommeil et préparation aux examens, en cabinet ou en visio.</dd>
+              <dd class="col-start-2 row-start-1 row-span-2 m-0"><a href="#ecran-4a" class="inline-flex items-center min-h-[44px] text-[16px] font-semibold text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">Modifier<span class="sr-only"> l'accroche et la présentation</span></a></dd>
+            </div>
+            <div class="grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 py-3 border-b border-neutre-300">
+              <dt class="text-[16px] font-semibold text-neutre-700">Services</dt>
+              <dd class="col-start-1 m-0 text-corps text-neutre-900"><ul class="list-none p-0 m-0"><li>Séance individuelle</li><li>Atelier collectif</li><li>Visio</li></ul></dd>
+              <dd class="col-start-2 row-start-1 row-span-2 m-0"><a href="#etape-6" class="inline-flex items-center min-h-[44px] text-[16px] font-semibold text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">Modifier<span class="sr-only"> les services</span></a></dd>
+            </div>
+            <div class="grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 py-3 border-b border-neutre-300">
+              <dt class="text-[16px] font-semibold text-neutre-700">Tarifs et horaires</dt>
+              <dd class="col-start-1 m-0 text-corps text-neutre-900">Séance d'1&nbsp;h&nbsp;: 55&nbsp;€<span class="block">Sur rendez-vous, du lundi au samedi</span></dd>
+              <dd class="col-start-2 row-start-1 row-span-2 m-0"><a href="#etape-7" class="inline-flex items-center min-h-[44px] text-[16px] font-semibold text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">Modifier<span class="sr-only"> les tarifs et horaires</span></a></dd>
+            </div>
+          </dl>
+          <h3 class="ff mt-8 text-[22px] text-teal-900">Vous trouver</h3>
+          <dl class="mt-2 m-0 border-t border-neutre-300">
+            <div class="grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 py-3 border-b border-neutre-300">
+              <dt class="text-[16px] font-semibold text-neutre-700">Adresse</dt>
+              <dd class="col-start-1 m-0 text-corps text-neutre-900">14 rue Paul Mesplé, 31300 Toulouse<span class="block text-[16px] text-neutre-700">Sur le plan du quartier · à 120 m de la Halle</span></dd>
+              <dd class="col-start-2 row-start-1 row-span-2 m-0"><a href="#etape-8" class="inline-flex items-center min-h-[44px] text-[16px] font-semibold text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">Modifier<span class="sr-only"> l'adresse</span></a></dd>
+            </div>
+            <div class="grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 py-3 border-b border-neutre-300">
+              <dt class="text-[16px] font-semibold text-neutre-700">Coordonnées</dt>
+              <dd class="col-start-1 m-0 text-corps text-neutre-900 break-words"><span class="tnum">06&nbsp;39&nbsp;98&nbsp;00&nbsp;17</span><span class="block">camille.roussel@example.fr</span></dd>
+              <dd class="col-start-2 row-start-1 row-span-2 m-0"><a href="#etape-9" class="inline-flex items-center min-h-[44px] text-[16px] font-semibold text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">Modifier<span class="sr-only"> les coordonnées</span></a></dd>
+            </div>
+            <div class="grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 py-3 border-b border-neutre-300">
+              <dt class="text-[16px] font-semibold text-neutre-700">Fiche Google</dt>
+              <dd class="col-start-1 m-0 text-corps italic text-neutre-700">Non renseigné</dd>
+              <dd class="col-start-2 row-start-1 row-span-2 m-0"><a href="#etape-9" class="inline-flex items-center min-h-[44px] text-[16px] font-semibold text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">Ajouter<span class="sr-only"> la fiche Google</span></a></dd>
+            </div>
+          </dl>
+
+          <h2 class="ff mt-10 text-[26px] leading-tight text-teal-900">Votre QR code</h2>
+          <div class="mt-4 carte rounded-[20px] bg-white p-5 flex flex-col gap-5">
+            <div class="mx-auto shrink-0 rounded-[14px] bg-white p-2.5" style="box-shadow: inset 0 0 0 1px var(--color-neutre-300)">
+              <svg id="qr-camille" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 37 37" width="168" height="168" role="img" aria-label="QR code vers la fiche de Camille Roussel" shape-rendering="crispEdges"><path fill="#ffffff" d="M0 0h37v37H0z"/><path stroke="#0d2b2e" d="M2 2.5h7m1 0h1m1 0h2m1 0h1m1 0h2m1 0h1m3 0h2m2 0h7M2 3.5h1m5 0h1m4 0h4m3 0h4m4 0h1m5 0h1M2 4.5h1m1 0h3m1 0h1m2 0h1m4 0h1m1 0h6m2 0h1m1 0h1m1 0h3m1 0h1M2 5.5h1m1 0h3m1 0h1m1 0h2m1 0h1m3 0h3m1 0h1m4 0h1m1 0h1m1 0h3m1 0h1M2 6.5h1m1 0h3m1 0h1m1 0h3m2 0h1m2 0h1m2 0h1m3 0h1m2 0h1m1 0h3m1 0h1M2 7.5h1m5 0h1m1 0h1m1 0h3m1 0h2m1 0h1m2 0h1m1 0h1m3 0h1m5 0h1M2 8.5h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7M10 9.5h1m2 0h2m4 0h1m1 0h3M2 10.5h1m3 0h1m1 0h4m1 0h2m2 0h1m1 0h1m2 0h3m1 0h6m2 0h1M4 11.5h3m7 0h1m1 0h4m2 0h1m2 0h1m1 0h1m3 0h3M8 12.5h1m1 0h2m3 0h3m2 0h1m1 0h2m1 0h1m1 0h1m3 0h1m1 0h1M3 13.5h1m2 0h1m2 0h2m1 0h1m1 0h2m1 0h1m4 0h2m1 0h3m5 0h2M2 14.5h5m1 0h1m1 0h6m1 0h2m2 0h1m1 0h2m2 0h2m1 0h2m1 0h2M3 15.5h1m12 0h1m2 0h4m2 0h1m1 0h1m1 0h1m2 0h1M5 16.5h1m2 0h1m4 0h3m1 0h1m1 0h1m2 0h1m1 0h7m2 0h1M5 17.5h3m1 0h3m2 0h1m2 0h4m2 0h1m1 0h4M2 18.5h5m1 0h2m2 0h1m3 0h1m2 0h1m1 0h4m3 0h1m1 0h1m2 0h1M2 19.5h1m1 0h1m2 0h1m1 0h3m2 0h2m1 0h2m1 0h1m2 0h1m1 0h1m1 0h1m3 0h3M3 20.5h1m1 0h1m1 0h3m3 0h2m1 0h2m1 0h1m2 0h2m1 0h1m1 0h3m1 0h1m1 0h1M2 21.5h2m1 0h2m4 0h5m1 0h1m1 0h2m2 0h2m2 0h1m1 0h1m3 0h2M5 22.5h4m1 0h2m4 0h1m3 0h1m1 0h1m5 0h1m1 0h2M2 23.5h3m5 0h1m1 0h4m2 0h2m1 0h1m1 0h1m1 0h1m3 0h1m1 0h1m1 0h1M5 24.5h2m1 0h1m1 0h1m4 0h2m1 0h2m1 0h1m1 0h4m2 0h2m2 0h1M5 25.5h2m7 0h3m2 0h6m1 0h3m4 0h2M2 26.5h4m2 0h2m1 0h3m3 0h1m1 0h2m1 0h9M10 27.5h1m1 0h2m2 0h5m2 0h1m1 0h2m3 0h1m1 0h2M2 28.5h7m1 0h2m2 0h1m1 0h2m2 0h1m5 0h1m1 0h1m1 0h2M2 29.5h1m5 0h1m3 0h1m1 0h1m2 0h1m3 0h1m2 0h1m1 0h1m3 0h1m2 0h1M2 30.5h1m1 0h3m1 0h1m1 0h1m1 0h1m2 0h1m1 0h2m2 0h1m2 0h1m1 0h6m2 0h1M2 31.5h1m1 0h3m1 0h1m3 0h1m6 0h4m2 0h2m1 0h3m2 0h1M2 32.5h1m1 0h3m1 0h1m4 0h5m2 0h1m1 0h2m1 0h1m2 0h3M2 33.5h1m5 0h1m3 0h2m2 0h5m2 0h1m1 0h2M2 34.5h7m1 0h2m7 0h1m1 0h1m1 0h5m6 0h1"/></svg>
+            </div>
+            <div class="min-w-0">
+              <p class="text-corps text-neutre-900">
+                À imprimer pour votre comptoir ou le dos de vos cartes de visite. Il mène droit à votre fiche.
+              </p>
+              <p class="mt-2 text-[16px] text-neutre-700 break-words">cartoucherie.fyi/membre/camille-roussel</p>
+              <button type="button" data-qr="qr-camille"
+                      class="mt-4 inline-flex items-center gap-2 min-h-[48px] px-5 rounded-full text-corps font-semibold text-white bg-teal-700 hover:bg-teal-600">
+                <svg class="w-[18px] h-[18px]" aria-hidden="true"><use href="#i-dl"/></svg>
+                Télécharger le QR code
+              </button>
+            </div>
+          </div>
+
+          <hr class="mt-10 border-0 border-t border-neutre-300">
+          <div class="flex flex-wrap items-center justify-between gap-x-6">
+<a href="#etat-5" class="mt-2 inline-flex items-center gap-2 min-h-[44px] text-[16px] font-semibold text-rouge-700 underline underline-offset-4 decoration-rouge-300 hover:decoration-rouge-600">
+            <svg class="w-5 h-5" aria-hidden="true"><use href="#i-corbeille"/></svg>Supprimer ma fiche
+          </a>
+<a href="#etat-6" class="mt-2 inline-flex items-center min-h-[44px] text-[16px] font-semibold text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">Se déconnecter</a>
+</div>
+        </div>
+      </div>
+    </figure>
+
+  </div>
+</section>
+
+
+<!-- ╔═══════════════════════════════════════════════════════════════════════╗
+     ║  4 · MISE EN LIGNE EN COURS — une modification enregistrée            ║
+     ╚═══════════════════════════════════════════════════════════════════════╝ -->
+<section id="etat-4" class="etat">
+  <div class="px-4 sm:px-0">
+    <p class="text-etiquette font-semibold uppercase text-sauge-800">État 4</p>
+    <h2 class="ff mt-1 text-nom text-teal-900">Mise en ligne en cours…</h2>
+    <p class="mt-2 text-corps text-neutre-800 max-w-[70ch]">
+      Une fiche en ligne ne repasse pas par Adrien. «&nbsp;Modifier&nbsp;» ouvre <em>une</em> étape, sans chemin
+      «&nbsp;Étape x sur 9&nbsp;», avec «&nbsp;Annuler&nbsp;» et «&nbsp;Enregistrer&nbsp;». De retour dans l'espace, l'aperçu
+      montre déjà le nouveau texte&nbsp;; la page publique suit quand le déploiement de contenu se termine.
+    </p>
+  </div>
+  <div class="planche mt-5">
+
+    <!-- 4a · une étape, en modification -->
+    <figure class="cadre" id="ecran-4a">
+      <figcaption class="legende"><span class="tnum">4a</span> Modifier l'accroche — une seule étape</figcaption>
+      <div class="ecran">
+        <form class="pb-[96px]" onsubmit="return false">
+          <header class="px-5 pt-2 pb-2 bg-white">
+            <div class="-mx-2 flex items-center justify-between gap-3">
+              <a href="#etat-3" class="inline-flex items-center gap-1.5 min-h-[44px] px-2 rounded-full text-corps font-semibold text-teal-700 hover:bg-teal-50">
+                <svg class="w-5 h-5" aria-hidden="true"><use href="#i-retour"/></svg>Mon espace
+              </a>
+            </div>
+            <p class="mt-4 text-etiquette font-semibold uppercase text-teal-700">Modifier ma fiche</p>
+          </header>
+          <div class="px-5" data-etat="ok">
+            <div class="mt-4 flex items-start justify-between gap-3">
+              <h1 class="ff text-nom text-teal-900"><label for="m-accroche">En une phrase&nbsp;: ce que vous faites pour vos voisins</label></h1>
+              <button type="button" class="-mr-2 grid place-items-center w-11 h-11 shrink-0 rounded-full"
+                      aria-expanded="false" aria-controls="m-accroche-aide" onclick="basculer(this)">
+                <span class="pastille pastille--teal w-7 h-7 bg-teal-50 ff text-[16px] text-teal-800" aria-hidden="true">?</span>
+                <span class="sr-only">Aide : l'accroche</span>
+              </button>
+            </div>
+            <p id="m-accroche-aide" hidden class="bulle mt-3 rounded-[14px] bg-teal-50 px-4 py-3 text-[16px] leading-snug text-teal-950">
+              Écrivez «&nbsp;je&nbsp;». C'est la phrase sous votre nom, et celle que Google montre.
+            </p>
+            <textarea id="m-accroche" rows="4" data-doux="160" data-dur="200" oninput="compter(this)"
+                      aria-describedby="m-accroche-compte"
+                      class="champ mt-4 block w-full min-h-[104px] px-3.5 py-3 rounded-xl text-corps leading-relaxed text-neutre-900">J'aide adultes et ados à mieux dormir et à apprivoiser le stress, en cabinet ou en visio. Nouveau : un atelier le samedi matin à la Halle.</textarea>
+            <p id="m-accroche-compte" class="compteur tnum mt-1.5 flex items-start justify-end gap-1.5 text-[16px]">138 / 160</p>
+            <button type="button" aria-expanded="true" aria-controls="m-apercu" onclick="basculer(this)"
+                    class="mt-4 inline-flex items-center gap-2 min-h-[44px] px-4 rounded-full text-corps font-semibold text-teal-700 bg-teal-50 hover:bg-teal-100 aria-expanded:bg-teal-700 aria-expanded:text-white">
+              <svg class="w-5 h-5" aria-hidden="true"><use href="#i-oeil"/></svg>Aperçu
+            </button>
+            <figure id="m-apercu" class="ventouses ventouses--teal mt-3 mx-0 mb-0 rounded-[24px] bg-neutre-100 p-3">
+              <figcaption class="flex items-center gap-2 px-1.5 pt-0.5 pb-3 text-[16px] font-semibold text-teal-800">
+                <svg class="w-5 h-5" aria-hidden="true"><use href="#i-oeil"/></svg>Ce que vos voisins verront
+              </figcaption>
+              <div class="carte rounded-[24px] bg-white p-5">
+                <p class="ff text-grand text-teal-900">Camille Roussel</p>
+                <p class="mt-1.5 text-[20px] text-neutre-800">Sophrologue</p>
+                <p class="mt-3 flex flex-wrap gap-2">
+                  <span class="chip inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 text-[16px] font-semibold">
+                    <svg class="w-[18px] h-[18px]" aria-hidden="true"><use href="#c-sante"/></svg>Santé &amp; bien-être
+                  </span>
+                </p>
+                <p class="mt-4 text-[19px] leading-relaxed text-neutre-900">
+                  J'aide adultes et ados à mieux dormir et à apprivoiser le stress, en cabinet ou en visio. Nouveau&nbsp;: un atelier le samedi matin à la Halle.
+                </p>
+              </div>
+            </figure>
+          </div>
+          <div class="fixed bottom-0 inset-x-0 z-40 bg-white/95 backdrop-blur-sm"
+               style="box-shadow: 0 -4px 8px oklch(17.5% .03 202/.06), 0 -28px 64px -20px oklch(17.5% .03 202/.28)">
+            <div class="mx-auto max-w-[640px] px-4 py-3 flex items-center gap-3">
+              <a href="#etat-3" class="inline-flex items-center justify-center min-h-[54px] px-5 rounded-full text-corps font-semibold text-teal-700 bg-teal-50 hover:bg-teal-100">
+                Annuler
+              </a>
+              <button type="submit"
+                      class="cta flex-1 inline-flex items-center justify-center gap-2 min-h-[54px] px-6 rounded-full text-[18px] font-bold tracking-tight transition">
+                Enregistrer
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </figure>
+
+    <!-- 4b · l'espace, juste après -->
+    <figure class="cadre">
+      <figcaption class="legende"><span class="tnum">4b</span> Juste après «&nbsp;Enregistrer&nbsp;»</figcaption>
+      <div class="ecran">
+        <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-sm">
+          <div class="mx-auto max-w-[1160px] px-5 h-16 flex items-center justify-between gap-3">
+            <a href="../final/index.html" class="flex items-center gap-2.5 -ml-0.5" aria-label="Annuaire de la Cartoucherie, accueil">
+              <svg class="w-8 h-8 text-teal-700 shrink-0" aria-hidden="true"><use href="#i-ventouse"/></svg>
+              <span class="leading-none">
+                <span class="block text-[11.5px] uppercase tracking-[.18em] text-neutre-700 font-semibold">Annuaire de</span>
+                <span class="ff block text-[20px] text-teal-900 leading-tight">la Cartoucherie</span>
+              </span>
+            </a>
+            <a href="../final/index.html" class="inline-flex items-center gap-2 min-h-[44px] px-3.5 rounded-full text-etiquette tracking-normal font-semibold text-teal-700 hover:bg-teal-50">
+              <svg class="w-5 h-5" aria-hidden="true"><use href="#i-retour"/></svg>
+              <span>Annuaire</span><span class="sr-only">— retour à la liste des voisins</span>
+            </a>
+          </div>
+          <div class="filet h-[3px]"></div>
+        </header>
+
+        <div class="px-5 pt-7 pb-10">
+          <p class="text-etiquette font-semibold uppercase text-sauge-800">Mon espace</p>
+          <h1 class="ff mt-1.5 text-nom text-teal-900">Votre fiche</h1>
+
+          <div role="status" class="mt-5 flex items-start gap-4 rounded-[22px] bg-teal-50 p-5">
+            <span class="pastille pastille--teal w-11 h-11 mt-0.5 bg-white text-teal-600" aria-hidden="true"><svg class="respire w-[22px] h-[22px]"><use href="#i-ventouse"/></svg></span>
+            <div class="min-w-0">
+              <p class="ff text-[22px] leading-tight text-teal-950">Mise en ligne en cours…</p>
+              <p class="mt-1.5 text-[16px] leading-snug text-teal-950">Vos changements seront visibles d'ici quelques minutes.</p>
+            </div>
+          </div>
+
+          <figure class="ventouses ventouses--teal mt-6 m-0 rounded-[24px] bg-neutre-100 p-3">
+            <figcaption class="flex items-center gap-2 px-1.5 pt-0.5 pb-3 text-[16px] font-semibold text-teal-800">
+              <svg class="w-5 h-5" aria-hidden="true"><use href="#i-oeil"/></svg>Ce que vos voisins verront
+            </figcaption>
+            <div class="rounded-[20px] bg-white overflow-hidden pb-4">
+              <section>
+                <div class="ventouses relative bg-sable-200 pt-9 pb-11 rounded-b-[34px] overflow-hidden">
+                  <div class="flex justify-center">
+                    <img src="https://randomuser.me/api/portraits/women/44.jpg"
+                         alt="Portrait de Camille Roussel, sophrologue à la Cartoucherie"
+                         width="128" height="128"
+                         class="arche block w-[172px] h-[208px] object-cover bg-white"
+                         style="object-position:50% 22%; box-shadow: 0 0 0 6px #fff, var(--shadow-carte)">
+                  </div>
+                </div>
+                <div class="px-5 relative -mt-8">
+                  <div class="carte rounded-[24px] bg-white p-5">
+                    <p class="ff text-grand text-teal-900">Camille Roussel</p>
+                    <p class="mt-1.5 text-[20px] text-neutre-800">Sophrologue</p>
+                    <p class="mt-3 flex flex-wrap gap-2">
+                      <span class="chip inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 text-[16px] font-semibold">
+                        <svg class="w-[18px] h-[18px]" aria-hidden="true"><use href="#c-sante"/></svg>Santé &amp; bien-être
+                      </span>
+                    </p>
+                    <p class="mt-4 text-[19px] leading-relaxed text-neutre-900">
+                      J'aide adultes et ados à mieux dormir et à apprivoiser le stress, en cabinet ou en visio. Nouveau&nbsp;: un atelier le samedi matin à la Halle.
+                    </p>
+                    <p class="mt-5 flex flex-wrap items-center gap-x-5 gap-y-2.5 text-[16px] text-neutre-700">
+                      <span class="inline-flex items-center gap-1.5">
+                        <svg class="w-[18px] h-[18px] text-teal-600" aria-hidden="true"><use href="#i-pin"/></svg>
+                        À 120 m de la Halle
+                      </span>
+                    </p>
+                  </div>
+                </div>
+              </section>
+            </div>
+            <p class="px-1.5 pt-3 pb-0.5 text-[16px] text-neutre-700">Votre page publique montre encore l'ancienne version.</p>
+          </figure>
+        </div>
+      </div>
+      <p class="legende-bas">Coupé ici : la suite de l'écran est celle de l'état 3. Une fois le déploiement terminé, le bandeau redevient «&nbsp;En ligne&nbsp;».</p>
+    </figure>
+
+  </div>
+</section>
+
+
+<!-- ╔═══════════════════════════════════════════════════════════════════════╗
+     ║  5 · SUPPRIMER MA FICHE                                               ║
+     ╚═══════════════════════════════════════════════════════════════════════╝ -->
+<section id="etat-5" class="etat">
+  <div class="px-4 sm:px-0">
+    <p class="text-etiquette font-semibold uppercase text-sauge-800">État 5</p>
+    <h2 class="ff mt-1 text-nom text-teal-900">«&nbsp;Supprimer ma fiche&nbsp;»</h2>
+    <p class="mt-2 text-corps text-neutre-800 max-w-[70ch]">
+      Un écran à part, pas une fenêtre&nbsp;: on y arrive par le lien en bas de l'espace, on en sort par «&nbsp;Non, la
+      garder&nbsp;». Le bouton rouge est le seul de tout le produit — un quatrième type de bouton, pour une seule action.
+      L'effacement dans la base est immédiat&nbsp;; la page publique tombe au déploiement suivant, quelques minutes plus tard.
+      Les deux sont dits.
+    </p>
+  </div>
+  <div class="planche mt-5">
+
+    <!-- 5a · la confirmation -->
+    <figure class="cadre">
+      <figcaption class="legende"><span class="tnum">5a</span> La confirmation</figcaption>
+      <div class="ecran">
+        <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-sm">
+          <div class="mx-auto max-w-[1160px] px-5 h-16 flex items-center justify-between gap-3">
+            <a href="../final/index.html" class="flex items-center gap-2.5 -ml-0.5" aria-label="Annuaire de la Cartoucherie, accueil">
+              <svg class="w-8 h-8 text-teal-700 shrink-0" aria-hidden="true"><use href="#i-ventouse"/></svg>
+              <span class="leading-none">
+                <span class="block text-[11.5px] uppercase tracking-[.18em] text-neutre-700 font-semibold">Annuaire de</span>
+                <span class="ff block text-[20px] text-teal-900 leading-tight">la Cartoucherie</span>
+              </span>
+            </a>
+            <a href="../final/index.html" class="inline-flex items-center gap-2 min-h-[44px] px-3.5 rounded-full text-etiquette tracking-normal font-semibold text-teal-700 hover:bg-teal-50">
+              <svg class="w-5 h-5" aria-hidden="true"><use href="#i-retour"/></svg>
+              <span>Annuaire</span><span class="sr-only">— retour à la liste des voisins</span>
+            </a>
+          </div>
+          <div class="filet h-[3px]"></div>
+        </header>
+
+        <form class="px-5 pt-2 pb-10" onsubmit="return false">
+          <a href="#etat-3" class="-mx-2 inline-flex items-center gap-1.5 min-h-[44px] px-2 rounded-full text-corps font-semibold text-teal-700 hover:bg-teal-50">
+            <svg class="w-5 h-5" aria-hidden="true"><use href="#i-retour"/></svg>Mon espace
+          </a>
+
+          <div class="mt-4 flex items-center gap-4">
+            <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="" width="128" height="128"
+                 class="arche w-[64px] h-[78px] shrink-0 object-cover" style="object-position:50% 22%; box-shadow: 0 0 0 3px #fff, var(--shadow-carte)">
+            <div class="min-w-0">
+              <p class="ff text-[21px] leading-tight text-teal-900">Camille Roussel</p>
+              <p class="text-corps text-neutre-800">Sophrologue</p>
+            </div>
+          </div>
+
+          <h1 class="ff mt-6 text-nom text-teal-900">Supprimer votre fiche&nbsp;?</h1>
+
+          <div class="mt-5 rounded-[22px] bg-rouge-50 p-5">
+            <p class="flex items-start gap-2.5 text-corps font-semibold text-teal-950">
+              <span class="pastille pastille--rouge w-9 h-9 bg-white text-rouge-700" aria-hidden="true"><svg class="w-[18px] h-[18px]"><use href="#i-corbeille"/></svg></span>
+              <span class="pt-1.5">Seront effacés&nbsp;:</span>
+            </p>
+            <ul class="mt-3 grid gap-1.5 list-none p-0 m-0 text-corps leading-snug text-teal-950">
+              <li class="flex gap-2.5"><svg class="w-4 h-4 mt-1.5 shrink-0 text-rouge-700" aria-hidden="true"><use href="#i-fermer"/></svg>votre fiche et tous ses textes</li>
+              <li class="flex gap-2.5"><svg class="w-4 h-4 mt-1.5 shrink-0 text-rouge-700" aria-hidden="true"><use href="#i-fermer"/></svg>votre photo</li>
+              <li class="flex gap-2.5"><svg class="w-4 h-4 mt-1.5 shrink-0 text-rouge-700" aria-hidden="true"><use href="#i-fermer"/></svg>votre point sur le plan du quartier</li>
+              <li class="flex gap-2.5"><svg class="w-4 h-4 mt-1.5 shrink-0 text-rouge-700" aria-hidden="true"><use href="#i-fermer"/></svg><span class="min-w-0 break-words">votre page cartoucherie.fyi/membre/camille-roussel</span></li>
+            </ul>
+          </div>
+
+          <p class="mt-5 text-corps text-neutre-900"><strong class="font-semibold">C'est immédiat et définitif.</strong>
+            Personne ne pourra la récupérer, pas même Adrien.</p>
+          <p class="mt-2 text-[16px] leading-snug text-neutre-700">La page publique disparaît d'ici quelques minutes. Vos QR codes imprimés ne mèneront plus à votre fiche.</p>
+
+          <div class="mt-7 grid gap-3">
+            <button type="submit" class="detruire w-full inline-flex items-center justify-center gap-2 min-h-[54px] px-6 rounded-full text-[18px] font-bold tracking-tight">
+              <svg class="w-5 h-5" aria-hidden="true"><use href="#i-corbeille"/></svg>Oui, supprimer ma fiche
+            </button>
+            <a href="#etat-3" class="w-full inline-flex items-center justify-center min-h-[54px] px-5 rounded-full text-corps font-semibold text-teal-700 bg-teal-50 hover:bg-teal-100">
+              Non, la garder
+            </a>
+          </div>
+        </form>
+      </div>
+    </figure>
+
+    <!-- 5b · c'est fait -->
+    <figure class="cadre">
+      <figcaption class="legende"><span class="tnum">5b</span> C'est fait</figcaption>
+      <div class="ecran">
+        <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-sm">
+          <div class="mx-auto max-w-[1160px] px-5 h-16 flex items-center justify-between gap-3">
+            <a href="../final/index.html" class="flex items-center gap-2.5 -ml-0.5" aria-label="Annuaire de la Cartoucherie, accueil">
+              <svg class="w-8 h-8 text-teal-700 shrink-0" aria-hidden="true"><use href="#i-ventouse"/></svg>
+              <span class="leading-none">
+                <span class="block text-[11.5px] uppercase tracking-[.18em] text-neutre-700 font-semibold">Annuaire de</span>
+                <span class="ff block text-[20px] text-teal-900 leading-tight">la Cartoucherie</span>
+              </span>
+            </a>
+            <a href="../final/index.html" class="inline-flex items-center gap-2 min-h-[44px] px-3.5 rounded-full text-etiquette tracking-normal font-semibold text-teal-700 hover:bg-teal-50">
+              <svg class="w-5 h-5" aria-hidden="true"><use href="#i-retour"/></svg>
+              <span>Annuaire</span><span class="sr-only">— retour à la liste des voisins</span>
+            </a>
+          </div>
+          <div class="filet h-[3px]"></div>
+        </header>
+
+        <div class="px-5 pt-10 pb-12">
+          <span class="pastille pastille--teal w-14 h-14 bg-white text-teal-700" aria-hidden="true"><svg class="w-7 h-7"><use href="#i-coche"/></svg></span>
+          <h1 class="ff mt-6 text-nom text-teal-900" tabindex="-1">Votre fiche est supprimée</h1>
+          <p class="mt-3 text-corps text-neutre-900">Elle est effacée, avec votre photo. Elle quitte l'annuaire et le plan d'ici quelques minutes.</p>
+          <p class="mt-3 text-[16px] leading-snug text-neutre-700">Vous pourrez en créer une autre quand vous voudrez&nbsp;; Adrien la relira avant de la publier.</p>
+          <div class="mt-7 flex flex-col items-start gap-3">
+            <a href="../final/index.html" class="inline-flex items-center gap-2 min-h-[48px] px-5 rounded-full text-corps font-semibold text-white bg-teal-700 hover:bg-teal-600">
+              Retour à l'annuaire<svg class="w-4 h-4" aria-hidden="true"><use href="#i-chev"/></svg>
+            </a>
+            <a href="#etat-6" class="inline-flex items-center min-h-[44px] text-[16px] font-semibold text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">Se déconnecter</a>
+          </div>
+        </div>
+      </div>
+    </figure>
+
+  </div>
+</section>
+
+
+<!-- ╔═══════════════════════════════════════════════════════════════════════╗
+     ║  6 · DÉCONNECTÉ, SESSION EXPIRÉE — revenir                            ║
+     ╚═══════════════════════════════════════════════════════════════════════╝ -->
+<section id="etat-6" class="etat">
+  <div class="px-4 sm:px-0">
+    <p class="text-etiquette font-semibold uppercase text-sauge-800">État 6</p>
+    <h2 class="ff mt-1 text-nom text-teal-900">Déconnecté, session expirée</h2>
+    <p class="mt-2 text-corps text-neutre-800 max-w-[70ch]">
+      Sans session, <code class="font-mono text-[15px] text-teal-800">/espace</code> montre la connexion&nbsp;: une adresse,
+      un lien par e-mail, pas de mot de passe. Après 30 jours, le bandeau dit pourquoi on redemande. Personne n'est encore
+      connu à cet endroit&nbsp;: aucun mot ne s'accorde. Le lien périmé (15 minutes, un seul usage) est l'échec le plus
+      probable — il a son écran.
+    </p>
+  </div>
+  <div class="planche mt-5">
+
+    <!-- 6a · session expirée → connexion -->
+    <figure class="cadre">
+      <figcaption class="legende"><span class="tnum">6a</span> Session expirée — se reconnecter</figcaption>
+      <div class="ecran">
+        <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-sm">
+          <div class="mx-auto max-w-[1160px] px-5 h-16 flex items-center justify-between gap-3">
+            <a href="../final/index.html" class="flex items-center gap-2.5 -ml-0.5" aria-label="Annuaire de la Cartoucherie, accueil">
+              <svg class="w-8 h-8 text-teal-700 shrink-0" aria-hidden="true"><use href="#i-ventouse"/></svg>
+              <span class="leading-none">
+                <span class="block text-[11.5px] uppercase tracking-[.18em] text-neutre-700 font-semibold">Annuaire de</span>
+                <span class="ff block text-[20px] text-teal-900 leading-tight">la Cartoucherie</span>
+              </span>
+            </a>
+            <a href="../final/index.html" class="inline-flex items-center gap-2 min-h-[44px] px-3.5 rounded-full text-etiquette tracking-normal font-semibold text-teal-700 hover:bg-teal-50">
+              <svg class="w-5 h-5" aria-hidden="true"><use href="#i-retour"/></svg>
+              <span>Annuaire</span><span class="sr-only">— retour à la liste des voisins</span>
+            </a>
+          </div>
+          <div class="filet h-[3px]"></div>
+        </header>
+
+        <form class="px-5 pt-6 pb-10" onsubmit="return false">
+          <div role="status" class="flex items-start gap-4 rounded-[22px] bg-teal-50 p-5">
+            <span class="pastille pastille--teal w-11 h-11 mt-0.5 bg-white text-teal-700" aria-hidden="true"><svg class="w-[22px] h-[22px]"><use href="#i-horloge"/></svg></span>
+            <div class="min-w-0">
+              <p class="ff text-[22px] leading-tight text-teal-950">Session expirée</p>
+              <p class="mt-1.5 text-[16px] leading-snug text-teal-950">Par sécurité, on redemande votre e-mail tous les 30 jours. Votre fiche n'a pas bougé.</p>
+            </div>
+          </div>
+
+          <p class="mt-8 text-etiquette font-semibold uppercase text-sauge-800">Mon espace</p>
+          <h1 class="ff mt-1.5 text-nom text-teal-900">Accéder à votre fiche</h1>
+          <p class="mt-2 text-corps text-neutre-800">Pas de mot de passe&nbsp;: on vous envoie un lien par e-mail.</p>
+
+          <div class="mt-6">
+            <label for="co-mail" class="block text-[16px] font-semibold text-neutre-800">Votre adresse e-mail</label>
+            <input id="co-mail" type="email" autocomplete="email" inputmode="email" value="camille.roussel@example.fr"
+                   class="champ mt-1.5 w-full min-h-[52px] px-3.5 rounded-xl text-corps text-neutre-900">
+          </div>
+
+          <div class="turnstile mt-5" role="img" aria-label="Emplacement du contrôle anti-robot Cloudflare Turnstile">
+            <span class="turnstile__case" aria-hidden="true"></span>
+            <span class="text-[16px] text-neutre-700">Contrôle anti-robot</span>
+          </div>
+
+          <button type="submit"
+                  class="cta mt-6 w-full inline-flex items-center justify-center gap-2 min-h-[54px] px-6 rounded-full text-[18px] font-bold tracking-tight transition">
+            <svg class="w-5 h-5" aria-hidden="true"><use href="#i-mail"/></svg>Recevoir le lien
+          </button>
+        </form>
+      </div>
+      <p class="legende-bas">Jamais connecté, ou déconnecté par «&nbsp;Se déconnecter&nbsp;» : le même écran, sans le bandeau.</p>
+    </figure>
+
+    <!-- 6b · lien envoyé -->
+    <figure class="cadre">
+      <figcaption class="legende"><span class="tnum">6b</span> Lien envoyé</figcaption>
+      <div class="ecran">
+        <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-sm">
+          <div class="mx-auto max-w-[1160px] px-5 h-16 flex items-center justify-between gap-3">
+            <a href="../final/index.html" class="flex items-center gap-2.5 -ml-0.5" aria-label="Annuaire de la Cartoucherie, accueil">
+              <svg class="w-8 h-8 text-teal-700 shrink-0" aria-hidden="true"><use href="#i-ventouse"/></svg>
+              <span class="leading-none">
+                <span class="block text-[11.5px] uppercase tracking-[.18em] text-neutre-700 font-semibold">Annuaire de</span>
+                <span class="ff block text-[20px] text-teal-900 leading-tight">la Cartoucherie</span>
+              </span>
+            </a>
+            <a href="../final/index.html" class="inline-flex items-center gap-2 min-h-[44px] px-3.5 rounded-full text-etiquette tracking-normal font-semibold text-teal-700 hover:bg-teal-50">
+              <svg class="w-5 h-5" aria-hidden="true"><use href="#i-retour"/></svg>
+              <span>Annuaire</span><span class="sr-only">— retour à la liste des voisins</span>
+            </a>
+          </div>
+          <div class="filet h-[3px]"></div>
+        </header>
+
+        <div class="px-5 pt-10 pb-12">
+          <span class="pastille pastille--teal w-14 h-14 bg-white text-teal-700" aria-hidden="true"><svg class="w-7 h-7"><use href="#i-mail"/></svg></span>
+          <h1 class="ff mt-6 text-nom text-teal-900">Regardez vos e-mails</h1>
+          <p class="mt-3 text-corps text-neutre-900">Un lien vient de partir pour
+            <strong class="font-semibold break-words">camille.roussel@example.fr</strong>. Touchez-le pour ouvrir votre espace.</p>
+          <p class="mt-3 text-[16px] leading-snug text-neutre-700">Il marche 15 minutes, une seule fois. Rien reçu&nbsp;? Regardez dans les courriers indésirables.</p>
+          <div class="mt-7 flex flex-col items-start gap-3">
+            <button type="button" class="inline-flex items-center gap-2 min-h-[44px] px-4 rounded-full text-corps font-semibold text-teal-700 bg-teal-50 hover:bg-teal-100">
+              <svg class="w-5 h-5" aria-hidden="true"><use href="#i-mail"/></svg>Renvoyer le lien
+            </button>
+            <a href="#etat-6" class="inline-flex items-center min-h-[44px] text-[16px] font-semibold text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">
+              Changer d'adresse e-mail
+            </a>
+          </div>
+        </div>
+      </div>
+    </figure>
+
+    <!-- 6c · lien périmé -->
+    <figure class="cadre">
+      <figcaption class="legende"><span class="tnum">6c</span> Le lien a expiré</figcaption>
+      <div class="ecran">
+        <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-sm">
+          <div class="mx-auto max-w-[1160px] px-5 h-16 flex items-center justify-between gap-3">
+            <a href="../final/index.html" class="flex items-center gap-2.5 -ml-0.5" aria-label="Annuaire de la Cartoucherie, accueil">
+              <svg class="w-8 h-8 text-teal-700 shrink-0" aria-hidden="true"><use href="#i-ventouse"/></svg>
+              <span class="leading-none">
+                <span class="block text-[11.5px] uppercase tracking-[.18em] text-neutre-700 font-semibold">Annuaire de</span>
+                <span class="ff block text-[20px] text-teal-900 leading-tight">la Cartoucherie</span>
+              </span>
+            </a>
+            <a href="../final/index.html" class="inline-flex items-center gap-2 min-h-[44px] px-3.5 rounded-full text-etiquette tracking-normal font-semibold text-teal-700 hover:bg-teal-50">
+              <svg class="w-5 h-5" aria-hidden="true"><use href="#i-retour"/></svg>
+              <span>Annuaire</span><span class="sr-only">— retour à la liste des voisins</span>
+            </a>
+          </div>
+          <div class="filet h-[3px]"></div>
+        </header>
+
+        <form class="px-5 pt-10 pb-10" onsubmit="return false">
+          <span class="pastille pastille--sable w-14 h-14 bg-white text-sable-800" aria-hidden="true"><svg class="w-7 h-7"><use href="#i-horloge"/></svg></span>
+          <h1 class="ff mt-6 text-nom text-teal-900">Ce lien a expiré</h1>
+          <p class="mt-3 text-corps text-neutre-900">Un lien de connexion marche 15 minutes, une seule fois. Demandez-en un nouveau&nbsp;: il arrive tout de suite.</p>
+
+          <div class="mt-6">
+            <label for="co-mail-c" class="block text-[16px] font-semibold text-neutre-800">Votre adresse e-mail</label>
+            <input id="co-mail-c" type="email" autocomplete="email" inputmode="email"
+                   class="champ mt-1.5 w-full min-h-[52px] px-3.5 rounded-xl text-corps text-neutre-900">
+          </div>
+
+          <div class="turnstile mt-5" role="img" aria-label="Emplacement du contrôle anti-robot Cloudflare Turnstile">
+            <span class="turnstile__case" aria-hidden="true"></span>
+            <span class="text-[16px] text-neutre-700">Contrôle anti-robot</span>
+          </div>
+
+          <button type="submit"
+                  class="cta mt-6 w-full inline-flex items-center justify-center gap-2 min-h-[54px] px-6 rounded-full text-[18px] font-bold tracking-tight transition">
+            <svg class="w-5 h-5" aria-hidden="true"><use href="#i-mail"/></svg>Recevoir un nouveau lien
+          </button>
+        </form>
+      </div>
+    </figure>
+
+  </div>
+</section>
+
+
+<!-- ╔═══════════════════════════════════════════════════════════════════════╗
+     ║  3 · EN LIGNE, GRAND ÉCRAN                                            ║
+     ╚═══════════════════════════════════════════════════════════════════════╝ -->
+<section id="etat-3-large" class="etat">
+  <div class="px-4 sm:px-0">
+    <p class="text-etiquette font-semibold uppercase text-sauge-800">État 3 · grand écran</p>
+    <h2 class="ff mt-1 text-nom text-teal-900">En ligne, à 1&nbsp;240&nbsp;px</h2>
+    <p class="mt-2 text-corps text-neutre-800 max-w-[70ch]">
+      Les mêmes blocs, sur deux colonnes&nbsp;: ce qu'on fait à gauche, ce que le quartier voit à droite, collé en haut
+      pendant qu'on fait défiler. Les portraits gardent leur taille de téléphone — aucun agrandissement.
+      Le cadre défile de côté sur un petit écran, la page jamais.
+    </p>
+  </div>
+  <div class="mt-5 max-w-full overflow-x-auto pb-3">
+    <figure class="cadre m-0">
+      <figcaption class="legende"><span class="tnum">3</span> En ligne — ordinateur, 1&nbsp;240&nbsp;px</figcaption>
+      <div class="ecran ecran--large">
+        <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-sm">
+          <div class="mx-auto max-w-[1160px] px-5 h-16 flex items-center justify-between gap-3">
+            <a href="../final/index.html" class="flex items-center gap-2.5 -ml-0.5" aria-label="Annuaire de la Cartoucherie, accueil">
+              <svg class="w-8 h-8 text-teal-700 shrink-0" aria-hidden="true"><use href="#i-ventouse"/></svg>
+              <span class="leading-none">
+                <span class="block text-[11.5px] uppercase tracking-[.18em] text-neutre-700 font-semibold">Annuaire de</span>
+                <span class="ff block text-[20px] text-teal-900 leading-tight">la Cartoucherie</span>
+              </span>
+            </a>
+            <a href="../final/index.html" class="inline-flex items-center gap-2 min-h-[44px] px-3.5 rounded-full text-etiquette tracking-normal font-semibold text-teal-700 hover:bg-teal-50">
+              <svg class="w-5 h-5" aria-hidden="true"><use href="#i-retour"/></svg>
+              <span>Annuaire</span><span class="sr-only">— retour à la liste des voisins</span>
+            </a>
+          </div>
+          <div class="filet h-[3px]"></div>
+        </header>
+
+        <div class="mx-auto max-w-[1160px] px-5 pt-10 pb-14 grid grid-cols-[minmax(0,1fr)_400px] gap-14 items-start">
+          <!-- colonne gauche : ce qu'on fait -->
+          <div class="min-w-0">
+            <p class="text-etiquette font-semibold uppercase text-sauge-800">Mon espace</p>
+            <h1 class="ff mt-1.5 text-grand text-teal-900">Votre fiche</h1>
+
+            <div class="mt-6 grid grid-cols-2 gap-5 items-start">
+              <div role="status" class="flex items-start gap-4 rounded-[22px] bg-sauge-50 p-5" style="box-shadow: inset 0 0 0 1px var(--color-sauge-200)">
+                <span class="pastille w-11 h-11 mt-0.5 bg-white text-sauge-700" aria-hidden="true"><svg class="w-[22px] h-[22px]"><use href="#i-coche"/></svg></span>
+                <div class="min-w-0">
+                  <p class="ff text-[22px] leading-tight text-teal-950">En ligne</p>
+                  <p class="mt-1.5 text-[16px] leading-snug text-teal-950 break-words">cartoucherie.fyi/membre/camille-roussel</p>
+                  <a href="../final/membre.html" class="mt-2 inline-flex items-center gap-1.5 min-h-[44px] text-corps font-semibold text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">
+                    Voir ma fiche<svg class="w-4 h-4" aria-hidden="true"><use href="#i-chev"/></svg>
+                  </a>
+                </div>
+              </div>
+
+              <aside data-rappel aria-labelledby="rappel-d" class="relative rounded-[22px] bg-teal-50 p-5 pr-12">
+                <div class="flex items-start gap-4">
+                  <div class="w-[72px] h-[72px] shrink-0 rounded-full bg-white overflow-hidden grid place-items-center"
+                       style="box-shadow: inset 0 0 0 1.5px var(--color-teal-200)">
+                    <img src="../_shared/colly/colly-joyeux.png" alt="" width="260" height="260" class="croquis w-[88px] h-auto">
+                  </div>
+                  <div class="min-w-0">
+                    <h2 id="rappel-d" class="ff text-[21px] leading-tight text-teal-950">Ajoutez votre fiche Google</h2>
+                    <p class="mt-1.5 text-[16px] leading-snug text-teal-950">Vos voisins liront vos avis Google depuis votre fiche.</p>
+                  </div>
+                </div>
+                <a href="#etape-9" class="mt-4 ml-[88px] inline-flex items-center gap-2 min-h-[48px] px-5 rounded-full text-corps font-semibold text-white bg-teal-700 hover:bg-teal-600">
+                  Ajouter le lien
+                </a>
+                <button type="button" aria-label="Masquer ce rappel" onclick="this.closest('[data-rappel]').hidden = true"
+                        class="absolute top-2 right-2 grid place-items-center w-11 h-11 rounded-full text-teal-800 hover:bg-teal-100">
+                  <svg class="w-5 h-5" aria-hidden="true"><use href="#i-fermer"/></svg>
+                </button>
+              </aside>
+            </div>
+
+            <h2 class="ff mt-12 text-nom text-teal-900">Modifier ma fiche</h2>
+            <p class="mt-1 text-[16px] text-neutre-700">Chaque changement est en ligne quelques minutes après «&nbsp;Enregistrer&nbsp;».</p>
+            <div class="mt-2 grid grid-cols-2 gap-x-10">
+              <div class="min-w-0">
+                <h3 class="ff mt-6 text-[22px] text-teal-900">Vous</h3>
+                <dl class="mt-2 m-0 border-t border-neutre-300">
+                  <div class="grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 py-3 border-b border-neutre-300">
+                    <dt class="text-[16px] font-semibold text-neutre-700">Nom</dt>
+                    <dd class="col-start-1 m-0 text-corps text-neutre-900">Camille Roussel</dd>
+                    <dd class="col-start-2 row-start-1 row-span-2 m-0"><a href="#etape-1" class="inline-flex items-center min-h-[44px] text-[16px] font-semibold text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">Modifier<span class="sr-only"> le nom</span></a></dd>
+                  </div>
+                  <div class="grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 py-3 border-b border-neutre-300">
+                    <dt class="text-[16px] font-semibold text-neutre-700">On écrit</dt>
+                    <dd class="col-start-1 m-0 text-corps text-neutre-900">elle — «&nbsp;Ce qu'elle propose&nbsp;»</dd>
+                    <dd class="col-start-2 row-start-1 row-span-2 m-0"><a href="#etape-1" class="inline-flex items-center min-h-[44px] text-[16px] font-semibold text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">Modifier<span class="sr-only"> l'accord</span></a></dd>
+                  </div>
+                  <div class="grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 py-3 border-b border-neutre-300">
+                    <dt class="text-[16px] font-semibold text-neutre-700">Photo</dt>
+                    <dd class="col-start-1 m-0 mt-1.5"><img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Votre photo" width="128" height="128" class="arche w-[56px] h-[68px] object-cover" style="object-position:50% 22%"></dd>
+                    <dd class="col-start-2 row-start-1 row-span-2 m-0"><a href="#etape-2" class="inline-flex items-center min-h-[44px] text-[16px] font-semibold text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">Modifier<span class="sr-only"> la photo</span></a></dd>
+                  </div>
+                </dl>
+                <h3 class="ff mt-8 text-[22px] text-teal-900">Vous trouver</h3>
+                <dl class="mt-2 m-0 border-t border-neutre-300">
+                  <div class="grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 py-3 border-b border-neutre-300">
+                    <dt class="text-[16px] font-semibold text-neutre-700">Adresse</dt>
+                    <dd class="col-start-1 m-0 text-corps text-neutre-900">14 rue Paul Mesplé, 31300 Toulouse<span class="block text-[16px] text-neutre-700">Sur le plan du quartier · à 120 m de la Halle</span></dd>
+                    <dd class="col-start-2 row-start-1 row-span-2 m-0"><a href="#etape-8" class="inline-flex items-center min-h-[44px] text-[16px] font-semibold text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">Modifier<span class="sr-only"> l'adresse</span></a></dd>
+                  </div>
+                  <div class="grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 py-3 border-b border-neutre-300">
+                    <dt class="text-[16px] font-semibold text-neutre-700">Coordonnées</dt>
+                    <dd class="col-start-1 m-0 text-corps text-neutre-900 break-words"><span class="tnum">06&nbsp;39&nbsp;98&nbsp;00&nbsp;17</span><span class="block">camille.roussel@example.fr</span></dd>
+                    <dd class="col-start-2 row-start-1 row-span-2 m-0"><a href="#etape-9" class="inline-flex items-center min-h-[44px] text-[16px] font-semibold text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">Modifier<span class="sr-only"> les coordonnées</span></a></dd>
+                  </div>
+                  <div class="grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 py-3 border-b border-neutre-300">
+                    <dt class="text-[16px] font-semibold text-neutre-700">Fiche Google</dt>
+                    <dd class="col-start-1 m-0 text-corps italic text-neutre-700">Non renseigné</dd>
+                    <dd class="col-start-2 row-start-1 row-span-2 m-0"><a href="#etape-9" class="inline-flex items-center min-h-[44px] text-[16px] font-semibold text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">Ajouter<span class="sr-only"> la fiche Google</span></a></dd>
+                  </div>
+                </dl>
+              </div>
+              <div class="min-w-0">
+                <h3 class="ff mt-6 text-[22px] text-teal-900">Votre activité</h3>
+                <dl class="mt-2 m-0 border-t border-neutre-300">
+                  <div class="grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 py-3 border-b border-neutre-300">
+                    <dt class="text-[16px] font-semibold text-neutre-700">Métier</dt>
+                    <dd class="col-start-1 m-0 text-corps text-neutre-900">Sophrologue</dd>
+                    <dd class="col-start-2 row-start-1 row-span-2 m-0"><a href="#etape-3" class="inline-flex items-center min-h-[44px] text-[16px] font-semibold text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">Modifier<span class="sr-only"> le métier</span></a></dd>
+                  </div>
+                  <div class="grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 py-3 border-b border-neutre-300">
+                    <dt class="text-[16px] font-semibold text-neutre-700">Catégorie</dt>
+                    <dd class="col-start-1 m-0 mt-1"><span class="chip inline-flex items-center gap-2 rounded-full px-3 py-1 text-[16px] font-semibold"><svg class="w-[18px] h-[18px]" aria-hidden="true"><use href="#c-sante"/></svg>Santé &amp; bien-être</span></dd>
+                    <dd class="col-start-2 row-start-1 row-span-2 m-0"><a href="#etape-4" class="inline-flex items-center min-h-[44px] text-[16px] font-semibold text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">Modifier<span class="sr-only"> les catégories</span></a></dd>
+                  </div>
+                  <div class="grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 py-3 border-b border-neutre-300">
+                    <dt class="text-[16px] font-semibold text-neutre-700">Accroche et présentation</dt>
+                    <dd class="col-start-1 m-0 text-corps text-neutre-900">Gestion du stress, sommeil et préparation aux examens, en cabinet ou en visio.</dd>
+                    <dd class="col-start-2 row-start-1 row-span-2 m-0"><a href="#ecran-4a" class="inline-flex items-center min-h-[44px] text-[16px] font-semibold text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">Modifier<span class="sr-only"> l'accroche et la présentation</span></a></dd>
+                  </div>
+                  <div class="grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 py-3 border-b border-neutre-300">
+                    <dt class="text-[16px] font-semibold text-neutre-700">Services</dt>
+                    <dd class="col-start-1 m-0 text-corps text-neutre-900"><ul class="list-none p-0 m-0"><li>Séance individuelle</li><li>Atelier collectif</li><li>Visio</li></ul></dd>
+                    <dd class="col-start-2 row-start-1 row-span-2 m-0"><a href="#etape-6" class="inline-flex items-center min-h-[44px] text-[16px] font-semibold text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">Modifier<span class="sr-only"> les services</span></a></dd>
+                  </div>
+                  <div class="grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 py-3 border-b border-neutre-300">
+                    <dt class="text-[16px] font-semibold text-neutre-700">Tarifs et horaires</dt>
+                    <dd class="col-start-1 m-0 text-corps text-neutre-900">Séance d'1&nbsp;h&nbsp;: 55&nbsp;€<span class="block">Sur rendez-vous, du lundi au samedi</span></dd>
+                    <dd class="col-start-2 row-start-1 row-span-2 m-0"><a href="#etape-7" class="inline-flex items-center min-h-[44px] text-[16px] font-semibold text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">Modifier<span class="sr-only"> les tarifs et horaires</span></a></dd>
+                  </div>
+                </dl>
+              </div>
+            </div>
+
+            <h2 class="ff mt-12 text-nom text-teal-900">Votre QR code</h2>
+            <div class="mt-4 carte rounded-[20px] bg-white p-5 flex flex-row items-center gap-6">
+              <div class="shrink-0 rounded-[14px] bg-white p-2.5" style="box-shadow: inset 0 0 0 1px var(--color-neutre-300)">
+                <svg id="qr-camille-d" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 37 37" width="168" height="168" role="img" aria-label="QR code vers la fiche de Camille Roussel" shape-rendering="crispEdges"><path fill="#ffffff" d="M0 0h37v37H0z"/><path stroke="#0d2b2e" d="M2 2.5h7m1 0h1m1 0h2m1 0h1m1 0h2m1 0h1m3 0h2m2 0h7M2 3.5h1m5 0h1m4 0h4m3 0h4m4 0h1m5 0h1M2 4.5h1m1 0h3m1 0h1m2 0h1m4 0h1m1 0h6m2 0h1m1 0h1m1 0h3m1 0h1M2 5.5h1m1 0h3m1 0h1m1 0h2m1 0h1m3 0h3m1 0h1m4 0h1m1 0h1m1 0h3m1 0h1M2 6.5h1m1 0h3m1 0h1m1 0h3m2 0h1m2 0h1m2 0h1m3 0h1m2 0h1m1 0h3m1 0h1M2 7.5h1m5 0h1m1 0h1m1 0h3m1 0h2m1 0h1m2 0h1m1 0h1m3 0h1m5 0h1M2 8.5h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7M10 9.5h1m2 0h2m4 0h1m1 0h3M2 10.5h1m3 0h1m1 0h4m1 0h2m2 0h1m1 0h1m2 0h3m1 0h6m2 0h1M4 11.5h3m7 0h1m1 0h4m2 0h1m2 0h1m1 0h1m3 0h3M8 12.5h1m1 0h2m3 0h3m2 0h1m1 0h2m1 0h1m1 0h1m3 0h1m1 0h1M3 13.5h1m2 0h1m2 0h2m1 0h1m1 0h2m1 0h1m4 0h2m1 0h3m5 0h2M2 14.5h5m1 0h1m1 0h6m1 0h2m2 0h1m1 0h2m2 0h2m1 0h2m1 0h2M3 15.5h1m12 0h1m2 0h4m2 0h1m1 0h1m1 0h1m2 0h1M5 16.5h1m2 0h1m4 0h3m1 0h1m1 0h1m2 0h1m1 0h7m2 0h1M5 17.5h3m1 0h3m2 0h1m2 0h4m2 0h1m1 0h4M2 18.5h5m1 0h2m2 0h1m3 0h1m2 0h1m1 0h4m3 0h1m1 0h1m2 0h1M2 19.5h1m1 0h1m2 0h1m1 0h3m2 0h2m1 0h2m1 0h1m2 0h1m1 0h1m1 0h1m3 0h3M3 20.5h1m1 0h1m1 0h3m3 0h2m1 0h2m1 0h1m2 0h2m1 0h1m1 0h3m1 0h1m1 0h1M2 21.5h2m1 0h2m4 0h5m1 0h1m1 0h2m2 0h2m2 0h1m1 0h1m3 0h2M5 22.5h4m1 0h2m4 0h1m3 0h1m1 0h1m5 0h1m1 0h2M2 23.5h3m5 0h1m1 0h4m2 0h2m1 0h1m1 0h1m1 0h1m3 0h1m1 0h1m1 0h1M5 24.5h2m1 0h1m1 0h1m4 0h2m1 0h2m1 0h1m1 0h4m2 0h2m2 0h1M5 25.5h2m7 0h3m2 0h6m1 0h3m4 0h2M2 26.5h4m2 0h2m1 0h3m3 0h1m1 0h2m1 0h9M10 27.5h1m1 0h2m2 0h5m2 0h1m1 0h2m3 0h1m1 0h2M2 28.5h7m1 0h2m2 0h1m1 0h2m2 0h1m5 0h1m1 0h1m1 0h2M2 29.5h1m5 0h1m3 0h1m1 0h1m2 0h1m3 0h1m2 0h1m1 0h1m3 0h1m2 0h1M2 30.5h1m1 0h3m1 0h1m1 0h1m1 0h1m2 0h1m1 0h2m2 0h1m2 0h1m1 0h6m2 0h1M2 31.5h1m1 0h3m1 0h1m3 0h1m6 0h4m2 0h2m1 0h3m2 0h1M2 32.5h1m1 0h3m1 0h1m4 0h5m2 0h1m1 0h2m1 0h1m2 0h3M2 33.5h1m5 0h1m3 0h2m2 0h5m2 0h1m1 0h2M2 34.5h7m1 0h2m7 0h1m1 0h1m1 0h5m6 0h1"/></svg>
+              </div>
+              <div class="min-w-0">
+                <p class="text-corps text-neutre-900 max-w-[48ch]">
+                  À imprimer pour votre comptoir ou le dos de vos cartes de visite. Il mène droit à votre fiche.
+                </p>
+                <p class="mt-2 text-[16px] text-neutre-700 break-words">cartoucherie.fyi/membre/camille-roussel</p>
+                <button type="button" data-qr="qr-camille-d"
+                        class="mt-4 inline-flex items-center gap-2 min-h-[48px] px-5 rounded-full text-corps font-semibold text-white bg-teal-700 hover:bg-teal-600">
+                  <svg class="w-[18px] h-[18px]" aria-hidden="true"><use href="#i-dl"/></svg>
+                  Télécharger le QR code
+                </button>
+              </div>
+            </div>
+
+            <hr class="mt-12 border-0 border-t border-neutre-300">
+            <div class="flex flex-wrap items-center justify-between gap-x-6">
+<a href="#etat-5" class="mt-2 inline-flex items-center gap-2 min-h-[44px] text-[16px] font-semibold text-rouge-700 underline underline-offset-4 decoration-rouge-300 hover:decoration-rouge-600">
+              <svg class="w-5 h-5" aria-hidden="true"><use href="#i-corbeille"/></svg>Supprimer ma fiche
+            </a>
+<a href="#etat-6" class="mt-2 inline-flex items-center min-h-[44px] text-[16px] font-semibold text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">Se déconnecter</a>
+</div>
+          </div>
+
+          <!-- colonne droite : ce que le quartier voit, collée en haut -->
+          <figure class="ventouses ventouses--teal sticky top-24 m-0 rounded-[24px] bg-neutre-100 p-3">
+            <figcaption class="flex items-center gap-2 px-1.5 pt-0.5 pb-3 text-[16px] font-semibold text-teal-800">
+              <svg class="w-5 h-5" aria-hidden="true"><use href="#i-oeil"/></svg>Ce que vos voisins voient
+            </figcaption>
+            <ul class="list-none m-0 p-0">
+              <li>
+                <article class="carte carte-lien relative flex min-h-[152px] rounded-[20px] bg-white overflow-hidden">
+                  <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Portrait de Camille Roussel"
+                       width="128" height="128" loading="lazy"
+                       class="w-[116px] shrink-0 self-stretch object-cover" style="object-position:50% 25%">
+                  <div class="flex-1 min-w-0 py-4 pl-4 pr-1 flex flex-col justify-center gap-1">
+                    <h3 class="ff text-[20px] leading-tight text-teal-900">
+                      <a href="../final/membre.html" class="before:absolute before:inset-0 before:content-['']">Camille Roussel</a>
+                    </h3>
+                    <p class="text-corps text-neutre-800 leading-snug">Sophrologue</p>
+                    <p class="flex flex-wrap items-center gap-x-3 gap-y-1 text-[16px] text-neutre-700 mt-0.5">
+                      <span class="inline-flex items-center gap-1"><svg class="w-4 h-4 text-teal-600" aria-hidden="true"><use href="#i-pin"/></svg>120 m</span>
+                    </p>
+                  </div>
+                  <a href="tel:+33639980017" class="relative z-10 shrink-0 self-center mr-2.5 grid place-items-center w-11 h-11 rounded-full text-teal-700 bg-teal-50 hover:bg-teal-100"
+                     aria-label="Appeler Camille Roussel au 06 39 98 00 17">
+                    <svg class="w-5 h-5" aria-hidden="true"><use href="#i-tel"/></svg>
+                  </a>
+                </article>
+              </li>
+            </ul>
+            <div class="mt-3 rounded-[20px] bg-white overflow-hidden pb-4">
+              <section>
+                <div class="ventouses relative bg-sable-200 pt-9 pb-11 rounded-b-[34px] overflow-hidden">
+                  <div class="flex justify-center">
+                    <img src="https://randomuser.me/api/portraits/women/44.jpg"
+                         alt="Portrait de Camille Roussel, sophrologue à la Cartoucherie"
+                         width="128" height="128"
+                         class="arche block w-[172px] h-[208px] object-cover bg-white"
+                         style="object-position:50% 22%; box-shadow: 0 0 0 6px #fff, var(--shadow-carte)">
+                  </div>
+                </div>
+                <div class="px-5 relative -mt-8">
+                  <div class="carte rounded-[24px] bg-white p-5">
+                    <p class="ff text-grand text-teal-900">Camille Roussel</p>
+                    <p class="mt-1.5 text-[20px] text-neutre-800">Sophrologue</p>
+                    <p class="mt-3 flex flex-wrap gap-2">
+                      <span class="chip inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 text-[16px] font-semibold">
+                        <svg class="w-[18px] h-[18px]" aria-hidden="true"><use href="#c-sante"/></svg>Santé &amp; bien-être
+                      </span>
+                    </p>
+                    <p class="mt-4 text-[19px] leading-relaxed text-neutre-900">
+                      Gestion du stress, sommeil et préparation aux examens, en cabinet ou en visio.
+                    </p>
+                    <p class="mt-5 flex flex-wrap items-center gap-x-5 gap-y-2.5 text-[16px] text-neutre-700">
+                      <span class="inline-flex items-center gap-1.5">
+                        <svg class="w-[18px] h-[18px] text-teal-600" aria-hidden="true"><use href="#i-pin"/></svg>
+                        À 120 m de la Halle
+                      </span>
+                    </p>
+                  </div>
+                </div>
+              </section>
+            </div>
+          </figure>
+        </div>
+      </div>
+    </figure>
+  </div>
+</section>
+
+</main>
+
+<footer class="bg-white border-t border-neutre-200">
+  <div class="mx-auto max-w-[1280px] px-5 lg:px-8 py-10 text-corps text-neutre-700">
+    <p class="max-w-[68ch]">
+      Planche de travail, pas une page du produit&nbsp;: son fond est <code class="font-mono text-[15px] text-teal-800">neutre-100</code>
+      pour que les écrans blancs se détachent. Le comptage des objets orange s'applique à chaque écran, jamais à la planche.
+    </p>
+  </div>
+</footer>
+
+<script>
+/* v2 — rien qu'illustrer les états. basculer() et compter() : verbatim de
+   final/styleguide.html (#src-js-v2). Le QR : verbatim de final/membre.html,
+   généralisé à deux QR (téléphone et grand écran). */
+
+/* bulle d'aide et « Aperçu » : un bouton ouvre ce que nomme aria-controls */
+function basculer(b){
+  var ouvert = b.getAttribute('aria-expanded') !== 'true';
+  b.setAttribute('aria-expanded', ouvert);
+  document.getElementById(b.getAttribute('aria-controls')).hidden = !ouvert;
+}
+
+/* compteur doux : data-doux = la limite conseillée, data-dur = le refus */
+function compter(champ){
+  var n = champ.value.length, doux = +champ.dataset.doux, dur = +champ.dataset.dur || Infinity;
+  var etat = n > dur ? 'erreur' : n > doux ? 'long' : 'ok';
+  var boite = champ.closest('[data-etat]');
+  boite.dataset.etat = etat;
+  var alerte = '<svg class="w-[18px] h-[18px] shrink-0" aria-hidden="true"><use href="#i-alerte"/></svg>';
+  boite.querySelector('.compteur').innerHTML =
+    etat === 'erreur' ? alerte + n + ' / ' + dur + ' · trop long, raccourcissez'
+  : etat === 'long'   ? alerte + n + ' / ' + doux + ' · un peu long'
+  : n + ' / ' + doux;
+}
+
+/* le QR : il est déjà dans la page, on le sert tel quel en fichier */
+document.querySelectorAll('[data-qr]').forEach(function(b){
+  var svg = document.getElementById(b.dataset.qr);
+  if(!svg) return;
+  b.addEventListener('click', function(){
+    var t = new XMLSerializer().serializeToString(svg);
+    var u = URL.createObjectURL(new Blob([t], {type:'image/svg+xml;charset=utf-8'}));
+    var a = document.createElement('a');
+    a.href = u; a.download = 'qr-camille-roussel.svg';
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(function(){ URL.revokeObjectURL(u); }, 2000);
+  });
+});
+</script>
+</body>
+</html>

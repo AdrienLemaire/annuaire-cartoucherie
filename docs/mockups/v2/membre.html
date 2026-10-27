@@ -1,0 +1,955 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="cartoucherie">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fiche v2</title>
+<meta name="description" content="Maquette v2 : la fiche membre avec l'enseigne, les tarifs, les horaires, le lien de réservation et les langues, remplis, vides et en partie.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cg fill='none' stroke='%232a5f66' stroke-width='2.1'%3E%3Ccircle cx='16' cy='16' r='13.2'/%3E%3Ccircle cx='16' cy='16' r='7.4'/%3E%3Ccircle cx='16' cy='16' r='2.2' fill='%232a5f66' stroke='none'/%3E%3C/g%3E%3C/svg%3E">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,600&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+
+<link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+<!-- Les quatre fondations, copiees verbatim de final/styleguide.html.
+     @theme *static* : sans « static », Tailwind elague les variables qu'aucun
+     utilitaire n'utilise et .cta, .filet, .pastille perdent leurs couleurs en silence. -->
+<style type="text/tailwindcss" id="src-theme-couleurs">
+@theme static {
+  /* ── teal · identité ─────────────────────────────────────── */
+  --color-teal-50:  oklch(98.0% 0.010 198);
+  --color-teal-100: oklch(95.5% 0.022 197);
+  --color-teal-200: oklch(91.0% 0.040 196);
+  --color-teal-300: oklch(84.0% 0.058 195);
+  --color-teal-400: oklch(74.0% 0.080 195);
+  --color-teal-500: oklch(63.0% 0.098 196);
+  --color-teal-600: oklch(53.0% 0.090 196);
+  --color-teal-700: oklch(44.0% 0.074 197);
+  --color-teal-800: oklch(35.0% 0.060 198);
+  --color-teal-900: oklch(27.0% 0.045 199);
+  --color-teal-950: oklch(19.0% 0.030 201);
+
+  /* ── orange · action ─────────────────────────────────────── */
+  --color-orange-50:  oklch(97.8% 0.014 65);
+  --color-orange-100: oklch(95.0% 0.032 62);
+  --color-orange-200: oklch(90.0% 0.063 58);
+  --color-orange-300: oklch(84.0% 0.101 54);
+  --color-orange-400: oklch(78.0% 0.142 50);
+  --color-orange-500: oklch(72.0% 0.170 46);
+  --color-orange-600: oklch(65.0% 0.178 40);
+  --color-orange-700: oklch(56.0% 0.172 34);
+  --color-orange-800: oklch(46.0% 0.140 30);
+  --color-orange-900: oklch(37.0% 0.108 28);
+  --color-orange-950: oklch(27.0% 0.078 26);
+
+  /* ── sauge · taxonomie ───────────────────────────────────── */
+  --color-sauge-50:  oklch(97.5% 0.012 170);
+  --color-sauge-100: oklch(94.5% 0.026 170);
+  --color-sauge-200: oklch(89.5% 0.050 170);
+  --color-sauge-300: oklch(82.0% 0.074 168);
+  --color-sauge-400: oklch(73.0% 0.100 164);
+  --color-sauge-500: oklch(64.0% 0.120 160);
+  --color-sauge-600: oklch(54.5% 0.122 156);
+  --color-sauge-700: oklch(45.5% 0.108 152);
+  --color-sauge-800: oklch(37.0% 0.088 150);
+  --color-sauge-900: oklch(29.0% 0.066 152);
+  --color-sauge-950: oklch(20.5% 0.044 156);
+
+  /* ── sable · illustration (50→600 : remplissage seul) ────── */
+  --color-sable-50:  oklch(98.2% 0.010 95);
+  --color-sable-100: oklch(96.0% 0.024 93);
+  --color-sable-200: oklch(92.5% 0.044 91);
+  --color-sable-300: oklch(88.0% 0.064 90);
+  --color-sable-400: oklch(82.0% 0.090 89);
+  --color-sable-500: oklch(76.0% 0.115 88);
+  --color-sable-600: oklch(68.0% 0.118 86);
+  --color-sable-700: oklch(57.5% 0.105 83);
+  --color-sable-800: oklch(47.0% 0.088 80);
+  --color-sable-900: oklch(37.5% 0.068 78);
+  --color-sable-950: oklch(27.0% 0.048 75);
+
+  /* ── neutre · structure, teintée teal ────────────────────── */
+  --color-neutre-50:  oklch(98.6% 0.004 200);
+  --color-neutre-100: oklch(97.2% 0.006 199);
+  --color-neutre-200: oklch(94.4% 0.008 198);
+  --color-neutre-300: oklch(89.8% 0.010 198);
+  --color-neutre-400: oklch(79.5% 0.013 197);
+  --color-neutre-500: oklch(66.5% 0.016 197);
+  --color-neutre-600: oklch(54.5% 0.019 198);
+  --color-neutre-700: oklch(44.0% 0.022 199);
+  --color-neutre-800: oklch(34.0% 0.025 200);
+  --color-neutre-900: oklch(25.5% 0.028 201);
+  --color-neutre-950: oklch(17.5% 0.030 202);
+
+  /* ── rouge · erreur ──────────────────────────────────────── */
+  --color-rouge-50:  oklch(97.6% 0.014 25);
+  --color-rouge-100: oklch(94.6% 0.029 24);
+  --color-rouge-200: oklch(89.0% 0.057 24);
+  --color-rouge-300: oklch(81.0% 0.100 24);
+  --color-rouge-400: oklch(70.0% 0.150 25);
+  --color-rouge-500: oklch(62.0% 0.190 26);
+  --color-rouge-600: oklch(54.0% 0.205 24);
+  --color-rouge-700: oklch(46.0% 0.180 22);
+  --color-rouge-800: oklch(38.0% 0.145 20);
+  --color-rouge-900: oklch(31.0% 0.115 18);
+  --color-rouge-950: oklch(22.0% 0.080 16);
+
+  /* ── profondeur ──────────────────────────────────────────── */
+  --shadow-carte:       0 1px 2px oklch(17.5% .03 202/.05), 0 4px 12px -2px oklch(17.5% .03 202/.09);
+  --shadow-carte-hover: 0 2px 4px oklch(17.5% .03 202/.06), 0 14px 32px -8px oklch(17.5% .03 202/.16);
+  --shadow-flottant:    0 4px 8px oklch(17.5% .03 202/.06), 0 28px 64px -20px oklch(17.5% .03 202/.28);
+  --shadow-cta:         0 2px 4px oklch(37% .108 28/.28), 0 10px 24px -8px oklch(37% .108 28/.38);
+  --shadow-cta-press:   0 1px 2px oklch(37% .108 28/.34);
+}
+</style>
+
+<style type="text/tailwindcss" id="src-theme-typo">
+@theme static {
+  --font-display: "Literata", "Iowan Old Style", Georgia, serif;
+  --font-sans:    "Source Sans 3", system-ui, sans-serif;
+  --font-mono:    "IBM Plex Mono", ui-monospace, monospace;
+
+  /* l'échelle · quarte juste 1,333 depuis 17 px — 8 pas, amplitude 4,5× */
+  --text-etiquette: 1rem;      /* 16 · capitales espacées, méta, comptes    */
+  --text-etiquette--line-height: 1.25;
+  --text-etiquette--letter-spacing: 0.14em;
+
+  --text-corps: 1.0625rem;     /* 17 · le corps de texte                    */
+  --text-corps--line-height: 1.55;
+
+  --text-chapo: 1.375rem;      /* 22 · chapô, accroche, sous-titre de bloc  */
+  --text-chapo--line-height: 1.4;
+
+  --text-besoin: 1.1875rem;    /* 19 · une ligne de l'index « Je cherche… » */
+  --text-besoin--line-height: 1.2;
+  --text-besoin--letter-spacing: -0.012em;
+
+  --text-nom: 1.875rem;        /* 30 · titre de section, nom sur une carte  */
+  --text-nom--line-height: 1.08;
+  --text-nom--letter-spacing: -0.018em;
+
+  --text-grand: 2.5rem;        /* 40 · le nom sur la fiche membre           */
+  --text-grand--line-height: 1.0;
+  --text-grand--letter-spacing: -0.022em;
+
+  --text-enorme: 3.375rem;     /* 54 · les nombres du quartier              */
+  --text-enorme--line-height: 0.94;
+  --text-enorme--letter-spacing: -0.028em;
+
+  --text-cri: 4.5rem;          /* 72 · « Je cherche… », une fois par site   */
+  --text-cri--line-height: 0.9;
+  --text-cri--letter-spacing: -0.032em;
+}
+</style>
+
+<style type="text/tailwindcss" id="src-theme-daisy">
+[data-theme="cartoucherie"] {
+  color-scheme: light;
+
+  --color-base-100:          #ffffff;                 /* la page, blanche  */
+  --color-base-200:          oklch(97.2% 0.006 199);  /* neutre-100        */
+  --color-base-300:          oklch(94.4% 0.008 198);  /* neutre-200        */
+  --color-base-content:      oklch(25.5% 0.028 201);  /* neutre-900        */
+
+  --color-primary:           oklch(44.0% 0.074 197);  /* teal-700          */
+  --color-primary-content:   #ffffff;
+
+  --color-secondary:         oklch(94.5% 0.026 170);  /* sauge-100 teinté  */
+  --color-secondary-content: oklch(19.0% 0.030 201);  /* teal-950          */
+
+  --color-accent:            oklch(72.0% 0.170 46);   /* orange-500 · CTA  */
+  --color-accent-content:    oklch(19.0% 0.030 201);  /* teal-950          */
+
+  --color-neutral:           oklch(25.5% 0.028 201);  /* neutre-900        */
+  --color-neutral-content:   oklch(98.6% 0.004 200);  /* neutre-50         */
+
+  --color-info:              oklch(53.0% 0.090 196);  /* teal-600          */
+  --color-info-content:      #ffffff;
+
+  --color-success:           oklch(45.5% 0.108 152);  /* sauge-700         */
+  --color-success-content:   #ffffff;
+
+  --color-warning:           oklch(76.0% 0.115 88);   /* sable-500         */
+  --color-warning-content:   oklch(19.0% 0.030 201);  /* teal-950          */
+
+  --color-error:             oklch(54.0% 0.205 24);   /* rouge-600         */
+  --color-error-content:     #ffffff;
+
+  --radius-selector: 2rem;      /* pastilles, bascules, badges */
+  --radius-field:    0.75rem;   /* champs, boutons             */
+  --radius-box:      1.25rem;   /* cartes, modales, feuilles   */
+  --size-selector:   0.28125rem;
+  --size-field:      0.28125rem;
+  --border:          1px;
+  --depth:           1;
+  --noise:           0;
+}
+</style>
+
+<style id="src-css-produit">
+:root{
+  --gradient-aube:  linear-gradient(168deg, var(--color-teal-50) 0%, #ffffff 44%, var(--color-orange-50) 100%);
+  --gradient-cta:   linear-gradient(180deg, var(--color-orange-400), var(--color-orange-500) 55%, var(--color-orange-600));
+  --gradient-colly: radial-gradient(120% 90% at 30% 15%, var(--color-sable-100), var(--color-sauge-100) 62%, var(--color-teal-100));
+  --gradient-filet: linear-gradient(90deg, var(--color-teal-600), var(--color-sauge-500) 46%, var(--color-orange-500));
+}
+
+html{ -webkit-text-size-adjust:100%; }
+body{ font-family:var(--font-sans); font-size:17px; line-height:1.55; color:var(--color-neutre-900); background:#fff; }
+
+.ff{ font-family:var(--font-display); font-variation-settings:"opsz" 36; font-weight:600; letter-spacing:-0.015em; }
+
+/* un seul anneau de focus, partout, sans exception (couleurs.md §7) */
+:where(a,button,input,textarea,select,summary,[tabindex]):focus-visible{
+  outline:2px solid var(--color-teal-600); outline-offset:2px; border-radius:6px;
+}
+
+/* les quatre dégradés sanctionnés */
+.filet{ background-image:var(--gradient-filet); }
+.aube{ background-image:var(--gradient-aube); }
+.colly-fond{ background-image:var(--gradient-colly); }
+
+/* les trois marches d'élévation */
+.carte{ box-shadow: var(--shadow-carte), inset 0 0 0 1px oklch(17.5% .03 202/.07); }
+.carte:hover{ box-shadow: var(--shadow-carte-hover), inset 0 0 0 1px oklch(17.5% .03 202/.07); }
+.flottant{ box-shadow: var(--shadow-flottant), inset 0 0 0 1px oklch(17.5% .03 202/.07); }
+
+/* le CTA orange — la seule grande surface chaude de l'interface */
+.cta{
+  background-image: var(--gradient-cta);
+  color: var(--color-teal-950);
+  box-shadow: var(--shadow-cta), inset 0 0 0 1px oklch(56% .172 34/.6);
+}
+.cta:hover{ background-image: linear-gradient(180deg, var(--color-orange-300), var(--color-orange-400) 55%, var(--color-orange-500)); }
+.cta:active{ background-image: linear-gradient(180deg, var(--color-orange-500), var(--color-orange-600));
+             transform:translateY(1px); box-shadow:var(--shadow-cta-press), inset 0 0 0 1px oklch(56% .172 34/.6); }
+
+/* ── LE MOTIF VENTOUSE ──────────────────────────────────────────────────────
+   Trois cercles concentriques. Le même dessin sert de symbole, de puce, de
+   médaillon d'icône et de papier peint. Une seule forme tient l'identité.  */
+.ventouses{
+  --v: oklch(68% .118 86 / .26);          /* sable-600 à 26 % : décoratif seul */
+  background-image:
+    radial-gradient(circle at 50% 50%, transparent 0 12.5px, var(--v) 12.5px 14px, transparent 14px),
+    radial-gradient(circle at 50% 50%, transparent 0 7px,   var(--v) 7px 8.4px,   transparent 8.4px),
+    radial-gradient(circle at 50% 50%, var(--v) 0 2.6px, transparent 2.6px);
+  background-size:56px 56px;
+}
+.ventouses--teal{ --v: oklch(53% .09 196 / .16); }
+
+/* la ventouse en médaillon : anneau + halo + anneau, autour de n'importe quoi */
+.pastille{
+  display:grid; place-items:center; flex:none; border-radius:9999px;
+  box-shadow: inset 0 0 0 1.5px var(--color-sauge-400),
+              0 0 0 4px var(--color-sauge-50),
+              0 0 0 5.5px var(--color-sauge-300);
+}
+.pastille--teal{
+  box-shadow: inset 0 0 0 1.5px var(--color-teal-300),
+              0 0 0 4px var(--color-teal-50),
+              0 0 0 5.5px var(--color-teal-200);
+}
+
+/* l'arche de la Halle : demi-cercle en haut, base droite */
+.arche{ border-radius:999px 999px 22px 22px; }
+
+/* la pastille de catégorie */
+.chip{ background:var(--color-sauge-100); color:var(--color-sauge-800); }
+
+/* ── LE HALO ────────────────────────────────────────────────────────────────
+   Le portrait du membre lui-même, agrandi et flouté, multiplié sur le lavis.
+   Chaque fiche hérite de l'ambiance colorée de la personne qu'elle décrit,
+   sans un seul octet d'illustration supplémentaire.                       */
+.halo-fond{ position:absolute; inset:0; overflow:hidden; isolation:isolate; }
+.halo{ position:absolute; background-size:cover; background-position:50% 35%;
+       filter: blur(54px) saturate(2.6) contrast(1.16); mix-blend-mode:multiply; }
+
+/* les croquis au crayon, fondus dans leur panneau : le papier devient la
+   couleur du fond, il ne reste que le graphite */
+.croquis{ mix-blend-mode:multiply; filter:grayscale(1) contrast(1.16) brightness(1.07); }
+
+/* une ligne de l'index « Je cherche… » : le survol allume le numéro,
+   il ne dessine pas une boîte. Dix boîtes empilées, c'est une grille. */
+.besoin{ transition: background-color .18s ease; }
+.besoin:hover, .besoin:focus-visible{ background-color: var(--color-teal-50); }
+.besoin:hover .num, .besoin:focus-visible .num{ color: var(--color-orange-800); }
+.num{ transition: color .18s ease; }
+
+/* la ligne de liste d'un voisin : le lien du nom couvre toute la carte,
+   sauf le bouton d'appel qui remonte en z-10 */
+.carte-lien{ transition: box-shadow .18s ease; }
+
+.tnum{ font-variant-numeric: tabular-nums; }
+
+@media (prefers-reduced-motion: reduce){ *{ transition:none !important; animation:none !important; } }
+</style>
+
+<!-- Ce que la fiche ajoute à la page en ligne (src/styles/global.css), copié
+     dans chaque cadre : la marge de sécurité de l'iPhone, et la coupure d'un
+     mot de titre trop long à 200 % plutôt qu'un défilement de côté. -->
+<style id="src-css-fiche">
+:root{ --safe-bottom: env(safe-area-inset-bottom, 0px); }
+.ff{ overflow-wrap:break-word; }
+[id]{ scroll-margin-top:76px; }
+</style>
+
+<!-- La planche elle-même : rien ici n'entre dans les cadres. -->
+<style>
+.planche{ display:flex; flex-wrap:wrap; justify-content:center; gap:48px 36px; }
+.cadre{ width:376px; margin:0; }
+.cadre iframe, .bureau iframe{ display:block; border:0; background:#fff; }
+.cadre iframe{ width:360px; height:740px; margin:8px; border-radius:26px;
+  box-shadow: 0 0 0 8px var(--color-teal-950), var(--shadow-flottant); }
+.bureau{ overflow-x:auto; padding:8px; border-radius:22px; background:var(--color-teal-950); box-shadow:var(--shadow-flottant); }
+.bureau iframe{ width:1200px; height:900px; border-radius:14px; }
+body.ecran .cadre iframe{ height:740px !important; }
+body.ecran .bureau iframe{ height:800px !important; }
+</style>
+</head>
+
+<body class="font-sans text-neutre-900 antialiased bg-white">
+
+<svg width="0" height="0" class="hidden" aria-hidden="true" focusable="false" id="src-sprite"><defs>
+<symbol id="i-ventouse" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.1"><circle cx="16" cy="16" r="13.2"/><circle cx="16" cy="16" r="7.4"/><circle cx="16" cy="16" r="2.2" fill="currentColor" stroke="none"/></symbol>
+<symbol id="i-loupe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m16.6 16.6 4.4 4.4"/></symbol>
+<symbol id="i-tel" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6.6 3.5h2.9l1.5 4-2 1.4a12.4 12.4 0 0 0 6.1 6.1l1.4-2 4 1.5v2.9a2 2 0 0 1-2.2 2A16.6 16.6 0 0 1 4.6 5.7a2 2 0 0 1 2-2.2Z"/></symbol>
+<symbol id="i-mail" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="m3.8 7 8.2 5.8L20.2 7"/></symbol>
+<symbol id="i-globe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="12" r="8.6"/><path d="M3.4 12h17.2M12 3.4c4.4 4.8 4.4 12.4 0 17.2-4.4-4.8-4.4-12.4 0-17.2Z"/></symbol>
+<symbol id="i-insta" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><rect x="3.2" y="3.2" width="17.6" height="17.6" rx="5.2"/><circle cx="12" cy="12" r="4.1"/><circle cx="17.2" cy="6.8" r=".95" fill="currentColor" stroke="none"/></symbol>
+<symbol id="i-pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21.2s7.2-6.6 7.2-11.3a7.2 7.2 0 1 0-14.4 0C4.8 14.6 12 21.2 12 21.2Z"/><circle cx="12" cy="9.8" r="2.7"/></symbol>
+<symbol id="i-etoile" viewBox="0 0 24 24"><path fill="currentColor" d="m12 3.4 2.7 5.5 6 .9-4.3 4.2 1 6-5.4-2.8-5.4 2.8 1-6L3.3 9.8l6-.9z"/></symbol>
+<symbol id="i-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9.5 5 7 7-7 7"/></symbol>
+<symbol id="i-retour" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M19.5 12H5M11 6l-6 6 6 6"/></symbol>
+<symbol id="i-plume" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m4.5 19.5 4.2-.8L20.1 7.4a2.35 2.35 0 0 0-3.3-3.3L5.3 15.3l-.8 4.2Z"/><path d="m15.3 5.5 3.3 3.3"/></symbol>
+<symbol id="i-signal" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5.8 21.2V3.4M5.8 4h11.4l-2.3 4.3 2.3 4.3H5.8"/></symbol>
+<symbol id="i-fermer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="m6.5 6.5 11 11M17.5 6.5l-11 11"/></symbol>
+<symbol id="i-coeur" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20.4C10.3 19.2 4.2 15 4.2 10.6A4.4 4.4 0 0 1 12 7.8a4.4 4.4 0 0 1 7.8 2.8c0 4.4-6.1 8.6-7.8 9.8Z"/></symbol>
+<symbol id="i-dl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.6v11M7.4 10.2 12 14.8l4.6-4.6M4.4 19.6h15.2"/></symbol>
+<symbol id="i-groupe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8.4" r="3.4"/><path d="M2.8 20.2a6.2 6.2 0 0 1 12.4 0"/><path d="M16.4 5.4a3.4 3.4 0 0 1 0 6.6M17.6 14.6a6.2 6.2 0 0 1 3.6 5.6"/></symbol>
+<symbol id="i-visio" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="2.8" y="6" width="12.6" height="12" rx="2.8"/><path d="m15.4 12.6 5.8 3.6V7.8l-5.8 3.6Z"/></symbol>
+<symbol id="i-alerte" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7.6v5.2M12 16.3v.1"/></symbol>
+<!-- les dix catégories -->
+<symbol id="c-sante" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4.6 19.6C3.4 11 9.6 4.4 19.8 3.8c1 10.2-5.4 16.4-14 15.4Z"/><path d="M4.6 19.6 13 11.2"/></symbol>
+<symbol id="c-beaute" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="6.6" cy="17.8" r="2.6"/><circle cx="6.6" cy="6.2" r="2.6"/><path d="M8.6 7.9 20 19.4M8.6 16.1 20 4.6"/></symbol>
+<symbol id="c-artisanat" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m14.6 6.4-11 11 3 3 11-11"/><path d="m13.2 8.2 3 3"/><path d="m15 3.4 5.6 5.6-2.4 2.4-5.6-5.6z"/></symbol>
+<symbol id="c-alimentation" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3.8 14.6c0-4.4 3.7-7.8 8.2-7.8s8.2 3.4 8.2 7.8v1.6a2.4 2.4 0 0 1-2.4 2.4H6.2a2.4 2.4 0 0 1-2.4-2.4Z"/><path d="M9 8.2 8.2 17M12.6 7.4 12 17M16.2 9 15.8 17"/></symbol>
+<symbol id="c-conseil" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3.8 20.2h16.4"/><path d="M6.6 20.2v-6.6M11.4 20.2V8.4M16.2 20.2V4.6"/></symbol>
+<symbol id="c-numerique" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="2.8" y="4" width="18.4" height="12.6" rx="2.4"/><path d="M9.4 20.4h5.2M12 16.6v3.8"/><path d="m10.2 8.4-1.8 1.9 1.8 1.9M13.8 8.4l1.8 1.9-1.8 1.9"/></symbol>
+<symbol id="c-enfance" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M7.4 8.2V6.6a4.6 4.6 0 0 1 9.2 0v1.6"/><rect x="3.8" y="8.2" width="16.4" height="12" rx="3.2"/><path d="M9.4 14.2h5.2"/></symbol>
+<symbol id="c-sport" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="15.4" cy="4.9" r="2.1"/><path d="m12.4 21 2.2-6-3.6-2.6.9-4.8 3 3 3.1 1"/><path d="m8.2 21 2.6-5.2M11.9 8.6 8.4 10"/></symbol>
+<symbol id="c-art" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20.8a8.8 8.8 0 1 1 8.8-8.8c0 2-1.7 2.6-3.1 2.6h-1.3a2.3 2.3 0 0 0-2.3 2.3c0 .8.5 1.2.5 2 0 1.1-.9 1.9-2.6 1.9Z"/><circle cx="8" cy="9.4" r="1.1" fill="currentColor" stroke="none"/><circle cx="12.4" cy="7.4" r="1.1" fill="currentColor" stroke="none"/><circle cx="16.3" cy="9.8" r="1.1" fill="currentColor" stroke="none"/></symbol>
+<symbol id="c-domicile" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m3.4 11.2 8.6-7.4 8.6 7.4"/><path d="M6.2 9.6v10.6h11.6V9.6"/><path d="M10 20.2v-5.2h4v5.2"/></symbol>
+<symbol id="i-cle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="8.2" cy="8.2" r="4.6"/><path d="m11.5 11.5 8.3 8.3"/><path d="m15.6 15.6 2.3-2.3"/><path d="m18.1 18.1 2.3-2.3"/></symbol>
+<!-- v2 · déjà au styleguide -->
+<symbol id="i-horloge" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.6"/><path d="M12 7.4V12l3.2 2"/></symbol>
+<!-- v2 · nouvelles, à ajouter au styleguide -->
+<symbol id="i-euro" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M17.8 6.6a7 7 0 1 0 0 10.8"/><path d="M4.4 10.2h8.8M4.4 13.8h8.8"/></symbol>
+<symbol id="i-agenda" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3.4" y="5" width="17.2" height="15.6" rx="2.6"/><path d="M3.4 9.8h17.2M8 3.4v3.2M16 3.4v3.2"/><path d="m9.2 15 2 2 3.8-3.8"/></symbol>
+<symbol id="i-langues" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3.4 5.6a2 2 0 0 1 2-2h8.4a2 2 0 0 1 2 2v5.2a2 2 0 0 1-2 2H9.2l-3.6 3v-3h-.2a2 2 0 0 1-2-2Z"/><path d="M15.8 8.6h2.8a2 2 0 0 1 2 2v5.2a2 2 0 0 1-2 2h-.2v3l-3.6-3h-3.6a2 2 0 0 1-2-2v-1"/></symbol>
+</defs></svg>
+
+<main class="mx-auto max-w-[1280px] px-5 py-8 sm:py-12">
+
+  <header class="max-w-[72ch]">
+    <p class="text-etiquette font-semibold uppercase text-teal-700">Maquette v2 · /membre/[slug]</p>
+    <h1 class="ff mt-1.5 text-grand text-teal-900">La fiche, avec les cinq nouveaux champs</h1>
+    <div class="filet h-[3px] w-16 rounded-full mt-3"></div>
+    <p class="mt-4 text-chapo text-neutre-800">
+      Enseigne, tarifs, horaires, lien de réservation, langues. Tous facultatifs. La fiche part de
+      ce qui est en ligne aujourd'hui (<code class="font-mono text-[0.75em] text-teal-800">src/pages/membre/[slug].astro</code>),
+      pas de la maquette de 2026-09.
+    </p>
+    <p class="mt-4 text-corps text-neutre-800">
+      Ce que le visiteur se demande, dans l'ordre&nbsp;: <strong class="font-semibold text-neutre-900">peut-il m'aider,
+      combien, quand, comment le joindre.</strong> Les cinq champs répondent aux trois premières questions&nbsp;;
+      ils vont donc tous dans la carte d'identité, le premier écran, et nulle part ailleurs.
+    </p>
+    <p class="mt-5">
+      <button type="button" id="bascule-ecran" aria-pressed="false"
+              class="inline-flex items-center gap-2 min-h-[44px] px-4 rounded-full text-corps font-semibold text-teal-700 bg-teal-50 hover:bg-teal-100 aria-pressed:bg-teal-700 aria-pressed:text-white">
+        <svg class="w-5 h-5" aria-hidden="true"><use href="#i-tel"/></svg>Un écran de téléphone à la fois
+      </button>
+      <span class="block mt-1.5 text-[16px] text-neutre-700">Par défaut, chaque cadre montre la page entière. Bouton enfoncé&nbsp;: 360&nbsp;×&nbsp;740, on défile dans le cadre, la barre «&nbsp;Appeler&nbsp;» reste en bas.</span>
+    </p>
+  </header>
+
+  <section class="mt-10" aria-labelledby="t-planche">
+    <h2 id="t-planche" class="sr-only">Les trois états, à 360 px</h2>
+    <div class="planche">
+      <figure class="cadre">
+        <figcaption class="px-2 pb-3">
+          <span class="ff block text-[22px] leading-tight text-teal-900">1 · Les cinq remplis</span>
+          <span class="mt-1 block text-[16px] text-neutre-700">Camille Roussel, elle. Enseigne à côté du métier&nbsp;; sous un filet, «&nbsp;Parle aussi&nbsp;», «&nbsp;Tarifs&nbsp;», «&nbsp;Horaires&nbsp;», puis le bouton teal de réservation.</span>
+        </figcaption>
+        <iframe data-cas="cas-plein" title="Cas 1 : fiche de Camille Roussel, les cinq champs remplis, 360 pixels" loading="eager"></iframe>
+      </figure>
+      <figure class="cadre">
+        <figcaption class="px-2 pb-3">
+          <span class="ff block text-[22px] leading-tight text-teal-900">2 · Aucun des cinq</span>
+          <span class="mt-1 block text-[16px] text-neutre-700">La même fiche, champs vides. C'est, à l'octet près, la fiche en ligne aujourd'hui&nbsp;: pas de filet orphelin, pas de «&nbsp;Non communiqué&nbsp;».</span>
+        </figcaption>
+        <iframe data-cas="cas-vide" title="Cas 2 : fiche de Camille Roussel, aucun nouveau champ, 360 pixels" loading="eager"></iframe>
+      </figure>
+      <figure class="cadre">
+        <figcaption class="px-2 pb-3">
+          <span class="ff block text-[22px] leading-tight text-teal-900">3 · En partie, au masculin, à 200&nbsp;%</span>
+          <span class="mt-1 block text-[16px] text-neutre-700">Julien Marty, il, se déplace. Enseigne de 77 signes, tarifs de 119 (limite&nbsp;: 120), une langue&nbsp;; ni horaires ni lien. <code class="font-mono text-[15px] text-teal-800">html{font-size:200%}</code>, comme <code class="font-mono text-[15px] text-teal-800">a11y.spec.ts</code>.</span>
+        </figcaption>
+        <iframe data-cas="cas-mixte" data-zoom="200%" title="Cas 3 : fiche de Julien Marty, champs en partie remplis, texte à 200 %, 360 pixels" loading="eager"></iframe>
+      </figure>
+    </div>
+  </section>
+
+  <section class="mt-14" aria-labelledby="t-bureau">
+    <h2 id="t-bureau" class="ff text-nom text-teal-900">4 · Le cas 1 sur ordinateur</h2>
+    <div class="filet h-[3px] w-16 rounded-full mt-2.5 mb-3"></div>
+    <p class="mb-5 text-corps text-neutre-800 max-w-[72ch]">
+      1200&nbsp;px. L'encadré passe sur trois colonnes, sous l'accroche, à gauche du QR code&nbsp;; le bouton
+      de réservation suit, à sa taille naturelle. La barre «&nbsp;Appeler&nbsp;» reste centrée en bas.
+    </p>
+    <div class="bureau"><iframe data-cas="cas-plein" title="Cas 1 sur ordinateur, 1200 pixels" loading="eager"></iframe></div>
+  </section>
+
+  <section class="mt-14 max-w-[80ch]" aria-labelledby="t-places">
+    <h2 id="t-places" class="ff text-nom text-teal-900">Où va chaque champ, et pourquoi</h2>
+    <div class="filet h-[3px] w-16 rounded-full mt-2.5 mb-5"></div>
+    <ol class="grid gap-3 list-none p-0 m-0 text-corps text-neutre-800">
+      <li class="rounded-[16px] bg-neutre-100 p-4"><strong class="font-semibold text-neutre-900">Enseigne — à côté du métier.</strong>
+        «&nbsp;Sophrologue · Cabinet Souffle Clair&nbsp;», comme le dit le spec §11. Le nom de la personne reste le titre&nbsp;:
+        l'annuaire présente des voisins, pas des boutiques. L'enseigne est ce qui est écrit sur la vitrine ou le flyer
+        qu'on vient de scanner&nbsp;; elle confirme qu'on est au bon endroit. Elle passe à la ligne, jamais coupée.</li>
+      <li class="rounded-[16px] bg-neutre-100 p-4"><strong class="font-semibold text-neutre-900">Parle aussi — en tête de l'encadré.</strong>
+        C'est la première question («&nbsp;peut-il m'aider, <em>moi</em>&nbsp;?&nbsp;») pour qui lit mal le français&nbsp;:
+        elle passe avant le prix. Le français est implicite, il n'est jamais listé.</li>
+      <li class="rounded-[16px] bg-neutre-100 p-4"><strong class="font-semibold text-neutre-900">Tarifs, puis Horaires — dans la carte d'identité, pas près des services.</strong>
+        «&nbsp;Combien&nbsp;» et «&nbsp;quand&nbsp;» décident de l'appel. «&nbsp;Ce qu'elle propose&nbsp;» est à deux écrans plus bas,
+        sous le portrait, et le texte libre couvre souvent plusieurs services à la fois. Les deux lignes prennent toute
+        la largeur et passent à la ligne, jamais tronquées.</li>
+      <li class="rounded-[16px] bg-neutre-100 p-4"><strong class="font-semibold text-neutre-900">Lien de réservation — un bouton teal, juste après les horaires.</strong>
+        On lit «&nbsp;quand&nbsp;», on réserve. Teal plein, le bouton secondaire du styleguide&nbsp;: jamais orange, «&nbsp;Appeler&nbsp;»
+        reste la seule action orange de la page. Le site d'arrivée est écrit dessous&nbsp;: on sait qu'on quitte l'annuaire.</li>
+      <li class="rounded-[16px] bg-neutre-100 p-4"><strong class="font-semibold text-neutre-900">Champ vide — rien.</strong>
+        Chaque ligne de l'encadré n'existe que si son champ est rempli&nbsp;; l'encadré entier, filet compris, disparaît sans
+        aucun des quatre. La règle de la page en ligne («&nbsp;un champ nul ne rend rien&nbsp;») s'applique telle quelle.</li>
+      <li class="rounded-[16px] bg-neutre-100 p-4"><strong class="font-semibold text-neutre-900">Orange&nbsp;: un seul objet plein.</strong>
+        La barre «&nbsp;Appeler&nbsp;». S'y ajoutent, comme en ligne, le bout orange des filets dégradés (en-tête, titres de
+        section)&nbsp;: au plus trois par écran. Rien de nouveau n'est orange.</li>
+    </ol>
+  </section>
+
+  <section class="mt-14 max-w-[80ch]" aria-labelledby="t-styleguide">
+    <h2 id="t-styleguide" class="ff text-nom text-teal-900">À ajouter au styleguide</h2>
+    <div class="filet h-[3px] w-16 rounded-full mt-2.5 mb-5"></div>
+    <ul class="grid gap-3 list-none p-0 m-0 text-corps text-neutre-800">
+      <li class="rounded-[16px] bg-neutre-100 p-4"><strong class="font-semibold text-neutre-900">Un bloc «&nbsp;L'encadré pratique&nbsp;».</strong>
+        Une <code class="font-mono text-[15px] text-teal-800">&lt;dl&gt;</code> sous un filet neutre, chaque ligne une pastille teal,
+        l'étiquette en 1&nbsp;rem, la réponse en <code class="font-mono text-[15px] text-teal-800">text-corps</code>&nbsp;; puis le bouton
+        teal plein «&nbsp;Réserver en ligne&nbsp;» (pleine largeur sur téléphone) et son site. Trois spécimens&nbsp;: complet, partiel, absent.</li>
+      <li class="rounded-[16px] bg-neutre-100 p-4"><strong class="font-semibold text-neutre-900">Une variante de «&nbsp;L'en-tête de fiche&nbsp;».</strong>
+        La ligne «&nbsp;métier · enseigne&nbsp;», l'enseigne en gras. Sa taille passe de <code class="font-mono text-[15px] text-teal-800">text-[20px]</code>
+        à <code class="font-mono text-[15px] text-teal-800">text-[1.25rem]</code>&nbsp;: identique à 100&nbsp;%, mais elle grossit enfin à 200&nbsp;%.</li>
+      <li class="rounded-[16px] bg-neutre-100 p-4"><strong class="font-semibold text-neutre-900">Trois icônes&nbsp;:</strong>
+        <code class="font-mono text-[15px] text-teal-800">i-euro i-agenda i-langues</code>
+        <span class="inline-flex gap-2 align-middle text-teal-700">
+          <svg class="w-6 h-6" aria-hidden="true"><use href="#i-euro"/></svg>
+          <svg class="w-6 h-6" aria-hidden="true"><use href="#i-agenda"/></svg>
+          <svg class="w-6 h-6" aria-hidden="true"><use href="#i-langues"/></svg>
+        </span>.
+        <code class="font-mono text-[15px] text-teal-800">i-horloge</code> est déjà au styleguide v2, pas encore dans <code class="font-mono text-[15px] text-teal-800">IconSprite.astro</code>.</li>
+      <li class="rounded-[16px] bg-neutre-100 p-4"><strong class="font-semibold text-neutre-900">Aucun accord nouveau.</strong>
+        «&nbsp;Parle aussi&nbsp;», «&nbsp;Tarifs&nbsp;», «&nbsp;Horaires&nbsp;», «&nbsp;Réserver en ligne&nbsp;» sont neutres&nbsp;;
+        <code class="font-mono text-[15px] text-teal-800">gender.ts</code> ne change pas.</li>
+    </ul>
+    <p class="mt-5 text-[16px] text-neutre-700">
+      Hors sujet mais visible ici&nbsp;: pas de carrousel, puisque les nouveaux voisins n'ont que leur portrait (décision 4 des champs v2).
+      Au cas 3, le nom coupé en «&nbsp;Julie|n&nbsp;» à 200&nbsp;% est le comportement de la page en ligne (<code class="font-mono text-[15px] text-teal-800">text-grand</code> + <code class="font-mono text-[15px] text-teal-800">break-words</code>), pas un effet des nouveaux champs&nbsp;: à traiter à part. Données fictives, numéros en 06&nbsp;39&nbsp;98&nbsp;00&nbsp;xx, sites en <code class="font-mono text-[15px] text-teal-800">example.fr</code>.
+    </p>
+  </section>
+</main>
+
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     LES CADRES. Chaque <template> est le <body> d'une fiche, rendu dans un
+     <iframe srcdoc> à 360 px : les sm: y suivent la largeur du cadre, la
+     barre fixe y reste, et le 200 % ne touche que son cadre. Les morceaux
+     communs (en-tête, pied, QR) sont inclus par data-inclure.
+     ═══════════════════════════════════════════════════════════════════════ -->
+
+<!-- l'en-tête · SiteHeader.astro, variante fiche -->
+<template id="t-entete">
+<a href="#contenu" class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:m-3 focus:rounded-field focus:bg-white focus:px-4 focus:py-3 focus:text-teal-800">Aller au contenu</a>
+<header class="sticky top-0 z-40 bg-white/95 backdrop-blur-sm">
+  <div class="mx-auto max-w-[1160px] px-5 min-h-16 flex flex-wrap items-center justify-between gap-3">
+    <a href="#" class="flex items-center gap-2.5 -ml-0.5 min-h-[44px] py-1">
+      <svg class="w-8 h-8 text-teal-700 shrink-0" aria-hidden="true"><use href="#i-ventouse"/></svg>
+      <span class="leading-none">
+        <span class="block text-[11.5px] uppercase tracking-[.18em] text-neutre-700 font-semibold">Annuaire de</span>
+        <span class="ff block text-[20px] text-teal-900 leading-tight">la Cartoucherie</span>
+      </span>
+      <span class="sr-only">, Accueil</span>
+    </a>
+    <a href="#" class="inline-flex items-center gap-2 min-h-[44px] px-3.5 rounded-full text-etiquette tracking-normal font-semibold text-teal-700 hover:bg-teal-50">
+      <svg class="w-5 h-5" aria-hidden="true"><use href="#i-retour"/></svg>
+      <span>Annuaire</span><span class="sr-only">— retour à la liste des voisins</span>
+    </a>
+  </div>
+  <div class="filet h-[3px]"></div>
+</header>
+</template>
+
+<!-- le QR · QrCard.astro (l'image est un fichier du build en ligne ; ici, le SVG de la maquette finale) -->
+<template id="t-qr">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-2 -2 37 37" shape-rendering="crispEdges" class="block w-full h-auto" aria-hidden="true">
+  <rect x="-2" y="-2" width="37" height="37" fill="#ffffff"/>
+  <path fill="#0d2b2e" d="M0 0h7v1h-7zM10 0h3v1h-3zM16 0h1v1h-1zM19 0h2v1h-2zM23 0h1v1h-1zM26 0h7v1h-7zM0 1h1v1h-1zM6 1h1v1h-1zM9 1h2v1h-2zM15 1h1v1h-1zM20 1h3v1h-3zM26 1h1v1h-1zM32 1h1v1h-1zM0 2h1v1h-1zM2 2h3v1h-3zM6 2h1v1h-1zM8 2h1v1h-1zM14 2h1v1h-1zM21 2h2v1h-2zM24 2h1v1h-1zM26 2h1v1h-1zM28 2h3v1h-3zM32 2h1v1h-1zM0 3h1v1h-1zM2 3h3v1h-3zM6 3h1v1h-1zM8 3h3v1h-3zM15 3h1v1h-1zM17 3h1v1h-1zM20 3h1v1h-1zM22 3h1v1h-1zM24 3h1v1h-1zM26 3h1v1h-1zM28 3h3v1h-3zM32 3h1v1h-1zM0 4h1v1h-1zM2 4h3v1h-3zM6 4h1v1h-1zM8 4h1v1h-1zM12 4h5v1h-5zM19 4h2v1h-2zM23 4h1v1h-1zM26 4h1v1h-1zM28 4h3v1h-3zM32 4h1v1h-1zM0 5h1v1h-1zM6 5h1v1h-1zM8 5h1v1h-1zM10 5h1v1h-1zM17 5h2v1h-2zM20 5h2v1h-2zM26 5h1v1h-1zM32 5h1v1h-1zM0 6h7v1h-7zM8 6h1v1h-1zM10 6h1v1h-1zM12 6h1v1h-1zM14 6h1v1h-1zM16 6h1v1h-1zM18 6h1v1h-1zM20 6h1v1h-1zM22 6h1v1h-1zM24 6h1v1h-1zM26 6h7v1h-7zM8 7h1v1h-1zM14 7h1v1h-1zM16 7h1v1h-1zM18 7h5v1h-5zM24 7h1v1h-1zM0 8h1v1h-1zM2 8h5v1h-5zM9 8h3v1h-3zM13 8h2v1h-2zM16 8h2v1h-2zM19 8h1v1h-1zM22 8h1v1h-1zM24 8h1v1h-1zM26 8h5v1h-5zM1 9h1v1h-1zM3 9h3v1h-3zM8 9h1v1h-1zM11 9h3v1h-3zM16 9h1v1h-1zM19 9h2v1h-2zM22 9h2v1h-2zM26 9h2v1h-2zM29 9h4v1h-4zM1 10h1v1h-1zM4 10h1v1h-1zM6 10h1v1h-1zM8 10h1v1h-1zM10 10h9v1h-9zM20 10h2v1h-2zM28 10h1v1h-1zM30 10h2v1h-2zM1 11h2v1h-2zM5 11h1v1h-1zM8 11h1v1h-1zM13 11h1v1h-1zM15 11h2v1h-2zM19 11h1v1h-1zM21 11h2v1h-2zM26 11h1v1h-1zM28 11h3v1h-3zM32 11h1v1h-1zM0 12h1v1h-1zM2 12h5v1h-5zM8 12h2v1h-2zM11 12h1v1h-1zM14 12h4v1h-4zM22 12h1v1h-1zM24 12h2v1h-2zM27 12h3v1h-3zM31 12h1v1h-1zM0 13h1v1h-1zM2 13h2v1h-2zM5 13h1v1h-1zM7 13h4v1h-4zM12 13h1v1h-1zM15 13h1v1h-1zM19 13h3v1h-3zM23 13h1v1h-1zM25 13h2v1h-2zM30 13h3v1h-3zM1 14h2v1h-2zM5 14h2v1h-2zM13 14h1v1h-1zM15 14h2v1h-2zM25 14h2v1h-2zM31 14h1v1h-1zM0 15h6v1h-6zM7 15h3v1h-3zM12 15h4v1h-4zM18 15h2v1h-2zM21 15h1v1h-1zM23 15h4v1h-4zM28 15h1v1h-1zM30 15h1v1h-1zM0 16h1v1h-1zM3 16h2v1h-2zM6 16h2v1h-2zM10 16h4v1h-4zM15 16h1v1h-1zM17 16h1v1h-1zM22 16h1v1h-1zM25 16h1v1h-1zM27 16h2v1h-2zM32 16h1v1h-1zM0 17h1v1h-1zM5 17h1v1h-1zM8 17h1v1h-1zM10 17h3v1h-3zM14 17h1v1h-1zM16 17h1v1h-1zM18 17h3v1h-3zM23 17h1v1h-1zM26 17h2v1h-2zM29 17h2v1h-2zM32 17h1v1h-1zM2 18h1v1h-1zM4 18h1v1h-1zM6 18h1v1h-1zM8 18h2v1h-2zM12 18h2v1h-2zM15 18h1v1h-1zM17 18h2v1h-2zM20 18h3v1h-3zM24 18h1v1h-1zM27 18h2v1h-2zM30 18h2v1h-2zM0 19h2v1h-2zM3 19h2v1h-2zM7 19h3v1h-3zM12 19h1v1h-1zM15 19h1v1h-1zM21 19h1v1h-1zM23 19h1v1h-1zM26 19h5v1h-5zM32 19h1v1h-1zM2 20h1v1h-1zM4 20h1v1h-1zM6 20h6v1h-6zM17 20h1v1h-1zM20 20h1v1h-1zM22 20h4v1h-4zM27 20h3v1h-3zM31 20h2v1h-2zM0 21h4v1h-4zM5 21h1v1h-1zM8 21h1v1h-1zM10 21h2v1h-2zM14 21h8v1h-8zM23 21h1v1h-1zM26 21h1v1h-1zM29 21h1v1h-1zM32 21h1v1h-1zM0 22h1v1h-1zM2 22h3v1h-3zM6 22h1v1h-1zM11 22h1v1h-1zM17 22h1v1h-1zM20 22h3v1h-3zM29 22h1v1h-1zM31 22h1v1h-1zM0 23h1v1h-1zM2 23h4v1h-4zM9 23h1v1h-1zM12 23h1v1h-1zM14 23h1v1h-1zM16 23h1v1h-1zM20 23h4v1h-4zM25 23h1v1h-1zM29 23h3v1h-3zM0 24h1v1h-1zM3 24h1v1h-1zM5 24h2v1h-2zM8 24h3v1h-3zM12 24h2v1h-2zM17 24h1v1h-1zM19 24h1v1h-1zM23 24h6v1h-6zM32 24h1v1h-1zM8 25h1v1h-1zM10 25h1v1h-1zM16 25h1v1h-1zM19 25h2v1h-2zM24 25h1v1h-1zM28 25h1v1h-1zM30 25h1v1h-1zM32 25h1v1h-1zM0 26h7v1h-7zM10 26h2v1h-2zM15 26h2v1h-2zM21 26h4v1h-4zM26 26h1v1h-1zM28 26h1v1h-1zM30 26h1v1h-1zM0 27h1v1h-1zM6 27h1v1h-1zM8 27h1v1h-1zM11 27h4v1h-4zM20 27h2v1h-2zM23 27h2v1h-2zM28 27h4v1h-4zM0 28h1v1h-1zM2 28h3v1h-3zM6 28h1v1h-1zM8 28h2v1h-2zM11 28h1v1h-1zM15 28h1v1h-1zM17 28h1v1h-1zM19 28h1v1h-1zM22 28h1v1h-1zM24 28h6v1h-6zM31 28h1v1h-1zM0 29h1v1h-1zM2 29h3v1h-3zM6 29h1v1h-1zM8 29h1v1h-1zM10 29h2v1h-2zM15 29h1v1h-1zM18 29h2v1h-2zM25 29h1v1h-1zM28 29h2v1h-2zM31 29h2v1h-2zM0 30h1v1h-1zM2 30h3v1h-3zM6 30h1v1h-1zM8 30h1v1h-1zM10 30h1v1h-1zM12 30h2v1h-2zM15 30h1v1h-1zM20 30h1v1h-1zM22 30h2v1h-2zM26 30h2v1h-2zM29 30h2v1h-2zM0 31h1v1h-1zM6 31h1v1h-1zM10 31h2v1h-2zM14 31h3v1h-3zM20 31h2v1h-2zM25 31h1v1h-1zM28 31h3v1h-3zM0 32h7v1h-7zM8 32h3v1h-3zM13 32h1v1h-1zM17 32h1v1h-1zM22 32h1v1h-1zM24 32h2v1h-2zM27 32h1v1h-1zM31 32h1v1h-1z"/>
+</svg>
+</template>
+
+<!-- le pied de page · SiteFooter.astro -->
+<template id="t-pied">
+<footer class="border-t border-neutre-200 bg-neutre-50">
+  <div class="mx-auto max-w-[1160px] px-5 py-8 grid gap-8 sm:grid-cols-[1fr_auto]">
+    <div>
+      <p class="flex items-center gap-2.5">
+        <svg class="w-7 h-7 text-teal-700" aria-hidden="true"><use href="#i-ventouse"/></svg>
+        <span class="ff text-[20px] text-teal-900">Annuaire de la Cartoucherie</span>
+      </p>
+      <p class="mt-3 text-[16px] text-neutre-700">
+        Fait bénévolement par <a class="text-teal-700 underline underline-offset-4" href="#">Adrien Lemaire</a>
+        pour aider l'association <a class="text-teal-700 underline underline-offset-4" href="#">Les Entrepreneurs de la Cartoucherie</a>.
+      </p>
+      <p class="mt-3 text-[16px] text-neutre-700">Halle de la Cartoucherie · Tram T1, arrêt Cartoucherie · 31300 Toulouse</p>
+    </div>
+    <nav class="text-[16px]" aria-label="Liens de pied de page">
+      <ul class="space-y-1 list-none p-0 m-0">
+        <li><a class="inline-flex items-center min-h-[44px] text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600" href="#">À propos</a></li>
+        <li><a class="inline-flex items-center min-h-[44px] text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600" href="#">Confidentialité</a></li>
+        <li><a class="inline-flex items-center min-h-[44px] text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600" href="#">Mentions légales</a></li>
+        <li><a class="inline-flex items-center min-h-[44px] text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600" href="#">Les avis, comment ça marche</a></li>
+      </ul>
+    </nav>
+  </div>
+</footer>
+</template>
+
+<!-- le « ? » des avis · Toggletip.astro -->
+<template id="t-avis-aide">
+<button type="button" popovertarget="reviews-help" aria-label="Comment sont faits les avis ?"
+        class="inline-grid place-items-center w-11 h-11 shrink-0 rounded-full text-teal-700 hover:bg-teal-50">
+  <span aria-hidden="true" class="grid place-items-center w-6 h-6 rounded-full border-[1.5px] border-current text-[15px] font-bold leading-none">?</span>
+</button>
+<div id="reviews-help" popover="auto"
+     class="m-auto w-[min(30rem,calc(100vw-2rem))] rounded-[20px] bg-white p-5 text-corps text-neutre-800 shadow-[var(--shadow-flottant)] backdrop:bg-teal-950/30">
+  <button type="button" popovertarget="reviews-help" popovertargetaction="hide" aria-label="Fermer"
+          class="float-right -mt-3 -mr-3 ml-2 grid place-items-center w-11 h-11 rounded-full text-teal-700 hover:bg-teal-50">
+    <svg class="w-5 h-5" aria-hidden="true"><use href="#i-fermer"/></svg>
+  </button>
+  <p>Les avis seront signés par des voisins, relus par l'association, et jamais achetés.</p>
+  <p class="mt-3"><a class="font-semibold text-teal-800 underline" href="#">Les avis, comment ça marche</a></p>
+</div>
+</template>
+
+
+<!-- ╔═══ CAS 1 · Camille Roussel, elle, les cinq champs ═══════════════════╗ -->
+<template id="cas-plein">
+<div data-inclure="t-entete"></div>
+<main id="contenu">
+
+  <section aria-labelledby="nom-membre">
+    <div class="ventouses relative overflow-hidden rounded-b-[34px] bg-sable-200 pt-9 pb-11">
+      <div class="flex justify-center">
+        <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Portrait de Camille Roussel" width="128" height="128"
+             class="arche block h-[176px] w-[148px] bg-white object-cover"
+             style="object-position:50% 22%; box-shadow: 0 0 0 6px #fff, var(--shadow-carte)">
+      </div>
+    </div>
+    <div class="relative mx-auto -mt-8 max-w-[1160px] px-5">
+      <div class="carte flex items-start justify-between gap-8 rounded-[24px] bg-white p-5 sm:p-7">
+        <div class="min-w-0">
+          <h1 id="nom-membre" class="ff break-words text-grand text-teal-900">Camille Roussel</h1>
+          <!-- v2 · l'enseigne, à côté du métier -->
+          <p class="mt-1.5 text-[1.25rem] leading-snug text-neutre-800 break-words">Sophrologue&nbsp;<span aria-hidden="true">·</span> <span class="font-semibold text-neutre-900">Cabinet Souffle Clair</span></p>
+          <p class="mt-3 flex flex-wrap gap-2">
+            <a href="#" class="chip inline-flex min-h-[44px] items-center gap-2 rounded-selector px-3.5 text-[16px] font-semibold">
+              <svg class="h-[18px] w-[18px]" aria-hidden="true"><use href="#c-sante"/></svg>Santé &amp; bien-être
+            </a>
+          </p>
+          <p class="mt-4 max-w-[56ch] text-[19px] leading-relaxed text-neutre-900">Gestion du stress, sommeil et préparation aux examens, en cabinet ou en visio.</p>
+          <p class="mt-5 flex flex-wrap items-center gap-x-5 gap-y-2.5 text-[16px] text-neutre-700">
+            <a href="#avis" class="inline-flex min-h-[44px] items-center gap-1.5 text-teal-700 underline decoration-teal-300 underline-offset-4 hover:decoration-teal-600">
+              <svg class="h-[18px] w-[18px] text-sable-700" aria-hidden="true"><use href="#i-etoile"/></svg>
+              <strong class="font-semibold text-neutre-900">4,8</strong><span class="sr-only"> sur 5 —</span> 12 avis du quartier
+            </a>
+            <span class="inline-flex items-center gap-1.5">
+              <svg class="h-[18px] w-[18px] text-teal-600" aria-hidden="true"><use href="#i-pin"/></svg>À 120 m de la Halle
+            </span>
+            <button type="button" popovertarget="qr" class="inline-flex min-h-[44px] items-center text-teal-700 underline decoration-teal-300 underline-offset-4 sm:hidden">QR code</button>
+          </p>
+
+          <!-- v2 · l'encadré pratique : une ligne par champ rempli, rien si aucun -->
+          <div class="mt-5 border-t border-neutre-200 pt-5">
+            <dl class="m-0 grid gap-x-8 gap-y-4 sm:grid-cols-3">
+              <div class="flex min-w-0 flex-wrap items-start gap-x-3.5 gap-y-2">
+                <span class="pastille pastille--teal mt-0.5 h-10 w-10 shrink-0 bg-teal-50 text-teal-700"><svg class="h-5 w-5" aria-hidden="true"><use href="#i-langues"/></svg></span>
+                <div class="min-w-[min(12rem,100%)] flex-1">
+                  <dt class="text-base text-neutre-700">Parle aussi</dt>
+                  <dd class="m-0 break-words text-corps font-semibold text-neutre-900">anglais et espagnol</dd>
+                </div>
+              </div>
+              <div class="flex min-w-0 flex-wrap items-start gap-x-3.5 gap-y-2">
+                <span class="pastille pastille--teal mt-0.5 h-10 w-10 shrink-0 bg-teal-50 text-teal-700"><svg class="h-5 w-5" aria-hidden="true"><use href="#i-euro"/></svg></span>
+                <div class="min-w-[min(12rem,100%)] flex-1">
+                  <dt class="text-base text-neutre-700">Tarifs</dt>
+                  <dd class="m-0 break-words text-corps font-semibold text-neutre-900">Séance d'1&nbsp;h&nbsp;: 55&nbsp;€ · atelier du samedi&nbsp;: 15&nbsp;€</dd>
+                </div>
+              </div>
+              <div class="flex min-w-0 flex-wrap items-start gap-x-3.5 gap-y-2">
+                <span class="pastille pastille--teal mt-0.5 h-10 w-10 shrink-0 bg-teal-50 text-teal-700"><svg class="h-5 w-5" aria-hidden="true"><use href="#i-horloge"/></svg></span>
+                <div class="min-w-[min(12rem,100%)] flex-1">
+                  <dt class="text-base text-neutre-700">Horaires</dt>
+                  <dd class="m-0 break-words text-corps font-semibold text-neutre-900">Du mardi au samedi, 9&nbsp;h–19&nbsp;h, sur rendez-vous</dd>
+                </div>
+              </div>
+            </dl>
+            <p class="mt-5 flex flex-wrap items-center gap-x-4 gap-y-1.5">
+              <a href="https://rendez-vous.example.fr/souffle-clair"
+                 class="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-full bg-teal-700 px-5 py-2.5 text-center text-corps font-semibold text-white hover:bg-teal-600 sm:w-auto">
+                <svg class="h-5 w-5 shrink-0" aria-hidden="true"><use href="#i-agenda"/></svg>
+                Réserver en ligne
+              </a>
+              <span class="break-words text-base text-neutre-700">sur rendez-vous.example.fr</span>
+            </p>
+          </div>
+        </div>
+        <div class="hidden shrink-0 sm:block">
+          <div class="flex flex-col items-center gap-1">
+            <div class="w-[136px] rounded-[12px] bg-white p-2" style="box-shadow: inset 0 0 0 1px var(--color-neutre-300)" role="img" aria-label="QR code vers la fiche de Camille Roussel"><div data-inclure="t-qr"></div></div>
+            <a href="#" class="inline-flex min-h-[44px] items-center gap-1.5 text-[16px] font-semibold text-teal-700 underline decoration-teal-300 underline-offset-4 hover:decoration-teal-600">
+              <svg class="size-[18px]" aria-hidden="true"><use href="#i-dl"/></svg>Télécharger
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="qr" popover class="m-auto rounded-[24px] bg-white p-6 pt-12 shadow-[var(--shadow-flottant)] backdrop:bg-teal-950/50">
+      <div class="w-[240px] rounded-[12px] bg-white p-2" style="box-shadow: inset 0 0 0 1px var(--color-neutre-300)" role="img" aria-label="QR code vers la fiche de Camille Roussel"><div data-inclure="t-qr"></div></div>
+      <button type="button" popovertarget="qr" popovertargetaction="hide" aria-label="Fermer" class="absolute top-2 right-2 flex size-11 items-center justify-center rounded-full text-teal-900">
+        <svg class="size-5" aria-hidden="true"><use href="#i-fermer"/></svg>
+      </button>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-[1160px] px-5 py-8" aria-labelledby="t-contact">
+    <h2 id="t-contact" class="ff text-nom text-teal-900">La contacter</h2>
+    <div class="filet mt-2.5 mb-5 h-[3px] w-16 rounded-full"></div>
+    <ul class="m-0 grid grid-cols-1 list-none gap-2.5 p-0 sm:grid-cols-2">
+      <li>
+        <details class="group carte h-full rounded-[16px] bg-white px-4 py-3">
+          <summary class="flex min-h-[40px] cursor-pointer list-none items-center gap-3.5 [&::-webkit-details-marker]:hidden">
+            <span class="pastille pastille--teal h-10 w-10 shrink-0 bg-teal-50 text-teal-700"><svg class="h-5 w-5" aria-hidden="true"><use href="#i-tel"/></svg></span>
+            <span class="min-w-0">
+              <span class="block text-[16px] text-neutre-700">Téléphone</span>
+              <span class="block text-corps font-semibold text-teal-800 underline decoration-teal-300 underline-offset-4 group-open:hidden">Voir le numéro</span>
+            </span>
+          </summary>
+          <a href="tel:+33639980014" class="tnum ml-[3.375rem] inline-flex min-h-[44px] items-center text-corps font-semibold text-teal-800"><span>06 39 98 00 14</span></a>
+        </details>
+      </li>
+      <li><a href="mailto:camille.roussel@example.fr" class="carte carte-lien flex h-full min-h-[64px] items-center gap-3.5 rounded-[16px] bg-white px-4 py-3">
+        <span class="pastille pastille--teal h-10 w-10 shrink-0 bg-teal-50 text-teal-700"><svg class="h-5 w-5" aria-hidden="true"><use href="#i-mail"/></svg></span>
+        <span class="min-w-0"><span class="block text-[16px] text-neutre-700">E-mail</span><span class="block break-words text-corps font-semibold text-teal-800">camille.roussel@example.fr</span></span>
+      </a></li>
+      <li><a href="https://souffle-clair.example.fr" class="carte carte-lien flex h-full min-h-[64px] items-center gap-3.5 rounded-[16px] bg-white px-4 py-3">
+        <span class="pastille pastille--teal h-10 w-10 shrink-0 bg-teal-50 text-teal-700"><svg class="h-5 w-5" aria-hidden="true"><use href="#i-globe"/></svg></span>
+        <span class="min-w-0"><span class="block text-[16px] text-neutre-700">Son site</span><span class="block break-words text-corps font-semibold text-teal-800">souffle-clair.example.fr</span></span>
+      </a></li>
+      <li><a href="#" class="carte carte-lien flex h-full min-h-[64px] items-center gap-3.5 rounded-[16px] bg-white px-4 py-3">
+        <span class="pastille pastille--teal h-10 w-10 shrink-0 bg-teal-50 text-teal-700"><svg class="h-5 w-5" aria-hidden="true"><use href="#i-insta"/></svg></span>
+        <span class="min-w-0"><span class="block text-[16px] text-neutre-700">Instagram</span><span class="block break-words text-corps font-semibold text-teal-800">@camille_sophro_ctch</span></span>
+      </a></li>
+    </ul>
+  </section>
+
+  <section class="bg-neutre-100" aria-labelledby="t-portrait">
+    <div class="mx-auto max-w-[1160px] px-5 py-8">
+      <h2 id="t-portrait" class="ff text-nom text-teal-900">Son portrait</h2>
+      <div class="filet mt-2.5 mb-5 h-[3px] w-16 rounded-full"></div>
+      <p class="max-w-[62ch] text-[19px] leading-relaxed text-neutre-900">Installée à la Cartoucherie depuis 2022, j'accompagne adultes et adolescents sur le stress, le sommeil et la confiance en soi. Séances individuelles d'une heure, et un atelier collectif le samedi matin à la Halle.</p>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-[1160px] px-5 py-8" aria-labelledby="t-services">
+    <h2 id="t-services" class="ff text-nom text-teal-900">Ce qu'elle propose</h2>
+    <div class="filet mt-2.5 mb-5 h-[3px] w-16 rounded-full"></div>
+    <ul class="m-0 grid grid-cols-1 list-none gap-3 p-0 sm:grid-cols-3">
+      <li class="flex min-h-[64px] items-center gap-3.5 rounded-[16px] bg-neutre-100 px-4 py-4"><span class="pastille h-9 w-9 shrink-0 bg-white text-sauge-700"><svg class="h-[18px] w-[18px]" aria-hidden="true"><use href="#c-sante"/></svg></span><span class="min-w-0 break-words text-corps font-semibold text-teal-900">Séance individuelle</span></li>
+      <li class="flex min-h-[64px] items-center gap-3.5 rounded-[16px] bg-neutre-100 px-4 py-4"><span class="pastille h-9 w-9 shrink-0 bg-white text-sauge-700"><svg class="h-[18px] w-[18px]" aria-hidden="true"><use href="#c-sante"/></svg></span><span class="min-w-0 break-words text-corps font-semibold text-teal-900">Atelier collectif</span></li>
+      <li class="flex min-h-[64px] items-center gap-3.5 rounded-[16px] bg-neutre-100 px-4 py-4"><span class="pastille h-9 w-9 shrink-0 bg-white text-sauge-700"><svg class="h-[18px] w-[18px]" aria-hidden="true"><use href="#c-sante"/></svg></span><span class="min-w-0 break-words text-corps font-semibold text-teal-900">Visio</span></li>
+    </ul>
+  </section>
+
+  <section class="mx-auto max-w-[1160px] px-5 pb-8" aria-labelledby="t-ou">
+    <h2 id="t-ou" class="ff text-nom text-teal-900">Où la trouver</h2>
+    <div class="filet mt-2.5 mb-5 h-[3px] w-16 rounded-full"></div>
+    <div class="carte flex items-start gap-4 rounded-[20px] bg-white p-5">
+      <span class="pastille pastille--teal mt-0.5 h-[44px] w-[44px] shrink-0 bg-teal-50 text-teal-700"><svg class="h-5 w-5" aria-hidden="true"><use href="#i-pin"/></svg></span>
+      <div class="min-w-0">
+        <address class="text-[18px] leading-snug font-semibold text-neutre-900 not-italic">14 rue Paul Mesplé, 31300 Toulouse</address>
+        <p class="mt-2 text-[16px] text-neutre-700">À 120 m de la Halle</p>
+        <p class="mt-3 flex flex-wrap items-center gap-x-5">
+          <a href="#" class="inline-flex min-w-0 max-w-full min-h-[44px] items-center gap-2 text-corps font-semibold text-teal-700 underline decoration-teal-300 underline-offset-4 hover:decoration-teal-600">La voir sur la carte du quartier <svg class="h-4 w-4" aria-hidden="true"><use href="#i-chev"/></svg></a>
+          <a href="#" class="inline-flex min-h-[44px] items-center gap-2 text-[16px] font-semibold text-teal-700 underline decoration-teal-300 underline-offset-4 hover:decoration-teal-600">Ouvrir l'itinéraire <svg class="h-4 w-4" aria-hidden="true"><use href="#i-chev"/></svg></a>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section id="avis" class="bg-neutre-100" aria-labelledby="reviews-title">
+    <div class="mx-auto max-w-[1160px] px-5 py-8">
+      <div class="flex flex-wrap items-center gap-x-1">
+        <h2 id="reviews-title" class="ff text-nom text-teal-900">Avis du quartier</h2>
+        <div data-inclure="t-avis-aide"></div>
+      </div>
+      <div class="filet mt-2.5 mb-4 h-[3px] w-16 rounded-full"></div>
+      <div data-reviews-slot><p class="text-corps text-neutre-700">12 avis du quartier</p></div>
+      <a href="#" class="mt-4 inline-flex min-h-12 items-center gap-2 text-corps font-semibold text-teal-800 underline">
+        <svg class="h-5 w-5" aria-hidden="true"><use href="#i-etoile"/></svg>Voir ses avis sur Google
+      </a>
+    </div>
+  </section>
+
+  <p class="mx-auto max-w-[1160px] px-5 pb-8 text-[16px]">
+    <a href="#" class="inline-flex min-h-[44px] items-center gap-1.5 text-neutre-700 underline decoration-neutre-400 underline-offset-4 hover:text-teal-700 hover:decoration-teal-600">
+      <svg class="h-[18px] w-[18px]" aria-hidden="true"><use href="#i-alerte"/></svg>Cette fiche n'est pas correcte
+    </a>
+  </p>
+</main>
+<div data-inclure="t-pied"></div>
+<div class="fixed inset-x-0 bottom-0 z-40 border-t border-neutre-200 bg-white/95 px-4 pt-3 backdrop-blur-sm" style="padding-bottom: calc(0.75rem + var(--safe-bottom));">
+  <a href="tel:+33639980014" class="cta flex min-h-[52px] items-center justify-center gap-2 rounded-field px-5 font-semibold sm:mx-auto sm:max-w-sm">
+    <svg class="size-5" aria-hidden="true"><use href="#i-tel"/></svg>Appeler Camille
+  </a>
+</div>
+</template>
+
+<!-- CAS 2 : le cas 1 sans l'enseigne et sans l'encadré, construit par le script ci-dessous
+     (data-sans) pour qu'aucune autre ligne ne puisse diverger du cas 1. -->
+
+
+<!-- ╔═══ CAS 3 · Julien Marty, il, se déplace, champs en partie ═══════════╗ -->
+<template id="cas-mixte">
+<div data-inclure="t-entete"></div>
+<main id="contenu">
+
+  <section aria-labelledby="nom-membre">
+    <div class="ventouses relative overflow-hidden rounded-b-[34px] bg-sable-200 pt-9 pb-11">
+      <div class="flex justify-center">
+        <img src="https://randomuser.me/api/portraits/men/46.jpg" alt="Portrait de Julien Marty" width="128" height="128"
+             class="arche block h-[176px] w-[148px] bg-white object-cover"
+             style="object-position:50% 22%; box-shadow: 0 0 0 6px #fff, var(--shadow-carte)">
+      </div>
+    </div>
+    <div class="relative mx-auto -mt-8 max-w-[1160px] px-5">
+      <div class="carte flex items-start justify-between gap-8 rounded-[24px] bg-white p-5 sm:p-7">
+        <div class="min-w-0">
+          <h1 id="nom-membre" class="ff break-words text-grand text-teal-900">Julien Marty</h1>
+          <p class="mt-1.5 text-[1.25rem] leading-snug text-neutre-800 break-words">Électricien&nbsp;<span aria-hidden="true">·</span> <span class="font-semibold text-neutre-900">Marty Électricité Générale — dépannage, mise aux normes et bornes de recharge</span></p>
+          <p class="mt-3 flex flex-wrap gap-2">
+            <a href="#" class="chip inline-flex min-h-[44px] items-center gap-2 rounded-selector px-3.5 text-[16px] font-semibold">
+              <svg class="h-[18px] w-[18px]" aria-hidden="true"><use href="#c-artisanat"/></svg>Artisanat &amp; travaux
+            </a>
+            <a href="#" class="chip inline-flex min-h-[44px] items-center gap-2 rounded-selector px-3.5 text-[16px] font-semibold">
+              <svg class="h-[18px] w-[18px]" aria-hidden="true"><use href="#c-domicile"/></svg>Services à domicile
+            </a>
+          </p>
+          <p class="mt-4 max-w-[56ch] text-[19px] leading-relaxed text-neutre-900">Dépannage rapide, mise aux normes et installation de bornes de recharge.</p>
+          <p class="mt-5 flex flex-wrap items-center gap-x-5 gap-y-2.5 text-[16px] text-neutre-700">
+            <a href="#avis" class="inline-flex min-h-[44px] items-center gap-1.5 text-teal-700 underline decoration-teal-300 underline-offset-4 hover:decoration-teal-600">
+              <svg class="h-[18px] w-[18px] text-sable-700" aria-hidden="true"><use href="#i-etoile"/></svg>
+              <strong class="font-semibold text-neutre-900">4,4</strong><span class="sr-only"> sur 5 —</span> 11 avis du quartier
+            </a>
+            <span class="inline-flex items-center gap-1.5">Il vient chez vous</span>
+            <button type="button" popovertarget="qr" class="inline-flex min-h-[44px] items-center text-teal-700 underline decoration-teal-300 underline-offset-4 sm:hidden">QR code</button>
+          </p>
+
+          <div class="mt-5 border-t border-neutre-200 pt-5">
+            <dl class="m-0 grid gap-x-8 gap-y-4 sm:grid-cols-3">
+              <div class="flex min-w-0 flex-wrap items-start gap-x-3.5 gap-y-2">
+                <span class="pastille pastille--teal mt-0.5 h-10 w-10 shrink-0 bg-teal-50 text-teal-700"><svg class="h-5 w-5" aria-hidden="true"><use href="#i-langues"/></svg></span>
+                <div class="min-w-[min(12rem,100%)] flex-1">
+                  <dt class="text-base text-neutre-700">Parle aussi</dt>
+                  <dd class="m-0 break-words text-corps font-semibold text-neutre-900">portugais</dd>
+                </div>
+              </div>
+              <div class="flex min-w-0 flex-wrap items-start gap-x-3.5 gap-y-2">
+                <span class="pastille pastille--teal mt-0.5 h-10 w-10 shrink-0 bg-teal-50 text-teal-700"><svg class="h-5 w-5" aria-hidden="true"><use href="#i-euro"/></svg></span>
+                <div class="min-w-[min(12rem,100%)] flex-1">
+                  <dt class="text-base text-neutre-700">Tarifs</dt>
+                  <dd class="m-0 break-words text-corps font-semibold text-neutre-900">Déplacement offert dans tout le quartier. Dépannage&nbsp;: 55&nbsp;€ la première heure, puis 40&nbsp;€. Devis gratuit pour les bornes.</dd>
+                </div>
+              </div>
+            </dl>
+          </div>
+        </div>
+        <div class="hidden shrink-0 sm:block">
+          <div class="flex flex-col items-center gap-1">
+            <div class="w-[136px] rounded-[12px] bg-white p-2" style="box-shadow: inset 0 0 0 1px var(--color-neutre-300)" role="img" aria-label="QR code vers la fiche de Julien Marty"><div data-inclure="t-qr"></div></div>
+            <a href="#" class="inline-flex min-h-[44px] items-center gap-1.5 text-[16px] font-semibold text-teal-700 underline decoration-teal-300 underline-offset-4 hover:decoration-teal-600">
+              <svg class="size-[18px]" aria-hidden="true"><use href="#i-dl"/></svg>Télécharger
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="qr" popover class="m-auto rounded-[24px] bg-white p-6 pt-12 shadow-[var(--shadow-flottant)] backdrop:bg-teal-950/50">
+      <div class="w-[240px] rounded-[12px] bg-white p-2" style="box-shadow: inset 0 0 0 1px var(--color-neutre-300)" role="img" aria-label="QR code vers la fiche de Julien Marty"><div data-inclure="t-qr"></div></div>
+      <button type="button" popovertarget="qr" popovertargetaction="hide" aria-label="Fermer" class="absolute top-2 right-2 flex size-11 items-center justify-center rounded-full text-teal-900">
+        <svg class="size-5" aria-hidden="true"><use href="#i-fermer"/></svg>
+      </button>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-[1160px] px-5 py-8" aria-labelledby="t-contact">
+    <h2 id="t-contact" class="ff text-nom text-teal-900">Le contacter</h2>
+    <div class="filet mt-2.5 mb-5 h-[3px] w-16 rounded-full"></div>
+    <ul class="m-0 grid grid-cols-1 list-none gap-2.5 p-0 sm:grid-cols-2">
+      <li>
+        <details class="group carte h-full rounded-[16px] bg-white px-4 py-3">
+          <summary class="flex min-h-[40px] cursor-pointer list-none items-center gap-3.5 [&::-webkit-details-marker]:hidden">
+            <span class="pastille pastille--teal h-10 w-10 shrink-0 bg-teal-50 text-teal-700"><svg class="h-5 w-5" aria-hidden="true"><use href="#i-tel"/></svg></span>
+            <span class="min-w-0">
+              <span class="block text-[16px] text-neutre-700">Téléphone</span>
+              <span class="block text-corps font-semibold text-teal-800 underline decoration-teal-300 underline-offset-4 group-open:hidden">Voir le numéro</span>
+            </span>
+          </summary>
+          <a href="tel:+33639980037" class="tnum ml-[3.375rem] inline-flex min-h-[44px] items-center text-corps font-semibold text-teal-800"><span>06 39 98 00 37</span></a>
+        </details>
+      </li>
+      <li><a href="mailto:jmarty.elec@example.fr" class="carte carte-lien flex h-full min-h-[64px] items-center gap-3.5 rounded-[16px] bg-white px-4 py-3">
+        <span class="pastille pastille--teal h-10 w-10 shrink-0 bg-teal-50 text-teal-700"><svg class="h-5 w-5" aria-hidden="true"><use href="#i-mail"/></svg></span>
+        <span class="min-w-0"><span class="block text-[16px] text-neutre-700">E-mail</span><span class="block break-words text-corps font-semibold text-teal-800">jmarty.elec@example.fr</span></span>
+      </a></li>
+    </ul>
+  </section>
+
+  <section class="bg-neutre-100" aria-labelledby="t-portrait">
+    <div class="mx-auto max-w-[1160px] px-5 py-8">
+      <h2 id="t-portrait" class="ff text-nom text-teal-900">Son portrait</h2>
+      <div class="filet mt-2.5 mb-5 h-[3px] w-16 rounded-full"></div>
+      <p class="max-w-[62ch] text-[19px] leading-relaxed text-neutre-900">Artisan électricien, je travaille dans un rayon de deux kilomètres autour de la Cartoucherie. Dépannage sous 48 h, et beaucoup de bornes de recharge dans les parkings des résidences.</p>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-[1160px] px-5 py-8" aria-labelledby="t-services">
+    <h2 id="t-services" class="ff text-nom text-teal-900">Ce qu'il propose</h2>
+    <div class="filet mt-2.5 mb-5 h-[3px] w-16 rounded-full"></div>
+    <ul class="m-0 grid grid-cols-1 list-none gap-3 p-0 sm:grid-cols-3">
+      <li class="flex min-h-[64px] items-center gap-3.5 rounded-[16px] bg-neutre-100 px-4 py-4"><span class="pastille h-9 w-9 shrink-0 bg-white text-sauge-700"><svg class="h-[18px] w-[18px]" aria-hidden="true"><use href="#c-artisanat"/></svg></span><span class="min-w-0 break-words text-corps font-semibold text-teal-900">Dépannage</span></li>
+      <li class="flex min-h-[64px] items-center gap-3.5 rounded-[16px] bg-neutre-100 px-4 py-4"><span class="pastille h-9 w-9 shrink-0 bg-white text-sauge-700"><svg class="h-[18px] w-[18px]" aria-hidden="true"><use href="#c-artisanat"/></svg></span><span class="min-w-0 break-words text-corps font-semibold text-teal-900">Mise aux normes</span></li>
+      <li class="flex min-h-[64px] items-center gap-3.5 rounded-[16px] bg-neutre-100 px-4 py-4"><span class="pastille h-9 w-9 shrink-0 bg-white text-sauge-700"><svg class="h-[18px] w-[18px]" aria-hidden="true"><use href="#c-artisanat"/></svg></span><span class="min-w-0 break-words text-corps font-semibold text-teal-900">Borne de recharge</span></li>
+    </ul>
+  </section>
+
+  <section class="mx-auto max-w-[1160px] px-5 pb-8" aria-labelledby="t-ou">
+    <h2 id="t-ou" class="ff text-nom text-teal-900">Où le trouver</h2>
+    <div class="filet mt-2.5 mb-5 h-[3px] w-16 rounded-full"></div>
+    <div class="carte flex items-start gap-4 rounded-[20px] bg-white p-5">
+      <span class="pastille pastille--teal mt-0.5 h-[44px] w-[44px] shrink-0 bg-teal-50 text-teal-700"><svg class="h-5 w-5" aria-hidden="true"><use href="#i-pin"/></svg></span>
+      <div class="min-w-0">
+        <p class="text-[18px] leading-snug font-semibold text-neutre-900">Il vient chez vous</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="avis" class="bg-neutre-100" aria-labelledby="reviews-title">
+    <div class="mx-auto max-w-[1160px] px-5 py-8">
+      <div class="flex flex-wrap items-center gap-x-1">
+        <h2 id="reviews-title" class="ff text-nom text-teal-900">Avis du quartier</h2>
+        <div data-inclure="t-avis-aide"></div>
+      </div>
+      <div class="filet mt-2.5 mb-4 h-[3px] w-16 rounded-full"></div>
+      <div data-reviews-slot><p class="text-corps text-neutre-700">11 avis du quartier</p></div>
+    </div>
+  </section>
+
+  <p class="mx-auto max-w-[1160px] px-5 pb-8 text-[16px]">
+    <a href="#" class="inline-flex min-h-[44px] items-center gap-1.5 text-neutre-700 underline decoration-neutre-400 underline-offset-4 hover:text-teal-700 hover:decoration-teal-600">
+      <svg class="h-[18px] w-[18px]" aria-hidden="true"><use href="#i-alerte"/></svg>Cette fiche n'est pas correcte
+    </a>
+  </p>
+</main>
+<div data-inclure="t-pied"></div>
+<div class="fixed inset-x-0 bottom-0 z-40 border-t border-neutre-200 bg-white/95 px-4 pt-3 backdrop-blur-sm" style="padding-bottom: calc(0.75rem + var(--safe-bottom));">
+  <a href="tel:+33639980037" class="cta flex min-h-[52px] items-center justify-center gap-2 rounded-field px-5 font-semibold sm:mx-auto sm:max-w-sm">
+    <svg class="size-5" aria-hidden="true"><use href="#i-tel"/></svg>Appeler Julien
+  </a>
+</div>
+</template>
+
+
+<script>
+/* Les cadres : chaque <iframe data-cas> reçoit en srcdoc les fondations de
+   cette page (polices, daisyUI, Tailwind, les <style id="src-…">), le sprite,
+   puis le <template> de son cas. Rien d'autre ne tourne. */
+(function(){
+  var tete = Array.prototype.map.call(document.querySelectorAll(
+    'link[rel="preconnect"], link[href*="fonts.googleapis.com/css2"], link[href*="daisyui"], ' +
+    'script[src*="tailwindcss/browser"], style[id^="src-"]'), function(n){ return n.outerHTML; }).join('\n');
+  var sprite = document.getElementById('src-sprite').outerHTML;
+
+  function inclure(racine){
+    Array.prototype.forEach.call(racine.querySelectorAll('[data-inclure]'), function(n){
+      n.replaceWith(document.getElementById(n.dataset.inclure).content.cloneNode(true));
+    });
+  }
+
+  /* le cas 2 est le cas 1 moins les cinq champs : l'enseigne et l'encadré */
+  var CAS = {
+    'cas-plein': function(f){ return f; },
+    'cas-mixte': function(f){ return f; },
+    'cas-vide':  function(f){
+      var enseigne = f.querySelector('#nom-membre + p');
+      enseigne.textContent = 'Sophrologue';
+      enseigne.className = 'mt-1.5 text-[20px] text-neutre-800';
+      f.querySelector('.border-t.pt-5').remove();
+      return f;
+    }
+  };
+  var source = { 'cas-vide': 'cas-plein' };
+
+  function ajuster(f){
+    var doc = f.contentDocument;
+    if(!doc) return;
+    var poser = function(){ f.style.height = doc.documentElement.scrollHeight + 'px'; };
+    poser();
+    if(window.ResizeObserver) new ResizeObserver(poser).observe(doc.body);
+  }
+
+  Array.prototype.forEach.call(document.querySelectorAll('iframe[data-cas]'), function(f){
+    var cas = f.dataset.cas;
+    var frag = document.getElementById(source[cas] || cas).content.cloneNode(true);
+    inclure(frag); inclure(frag);
+    var boite = document.createElement('div');
+    boite.appendChild(CAS[cas](frag));
+    var zoom = f.dataset.zoom ? '<style>html{font-size:' + f.dataset.zoom + '}</style>' : '';
+    f.addEventListener('load', function(){ ajuster(f); });
+    f.srcdoc = '<!DOCTYPE html><html lang="fr" data-theme="cartoucherie"><head><meta charset="utf-8">' +
+      '<meta name="viewport" content="width=device-width, initial-scale=1">' + tete + zoom +
+      '</head><body class="font-sans text-neutre-900 antialiased bg-white pb-[calc(96px+var(--safe-bottom))]">' +
+      sprite + boite.innerHTML + '</body></html>';
+  });
+
+  /* l'état « un écran à la fois » */
+  var b = document.getElementById('bascule-ecran');
+  b.addEventListener('click', function(){
+    var on = b.getAttribute('aria-pressed') !== 'true';
+    b.setAttribute('aria-pressed', on ? 'true' : 'false');
+    document.body.classList.toggle('ecran', on);
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,1800 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="cartoucherie">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Admin — Annuaire de la Cartoucherie (maquette v2)</title>
+<meta name="description" content="Maquette v2 de /admin : la file d'attente, la relecture, toutes les fiches, les comptes et les diapositives.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cg fill='none' stroke='%232a5f66' stroke-width='2.1'%3E%3Ccircle cx='16' cy='16' r='13.2'/%3E%3Ccircle cx='16' cy='16' r='7.4'/%3E%3Ccircle cx='16' cy='16' r='2.2' fill='%232a5f66' stroke='none'/%3E%3C/g%3E%3C/svg%3E">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,600&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+
+<link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+<!-- Les quatre fondations, copiees verbatim de final/membre.html (elles-memes du styleguide).
+     @theme *static* : sans « static », Tailwind elague les variables qu'aucun
+     utilitaire n'utilise et .cta, .filet, .pastille perdent leurs couleurs en silence. -->
+<style type="text/tailwindcss" id="src-theme-couleurs">
+@theme static {
+  /* ── teal · identité ─────────────────────────────────────── */
+  --color-teal-50:  oklch(98.0% 0.010 198);
+  --color-teal-100: oklch(95.5% 0.022 197);
+  --color-teal-200: oklch(91.0% 0.040 196);
+  --color-teal-300: oklch(84.0% 0.058 195);
+  --color-teal-400: oklch(74.0% 0.080 195);
+  --color-teal-500: oklch(63.0% 0.098 196);
+  --color-teal-600: oklch(53.0% 0.090 196);
+  --color-teal-700: oklch(44.0% 0.074 197);
+  --color-teal-800: oklch(35.0% 0.060 198);
+  --color-teal-900: oklch(27.0% 0.045 199);
+  --color-teal-950: oklch(19.0% 0.030 201);
+
+  /* ── orange · action ─────────────────────────────────────── */
+  --color-orange-50:  oklch(97.8% 0.014 65);
+  --color-orange-100: oklch(95.0% 0.032 62);
+  --color-orange-200: oklch(90.0% 0.063 58);
+  --color-orange-300: oklch(84.0% 0.101 54);
+  --color-orange-400: oklch(78.0% 0.142 50);
+  --color-orange-500: oklch(72.0% 0.170 46);
+  --color-orange-600: oklch(65.0% 0.178 40);
+  --color-orange-700: oklch(56.0% 0.172 34);
+  --color-orange-800: oklch(46.0% 0.140 30);
+  --color-orange-900: oklch(37.0% 0.108 28);
+  --color-orange-950: oklch(27.0% 0.078 26);
+
+  /* ── sauge · taxonomie ───────────────────────────────────── */
+  --color-sauge-50:  oklch(97.5% 0.012 170);
+  --color-sauge-100: oklch(94.5% 0.026 170);
+  --color-sauge-200: oklch(89.5% 0.050 170);
+  --color-sauge-300: oklch(82.0% 0.074 168);
+  --color-sauge-400: oklch(73.0% 0.100 164);
+  --color-sauge-500: oklch(64.0% 0.120 160);
+  --color-sauge-600: oklch(54.5% 0.122 156);
+  --color-sauge-700: oklch(45.5% 0.108 152);
+  --color-sauge-800: oklch(37.0% 0.088 150);
+  --color-sauge-900: oklch(29.0% 0.066 152);
+  --color-sauge-950: oklch(20.5% 0.044 156);
+
+  /* ── sable · illustration (50→600 : remplissage seul) ────── */
+  --color-sable-50:  oklch(98.2% 0.010 95);
+  --color-sable-100: oklch(96.0% 0.024 93);
+  --color-sable-200: oklch(92.5% 0.044 91);
+  --color-sable-300: oklch(88.0% 0.064 90);
+  --color-sable-400: oklch(82.0% 0.090 89);
+  --color-sable-500: oklch(76.0% 0.115 88);
+  --color-sable-600: oklch(68.0% 0.118 86);
+  --color-sable-700: oklch(57.5% 0.105 83);
+  --color-sable-800: oklch(47.0% 0.088 80);
+  --color-sable-900: oklch(37.5% 0.068 78);
+  --color-sable-950: oklch(27.0% 0.048 75);
+
+  /* ── neutre · structure, teintée teal ────────────────────── */
+  --color-neutre-50:  oklch(98.6% 0.004 200);
+  --color-neutre-100: oklch(97.2% 0.006 199);
+  --color-neutre-200: oklch(94.4% 0.008 198);
+  --color-neutre-300: oklch(89.8% 0.010 198);
+  --color-neutre-400: oklch(79.5% 0.013 197);
+  --color-neutre-500: oklch(66.5% 0.016 197);
+  --color-neutre-600: oklch(54.5% 0.019 198);
+  --color-neutre-700: oklch(44.0% 0.022 199);
+  --color-neutre-800: oklch(34.0% 0.025 200);
+  --color-neutre-900: oklch(25.5% 0.028 201);
+  --color-neutre-950: oklch(17.5% 0.030 202);
+
+  /* ── rouge · erreur ──────────────────────────────────────── */
+  --color-rouge-50:  oklch(97.6% 0.014 25);
+  --color-rouge-100: oklch(94.6% 0.029 24);
+  --color-rouge-200: oklch(89.0% 0.057 24);
+  --color-rouge-300: oklch(81.0% 0.100 24);
+  --color-rouge-400: oklch(70.0% 0.150 25);
+  --color-rouge-500: oklch(62.0% 0.190 26);
+  --color-rouge-600: oklch(54.0% 0.205 24);
+  --color-rouge-700: oklch(46.0% 0.180 22);
+  --color-rouge-800: oklch(38.0% 0.145 20);
+  --color-rouge-900: oklch(31.0% 0.115 18);
+  --color-rouge-950: oklch(22.0% 0.080 16);
+
+  /* ── profondeur ──────────────────────────────────────────── */
+  --shadow-carte:       0 1px 2px oklch(17.5% .03 202/.05), 0 4px 12px -2px oklch(17.5% .03 202/.09);
+  --shadow-carte-hover: 0 2px 4px oklch(17.5% .03 202/.06), 0 14px 32px -8px oklch(17.5% .03 202/.16);
+  --shadow-flottant:    0 4px 8px oklch(17.5% .03 202/.06), 0 28px 64px -20px oklch(17.5% .03 202/.28);
+  --shadow-cta:         0 2px 4px oklch(37% .108 28/.28), 0 10px 24px -8px oklch(37% .108 28/.38);
+  --shadow-cta-press:   0 1px 2px oklch(37% .108 28/.34);
+}
+</style>
+
+<style type="text/tailwindcss" id="src-theme-typo">
+@theme static {
+  --font-display: "Literata", "Iowan Old Style", Georgia, serif;
+  --font-sans:    "Source Sans 3", system-ui, sans-serif;
+  --font-mono:    "IBM Plex Mono", ui-monospace, monospace;
+
+  /* l'échelle · quarte juste 1,333 depuis 17 px — 8 pas, amplitude 4,5× */
+  --text-etiquette: 1rem;      /* 16 · capitales espacées, méta, comptes    */
+  --text-etiquette--line-height: 1.25;
+  --text-etiquette--letter-spacing: 0.14em;
+
+  --text-corps: 1.0625rem;     /* 17 · le corps de texte                    */
+  --text-corps--line-height: 1.55;
+
+  --text-chapo: 1.375rem;      /* 22 · chapô, accroche, sous-titre de bloc  */
+  --text-chapo--line-height: 1.4;
+
+  --text-besoin: 1.1875rem;    /* 19 · une ligne de l'index « Je cherche… » */
+  --text-besoin--line-height: 1.2;
+  --text-besoin--letter-spacing: -0.012em;
+
+  --text-nom: 1.875rem;        /* 30 · titre de section, nom sur une carte  */
+  --text-nom--line-height: 1.08;
+  --text-nom--letter-spacing: -0.018em;
+
+  --text-grand: 2.5rem;        /* 40 · le nom sur la fiche membre           */
+  --text-grand--line-height: 1.0;
+  --text-grand--letter-spacing: -0.022em;
+
+  --text-enorme: 3.375rem;     /* 54 · les nombres du quartier              */
+  --text-enorme--line-height: 0.94;
+  --text-enorme--letter-spacing: -0.028em;
+
+  --text-cri: 4.5rem;          /* 72 · « Je cherche… », une fois par site   */
+  --text-cri--line-height: 0.9;
+  --text-cri--letter-spacing: -0.032em;
+}
+</style>
+
+<style type="text/tailwindcss" id="src-theme-daisy">
+[data-theme="cartoucherie"] {
+  color-scheme: light;
+
+  --color-base-100:          #ffffff;                 /* la page, blanche  */
+  --color-base-200:          oklch(97.2% 0.006 199);  /* neutre-100        */
+  --color-base-300:          oklch(94.4% 0.008 198);  /* neutre-200        */
+  --color-base-content:      oklch(25.5% 0.028 201);  /* neutre-900        */
+
+  --color-primary:           oklch(44.0% 0.074 197);  /* teal-700          */
+  --color-primary-content:   #ffffff;
+
+  --color-secondary:         oklch(94.5% 0.026 170);  /* sauge-100 teinté  */
+  --color-secondary-content: oklch(19.0% 0.030 201);  /* teal-950          */
+
+  --color-accent:            oklch(72.0% 0.170 46);   /* orange-500 · CTA  */
+  --color-accent-content:    oklch(19.0% 0.030 201);  /* teal-950          */
+
+  --color-neutral:           oklch(25.5% 0.028 201);  /* neutre-900        */
+  --color-neutral-content:   oklch(98.6% 0.004 200);  /* neutre-50         */
+
+  --color-info:              oklch(53.0% 0.090 196);  /* teal-600          */
+  --color-info-content:      #ffffff;
+
+  --color-success:           oklch(45.5% 0.108 152);  /* sauge-700         */
+  --color-success-content:   #ffffff;
+
+  --color-warning:           oklch(76.0% 0.115 88);   /* sable-500         */
+  --color-warning-content:   oklch(19.0% 0.030 201);  /* teal-950          */
+
+  --color-error:             oklch(54.0% 0.205 24);   /* rouge-600         */
+  --color-error-content:     #ffffff;
+
+  --radius-selector: 2rem;      /* pastilles, bascules, badges */
+  --radius-field:    0.75rem;   /* champs, boutons             */
+  --radius-box:      1.25rem;   /* cartes, modales, feuilles   */
+  --size-selector:   0.28125rem;
+  --size-field:      0.28125rem;
+  --border:          1px;
+  --depth:           1;
+  --noise:           0;
+}
+</style>
+
+<style id="src-css-produit">
+:root{
+  --gradient-aube:  linear-gradient(168deg, var(--color-teal-50) 0%, #ffffff 44%, var(--color-orange-50) 100%);
+  --gradient-cta:   linear-gradient(180deg, var(--color-orange-400), var(--color-orange-500) 55%, var(--color-orange-600));
+  --gradient-colly: radial-gradient(120% 90% at 30% 15%, var(--color-sable-100), var(--color-sauge-100) 62%, var(--color-teal-100));
+  --gradient-filet: linear-gradient(90deg, var(--color-teal-600), var(--color-sauge-500) 46%, var(--color-orange-500));
+}
+
+html{ -webkit-text-size-adjust:100%; }
+body{ font-family:var(--font-sans); font-size:17px; line-height:1.55; color:var(--color-neutre-900); background:#fff; }
+
+.ff{ font-family:var(--font-display); font-variation-settings:"opsz" 36; font-weight:600; letter-spacing:-0.015em; }
+
+/* un seul anneau de focus, partout, sans exception (couleurs.md §7) */
+:where(a,button,input,textarea,select,summary,[tabindex]):focus-visible{
+  outline:2px solid var(--color-teal-600); outline-offset:2px; border-radius:6px;
+}
+
+/* les quatre dégradés sanctionnés */
+.filet{ background-image:var(--gradient-filet); }
+.aube{ background-image:var(--gradient-aube); }
+.colly-fond{ background-image:var(--gradient-colly); }
+
+/* les trois marches d'élévation */
+.carte{ box-shadow: var(--shadow-carte), inset 0 0 0 1px oklch(17.5% .03 202/.07); }
+.carte:hover{ box-shadow: var(--shadow-carte-hover), inset 0 0 0 1px oklch(17.5% .03 202/.07); }
+.flottant{ box-shadow: var(--shadow-flottant), inset 0 0 0 1px oklch(17.5% .03 202/.07); }
+
+/* le CTA orange — la seule grande surface chaude de l'interface */
+.cta{
+  background-image: var(--gradient-cta);
+  color: var(--color-teal-950);
+  box-shadow: var(--shadow-cta), inset 0 0 0 1px oklch(56% .172 34/.6);
+}
+.cta:hover{ background-image: linear-gradient(180deg, var(--color-orange-300), var(--color-orange-400) 55%, var(--color-orange-500)); }
+.cta:active{ background-image: linear-gradient(180deg, var(--color-orange-500), var(--color-orange-600));
+             transform:translateY(1px); box-shadow:var(--shadow-cta-press), inset 0 0 0 1px oklch(56% .172 34/.6); }
+
+/* ── LE MOTIF VENTOUSE ──────────────────────────────────────────────────────
+   Trois cercles concentriques. Le même dessin sert de symbole, de puce, de
+   médaillon d'icône et de papier peint. Une seule forme tient l'identité.  */
+.ventouses{
+  --v: oklch(68% .118 86 / .26);          /* sable-600 à 26 % : décoratif seul */
+  background-image:
+    radial-gradient(circle at 50% 50%, transparent 0 12.5px, var(--v) 12.5px 14px, transparent 14px),
+    radial-gradient(circle at 50% 50%, transparent 0 7px,   var(--v) 7px 8.4px,   transparent 8.4px),
+    radial-gradient(circle at 50% 50%, var(--v) 0 2.6px, transparent 2.6px);
+  background-size:56px 56px;
+}
+.ventouses--teal{ --v: oklch(53% .09 196 / .16); }
+
+/* la ventouse en médaillon : anneau + halo + anneau, autour de n'importe quoi */
+.pastille{
+  display:grid; place-items:center; flex:none; border-radius:9999px;
+  box-shadow: inset 0 0 0 1.5px var(--color-sauge-400),
+              0 0 0 4px var(--color-sauge-50),
+              0 0 0 5.5px var(--color-sauge-300);
+}
+.pastille--teal{
+  box-shadow: inset 0 0 0 1.5px var(--color-teal-300),
+              0 0 0 4px var(--color-teal-50),
+              0 0 0 5.5px var(--color-teal-200);
+}
+
+/* l'arche de la Halle : demi-cercle en haut, base droite */
+.arche{ border-radius:999px 999px 22px 22px; }
+
+/* la pastille de catégorie */
+.chip{ background:var(--color-sauge-100); color:var(--color-sauge-800); }
+
+/* ── LE HALO ────────────────────────────────────────────────────────────────
+   Le portrait du membre lui-même, agrandi et flouté, multiplié sur le lavis.
+   Chaque fiche hérite de l'ambiance colorée de la personne qu'elle décrit,
+   sans un seul octet d'illustration supplémentaire.                       */
+.halo-fond{ position:absolute; inset:0; overflow:hidden; isolation:isolate; }
+.halo{ position:absolute; background-size:cover; background-position:50% 35%;
+       filter: blur(54px) saturate(2.6) contrast(1.16); mix-blend-mode:multiply; }
+
+/* les croquis au crayon, fondus dans leur panneau : le papier devient la
+   couleur du fond, il ne reste que le graphite */
+.croquis{ mix-blend-mode:multiply; filter:grayscale(1) contrast(1.16) brightness(1.07); }
+
+/* une ligne de l'index « Je cherche… » : le survol allume le numéro,
+   il ne dessine pas une boîte. Dix boîtes empilées, c'est une grille. */
+.besoin{ transition: background-color .18s ease; }
+.besoin:hover, .besoin:focus-visible{ background-color: var(--color-teal-50); }
+.besoin:hover .num, .besoin:focus-visible .num{ color: var(--color-orange-800); }
+.num{ transition: color .18s ease; }
+
+/* la ligne de liste d'un voisin : le lien du nom couvre toute la carte,
+   sauf le bouton d'appel qui remonte en z-10 */
+.carte-lien{ transition: box-shadow .18s ease; }
+
+.tnum{ font-variant-numeric: tabular-nums; }
+
+@media (prefers-reduced-motion: reduce){ *{ transition:none !important; animation:none !important; } }
+</style>
+
+
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     FONDATION 5 — v2, les fiches en libre-service. Ce qu'ajoutent le
+     formulaire, l'espace membre et l'admin. Mêmes jetons, aucune couleur neuve.
+     ═══════════════════════════════════════════════════════════════════════ -->
+<style id="src-css-v2">
+/* le champ : l'anneau neutre-500 de « Les petites pièces », en classe.
+   L'état vit sur le conteneur, pour que le champ, le compteur et le
+   message changent ensemble. */
+.champ{ background:#fff; box-shadow: inset 0 0 0 1.5px var(--color-neutre-500); }
+textarea.champ{ field-sizing: content; resize: vertical; }
+[data-etat="long"]   .champ{ background:var(--color-sable-50); box-shadow: inset 0 0 0 1.5px var(--color-sable-700); }
+[data-etat="erreur"] .champ{ background:var(--color-rouge-50); box-shadow: inset 0 0 0 1.5px var(--color-rouge-600); }
+.compteur{ color:var(--color-neutre-700); }
+[data-etat="long"]   .compteur{ color:var(--color-sable-800); font-weight:600; }
+[data-etat="erreur"] .compteur{ color:var(--color-rouge-700); font-weight:600; }
+
+/* la bulle d'aide : un panneau dans le flux, pas une infobulle flottante.
+   Elle ne déborde jamais d'un écran de 360 px, même à 200 % de zoom. */
+.bulle{ position:relative; }
+.bulle::before{ content:""; position:absolute; top:-6px; right:var(--fleche, 8px);
+  width:13px; height:13px; background:inherit; transform:rotate(45deg); border-radius:3px 0 0 0; }
+
+/* la case et le rond : natifs, redessinés. Le rond coché EST la ventouse —
+   anneau, blanc, point. Sélection = teal : l'orange reste au bouton. */
+.case, .rond{ appearance:none; -webkit-appearance:none; flex:none; margin:0; cursor:pointer;
+  width:26px; height:26px; background:#fff; box-shadow: inset 0 0 0 1.5px var(--color-neutre-500);
+  transition: background-color .15s ease, box-shadow .15s ease; }
+.case{ border-radius:7px; }
+.rond{ border-radius:999px; }
+.case:checked{ box-shadow:none; background: var(--color-teal-700) no-repeat center / 18px
+  url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m5 12.6 4.4 4.4L19 7.4'/%3E%3C/svg%3E"); }
+.rond:checked{ box-shadow:none;
+  background: radial-gradient(circle, var(--color-teal-700) 0 4.4px, #fff 4.9px 7.6px, var(--color-teal-700) 8.1px); }
+
+/* la carte de choix : toute la carte est l'étiquette, donc la cible */
+.choix{ min-height:64px; padding:14px 16px;
+  border-radius:16px; background:#fff; cursor:pointer;
+  box-shadow: var(--shadow-carte), inset 0 0 0 1.5px var(--color-neutre-300);
+  transition: box-shadow .15s ease, background-color .15s ease; }
+.choix:hover{ box-shadow: var(--shadow-carte), inset 0 0 0 1.5px var(--color-teal-400); }
+.choix:has(:checked){ background:var(--color-teal-50);
+  box-shadow: var(--shadow-carte), inset 0 0 0 2px var(--color-teal-600); }
+.choix:has(:focus-visible){ outline:2px solid var(--color-teal-600); outline-offset:2px; }
+/* « Aucune ne convient » : en pointillés, hors de la liste officielle */
+.choix--libre, .choix--libre:hover{ background:transparent; box-shadow:none;
+  outline:1.5px dashed var(--color-neutre-500); outline-offset:-1.5px; }
+.choix--libre:has(:checked){ background:var(--color-teal-50); outline:2px solid var(--color-teal-600); }
+
+/* le groupe en erreur : le filet de 3 px, à gauche, comme une marge corrigée */
+.groupe-erreur{ box-shadow: inset 3px 0 0 var(--color-rouge-600); padding-left:15px; }
+
+/* deux médaillons de plus pour la ventouse */
+.pastille--sable{ box-shadow: inset 0 0 0 1.5px var(--color-sable-400), 0 0 0 4px var(--color-sable-50), 0 0 0 5.5px var(--color-sable-300); }
+.pastille--rouge{ box-shadow: inset 0 0 0 1.5px var(--color-rouge-300), 0 0 0 4px var(--color-rouge-50), 0 0 0 5.5px var(--color-rouge-200); }
+
+/* la ventouse qui respire : « enregistrement », « mise en ligne » */
+.respire{ animation: respire 1.6s ease-in-out infinite; transform-origin:center; }
+@keyframes respire{ 0%,100%{ transform:scale(.82); opacity:.55 } 50%{ transform:scale(1); opacity:1 } }
+
+/* le cadre de recadrage : l'arche de la fiche, découpée dans le carré.
+   Le voile sombre est l'ombre portée de l'arche elle-même. */
+.recadrage{ position:relative; overflow:hidden; border-radius:14px; }
+.recadrage > img{ display:block; width:100%; height:100%; object-fit:cover; }
+.recadrage__arche{ position:absolute; inset:0 8.5%; border-radius:999px 999px 18px 18px;
+  box-shadow: 0 0 0 999px oklch(19% .03 201 / .66), inset 0 0 0 2px #fff; }
+.recadrage__visage{ position:absolute; left:50%; top:9%; width:46%; height:40%; translate:-50% 0;
+  border-radius:50%; border:2px dashed oklch(100% 0 0 / .9); }
+
+/* l'aperçu : un puits de ventouses teal — « ceci n'est pas encore en ligne » */
+.puits{ background-color:var(--color-neutre-100); }
+</style>
+
+<!-- La planche elle-meme — pas le produit. `data-planche` : ce bloc n'entre pas
+     dans les ecrans (les iframes ne recoivent que les fondations ci-dessus). -->
+<style data-planche>
+  .planche{ background: var(--color-neutre-100); }
+  .rangee{ display:flex; flex-wrap:wrap; gap:36px 28px; align-items:flex-start; }
+  .cadre{ margin:0; width:360px; max-width:100%; }
+  .cadre iframe{ display:block; width:360px; height:760px; border:0; background:#fff;
+    border-radius:28px; box-shadow: 0 0 0 1px var(--color-neutre-300), var(--shadow-flottant); }
+  .cadre--large{ width:100%; }
+  .boite-large{ max-width:100%; overflow-x:auto; padding:2px 2px 12px; }
+  .cadre--large iframe{ width:1280px; height:800px; border-radius:16px; }
+  .cadre figcaption{ margin-top:14px; }
+  .num{ font-family:var(--font-mono); font-size:15px; font-weight:600; color:var(--color-teal-700); }
+  /* a 360 px, l'ecran prend toute la largeur : pas de marge qui ferait deborder */
+  @media (max-width:420px){ .bord{ padding-inline:0 !important; } .bord .cadre figcaption{ padding-inline:16px; } }
+</style>
+</head>
+
+<body class="planche font-sans text-neutre-900 antialiased">
+
+<svg width="0" height="0" class="hidden" aria-hidden="true" focusable="false" id="src-sprite"><defs>
+<symbol id="i-ventouse" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.1"><circle cx="16" cy="16" r="13.2"/><circle cx="16" cy="16" r="7.4"/><circle cx="16" cy="16" r="2.2" fill="currentColor" stroke="none"/></symbol>
+<symbol id="i-loupe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m16.6 16.6 4.4 4.4"/></symbol>
+<symbol id="i-tel" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6.6 3.5h2.9l1.5 4-2 1.4a12.4 12.4 0 0 0 6.1 6.1l1.4-2 4 1.5v2.9a2 2 0 0 1-2.2 2A16.6 16.6 0 0 1 4.6 5.7a2 2 0 0 1 2-2.2Z"/></symbol>
+<symbol id="i-mail" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="m3.8 7 8.2 5.8L20.2 7"/></symbol>
+<symbol id="i-globe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="12" r="8.6"/><path d="M3.4 12h17.2M12 3.4c4.4 4.8 4.4 12.4 0 17.2-4.4-4.8-4.4-12.4 0-17.2Z"/></symbol>
+<symbol id="i-insta" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><rect x="3.2" y="3.2" width="17.6" height="17.6" rx="5.2"/><circle cx="12" cy="12" r="4.1"/><circle cx="17.2" cy="6.8" r=".95" fill="currentColor" stroke="none"/></symbol>
+<symbol id="i-pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21.2s7.2-6.6 7.2-11.3a7.2 7.2 0 1 0-14.4 0C4.8 14.6 12 21.2 12 21.2Z"/><circle cx="12" cy="9.8" r="2.7"/></symbol>
+<symbol id="i-etoile" viewBox="0 0 24 24"><path fill="currentColor" d="m12 3.4 2.7 5.5 6 .9-4.3 4.2 1 6-5.4-2.8-5.4 2.8 1-6L3.3 9.8l6-.9z"/></symbol>
+<symbol id="i-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9.5 5 7 7-7 7"/></symbol>
+<symbol id="i-retour" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M19.5 12H5M11 6l-6 6 6 6"/></symbol>
+<symbol id="i-plume" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m4.5 19.5 4.2-.8L20.1 7.4a2.35 2.35 0 0 0-3.3-3.3L5.3 15.3l-.8 4.2Z"/><path d="m15.3 5.5 3.3 3.3"/></symbol>
+<symbol id="i-signal" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5.8 21.2V3.4M5.8 4h11.4l-2.3 4.3 2.3 4.3H5.8"/></symbol>
+<symbol id="i-fermer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="m6.5 6.5 11 11M17.5 6.5l-11 11"/></symbol>
+<symbol id="i-coeur" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20.4C10.3 19.2 4.2 15 4.2 10.6A4.4 4.4 0 0 1 12 7.8a4.4 4.4 0 0 1 7.8 2.8c0 4.4-6.1 8.6-7.8 9.8Z"/></symbol>
+<symbol id="i-dl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.6v11M7.4 10.2 12 14.8l4.6-4.6M4.4 19.6h15.2"/></symbol>
+<symbol id="i-groupe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8.4" r="3.4"/><path d="M2.8 20.2a6.2 6.2 0 0 1 12.4 0"/><path d="M16.4 5.4a3.4 3.4 0 0 1 0 6.6M17.6 14.6a6.2 6.2 0 0 1 3.6 5.6"/></symbol>
+<symbol id="i-visio" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="2.8" y="6" width="12.6" height="12" rx="2.8"/><path d="m15.4 12.6 5.8 3.6V7.8l-5.8 3.6Z"/></symbol>
+<symbol id="i-alerte" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7.6v5.2M12 16.3v.1"/></symbol>
+<!-- les dix catégories -->
+<symbol id="c-sante" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4.6 19.6C3.4 11 9.6 4.4 19.8 3.8c1 10.2-5.4 16.4-14 15.4Z"/><path d="M4.6 19.6 13 11.2"/></symbol>
+<symbol id="c-beaute" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="6.6" cy="17.8" r="2.6"/><circle cx="6.6" cy="6.2" r="2.6"/><path d="M8.6 7.9 20 19.4M8.6 16.1 20 4.6"/></symbol>
+<symbol id="c-artisanat" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m14.6 6.4-11 11 3 3 11-11"/><path d="m13.2 8.2 3 3"/><path d="m15 3.4 5.6 5.6-2.4 2.4-5.6-5.6z"/></symbol>
+<symbol id="c-alimentation" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3.8 14.6c0-4.4 3.7-7.8 8.2-7.8s8.2 3.4 8.2 7.8v1.6a2.4 2.4 0 0 1-2.4 2.4H6.2a2.4 2.4 0 0 1-2.4-2.4Z"/><path d="M9 8.2 8.2 17M12.6 7.4 12 17M16.2 9 15.8 17"/></symbol>
+<symbol id="c-conseil" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3.8 20.2h16.4"/><path d="M6.6 20.2v-6.6M11.4 20.2V8.4M16.2 20.2V4.6"/></symbol>
+<symbol id="c-numerique" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="2.8" y="4" width="18.4" height="12.6" rx="2.4"/><path d="M9.4 20.4h5.2M12 16.6v3.8"/><path d="m10.2 8.4-1.8 1.9 1.8 1.9M13.8 8.4l1.8 1.9-1.8 1.9"/></symbol>
+<symbol id="c-enfance" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M7.4 8.2V6.6a4.6 4.6 0 0 1 9.2 0v1.6"/><rect x="3.8" y="8.2" width="16.4" height="12" rx="3.2"/><path d="M9.4 14.2h5.2"/></symbol>
+<symbol id="c-sport" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="15.4" cy="4.9" r="2.1"/><path d="m12.4 21 2.2-6-3.6-2.6.9-4.8 3 3 3.1 1"/><path d="m8.2 21 2.6-5.2M11.9 8.6 8.4 10"/></symbol>
+<symbol id="c-art" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20.8a8.8 8.8 0 1 1 8.8-8.8c0 2-1.7 2.6-3.1 2.6h-1.3a2.3 2.3 0 0 0-2.3 2.3c0 .8.5 1.2.5 2 0 1.1-.9 1.9-2.6 1.9Z"/><circle cx="8" cy="9.4" r="1.1" fill="currentColor" stroke="none"/><circle cx="12.4" cy="7.4" r="1.1" fill="currentColor" stroke="none"/><circle cx="16.3" cy="9.8" r="1.1" fill="currentColor" stroke="none"/></symbol>
+<symbol id="c-domicile" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m3.4 11.2 8.6-7.4 8.6 7.4"/><path d="M6.2 9.6v10.6h11.6V9.6"/><path d="M10 20.2v-5.2h4v5.2"/></symbol>
+<!-- v2 · fiches en libre-service -->
+<symbol id="i-coche" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.6 4.4 4.4L19 7.4"/></symbol>
+<symbol id="i-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></symbol>
+<symbol id="i-horloge" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.6"/><path d="M12 7.4V12l3.2 2"/></symbol>
+<symbol id="i-oeil" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M2.6 12S6 5.6 12 5.6 21.4 12 21.4 12 18 18.4 12 18.4 2.6 12 2.6 12Z"/><circle cx="12" cy="12" r="3"/></symbol>
+<symbol id="i-photo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4.4 7.6h3l1.6-2.4h6l1.6 2.4h3a1.6 1.6 0 0 1 1.6 1.6v9a1.6 1.6 0 0 1-1.6 1.6H4.4a1.6 1.6 0 0 1-1.6-1.6v-9a1.6 1.6 0 0 1 1.6-1.6Z"/><circle cx="12" cy="13.4" r="3.6"/></symbol>
+<symbol id="i-corbeille" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4.6 6.8h14.8M9.4 6.8V4.6h5.2v2.2M6.6 6.8l.9 12.6a1.6 1.6 0 0 0 1.6 1.4h5.8a1.6 1.6 0 0 0 1.6-1.4l.9-12.6M10.2 10.6v6M13.8 10.6v6"/></symbol>
+<symbol id="c-logement" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="15.6" r="4.2"/><path d="m11 12.6 8.4-8.4"/><path d="m16.6 7 2.6 2.6"/><path d="m14 9.6 2 2"/></symbol>
+<!-- admin : cinq icones de plus, meme trace (1,7 px, bouts ronds) -->
+<symbol id="i-masque" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9.9 5.8A9.7 9.7 0 0 1 12 5.6c6 0 9.4 6.4 9.4 6.4a16.4 16.4 0 0 1-2.7 3.4M6.5 7.5A15.6 15.6 0 0 0 2.6 12S6 18.4 12 18.4a9.4 9.4 0 0 0 4.5-1.1"/><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/><path d="m3.8 3.8 16.4 16.4"/></symbol>
+<symbol id="i-haut" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m5.5 15 6.5-6.5 6.5 6.5"/></symbol>
+<symbol id="i-bas" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m5.5 9 6.5 6.5 6.5-6.5"/></symbol>
+<symbol id="i-lien" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M10.2 13.8a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1.1 1.1"/><path d="M13.8 10.2a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1.1-1.1"/></symbol>
+<symbol id="i-euro" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M17.8 6.6a7 7 0 1 0 0 10.8"/><path d="M4.4 10.2h8.8M4.4 13.8h8.8"/></symbol>
+<symbol id="i-relance" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M19.4 12a7.4 7.4 0 1 1-2.2-5.2"/><path d="M19.6 4.4v4.4h-4.4"/></symbol>
+</defs></svg>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     LA PLANCHE
+     ═══════════════════════════════════════════════════════════════════════ -->
+<main class="bord mx-auto max-w-[1360px] px-4 sm:px-8 py-10">
+
+  <header class="px-4 sm:px-0 max-w-[76ch]">
+    <p class="text-etiquette font-semibold uppercase text-sauge-800">Maquette v2 · /admin</p>
+    <h1 class="ff mt-2 text-grand text-teal-900">La relecture d'Adrien</h1>
+    <div class="filet h-[3px] w-16 rounded-full mt-3"></div>
+    <p class="mt-4 text-chapo text-neutre-800">
+      Une seule personne s'en sert, sur son téléphone ou son portable. Les mêmes blocs que l'annuaire,
+      plus serrés quand l'écran le permet.
+    </p>
+    <ul class="mt-5 grid gap-2 list-none p-0 m-0 text-corps text-neutre-800">
+      <li class="flex gap-2.5"><svg class="w-4 h-4 mt-1.5 shrink-0 text-teal-600" aria-hidden="true"><use href="#i-ventouse"/></svg>
+        <span>Chaque cadre est un vrai écran : 360&nbsp;px, ou 1280&nbsp;×&nbsp;800 pour le portable. On peut y faire défiler la page.</span></li>
+      <li class="flex gap-2.5"><svg class="w-4 h-4 mt-1.5 shrink-0 text-teal-600" aria-hidden="true"><use href="#i-ventouse"/></svg>
+        <span><strong class="font-semibold text-neutre-900">Aucun bouton orange hors de l'aperçu.</strong> Les actions d'Adrien
+        sont teal ; le seul bouton orange est l'«&nbsp;Appeler&nbsp;» que verront les voisins.</span></li>
+      <li class="flex gap-2.5"><svg class="w-4 h-4 mt-1.5 shrink-0 text-teal-600" aria-hidden="true"><use href="#i-ventouse"/></svg>
+        <span>Tout motif écrit ici part tel quel à la personne, par e-mail (DSA, art.&nbsp;17).</span></li>
+      <li class="flex gap-2.5"><svg class="w-4 h-4 mt-1.5 shrink-0 text-teal-600" aria-hidden="true"><use href="#i-ventouse"/></svg>
+        <span>Personnes fictives (<code class="font-mono text-[15px] text-teal-800">_shared/members.json</code>), téléphones en
+        <span class="tnum">06&nbsp;39&nbsp;98&nbsp;00&nbsp;xx</span>. Nous sommes le 27&nbsp;octobre.</span></li>
+    </ul>
+  </header>
+
+  <!-- ═══ 1 · la file ═══ -->
+  <section class="mt-14" aria-labelledby="s1">
+    <div class="px-4 sm:px-0">
+      <p class="num">1</p>
+      <h2 id="s1" class="ff mt-1 text-nom text-teal-900">La file d'attente</h2>
+      <p class="mt-2 text-corps text-neutre-800 max-w-[72ch]">La plus ancienne en haut. Les signaux demandent un regard, ils ne décident rien.</p>
+    </div>
+    <div class="rangee mt-6">
+      <figure class="cadre"><iframe data-ecran="e-file" title="1a — la file, trois fiches"></iframe>
+        <figcaption><span class="num">1a</span> <span class="text-corps font-semibold text-teal-900">Trois fiches, trois cas.</span>
+          <span class="block text-[16px] text-neutre-700">Hors du quartier ; doublon possible (même téléphone que Léa) et «&nbsp;aucune catégorie ne convient&nbsp;», avec la note de Karim ; rien à signaler.</span></figcaption></figure>
+      <figure class="cadre"><iframe data-ecran="e-file-vide" data-compte="0" title="1b — la file vide"></iframe>
+        <figcaption><span class="num">1b</span> <span class="text-corps font-semibold text-teal-900">Rien à relire.</span>
+          <span class="block text-[16px] text-neutre-700">La seule apparition de Colly dans l'admin.</span></figcaption></figure>
+    </div>
+    <figure class="cadre cadre--large mt-10"><div class="boite-large"><iframe data-ecran="l-revue" title="1c — la file et la relecture, sur portable"></iframe></div>
+      <figcaption class="px-4 sm:px-0"><span class="num">1c · 1280</span> <span class="text-corps font-semibold text-teal-900">Sur portable, la file et la relecture côte à côte.</span>
+        <span class="block text-[16px] text-neutre-700">À gauche la file, au centre la fiche à la largeur d'un téléphone (c'est là que les voisins la liront), à droite la décision, qui reste en vue pendant qu'on fait défiler.</span></figcaption></figure>
+  </section>
+
+  <!-- ═══ 2 · relire une fiche ═══ -->
+  <section class="mt-16" aria-labelledby="s2">
+    <div class="px-4 sm:px-0">
+      <p class="num">2</p>
+      <h2 id="s2" class="ff mt-1 text-nom text-teal-900">Relire une fiche</h2>
+      <p class="mt-2 text-corps text-neutre-800 max-w-[72ch]">Ce qui ne se voit pas sur la fiche (signaux, compte, accords) d'abord ; puis la fiche entière, telle que les voisins la verront. «&nbsp;Publier&nbsp;» et «&nbsp;Refuser…&nbsp;» restent collés en bas.</p>
+    </div>
+    <div class="rangee mt-6">
+      <figure class="cadre"><iframe data-ecran="e-revue" title="2a — relecture, le haut"></iframe>
+        <figcaption><span class="num">2a</span> <span class="text-corps font-semibold text-teal-900">Ce qu'Adrien doit savoir.</span>
+          <span class="block text-[16px] text-neutre-700">Le signal expliqué, l'adresse figée de la fiche, les accords cochés.</span></figcaption></figure>
+      <figure class="cadre"><iframe data-ecran="e-revue" data-defile="#apercu" title="2b — relecture, l'aperçu"></iframe>
+        <figcaption><span class="num">2b</span> <span class="text-corps font-semibold text-teal-900">La fiche, telle que publiée.</span>
+          <span class="block text-[16px] text-neutre-700">Les mêmes blocs que la page publique. Hors du plan : pas de lien «&nbsp;sur la carte&nbsp;». Tarifs et horaires placés comme dans le brouillon <code class="font-mono text-[15px] text-teal-800">v2/membre.html</code>.</span></figcaption></figure>
+      <figure class="cadre"><iframe data-ecran="e-revue-refus" title="2c — refuser, motif obligatoire"></iframe>
+        <figcaption><span class="num">2c</span> <span class="text-corps font-semibold text-teal-900">Refuser : le motif est obligatoire.</span>
+          <span class="block text-[16px] text-neutre-700">Envoyé vide, il passe en erreur. Le bouton n'est jamais grisé. Les trois motifs fréquents pré-remplissent.</span></figcaption></figure>
+      <figure class="cadre"><iframe data-ecran="e-refus-ok" data-compte="2" title="2d — refus envoyé"></iframe>
+        <figcaption><span class="num">2d</span> <span class="text-corps font-semibold text-teal-900">Après «&nbsp;Envoyer le refus&nbsp;».</span>
+          <span class="block text-[16px] text-neutre-700">Le motif exact, à qui et quand. Retour à la file, fiche suivante en haut.</span></figcaption></figure>
+      <figure class="cadre"><iframe data-ecran="e-publie-ok" data-compte="1" title="2e — fiche publiée"></iframe>
+        <figcaption><span class="num">2e</span> <span class="text-corps font-semibold text-teal-900">Après «&nbsp;Publier&nbsp;».</span>
+          <span class="block text-[16px] text-neutre-700">La mise en ligne prend quelques minutes : l'adresse définitive est donnée tout de suite.</span></figcaption></figure>
+    </div>
+    <figure class="cadre cadre--large mt-10"><div class="boite-large"><iframe data-ecran="l-revue-refus" title="2f — refuser, sur portable"></iframe></div>
+      <figcaption class="px-4 sm:px-0"><span class="num">2f · 1280</span> <span class="text-corps font-semibold text-teal-900">Refuser, sur portable.</span>
+        <span class="block text-[16px] text-neutre-700">Le formulaire de «&nbsp;La file d'attente&nbsp;», tel quel, à la place des deux boutons. La fiche reste visible pendant qu'on écrit.</span></figcaption></figure>
+  </section>
+
+  <!-- ═══ 3 · toutes les fiches ═══ -->
+  <section class="mt-16" aria-labelledby="s3">
+    <div class="px-4 sm:px-0">
+      <p class="num">3</p>
+      <h2 id="s3" class="ff mt-1 text-nom text-teal-900">Toutes les fiches</h2>
+      <p class="mt-2 text-corps text-neutre-800 max-w-[72ch]">Chercher, voir l'état de chacune, masquer avec un motif. En haut, l'état de la dernière mise en ligne.</p>
+    </div>
+    <div class="rangee mt-6">
+      <figure class="cadre"><iframe data-ecran="e-fiches" data-onglet="fiches" title="3a — toutes les fiches"></iframe>
+        <figcaption><span class="num">3a</span> <span class="text-corps font-semibold text-teal-900">Site à jour.</span>
+          <span class="block text-[16px] text-neutre-700">Quatre états, chacun avec un mot et une icône. Les fiches importées disent «&nbsp;Sans compte&nbsp;».</span></figcaption></figure>
+      <figure class="cadre"><iframe data-ecran="e-fiches-echec" data-onglet="fiches" data-recherche="mar" title="3b — mise en ligne échouée, recherche"></iframe>
+        <figcaption><span class="num">3b</span> <span class="text-corps font-semibold text-teal-900">Mise en ligne échouée.</span>
+          <span class="block text-[16px] text-neutre-700">Rien n'est perdu, et l'alerte le dit en premier. Aucune donnée de fiche n'y figure. Sous l'alerte, la recherche «&nbsp;mar&nbsp;» (tapez, elle filtre).</span></figcaption></figure>
+      <figure class="cadre"><iframe data-ecran="e-ines-masquer" data-onglet="fiches" title="3c — masquer une fiche"></iframe>
+        <figcaption><span class="num">3c</span> <span class="text-corps font-semibold text-teal-900">Masquer : avec un motif.</span>
+          <span class="block text-[16px] text-neutre-700">Envoyé à Inès. Sa fiche quitte l'annuaire à la prochaine mise en ligne.</span></figcaption></figure>
+      <figure class="cadre"><iframe data-ecran="e-julien-masquee" data-onglet="fiches" title="3d — une fiche masquée"></iframe>
+        <figcaption><span class="num">3d</span> <span class="text-corps font-semibold text-teal-900">Masquée, et corrigée depuis.</span>
+          <span class="block text-[16px] text-neutre-700">Le motif reste affiché. «&nbsp;Remettre en ligne&nbsp;» ne demande rien de plus.</span></figcaption></figure>
+    </div>
+    <figure class="cadre cadre--large mt-10"><div class="boite-large"><iframe data-ecran="e-fiches-echec" data-onglet="fiches" title="3e — toutes les fiches, sur portable"></iframe></div>
+      <figcaption class="px-4 sm:px-0"><span class="num">3e · 1280</span> <span class="text-corps font-semibold text-teal-900">Sur portable, un tableau.</span>
+        <span class="block text-[16px] text-neutre-700">Même liste, mêmes lignes : la grille s'ouvre en colonnes (fiche, état, compte, date). Les noms passent à la ligne, jamais coupés.</span></figcaption></figure>
+  </section>
+
+  <!-- ═══ 4 · associer un compte ═══ -->
+  <section class="mt-16" aria-labelledby="s4">
+    <div class="px-4 sm:px-0">
+      <p class="num">4</p>
+      <h2 id="s4" class="ff mt-1 text-nom text-teal-900">Associer une fiche à son compte</h2>
+      <p class="mt-2 text-corps text-neutre-800 max-w-[72ch]">Les six fiches importées n'ont pas de propriétaire. Nadia Berrada est l'une d'elles.</p>
+    </div>
+    <div class="rangee mt-6">
+      <figure class="cadre"><iframe data-ecran="e-nadia-a" data-onglet="fiches" title="4a — associer, l'e-mail saisi"></iframe>
+        <figcaption><span class="num">4a</span> <span class="text-corps font-semibold text-teal-900">Sans compte.</span>
+          <span class="block text-[16px] text-neutre-700">L'e-mail avec lequel Nadia se connecte, puis «&nbsp;Associer à un compte&nbsp;».</span></figcaption></figure>
+      <figure class="cadre"><iframe data-ecran="e-nadia-ok" data-onglet="fiches" data-defile="#t-compte" title="4b — associée"></iframe>
+        <figcaption><span class="num">4b</span> <span class="text-corps font-semibold text-teal-900">Associée.</span>
+          <span class="block text-[16px] text-neutre-700">Nadia peut modifier sa fiche dès maintenant.</span></figcaption></figure>
+      <figure class="cadre"><iframe data-ecran="e-nadia-sans" data-onglet="fiches" data-defile="#t-compte" title="4c — pas encore de compte"></iframe>
+        <figcaption><span class="num">4c</span> <span class="text-corps font-semibold text-teal-900">Pas encore de compte à cette adresse.</span>
+          <span class="block text-[16px] text-neutre-700">Ce n'est pas une erreur : Nadia doit se connecter une fois. D'où l'invitation (spec §13, étape 5).</span></figcaption></figure>
+    </div>
+    <figure class="cadre cadre--large mt-10"><div class="boite-large"><iframe data-ecran="e-nadia-sans" data-onglet="fiches" title="4d — la fiche de Nadia, sur portable"></iframe></div>
+      <figcaption class="px-4 sm:px-0"><span class="num">4d · 1280</span> <span class="text-corps font-semibold text-teal-900">La page d'une fiche, sur portable.</span>
+        <span class="block text-[16px] text-neutre-700">Le compte à gauche, les diapositives à droite : tout ce qu'Adrien fait sur une fiche publiée tient sur un écran.</span></figcaption></figure>
+  </section>
+
+  <!-- ═══ 5 · les diapositives ═══ -->
+  <section class="mt-16" aria-labelledby="s5">
+    <div class="px-4 sm:px-0">
+      <p class="num">5</p>
+      <h2 id="s5" class="ff mt-1 text-nom text-teal-900">Les diapositives du carrousel</h2>
+      <p class="mt-2 text-corps text-neutre-800 max-w-[72ch]">Celles de l'association, déposées par Adrien. Les mots d'une diapositive n'existent que dans son texte : sans lui, une personne aveugle n'en saura rien.</p>
+    </div>
+    <div class="rangee mt-6">
+      <figure class="cadre"><iframe data-ecran="e-nadia-diapos" data-onglet="fiches" data-defile="#t-diapos" title="5a — diapositives, un texte manque"></iframe>
+        <figcaption><span class="num">5a</span> <span class="text-corps font-semibold text-teal-900">Un texte manque.</span>
+          <span class="block text-[16px] text-neutre-700">Monter, descendre : des boutons de 44&nbsp;px, pas un glisser-déposer. L'erreur est à côté du champ, et rappelée près d'«&nbsp;Enregistrer&nbsp;».</span></figcaption></figure>
+      <figure class="cadre"><iframe data-ecran="e-nadia-diapos-edition" data-onglet="fiches" data-defile="#t-diapos" title="5b — déplacer, supprimer, envoyer"></iframe>
+        <figcaption><span class="num">5b</span> <span class="text-corps font-semibold text-teal-900">Déplacer, supprimer, ajouter.</span>
+          <span class="block text-[16px] text-neutre-700">Un autre moment, une autre série : «&nbsp;Commandes&nbsp;» vient de monter, la suppression se confirme sur place, deux nouvelles s'envoient, réduites sur le téléphone.</span></figcaption></figure>
+    </div>
+    <figure class="cadre cadre--large mt-10"><div class="boite-large"><iframe data-ecran="e-nadia-diapos" data-onglet="fiches" title="5c — diapositives, sur portable"></iframe></div>
+      <figcaption class="px-4 sm:px-0"><span class="num">5c · 1280</span> <span class="text-corps font-semibold text-teal-900">Sur portable.</span>
+        <span class="block text-[16px] text-neutre-700">La vignette à gauche de son texte : on écrit en regardant l'image.</span></figcaption></figure>
+  </section>
+</main>
+
+
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     LES MORCEAUX — <div data-inclure="id"></div> est remplacé par le gabarit.
+     ═══════════════════════════════════════════════════════════════════════ -->
+
+<!-- l'en-tête de l'admin : le bloc « L'en-tête », blanc, son filet ; les onglets teal -->
+<template id="p-entete">
+  <header class="bg-white">
+    <div class="mx-auto max-w-[1160px] px-5 pt-2 pb-3 lg:py-2 flex flex-wrap items-center justify-between gap-x-8 gap-y-2">
+      <a href="/" class="flex items-center gap-2.5 -ml-0.5 min-h-[44px]" aria-label="Annuaire de la Cartoucherie, accueil">
+        <svg class="w-8 h-8 text-teal-700 shrink-0" aria-hidden="true"><use href="#i-ventouse"/></svg>
+        <span class="leading-none">
+          <span class="block text-[11.5px] uppercase tracking-[.18em] text-neutre-700 font-semibold">Annuaire de</span>
+          <span class="ff block text-[20px] text-teal-900 leading-tight">la Cartoucherie</span>
+        </span>
+      </a>
+      <p class="text-etiquette font-semibold uppercase text-sauge-800 lg:order-last">Admin</p>
+      <nav aria-label="Administration" class="w-full lg:w-auto lg:flex-1 -ml-1">
+        <ul class="flex gap-2 list-none p-0 m-0">
+          <li><a href="/admin" data-onglet="file" class="group inline-flex items-center gap-2 min-h-[44px] px-4 rounded-full text-corps font-semibold text-teal-700 hover:bg-teal-50 aria-[current=page]:bg-teal-700 aria-[current=page]:text-white">
+            À relire <span data-compte-file class="tnum min-w-[28px] rounded-full bg-teal-100 px-2 text-center text-[16px] text-teal-900 group-aria-[current=page]:bg-white">3</span></a></li>
+          <li><a href="/admin/fiches" data-onglet="fiches" class="group inline-flex items-center gap-2 min-h-[44px] px-4 rounded-full text-corps font-semibold text-teal-700 hover:bg-teal-50 aria-[current=page]:bg-teal-700 aria-[current=page]:text-white">
+            Fiches <span class="tnum min-w-[28px] rounded-full bg-teal-100 px-2 text-center text-[16px] text-teal-900 group-aria-[current=page]:bg-white">12</span></a></li>
+        </ul>
+      </nav>
+    </div>
+    <div class="filet h-[3px]"></div>
+  </header>
+</template>
+
+<!-- ─── la file : les lignes, du bloc « La file d'attente », verbatim ─── -->
+<template id="p-ligne-pierre">
+        <li>
+          <article class="carte rounded-[20px] bg-white overflow-hidden">
+            <div class="flex gap-4 p-4">
+              <img src="https://randomuser.me/api/portraits/men/59.jpg" alt="Portrait de Pierre Delmas"
+                   width="128" height="128" class="arche w-[96px] h-[116px] shrink-0 object-cover" style="object-position:50% 22%">
+              <div class="min-w-0 flex-1">
+                <h3 class="ff text-[21px] leading-tight text-teal-900">
+                  <a href="/admin/fiche/pierre-delmas" class="underline decoration-teal-300 underline-offset-4 hover:decoration-teal-600">Pierre Delmas</a>
+                </h3>
+                <p class="mt-0.5 text-corps leading-snug text-neutre-800">Expert-comptable</p>
+                <p class="mt-1 text-[16px] text-neutre-700">Envoyée le 22&nbsp;oct.</p>
+                <ul class="mt-2 flex flex-wrap gap-1.5 list-none p-0 m-0">
+                  <li class="inline-flex items-center gap-1.5 rounded-full bg-sable-200 px-2.5 py-1 text-[16px] font-semibold text-teal-950">
+                    <svg class="w-4 h-4 shrink-0" aria-hidden="true"><use href="#i-signal"/></svg>Hors du quartier
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="flex gap-2.5 px-4 pb-4">
+              <button type="button" class="flex-1 inline-flex items-center justify-center gap-2 min-h-[48px] px-5 rounded-full text-corps font-semibold text-white bg-teal-700 hover:bg-teal-600">
+                <svg class="w-5 h-5" aria-hidden="true"><use href="#i-coche"/></svg>Publier
+              </button>
+              <button type="button" class="inline-flex items-center justify-center min-h-[48px] px-5 rounded-full text-corps font-semibold text-teal-700 bg-teal-50 hover:bg-teal-100">
+                Refuser…
+              </button>
+            </div>
+          </article>
+        </li>
+</template>
+
+<!-- Karim : la ligne verbatim, plus la note « aucune catégorie ne convient »
+     en pleine largeur (la colonne de 200 px est trop étroite pour la citer) -->
+<template id="p-ligne-karim">
+        <li>
+          <article class="carte rounded-[20px] bg-white overflow-hidden">
+            <div class="flex gap-4 p-4">
+              <img src="https://randomuser.me/api/portraits/men/83.jpg" alt="Portrait de Karim Ziani"
+                   width="128" height="128" class="arche w-[96px] h-[116px] shrink-0 object-cover" style="object-position:50% 22%">
+              <div class="min-w-0 flex-1">
+                <h3 class="ff text-[21px] leading-tight text-teal-900">
+                  <a href="/admin/fiche/karim-ziani" class="underline decoration-teal-300 underline-offset-4 hover:decoration-teal-600">Karim Ziani</a>
+                </h3>
+                <p class="mt-0.5 text-corps leading-snug text-neutre-800">Photographe</p>
+                <p class="mt-1 text-[16px] text-neutre-700">Envoyée le 24&nbsp;oct.</p>
+                <ul class="mt-2 flex flex-wrap gap-1.5 list-none p-0 m-0">
+                  <li class="inline-flex items-center gap-1.5 rounded-full bg-sable-200 px-2.5 py-1 text-[16px] font-semibold text-teal-950">
+                    <svg class="w-4 h-4 shrink-0" aria-hidden="true"><use href="#i-signal"/></svg>Doublon possible
+                  </li>
+                  <li class="inline-flex items-center gap-1.5 rounded-full bg-sable-200 px-2.5 py-1 text-[16px] font-semibold text-teal-950">
+                    <svg class="w-4 h-4 shrink-0" aria-hidden="true"><use href="#i-signal"/></svg>Aucune catégorie
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <figure class="mx-4 mb-4 mt-0 rounded-[14px] bg-sable-100 px-4 py-3 text-[16px] leading-snug text-teal-950">
+              <p class="m-0"><span class="font-semibold">Doublon possible&nbsp;:</span> même téléphone, <span class="tnum whitespace-nowrap">06&nbsp;39&nbsp;98&nbsp;00&nbsp;14</span>, que
+                <a href="/admin/fiche/lea-fontaine" class="font-semibold text-teal-800 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">Léa Fontaine</a>, en ligne.</p>
+              <figcaption class="mt-2.5 font-semibold">Aucune catégorie ne convient, écrit Karim&nbsp;:</figcaption>
+              <blockquote class="mt-1 mx-0 mb-0">«&nbsp;Je fais surtout de la vidéo de mariage. Il manque une catégorie Événements.&nbsp;»</blockquote>
+            </figure>
+            <div class="flex gap-2.5 px-4 pb-4">
+              <button type="button" class="flex-1 inline-flex items-center justify-center gap-2 min-h-[48px] px-5 rounded-full text-corps font-semibold text-white bg-teal-700 hover:bg-teal-600">
+                <svg class="w-5 h-5" aria-hidden="true"><use href="#i-coche"/></svg>Publier
+              </button>
+              <button type="button" class="inline-flex items-center justify-center min-h-[48px] px-5 rounded-full text-corps font-semibold text-teal-700 bg-teal-50 hover:bg-teal-100">
+                Refuser…
+              </button>
+            </div>
+          </article>
+        </li>
+</template>
+
+<template id="p-ligne-amandine">
+        <li>
+          <article class="carte rounded-[20px] bg-white overflow-hidden">
+            <div class="flex gap-4 p-4">
+              <img src="https://randomuser.me/api/portraits/women/12.jpg" alt="Portrait d'Amandine Rey"
+                   width="128" height="128" class="arche w-[96px] h-[116px] shrink-0 object-cover" style="object-position:50% 22%">
+              <div class="min-w-0 flex-1">
+                <h3 class="ff text-[21px] leading-tight text-teal-900">
+                  <a href="/admin/fiche/amandine-rey" class="underline decoration-teal-300 underline-offset-4 hover:decoration-teal-600">Amandine Rey</a>
+                </h3>
+                <p class="mt-0.5 text-corps leading-snug text-neutre-800">Coiffeuse à domicile</p>
+                <p class="mt-1 text-[16px] text-neutre-700">Envoyée le 26&nbsp;oct.</p>
+              </div>
+            </div>
+            <div class="flex gap-2.5 px-4 pb-4">
+              <button type="button" class="flex-1 inline-flex items-center justify-center gap-2 min-h-[48px] px-5 rounded-full text-corps font-semibold text-white bg-teal-700 hover:bg-teal-600">
+                <svg class="w-5 h-5" aria-hidden="true"><use href="#i-coche"/></svg>Publier
+              </button>
+              <button type="button" class="inline-flex items-center justify-center min-h-[48px] px-5 rounded-full text-corps font-semibold text-teal-700 bg-teal-50 hover:bg-teal-100">
+                Refuser…
+              </button>
+            </div>
+          </article>
+        </li>
+</template>
+
+<!-- ─── 1a · la file ─── -->
+<template id="e-file">
+  <div data-inclure="p-entete"></div>
+  <main class="px-4 pt-6 pb-10">
+    <h1 class="ff px-1 text-nom text-teal-900">À relire</h1>
+    <p class="mt-1.5 px-1 text-[16px] text-neutre-700">3 fiches, la plus ancienne en haut.</p>
+    <ul class="mt-4 grid gap-3 list-none p-0 m-0">
+      <div data-inclure="p-ligne-pierre"></div>
+      <div data-inclure="p-ligne-karim"></div>
+      <div data-inclure="p-ligne-amandine"></div>
+    </ul>
+  </main>
+</template>
+
+<!-- ─── 1b · la file vide : le panneau sable de « Les états Colly » ─── -->
+<template id="e-file-vide">
+  <div data-inclure="p-entete"></div>
+  <main class="px-4 pt-6 pb-10">
+    <h1 class="ff px-1 text-nom text-teal-900">À relire</h1>
+    <div class="mt-5 relative rounded-[26px] bg-sable-100 px-5 py-8 overflow-hidden text-center">
+      <div class="ventouses pointer-events-none absolute inset-x-0 top-0 h-[220px]"
+           style="-webkit-mask-image:linear-gradient(to bottom,#000 58%,transparent); mask-image:linear-gradient(to bottom,#000 58%,transparent)"></div>
+      <div class="relative">
+        <div class="mx-auto w-[148px] h-[148px] rounded-full bg-sable-200 overflow-hidden grid place-items-center"
+             style="box-shadow: inset 0 0 0 2px var(--color-sable-300), 0 0 0 8px var(--color-sable-50)">
+          <img src="../_shared/colly/colly-salut.png" alt="" width="320" height="305" class="croquis w-[170px] h-auto">
+        </div>
+        <p class="ff mt-6 text-[28px] leading-tight text-teal-950">Rien à relire.</p>
+        <p class="mt-2 text-corps text-teal-950">La prochaine fiche envoyée arrivera ici, et par e-mail.</p>
+        <a href="/admin/fiches" class="mt-5 inline-flex items-center gap-2 min-h-[48px] px-5 rounded-full text-corps font-semibold text-white bg-teal-700 hover:bg-teal-600">
+          Voir toutes les fiches<svg class="w-4 h-4" aria-hidden="true"><use href="#i-chev"/></svg>
+        </a>
+      </div>
+    </div>
+  </main>
+</template>
+
+<!-- ─── la relecture : ce que la fiche ne montre pas ─── -->
+<template id="p-signaux-pierre">
+  <section aria-labelledby="sig-titre" class="mt-5 rounded-[22px] bg-sable-100 p-4">
+    <h2 id="sig-titre" class="flex items-center gap-2 text-[16px] font-semibold uppercase tracking-[.14em] text-teal-950">
+      <svg class="w-[18px] h-[18px] shrink-0" aria-hidden="true"><use href="#i-signal"/></svg>À regarder
+    </h2>
+    <dl class="mt-2.5 m-0">
+      <dt class="text-corps font-semibold text-teal-950">Hors du quartier</dt>
+      <dd class="m-0 mt-0.5 text-[16px] leading-snug text-teal-950">40 avenue de Lombez, à 1,9&nbsp;km de la Halle. Hors du plan&nbsp;: publiée, la fiche n'aura pas d'épingle sur la carte.</dd>
+    </dl>
+  </section>
+</template>
+
+<!-- la liste <dl> de « La relecture », sans colonne « Modifier » : Adrien ne corrige pas une fiche -->
+<template id="p-faits-pierre">
+  <dl class="mt-5 m-0 border-t border-neutre-300">
+    <div class="py-3 border-b border-neutre-300">
+      <dt class="text-[16px] font-semibold text-neutre-700">Compte</dt>
+      <dd class="m-0 text-corps text-neutre-900 break-words">p.delmas@example.fr</dd>
+    </div>
+    <div class="py-3 border-b border-neutre-300">
+      <dt class="text-[16px] font-semibold text-neutre-700">Adresse de la fiche</dt>
+      <dd class="m-0 text-corps text-neutre-900 break-words">cartoucherie.fyi/membre/pierre-delmas</dd>
+      <dd class="m-0 text-[16px] text-neutre-700">Figée dès la publication&nbsp;: c'est celle du QR code.</dd>
+    </div>
+    <div class="py-3 border-b border-neutre-300">
+      <dt class="text-[16px] font-semibold text-neutre-700">Accords</dt>
+      <dd class="m-0 flex items-start gap-1.5 text-corps text-neutre-900">
+        <svg class="w-[18px] h-[18px] mt-1 shrink-0 text-sauge-700" aria-hidden="true"><use href="#i-coche"/></svg>
+        Conditions, photo, droits sur la photo, 18&nbsp;ans ou plus
+      </dd>
+    </div>
+  </dl>
+</template>
+
+<!-- l'aperçu : le puits de « L'aperçu », et dedans la fiche publique de Pierre,
+     blocs 14 à 18 de membre.html dans leur version téléphone. Pas d'en-tête de site,
+     pas de pied de page ; la barre « Appeler » est posée à sa place, en bas. -->
+<template id="p-apercu-pierre">
+  <figure id="apercu" class="ventouses ventouses--teal m-0 rounded-[24px] bg-neutre-100 p-3">
+    <figcaption class="flex items-center gap-2 px-1.5 pt-0.5 pb-3 text-[16px] font-semibold text-teal-800">
+      <svg class="w-5 h-5" aria-hidden="true"><use href="#i-oeil"/></svg>Ce que les voisins verront
+    </figcaption>
+    <div class="carte rounded-[20px] bg-white overflow-hidden">
+      <section aria-labelledby="ap-nom">
+        <div class="ventouses relative bg-sable-200 pt-9 pb-11 rounded-b-[34px] overflow-hidden">
+          <div class="flex justify-center">
+            <img src="https://randomuser.me/api/portraits/men/59.jpg"
+                 alt="Portrait de Pierre Delmas, expert-comptable à la Cartoucherie"
+                 width="128" height="128"
+                 class="arche block w-[148px] h-[176px] object-cover bg-white"
+                 style="object-position:50% 22%; box-shadow: 0 0 0 6px #fff, var(--shadow-carte)">
+          </div>
+        </div>
+        <div class="px-4 relative -mt-8">
+          <div class="carte rounded-[24px] bg-white p-5">
+            <h2 id="ap-nom" class="ff text-grand text-teal-900">Pierre Delmas</h2>
+            <p class="mt-1.5 text-[20px] text-neutre-800">Expert-comptable</p>
+            <p class="mt-3 flex flex-wrap gap-2">
+              <span class="chip inline-flex items-center gap-2 rounded-full px-3.5 py-2 min-h-[44px] text-[16px] font-semibold">
+                <svg class="w-[18px] h-[18px]" aria-hidden="true"><use href="#c-conseil"/></svg>Conseil &amp; entreprise
+              </span>
+            </p>
+            <p class="mt-4 text-[19px] leading-relaxed text-neutre-900">
+              J'accompagne les indépendants et les petites associations du quartier.
+            </p>
+            <p class="mt-5 flex flex-wrap items-center gap-x-5 gap-y-2.5 text-[16px] text-neutre-700">
+              <span class="inline-flex items-center gap-1.5">
+                <svg class="w-[18px] h-[18px] text-teal-600" aria-hidden="true"><use href="#i-pin"/></svg>
+                À 1,9&nbsp;km de la Halle
+              </span>
+            </p>
+            <!-- v2 · l'encadré pratique, repris du brouillon docs/mockups/v2/membre.html
+                 (pas encore approuvé) : tarifs et horaires dans la carte d'identité -->
+            <div class="mt-5 border-t border-neutre-200 pt-5">
+              <dl class="m-0 grid gap-x-8 gap-y-4">
+                <div class="flex min-w-0 flex-wrap items-start gap-x-3.5 gap-y-2">
+                  <span class="pastille pastille--teal mt-0.5 h-10 w-10 shrink-0 bg-teal-50 text-teal-700"><svg class="h-5 w-5" aria-hidden="true"><use href="#i-euro"/></svg></span>
+                  <div class="min-w-[min(12rem,100%)] flex-1">
+                    <dt class="text-base text-neutre-700">Tarifs</dt>
+                    <dd class="m-0 break-words text-corps font-semibold text-neutre-900">Premier rendez-vous gratuit, puis sur devis</dd>
+                  </div>
+                </div>
+                <div class="flex min-w-0 flex-wrap items-start gap-x-3.5 gap-y-2">
+                  <span class="pastille pastille--teal mt-0.5 h-10 w-10 shrink-0 bg-teal-50 text-teal-700"><svg class="h-5 w-5" aria-hidden="true"><use href="#i-horloge"/></svg></span>
+                  <div class="min-w-[min(12rem,100%)] flex-1">
+                    <dt class="text-base text-neutre-700">Horaires</dt>
+                    <dd class="m-0 break-words text-corps font-semibold text-neutre-900">Du lundi au vendredi, 9&nbsp;h–18&nbsp;h</dd>
+                  </div>
+                </div>
+              </dl>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="px-4 py-8" aria-labelledby="ap-contact">
+        <h2 id="ap-contact" class="ff text-nom text-teal-900">Le contacter</h2>
+        <div class="filet h-[3px] w-16 rounded-full mt-2.5 mb-5"></div>
+        <ul class="grid gap-2.5 list-none p-0 m-0">
+          <li><a href="mailto:p.delmas@example.fr" class="carte carte-lien flex items-center gap-3.5 min-h-[64px] px-4 py-3 rounded-[16px] bg-white">
+            <span class="pastille pastille--teal w-10 h-10 bg-teal-50 text-teal-700 shrink-0"><svg class="w-5 h-5" aria-hidden="true"><use href="#i-mail"/></svg></span>
+            <span class="min-w-0">
+              <span class="block text-[16px] text-neutre-700">E-mail</span>
+              <span class="block text-corps font-semibold text-teal-800 break-words">p.delmas@example.fr</span>
+            </span>
+          </a></li>
+          <li><a href="https://delmas-conseil.fr" class="carte carte-lien flex items-center gap-3.5 min-h-[64px] px-4 py-3 rounded-[16px] bg-white">
+            <span class="pastille pastille--teal w-10 h-10 bg-teal-50 text-teal-700 shrink-0"><svg class="w-5 h-5" aria-hidden="true"><use href="#i-globe"/></svg></span>
+            <span class="min-w-0">
+              <span class="block text-[16px] text-neutre-700">Son site</span>
+              <span class="block text-corps font-semibold text-teal-800 break-words">delmas-conseil.fr</span>
+            </span>
+          </a></li>
+        </ul>
+      </section>
+
+      <section class="bg-neutre-100" aria-labelledby="ap-portrait">
+        <div class="px-4 py-8">
+          <h2 id="ap-portrait" class="ff text-nom text-teal-900">Son portrait</h2>
+          <div class="filet h-[3px] w-16 rounded-full mt-2.5 mb-5"></div>
+          <p class="text-[19px] leading-relaxed text-neutre-900">
+            Je travaille surtout avec des micro-entreprises et des associations. Premier rendez-vous
+            gratuit pour faire le point, souvent autour d'un café à la Halle.
+          </p>
+        </div>
+      </section>
+
+      <section class="px-4 py-8" aria-labelledby="ap-services">
+        <h2 id="ap-services" class="ff text-nom text-teal-900">Ce qu'il propose</h2>
+        <div class="filet h-[3px] w-16 rounded-full mt-2.5 mb-5"></div>
+        <ul class="grid gap-3 list-none p-0 m-0">
+          <li class="flex items-center gap-3.5 rounded-[16px] bg-neutre-100 px-4 py-4 min-h-[64px]">
+            <span class="pastille w-9 h-9 bg-white text-sauge-700 shrink-0"><svg class="w-[18px] h-[18px]" aria-hidden="true"><use href="#c-conseil"/></svg></span>
+            <span class="text-corps font-semibold text-teal-900">Comptabilité</span>
+          </li>
+          <li class="flex items-center gap-3.5 rounded-[16px] bg-neutre-100 px-4 py-4 min-h-[64px]">
+            <span class="pastille w-9 h-9 bg-white text-sauge-700 shrink-0"><svg class="w-[18px] h-[18px]" aria-hidden="true"><use href="#i-plume"/></svg></span>
+            <span class="text-corps font-semibold text-teal-900">Création d'entreprise</span>
+          </li>
+          <li class="flex items-center gap-3.5 rounded-[16px] bg-neutre-100 px-4 py-4 min-h-[64px]">
+            <span class="pastille w-9 h-9 bg-white text-sauge-700 shrink-0"><svg class="w-[18px] h-[18px]" aria-hidden="true"><use href="#i-groupe"/></svg></span>
+            <span class="text-corps font-semibold text-teal-900">Conseil associatif</span>
+          </li>
+        </ul>
+      </section>
+
+      <section class="px-4 pb-8" aria-labelledby="ap-ou">
+        <h2 id="ap-ou" class="ff text-nom text-teal-900">Où le trouver</h2>
+        <div class="filet h-[3px] w-16 rounded-full mt-2.5 mb-5"></div>
+        <div class="carte rounded-[20px] bg-white p-5 flex items-start gap-4">
+          <span class="pastille pastille--teal w-11 h-11 bg-teal-50 text-teal-700 shrink-0 mt-0.5"><svg class="w-5 h-5" aria-hidden="true"><use href="#i-pin"/></svg></span>
+          <div class="min-w-0">
+            <address class="not-italic text-[18px] leading-snug text-neutre-900 font-semibold">
+              40 avenue de Lombez<br>31300 Toulouse
+            </address>
+            <p class="mt-2 text-[16px] text-neutre-700">À 1,9&nbsp;km de la Halle</p>
+            <p class="mt-3">
+              <a href="https://www.openstreetmap.org/search?query=40%20avenue%20de%20Lombez%2031300%20Toulouse"
+                 class="inline-flex items-center gap-2 min-h-[44px] text-corps font-semibold text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">
+                Ouvrir l'itinéraire <svg class="w-4 h-4" aria-hidden="true"><use href="#i-chev"/></svg>
+              </a>
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="px-4 pb-8" aria-labelledby="ap-avis">
+        <h2 id="ap-avis" class="ff text-nom text-teal-900">Avis du quartier</h2>
+        <div class="filet h-[3px] w-16 rounded-full mt-2.5 mb-5"></div>
+        <div class="rounded-[20px] bg-neutre-100 p-5">
+          <p class="text-corps text-neutre-900">
+            <strong class="font-semibold">Aucun avis pour l'instant.</strong> Pierre est inscrit
+            depuis peu&nbsp;; personne n'a encore écrit.
+          </p>
+          <button type="button" class="mt-4 inline-flex items-center gap-2 min-h-[48px] px-5 rounded-full text-corps font-semibold text-white bg-teal-700 hover:bg-teal-600">
+            <svg class="w-[18px] h-[18px]" aria-hidden="true"><use href="#i-plume"/></svg>
+            Être le premier
+          </button>
+        </div>
+      </section>
+
+      <!-- la barre d'appel, ici dans le flux : chez le voisin, elle est collée en bas de l'écran -->
+      <div class="bg-white/95" style="box-shadow: 0 -4px 8px oklch(17.5% .03 202/.06), 0 -28px 64px -20px oklch(17.5% .03 202/.28)">
+        <div class="px-4 py-3 flex items-center gap-3">
+          <button type="button" aria-pressed="false" aria-label="Ajouter Pierre Delmas à mes favoris"
+                  class="shrink-0 grid place-items-center w-11 h-11 rounded-full text-teal-700 bg-teal-50 hover:bg-teal-100">
+            <svg class="w-6 h-6" aria-hidden="true"><use href="#i-coeur"/></svg>
+          </button>
+          <a href="tel:+33639980011"
+             class="cta flex-1 inline-flex items-center justify-center gap-2 min-h-[54px] px-5 rounded-full text-[17px] font-bold tracking-tight whitespace-nowrap transition">
+            <svg class="w-5 h-5 shrink-0" aria-hidden="true"><use href="#i-tel"/></svg>
+            Appeler 06 39 98 00 11
+          </a>
+        </div>
+      </div>
+    </div>
+    <p class="px-1.5 pt-3 pb-0.5 text-[16px] text-neutre-700">Pas encore en ligne. La barre d'appel reste collée en bas de l'écran.</p>
+  </figure>
+</template>
+
+<!-- la paire Publier / Refuser… : la barre collante de « Continuer », boutons de « La file d'attente » -->
+<template id="p-barre-decision">
+  <div class="fixed bottom-0 inset-x-0 z-40 bg-white/95 backdrop-blur-sm"
+       style="box-shadow: 0 -4px 8px oklch(17.5% .03 202/.06), 0 -28px 64px -20px oklch(17.5% .03 202/.28)">
+    <div class="mx-auto max-w-[640px] px-4 py-3 flex items-center gap-3">
+      <button type="button" class="inline-flex items-center justify-center min-h-[54px] px-5 rounded-full text-corps font-semibold text-teal-700 bg-teal-50 hover:bg-teal-100">
+        Refuser…
+      </button>
+      <button type="button" class="flex-1 inline-flex items-center justify-center gap-2 min-h-[54px] px-6 rounded-full text-[18px] font-bold tracking-tight text-white bg-teal-700 hover:bg-teal-600">
+        <svg class="w-5 h-5" aria-hidden="true"><use href="#i-coche"/></svg>Publier
+      </button>
+    </div>
+  </div>
+</template>
+
+<template id="p-revue-corps">
+  <div data-inclure="p-entete"></div>
+  <main class="px-5 pt-3 pb-[112px]">
+    <a href="/admin" class="-ml-2 inline-flex items-center gap-1.5 min-h-[44px] px-2 rounded-full text-corps font-semibold text-teal-700 hover:bg-teal-50">
+      <svg class="w-5 h-5" aria-hidden="true"><use href="#i-retour"/></svg>À relire
+    </a>
+    <p class="mt-3 text-etiquette font-semibold uppercase text-teal-700">1 sur 3 · envoyée le 22&nbsp;oct.</p>
+    <h1 class="ff mt-1.5 text-nom text-teal-900">Pierre Delmas</h1>
+    <div data-inclure="p-signaux-pierre"></div>
+    <div data-inclure="p-faits-pierre"></div>
+    <div class="mt-6"><div data-inclure="p-apercu-pierre"></div></div>
+  </main>
+</template>
+
+<!-- ─── 2a, 2b · la relecture ─── -->
+<template id="e-revue">
+  <div data-inclure="p-revue-corps"></div>
+  <div data-inclure="p-barre-decision"></div>
+</template>
+
+<!-- ─── 2c · « Refuser… » : la feuille de membre.html, et dedans le formulaire de
+     « La file d'attente », verbatim, envoyé vide : l'état erreur du champ ─── -->
+<template id="e-revue-refus">
+  <div data-inclure="p-revue-corps"></div>
+  <div class="fixed inset-0 z-40" style="background:oklch(19% .03 201/.55)" aria-hidden="true"></div>
+  <div role="dialog" aria-modal="true" aria-labelledby="refus-titre"
+       class="fixed inset-x-0 bottom-0 z-50 max-h-[92dvh] overflow-auto bg-white"
+       style="border-radius:26px 26px 0 0; box-shadow:var(--shadow-flottant)">
+    <button type="button" aria-label="Fermer"
+            class="absolute top-3 right-3 grid place-items-center w-11 h-11 rounded-full text-teal-800 hover:bg-neutre-100">
+      <svg class="w-5 h-5" aria-hidden="true"><use href="#i-fermer"/></svg>
+    </button>
+    <div class="px-5 pt-6 pb-2">
+      <p class="text-etiquette font-semibold uppercase text-sauge-800">Refuser la fiche de</p>
+      <h2 id="refus-titre" class="ff mt-1.5 text-[28px] leading-tight text-teal-900">Pierre Delmas</h2>
+    </div>
+    <form class="p-5 pt-3" onsubmit="return false">
+      <label for="v2-motif" class="block text-[16px] font-semibold text-neutre-800">Motif, envoyé à Pierre par e-mail</label>
+      <div class="mt-2 flex flex-wrap gap-2">
+        <button type="button" onclick="document.getElementById('v2-motif').value = this.dataset.motif" data-motif="Votre adresse est en dehors du quartier : l'annuaire ne présente que des voisins de la Cartoucherie."
+                class="inline-flex items-center min-h-[44px] px-3.5 rounded-full text-[16px] font-semibold text-teal-800 bg-white hover:bg-teal-50" style="box-shadow: inset 0 0 0 1.5px var(--color-teal-200)">Hors du quartier</button>
+        <button type="button" onclick="document.getElementById('v2-motif').value = this.dataset.motif" data-motif="La photo ne convient pas : il en faut une de vous seul, de face, bien nette."
+                class="inline-flex items-center min-h-[44px] px-3.5 rounded-full text-[16px] font-semibold text-teal-800 bg-white hover:bg-teal-50" style="box-shadow: inset 0 0 0 1.5px var(--color-teal-200)">Photo</button>
+        <button type="button" onclick="document.getElementById('v2-motif').value = this.dataset.motif" data-motif="Il manque un moyen de vous joindre : un téléphone ou un e-mail."
+                class="inline-flex items-center min-h-[44px] px-3.5 rounded-full text-[16px] font-semibold text-teal-800 bg-white hover:bg-teal-50" style="box-shadow: inset 0 0 0 1.5px var(--color-teal-200)">Coordonnées</button>
+      </div>
+      <div data-etat="erreur">
+        <textarea id="v2-motif" rows="3" aria-invalid="true" aria-describedby="v2-motif-err"
+                  class="champ mt-3 block w-full min-h-[104px] px-3.5 py-3 rounded-xl text-corps leading-relaxed text-neutre-900"></textarea>
+        <p id="v2-motif-err" class="mt-1.5 flex items-start gap-1.5 text-[16px] font-semibold text-rouge-700">
+          <svg class="w-[18px] h-[18px] shrink-0 mt-0.5" aria-hidden="true"><use href="#i-alerte"/></svg>
+          Écrivez le motif&nbsp;: Pierre le recevra tel quel.
+        </p>
+      </div>
+      <div class="mt-3 flex gap-2.5">
+        <button type="submit" class="flex-1 inline-flex items-center justify-center min-h-[48px] px-5 rounded-full text-corps font-semibold text-white bg-teal-700 hover:bg-teal-600">
+          Envoyer le refus
+        </button>
+        <button type="button" class="inline-flex items-center justify-center min-h-[48px] px-5 rounded-full text-corps font-semibold text-teal-700 bg-teal-50 hover:bg-teal-100">
+          Annuler
+        </button>
+      </div>
+      <p class="mt-3 text-[16px] text-neutre-700">Il pourra corriger sa fiche et la renvoyer.</p>
+    </form>
+  </div>
+</template>
+
+<!-- ─── 2d · refus envoyé : le bandeau d'état, côté Adrien ─── -->
+<template id="e-refus-ok">
+  <div data-inclure="p-entete"></div>
+  <main class="px-4 pt-5 pb-10">
+    <div role="status" class="flex items-start gap-4 rounded-[22px] bg-teal-50 p-5">
+      <span class="pastille pastille--teal w-11 h-11 mt-0.5 bg-white text-teal-700" aria-hidden="true"><svg class="w-[22px] h-[22px]"><use href="#i-mail"/></svg></span>
+      <div class="min-w-0">
+        <p class="ff text-[22px] leading-tight text-teal-950">Refus envoyé à Pierre</p>
+        <blockquote class="mt-2 mx-0 mb-0 border-l-[3px] border-teal-300 pl-3 text-[16px] leading-snug text-teal-950">
+          «&nbsp;Votre adresse est en dehors du quartier&nbsp;: l'annuaire ne présente que des voisins de la Cartoucherie.&nbsp;»
+          <span class="mt-1 block text-neutre-700 break-words">— à p.delmas@example.fr, aujourd'hui à 10&nbsp;h&nbsp;14</span>
+        </blockquote>
+      </div>
+    </div>
+    <h1 class="ff mt-7 px-1 text-nom text-teal-900">À relire</h1>
+    <p class="mt-1.5 px-1 text-[16px] text-neutre-700">2 fiches, la plus ancienne en haut.</p>
+    <ul class="mt-4 grid gap-3 list-none p-0 m-0">
+      <div data-inclure="p-ligne-karim"></div>
+      <div data-inclure="p-ligne-amandine"></div>
+    </ul>
+  </main>
+</template>
+
+<!-- ─── 2e · publiée : « Mise en ligne en cours », côté Adrien ─── -->
+<template id="e-publie-ok">
+  <div data-inclure="p-entete"></div>
+  <main class="px-4 pt-5 pb-10">
+    <div role="status" class="flex items-start gap-4 rounded-[22px] bg-teal-50 p-5">
+      <span class="pastille pastille--teal w-11 h-11 mt-0.5 bg-white text-teal-600" aria-hidden="true"><svg class="respire w-[22px] h-[22px]"><use href="#i-ventouse"/></svg></span>
+      <div class="min-w-0">
+        <p class="ff text-[22px] leading-tight text-teal-950">Fiche de Karim publiée</p>
+        <p class="mt-1.5 text-[16px] leading-snug text-teal-950">Mise en ligne en cours&nbsp;: visible d'ici quelques minutes à cette adresse.</p>
+        <p class="mt-1.5 text-[16px] font-semibold leading-snug text-teal-950 break-words">cartoucherie.fyi/membre/karim-ziani</p>
+        <p class="mt-1.5 text-[16px] leading-snug text-teal-950">Karim est prévenu par e-mail.</p>
+      </div>
+    </div>
+    <h1 class="ff mt-7 px-1 text-nom text-teal-900">À relire</h1>
+    <p class="mt-1.5 px-1 text-[16px] text-neutre-700">1 fiche.</p>
+    <ul class="mt-4 grid gap-3 list-none p-0 m-0">
+      <div data-inclure="p-ligne-amandine"></div>
+    </ul>
+  </main>
+</template>
+
+<!-- ─── portable : la file compacte (nouveau : une ligne de 64 px, la courante en teal) ─── -->
+<template id="p-file-compacte">
+  <nav aria-label="File d'attente" class="min-w-0">
+    <h1 class="ff text-[28px] leading-tight text-teal-900">À relire</h1>
+    <p class="mt-1 text-[16px] text-neutre-700">3 fiches, la plus ancienne en haut.</p>
+    <ul class="mt-4 grid gap-2.5 list-none p-0 m-0">
+      <li><a href="/admin/fiche/pierre-delmas" aria-current="true" class="flex gap-3 rounded-[18px] bg-teal-50 p-3" style="box-shadow: inset 0 0 0 2px var(--color-teal-600)">
+        <img src="https://randomuser.me/api/portraits/men/59.jpg" alt="" width="128" height="128" class="arche w-[64px] h-[78px] shrink-0 object-cover" style="object-position:50% 22%">
+        <span class="min-w-0">
+          <span class="ff block text-[19px] leading-tight text-teal-900">Pierre Delmas</span>
+          <span class="block text-[16px] text-neutre-800">Expert-comptable</span>
+          <span class="block text-[16px] text-neutre-700">Envoyée le 22&nbsp;oct.</span>
+          <span class="mt-1.5 flex flex-wrap gap-1.5">
+            <span class="inline-flex items-center gap-1.5 rounded-full bg-sable-200 px-2.5 py-0.5 text-[16px] font-semibold text-teal-950"><svg class="w-4 h-4 shrink-0" aria-hidden="true"><use href="#i-signal"/></svg>Hors du quartier</span>
+          </span>
+        </span>
+      </a></li>
+      <li><a href="/admin/fiche/karim-ziani" class="carte carte-lien flex gap-3 rounded-[18px] bg-white p-3">
+        <img src="https://randomuser.me/api/portraits/men/83.jpg" alt="" width="128" height="128" class="arche w-[64px] h-[78px] shrink-0 object-cover" style="object-position:50% 22%">
+        <span class="min-w-0">
+          <span class="ff block text-[19px] leading-tight text-teal-900">Karim Ziani</span>
+          <span class="block text-[16px] text-neutre-800">Photographe</span>
+          <span class="block text-[16px] text-neutre-700">Envoyée le 24&nbsp;oct.</span>
+          <span class="mt-1.5 flex flex-wrap gap-1.5">
+            <span class="inline-flex items-center gap-1.5 rounded-full bg-sable-200 px-2.5 py-0.5 text-[16px] font-semibold text-teal-950"><svg class="w-4 h-4 shrink-0" aria-hidden="true"><use href="#i-signal"/></svg>Doublon possible</span>
+            <span class="inline-flex items-center gap-1.5 rounded-full bg-sable-200 px-2.5 py-0.5 text-[16px] font-semibold text-teal-950"><svg class="w-4 h-4 shrink-0" aria-hidden="true"><use href="#i-signal"/></svg>Aucune catégorie</span>
+          </span>
+        </span>
+      </a></li>
+      <li><a href="/admin/fiche/amandine-rey" class="carte carte-lien flex gap-3 rounded-[18px] bg-white p-3">
+        <img src="https://randomuser.me/api/portraits/women/12.jpg" alt="" width="128" height="128" class="arche w-[64px] h-[78px] shrink-0 object-cover" style="object-position:50% 22%">
+        <span class="min-w-0">
+          <span class="ff block text-[19px] leading-tight text-teal-900">Amandine Rey</span>
+          <span class="block text-[16px] text-neutre-800">Coiffeuse à domicile</span>
+          <span class="block text-[16px] text-neutre-700">Envoyée le 26&nbsp;oct.</span>
+        </span>
+      </a></li>
+    </ul>
+  </nav>
+</template>
+
+<template id="p-decision-tete">
+  <p class="text-etiquette font-semibold uppercase text-teal-700">1 sur 3 · envoyée le 22&nbsp;oct.</p>
+  <h2 class="ff mt-1.5 text-nom text-teal-900">Pierre Delmas</h2>
+  <div data-inclure="p-signaux-pierre"></div>
+  <div data-inclure="p-faits-pierre"></div>
+</template>
+
+<!-- ─── 1c · portable : file, fiche, décision ─── -->
+<template id="l-revue">
+  <div data-inclure="p-entete"></div>
+  <div class="mx-auto max-w-[1160px] px-5 py-7 grid grid-cols-[300px_390px_minmax(0,1fr)] gap-7 items-start">
+    <div data-inclure="p-file-compacte"></div>
+    <div data-inclure="p-apercu-pierre"></div>
+    <aside class="sticky top-6 min-w-0" aria-label="Décision">
+      <div data-inclure="p-decision-tete"></div>
+      <div class="mt-5 flex gap-2.5">
+        <button type="button" class="flex-1 inline-flex items-center justify-center gap-2 min-h-[48px] px-5 rounded-full text-corps font-semibold text-white bg-teal-700 hover:bg-teal-600">
+          <svg class="w-5 h-5" aria-hidden="true"><use href="#i-coche"/></svg>Publier
+        </button>
+        <button type="button" class="inline-flex items-center justify-center min-h-[48px] px-5 rounded-full text-corps font-semibold text-teal-700 bg-teal-50 hover:bg-teal-100">
+          Refuser…
+        </button>
+      </div>
+    </aside>
+  </div>
+</template>
+
+<!-- ─── 2f · portable : « Refuser… » ouvert, le formulaire de la file, verbatim ─── -->
+<template id="l-revue-refus">
+  <div data-inclure="p-entete"></div>
+  <div class="mx-auto max-w-[1160px] px-5 py-7 grid grid-cols-[300px_390px_minmax(0,1fr)] gap-7 items-start">
+    <div data-inclure="p-file-compacte"></div>
+    <div data-inclure="p-apercu-pierre"></div>
+    <aside class="sticky top-6 min-w-0" aria-label="Décision">
+      <p class="text-etiquette font-semibold uppercase text-teal-700">1 sur 3 · envoyée le 22&nbsp;oct.</p>
+      <h2 class="ff mt-1.5 text-nom text-teal-900">Pierre Delmas</h2>
+      <div data-inclure="p-signaux-pierre"></div>
+      <form class="mt-5 rounded-[20px] border-t border-neutre-200 bg-neutre-50 p-4" onsubmit="return false" style="box-shadow: inset 0 0 0 1px var(--color-neutre-200)">
+        <label for="v2-motif" class="block text-[16px] font-semibold text-neutre-800">Motif, envoyé à Pierre par e-mail</label>
+        <div class="mt-2 flex flex-wrap gap-2">
+          <button type="button" onclick="document.getElementById('v2-motif').value = this.dataset.motif" data-motif="Votre adresse est en dehors du quartier : l'annuaire ne présente que des voisins de la Cartoucherie."
+                  class="inline-flex items-center min-h-[44px] px-3.5 rounded-full text-[16px] font-semibold text-teal-800 bg-white hover:bg-teal-50" style="box-shadow: inset 0 0 0 1.5px var(--color-teal-200)">Hors du quartier</button>
+          <button type="button" onclick="document.getElementById('v2-motif').value = this.dataset.motif" data-motif="La photo ne convient pas : il en faut une de vous seul, de face, bien nette."
+                  class="inline-flex items-center min-h-[44px] px-3.5 rounded-full text-[16px] font-semibold text-teal-800 bg-white hover:bg-teal-50" style="box-shadow: inset 0 0 0 1.5px var(--color-teal-200)">Photo</button>
+          <button type="button" onclick="document.getElementById('v2-motif').value = this.dataset.motif" data-motif="Il manque un moyen de vous joindre : un téléphone ou un e-mail."
+                  class="inline-flex items-center min-h-[44px] px-3.5 rounded-full text-[16px] font-semibold text-teal-800 bg-white hover:bg-teal-50" style="box-shadow: inset 0 0 0 1.5px var(--color-teal-200)">Coordonnées</button>
+        </div>
+        <textarea id="v2-motif" rows="3" class="champ mt-3 block w-full min-h-[104px] px-3.5 py-3 rounded-xl text-corps leading-relaxed text-neutre-900">Votre adresse est en dehors du quartier : l'annuaire ne présente que des voisins de la Cartoucherie.</textarea>
+        <div class="mt-3 flex gap-2.5">
+          <button type="submit" class="flex-1 inline-flex items-center justify-center min-h-[48px] px-5 rounded-full text-corps font-semibold text-white bg-teal-700 hover:bg-teal-600">
+            Envoyer le refus
+          </button>
+          <button type="button" class="inline-flex items-center justify-center min-h-[48px] px-5 rounded-full text-corps font-semibold text-teal-700 bg-teal-50 hover:bg-teal-100">
+            Annuler
+          </button>
+        </div>
+      </form>
+    </aside>
+  </div>
+</template>
+
+<!-- ─── 3 · l'état de la mise en ligne (nouveau) ─── -->
+<template id="p-deploi-ok">
+  <div role="status" class="flex items-center gap-3.5 rounded-[18px] bg-neutre-100 px-4 py-3">
+    <span class="pastille w-9 h-9 bg-white text-sauge-700" aria-hidden="true"><svg class="w-[18px] h-[18px]"><use href="#i-coche"/></svg></span>
+    <p class="min-w-0 text-[16px] leading-snug text-neutre-900"><strong class="font-semibold">Site à jour.</strong> Dernière mise en ligne&nbsp;: aujourd'hui, 14&nbsp;h&nbsp;32.</p>
+  </div>
+</template>
+
+<!-- l'échec : le bandeau « Refusée » de l'espace, en alerte. Ne cite aucune fiche :
+     le journal est public, et l'erreur n'y nomme qu'un numéro de ligne (spec §7). -->
+<template id="p-deploi-echec">
+  <div role="alert" class="flex items-start gap-4 rounded-[22px] bg-rouge-50 p-5" style="box-shadow: inset 0 0 0 1.5px var(--color-rouge-600)">
+    <span class="pastille pastille--rouge w-11 h-11 mt-0.5 bg-white text-rouge-700" aria-hidden="true"><svg class="w-[22px] h-[22px]"><use href="#i-alerte"/></svg></span>
+    <div class="min-w-0">
+      <p class="ff text-[22px] leading-tight text-teal-950">La mise en ligne a échoué</p>
+      <p class="mt-1.5 text-[16px] leading-snug text-teal-950">Aujourd'hui à 15&nbsp;h&nbsp;10. Rien n'est perdu&nbsp;: les modifications sont enregistrées et partiront avec la prochaine. Le site reste celui de 14&nbsp;h&nbsp;32.</p>
+      <div class="mt-3 flex flex-wrap items-center gap-x-5 gap-y-1">
+        <button type="button" class="inline-flex items-center gap-2 min-h-[48px] px-5 rounded-full text-corps font-semibold text-white bg-teal-700 hover:bg-teal-600">
+          <svg class="w-5 h-5" aria-hidden="true"><use href="#i-relance"/></svg>Relancer
+        </button>
+        <a href="https://github.com/" class="inline-flex items-center gap-1.5 min-h-[44px] text-corps font-semibold text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">
+          Voir le journal<svg class="w-4 h-4" aria-hidden="true"><use href="#i-chev"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</template>
+
+<!-- la liste : une grille qui s'ouvre en tableau à partir de lg -->
+<template id="p-liste">
+  <div class="mt-6">
+    <label for="cherche" class="block text-[16px] font-semibold text-neutre-800">Chercher une fiche</label>
+    <div class="relative mt-1.5 lg:max-w-[520px]">
+      <svg class="w-5 h-5 absolute left-3.5 top-1/2 -translate-y-1/2 text-teal-600 pointer-events-none" aria-hidden="true"><use href="#i-loupe"/></svg>
+      <input id="cherche" type="search" autocomplete="off" placeholder="nom, métier ou e-mail"
+             oninput="var q=this.value.trim().toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,''),n=0;document.querySelectorAll('[data-cherche]').forEach(function(li){var ok=!q||li.dataset.cherche.indexOf(q)>-1;li.hidden=!ok;if(ok)n++});document.getElementById('compte-liste').textContent=n+(n>1?' fiches':' fiche')"
+             class="champ w-full min-h-[52px] pl-11 pr-3.5 rounded-xl text-corps text-neutre-900 placeholder:text-neutre-600">
+    </div>
+  </div>
+  <ul class="mt-4 flex flex-wrap gap-2 list-none p-0 m-0" aria-label="État">
+    <li><button type="button" aria-pressed="true" class="inline-flex items-center gap-1.5 min-h-[44px] px-3.5 rounded-full text-[16px] font-semibold text-teal-800 bg-white aria-pressed:bg-teal-700 aria-pressed:text-white" style="box-shadow: inset 0 0 0 1.5px var(--color-teal-200)">Toutes <span class="tnum">12</span></button></li>
+    <li><button type="button" aria-pressed="false" class="inline-flex items-center gap-1.5 min-h-[44px] px-3.5 rounded-full text-[16px] font-semibold text-teal-800 bg-white hover:bg-teal-50" style="box-shadow: inset 0 0 0 1.5px var(--color-teal-200)">En ligne <span class="tnum">7</span></button></li>
+    <li><button type="button" aria-pressed="false" class="inline-flex items-center gap-1.5 min-h-[44px] px-3.5 rounded-full text-[16px] font-semibold text-teal-800 bg-white hover:bg-teal-50" style="box-shadow: inset 0 0 0 1.5px var(--color-teal-200)">En attente <span class="tnum">3</span></button></li>
+    <li><button type="button" aria-pressed="false" class="inline-flex items-center gap-1.5 min-h-[44px] px-3.5 rounded-full text-[16px] font-semibold text-teal-800 bg-white hover:bg-teal-50" style="box-shadow: inset 0 0 0 1.5px var(--color-teal-200)">Masquée <span class="tnum">1</span></button></li>
+    <li><button type="button" aria-pressed="false" class="inline-flex items-center gap-1.5 min-h-[44px] px-3.5 rounded-full text-[16px] font-semibold text-teal-800 bg-white hover:bg-teal-50" style="box-shadow: inset 0 0 0 1.5px var(--color-teal-200)">Refusée <span class="tnum">1</span></button></li>
+  </ul>
+  <p id="compte-liste" role="status" class="mt-4 text-[16px] text-neutre-700">12 fiches</p>
+
+  <div class="max-lg:hidden grid mt-2 grid-cols-[64px_minmax(0,1.5fr)_11rem_minmax(0,1.3fr)_9rem] gap-x-5 px-3 pb-1 text-[16px] font-semibold text-neutre-700" aria-hidden="true">
+    <span></span><span>Fiche</span><span>État</span><span>Compte</span><span>Dernier changement</span>
+  </div>
+  <ul class="mt-2 grid gap-2.5 list-none p-0 m-0">
+    <li data-cherche="amandine rey coiffeuse a domicile amandine.rey@example.fr"><a href="/admin/fiche/amandine-rey" class="carte carte-lien grid grid-cols-[64px_minmax(0,1fr)] lg:grid-cols-[64px_minmax(0,1.5fr)_11rem_minmax(0,1.3fr)_9rem] gap-x-3.5 lg:gap-x-5 gap-y-1 items-center rounded-[18px] bg-white p-3">
+      <img src="https://randomuser.me/api/portraits/women/12.jpg" alt="" width="128" height="128" class="arche w-[64px] h-[78px] row-span-3 lg:row-span-1 object-cover" style="object-position:50% 22%">
+      <span class="min-w-0"><span class="ff block text-[20px] leading-tight text-teal-900">Amandine Rey</span><span class="block text-[16px] text-neutre-800">Coiffeuse à domicile</span></span>
+      <span><span class="inline-flex items-center gap-1.5 rounded-full bg-sable-200 px-2.5 py-0.5 text-[16px] font-semibold text-teal-950"><svg class="w-4 h-4 shrink-0" aria-hidden="true"><use href="#i-horloge"/></svg>En attente</span></span>
+      <span class="min-w-0 text-[16px] text-neutre-800 break-words">amandine.rey@example.fr</span>
+      <span class="max-lg:hidden text-[16px] text-neutre-700">Envoyée le 26&nbsp;oct.</span>
+    </a></li>
+    <li data-cherche="ines lacombe professeure de yoga ines.lacombe@example.fr"><a href="/admin/fiche/ines-lacombe" class="carte carte-lien grid grid-cols-[64px_minmax(0,1fr)] lg:grid-cols-[64px_minmax(0,1.5fr)_11rem_minmax(0,1.3fr)_9rem] gap-x-3.5 lg:gap-x-5 gap-y-1 items-center rounded-[18px] bg-white p-3">
+      <img src="https://randomuser.me/api/portraits/women/90.jpg" alt="" width="128" height="128" class="arche w-[64px] h-[78px] row-span-3 lg:row-span-1 object-cover" style="object-position:50% 22%">
+      <span class="min-w-0"><span class="ff block text-[20px] leading-tight text-teal-900">Inès Lacombe</span><span class="block text-[16px] text-neutre-800">Professeure de yoga</span></span>
+      <span><span class="inline-flex items-center gap-1.5 rounded-full bg-sauge-100 px-2.5 py-0.5 text-[16px] font-semibold text-teal-950"><svg class="w-4 h-4 shrink-0" aria-hidden="true"><use href="#i-coche"/></svg>En ligne</span></span>
+      <span class="min-w-0 text-[16px] text-neutre-800 break-words">ines.lacombe@example.fr</span>
+      <span class="max-lg:hidden text-[16px] text-neutre-700">Modifiée le 26&nbsp;oct.</span>
+    </a></li>
+    <li data-cherche="sophie arnaud naturopathe sophie.arnaud@example.fr"><a href="/admin/fiche/sophie-arnaud" class="carte carte-lien grid grid-cols-[64px_minmax(0,1fr)] lg:grid-cols-[64px_minmax(0,1.5fr)_11rem_minmax(0,1.3fr)_9rem] gap-x-3.5 lg:gap-x-5 gap-y-1 items-center rounded-[18px] bg-white p-3">
+      <img src="https://randomuser.me/api/portraits/women/26.jpg" alt="" width="128" height="128" class="arche w-[64px] h-[78px] row-span-3 lg:row-span-1 object-cover" style="object-position:50% 22%">
+      <span class="min-w-0"><span class="ff block text-[20px] leading-tight text-teal-900">Sophie Arnaud</span><span class="block text-[16px] text-neutre-800">Naturopathe</span></span>
+      <span><span class="inline-flex items-center gap-1.5 rounded-full bg-rouge-50 px-2.5 py-0.5 text-[16px] font-semibold text-rouge-800" style="box-shadow: inset 0 0 0 1px var(--color-rouge-200)"><svg class="w-4 h-4 shrink-0" aria-hidden="true"><use href="#i-alerte"/></svg>Refusée</span></span>
+      <span class="min-w-0 text-[16px] text-neutre-800 break-words">sophie.arnaud@example.fr</span>
+      <span class="max-lg:hidden text-[16px] text-neutre-700">Refusée le 25&nbsp;oct.</span>
+    </a></li>
+    <li data-cherche="karim ziani photographe karim.ziani@example.fr"><a href="/admin/fiche/karim-ziani" class="carte carte-lien grid grid-cols-[64px_minmax(0,1fr)] lg:grid-cols-[64px_minmax(0,1.5fr)_11rem_minmax(0,1.3fr)_9rem] gap-x-3.5 lg:gap-x-5 gap-y-1 items-center rounded-[18px] bg-white p-3">
+      <img src="https://randomuser.me/api/portraits/men/83.jpg" alt="" width="128" height="128" class="arche w-[64px] h-[78px] row-span-3 lg:row-span-1 object-cover" style="object-position:50% 22%">
+      <span class="min-w-0"><span class="ff block text-[20px] leading-tight text-teal-900">Karim Ziani</span><span class="block text-[16px] text-neutre-800">Photographe</span></span>
+      <span><span class="inline-flex items-center gap-1.5 rounded-full bg-sable-200 px-2.5 py-0.5 text-[16px] font-semibold text-teal-950"><svg class="w-4 h-4 shrink-0" aria-hidden="true"><use href="#i-horloge"/></svg>En attente</span></span>
+      <span class="min-w-0 text-[16px] text-neutre-800 break-words">karim.ziani@example.fr</span>
+      <span class="max-lg:hidden text-[16px] text-neutre-700">Envoyée le 24&nbsp;oct.</span>
+    </a></li>
+    <li data-cherche="camille roussel sophrologue camille.roussel@example.fr"><a href="/admin/fiche/camille-roussel" class="carte carte-lien grid grid-cols-[64px_minmax(0,1fr)] lg:grid-cols-[64px_minmax(0,1.5fr)_11rem_minmax(0,1.3fr)_9rem] gap-x-3.5 lg:gap-x-5 gap-y-1 items-center rounded-[18px] bg-white p-3">
+      <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="" width="128" height="128" class="arche w-[64px] h-[78px] row-span-3 lg:row-span-1 object-cover" style="object-position:50% 22%">
+      <span class="min-w-0"><span class="ff block text-[20px] leading-tight text-teal-900">Camille Roussel</span><span class="block text-[16px] text-neutre-800">Sophrologue</span></span>
+      <span><span class="inline-flex items-center gap-1.5 rounded-full bg-sauge-100 px-2.5 py-0.5 text-[16px] font-semibold text-teal-950"><svg class="w-4 h-4 shrink-0" aria-hidden="true"><use href="#i-coche"/></svg>En ligne</span></span>
+      <span class="min-w-0 text-[16px] text-neutre-800 break-words">camille.roussel@example.fr</span>
+      <span class="max-lg:hidden text-[16px] text-neutre-700">Modifiée le 23&nbsp;oct.</span>
+    </a></li>
+    <li data-cherche="pierre delmas expert-comptable p.delmas@example.fr"><a href="/admin/fiche/pierre-delmas" class="carte carte-lien grid grid-cols-[64px_minmax(0,1fr)] lg:grid-cols-[64px_minmax(0,1.5fr)_11rem_minmax(0,1.3fr)_9rem] gap-x-3.5 lg:gap-x-5 gap-y-1 items-center rounded-[18px] bg-white p-3">
+      <img src="https://randomuser.me/api/portraits/men/59.jpg" alt="" width="128" height="128" class="arche w-[64px] h-[78px] row-span-3 lg:row-span-1 object-cover" style="object-position:50% 22%">
+      <span class="min-w-0"><span class="ff block text-[20px] leading-tight text-teal-900">Pierre Delmas</span><span class="block text-[16px] text-neutre-800">Expert-comptable</span></span>
+      <span><span class="inline-flex items-center gap-1.5 rounded-full bg-sable-200 px-2.5 py-0.5 text-[16px] font-semibold text-teal-950"><svg class="w-4 h-4 shrink-0" aria-hidden="true"><use href="#i-horloge"/></svg>En attente</span></span>
+      <span class="min-w-0 text-[16px] text-neutre-800 break-words">p.delmas@example.fr</span>
+      <span class="max-lg:hidden text-[16px] text-neutre-700">Envoyée le 22&nbsp;oct.</span>
+    </a></li>
+    <li data-cherche="yanis belhadj developpeur web independant yanis@example.fr"><a href="/admin/fiche/yanis-belhadj" class="carte carte-lien grid grid-cols-[64px_minmax(0,1fr)] lg:grid-cols-[64px_minmax(0,1.5fr)_11rem_minmax(0,1.3fr)_9rem] gap-x-3.5 lg:gap-x-5 gap-y-1 items-center rounded-[18px] bg-white p-3">
+      <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="" width="128" height="128" class="arche w-[64px] h-[78px] row-span-3 lg:row-span-1 object-cover" style="object-position:50% 22%">
+      <span class="min-w-0"><span class="ff block text-[20px] leading-tight text-teal-900">Yanis Belhadj</span><span class="block text-[16px] text-neutre-800">Développeur web indépendant</span></span>
+      <span><span class="inline-flex items-center gap-1.5 rounded-full bg-sauge-100 px-2.5 py-0.5 text-[16px] font-semibold text-teal-950"><svg class="w-4 h-4 shrink-0" aria-hidden="true"><use href="#i-coche"/></svg>En ligne</span></span>
+      <span class="min-w-0 text-[16px] text-neutre-800 break-words">yanis@example.fr</span>
+      <span class="max-lg:hidden text-[16px] text-neutre-700">Modifiée le 21&nbsp;oct.</span>
+    </a></li>
+    <li data-cherche="julien marty electricien jmarty.elec@example.fr"><a href="/admin/fiche/julien-marty" class="carte carte-lien grid grid-cols-[64px_minmax(0,1fr)] lg:grid-cols-[64px_minmax(0,1.5fr)_11rem_minmax(0,1.3fr)_9rem] gap-x-3.5 lg:gap-x-5 gap-y-1 items-center rounded-[18px] bg-white p-3">
+      <img src="https://randomuser.me/api/portraits/men/46.jpg" alt="" width="128" height="128" class="arche w-[64px] h-[78px] row-span-3 lg:row-span-1 object-cover" style="object-position:50% 22%">
+      <span class="min-w-0"><span class="ff block text-[20px] leading-tight text-teal-900">Julien Marty</span><span class="block text-[16px] text-neutre-800">Électricien</span></span>
+      <span><span class="inline-flex items-center gap-1.5 rounded-full bg-neutre-200 px-2.5 py-0.5 text-[16px] font-semibold text-neutre-900"><svg class="w-4 h-4 shrink-0" aria-hidden="true"><use href="#i-masque"/></svg>Masquée</span></span>
+      <span class="min-w-0 text-[16px] text-neutre-800 break-words">jmarty.elec@example.fr</span>
+      <span class="max-lg:hidden text-[16px] text-neutre-700">Masquée le 20&nbsp;oct.</span>
+    </a></li>
+    <li data-cherche="lea fontaine graphiste & illustratrice"><a href="/admin/fiche/lea-fontaine" class="carte carte-lien grid grid-cols-[64px_minmax(0,1fr)] lg:grid-cols-[64px_minmax(0,1.5fr)_11rem_minmax(0,1.3fr)_9rem] gap-x-3.5 lg:gap-x-5 gap-y-1 items-center rounded-[18px] bg-white p-3">
+      <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="" width="128" height="128" class="arche w-[64px] h-[78px] row-span-3 lg:row-span-1 object-cover" style="object-position:50% 22%">
+      <span class="min-w-0"><span class="ff block text-[20px] leading-tight text-teal-900">Léa Fontaine</span><span class="block text-[16px] text-neutre-800">Graphiste &amp; illustratrice</span></span>
+      <span><span class="inline-flex items-center gap-1.5 rounded-full bg-sauge-100 px-2.5 py-0.5 text-[16px] font-semibold text-teal-950"><svg class="w-4 h-4 shrink-0" aria-hidden="true"><use href="#i-coche"/></svg>En ligne</span></span>
+      <span class="min-w-0 text-[16px] italic text-neutre-700">Sans compte</span>
+      <span class="max-lg:hidden text-[16px] text-neutre-700">Importée le 14&nbsp;oct.</span>
+    </a></li>
+    <li data-cherche="marc ollivier menuisier-ebeniste"><a href="/admin/fiche/marc-ollivier" class="carte carte-lien grid grid-cols-[64px_minmax(0,1fr)] lg:grid-cols-[64px_minmax(0,1.5fr)_11rem_minmax(0,1.3fr)_9rem] gap-x-3.5 lg:gap-x-5 gap-y-1 items-center rounded-[18px] bg-white p-3">
+      <img src="https://randomuser.me/api/portraits/men/75.jpg" alt="" width="128" height="128" class="arche w-[64px] h-[78px] row-span-3 lg:row-span-1 object-cover" style="object-position:50% 22%">
+      <span class="min-w-0"><span class="ff block text-[20px] leading-tight text-teal-900">Marc Ollivier</span><span class="block text-[16px] text-neutre-800">Menuisier-ébéniste</span></span>
+      <span><span class="inline-flex items-center gap-1.5 rounded-full bg-sauge-100 px-2.5 py-0.5 text-[16px] font-semibold text-teal-950"><svg class="w-4 h-4 shrink-0" aria-hidden="true"><use href="#i-coche"/></svg>En ligne</span></span>
+      <span class="min-w-0 text-[16px] italic text-neutre-700">Sans compte</span>
+      <span class="max-lg:hidden text-[16px] text-neutre-700">Importée le 14&nbsp;oct.</span>
+    </a></li>
+    <li data-cherche="nadia berrada traiteur cuisine maison"><a href="/admin/fiche/nadia-berrada" class="carte carte-lien grid grid-cols-[64px_minmax(0,1fr)] lg:grid-cols-[64px_minmax(0,1.5fr)_11rem_minmax(0,1.3fr)_9rem] gap-x-3.5 lg:gap-x-5 gap-y-1 items-center rounded-[18px] bg-white p-3">
+      <img src="https://randomuser.me/api/portraits/women/57.jpg" alt="" width="128" height="128" class="arche w-[64px] h-[78px] row-span-3 lg:row-span-1 object-cover" style="object-position:50% 22%">
+      <span class="min-w-0"><span class="ff block text-[20px] leading-tight text-teal-900">Nadia Berrada</span><span class="block text-[16px] text-neutre-800">Traiteur — cuisine maison</span></span>
+      <span><span class="inline-flex items-center gap-1.5 rounded-full bg-sauge-100 px-2.5 py-0.5 text-[16px] font-semibold text-teal-950"><svg class="w-4 h-4 shrink-0" aria-hidden="true"><use href="#i-coche"/></svg>En ligne</span></span>
+      <span class="min-w-0 text-[16px] italic text-neutre-700">Sans compte</span>
+      <span class="max-lg:hidden text-[16px] text-neutre-700">Importée le 14&nbsp;oct.</span>
+    </a></li>
+    <li data-cherche="thomas vidal coach sportif"><a href="/admin/fiche/thomas-vidal" class="carte carte-lien grid grid-cols-[64px_minmax(0,1fr)] lg:grid-cols-[64px_minmax(0,1.5fr)_11rem_minmax(0,1.3fr)_9rem] gap-x-3.5 lg:gap-x-5 gap-y-1 items-center rounded-[18px] bg-white p-3">
+      <img src="https://randomuser.me/api/portraits/men/11.jpg" alt="" width="128" height="128" class="arche w-[64px] h-[78px] row-span-3 lg:row-span-1 object-cover" style="object-position:50% 22%">
+      <span class="min-w-0"><span class="ff block text-[20px] leading-tight text-teal-900">Thomas Vidal</span><span class="block text-[16px] text-neutre-800">Coach sportif</span></span>
+      <span><span class="inline-flex items-center gap-1.5 rounded-full bg-sauge-100 px-2.5 py-0.5 text-[16px] font-semibold text-teal-950"><svg class="w-4 h-4 shrink-0" aria-hidden="true"><use href="#i-coche"/></svg>En ligne</span></span>
+      <span class="min-w-0 text-[16px] italic text-neutre-700">Sans compte</span>
+      <span class="max-lg:hidden text-[16px] text-neutre-700">Importée le 14&nbsp;oct.</span>
+    </a></li>
+  </ul>
+</template>
+
+<!-- ─── 3a, 3b, 3e ─── -->
+<template id="e-fiches">
+  <div data-inclure="p-entete"></div>
+  <main class="mx-auto max-w-[1160px] px-5 pt-6 pb-10">
+    <h1 class="ff text-nom text-teal-900">Toutes les fiches</h1>
+    <div class="mt-4"><div data-inclure="p-deploi-ok"></div></div>
+    <div data-inclure="p-liste"></div>
+  </main>
+</template>
+
+<template id="e-fiches-echec">
+  <div data-inclure="p-entete"></div>
+  <main class="mx-auto max-w-[1160px] px-5 pt-6 pb-10">
+    <div data-inclure="p-deploi-echec"></div>
+    <h1 class="ff mt-7 text-nom text-teal-900">Toutes les fiches</h1>
+    <div data-inclure="p-liste"></div>
+  </main>
+</template>
+
+<!-- ─── la page d'une fiche : l'identité, puis compte et diapositives ─── -->
+<template id="p-retour-fiches">
+  <a href="/admin/fiches" class="-ml-2 inline-flex items-center gap-1.5 min-h-[44px] px-2 rounded-full text-corps font-semibold text-teal-700 hover:bg-teal-50">
+    <svg class="w-5 h-5" aria-hidden="true"><use href="#i-retour"/></svg>Toutes les fiches
+  </a>
+</template>
+
+<template id="p-masquer-bouton">
+  <button type="button" class="inline-flex items-center gap-2 min-h-[44px] px-4 rounded-full text-corps font-semibold text-teal-700 bg-teal-50 hover:bg-teal-100">
+    <svg class="w-5 h-5" aria-hidden="true"><use href="#i-masque"/></svg>Masquer la fiche…
+  </button>
+</template>
+
+<template id="p-nadia-identite">
+  <div data-inclure="p-retour-fiches"></div>
+  <div class="mt-3 flex items-center gap-4">
+    <img src="https://randomuser.me/api/portraits/women/57.jpg" alt="Portrait de Nadia Berrada"
+         width="128" height="128" class="arche w-[96px] h-[116px] shrink-0 object-cover" style="object-position:50% 22%">
+    <div class="min-w-0">
+      <h1 class="ff text-nom text-teal-900">Nadia Berrada</h1>
+      <p class="mt-1 text-corps leading-snug text-neutre-800">Traiteur — cuisine maison</p>
+      <p class="mt-2"><span class="inline-flex items-center gap-1.5 rounded-full bg-sauge-100 px-2.5 py-0.5 text-[16px] font-semibold text-teal-950"><svg class="w-4 h-4 shrink-0" aria-hidden="true"><use href="#i-coche"/></svg>En ligne</span></p>
+    </div>
+  </div>
+  <div class="mt-4 flex flex-wrap items-center gap-x-5 gap-y-2">
+    <a href="/membre/nadia-berrada" class="inline-flex items-center gap-1.5 min-h-[44px] text-corps font-semibold text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">
+      Voir la fiche publique<svg class="w-4 h-4" aria-hidden="true"><use href="#i-chev"/></svg>
+    </a>
+    <div data-inclure="p-masquer-bouton"></div>
+  </div>
+</template>
+
+<!-- le compte : sans propriétaire (fiche importée) -->
+<template id="p-compte-vide">
+  <section aria-labelledby="t-compte">
+    <h2 id="t-compte" class="ff text-[22px] text-teal-900">Compte</h2>
+    <p class="mt-2 text-corps text-neutre-900">Aucun compte associé. Fiche importée le 14&nbsp;oct.</p>
+    <form class="mt-4" onsubmit="return false">
+      <label for="compte-mail" class="block text-[16px] font-semibold text-neutre-800">E-mail de connexion de Nadia</label>
+      <input id="compte-mail" type="email" autocomplete="off" value="nadia.berrada@example.fr"
+             class="champ mt-1.5 w-full min-h-[52px] px-3.5 rounded-xl text-corps text-neutre-900">
+      <button type="submit" class="mt-3 inline-flex items-center gap-2 min-h-[48px] px-5 rounded-full text-corps font-semibold text-white bg-teal-700 hover:bg-teal-600">
+        <svg class="w-5 h-5" aria-hidden="true"><use href="#i-lien"/></svg>Associer à un compte
+      </button>
+    </form>
+  </section>
+</template>
+
+<!-- associée : le bandeau « En ligne » de l'espace, côté Adrien -->
+<template id="p-compte-ok">
+  <section aria-labelledby="t-compte">
+    <h2 id="t-compte" class="ff text-[22px] text-teal-900">Compte</h2>
+    <div role="status" class="mt-3 flex items-start gap-4 rounded-[22px] bg-sauge-50 p-5" style="box-shadow: inset 0 0 0 1px var(--color-sauge-200)">
+      <span class="pastille w-11 h-11 mt-0.5 bg-white text-sauge-700" aria-hidden="true"><svg class="w-[22px] h-[22px]"><use href="#i-coche"/></svg></span>
+      <div class="min-w-0">
+        <p class="ff text-[22px] leading-tight text-teal-950">Fiche associée</p>
+        <p class="mt-1.5 text-[16px] leading-snug text-teal-950 break-words">au compte nadia.berrada@example.fr</p>
+        <p class="mt-1.5 text-[16px] leading-snug text-teal-950">Nadia peut la modifier depuis son espace, dès maintenant.</p>
+      </div>
+    </div>
+  </section>
+</template>
+
+<!-- pas encore de compte : le bandeau « En attente », sable — une attente, pas une erreur -->
+<template id="p-compte-sans">
+  <section aria-labelledby="t-compte">
+    <h2 id="t-compte" class="ff text-[22px] text-teal-900">Compte</h2>
+    <p class="mt-2 text-corps text-neutre-900">Aucun compte associé. Fiche importée le 14&nbsp;oct.</p>
+    <form class="mt-4" onsubmit="return false">
+      <label for="compte-mail" class="block text-[16px] font-semibold text-neutre-800">E-mail de connexion de Nadia</label>
+      <input id="compte-mail" type="email" autocomplete="off" value="nadia.berrada@example.fr" aria-describedby="compte-sans"
+             class="champ mt-1.5 w-full min-h-[52px] px-3.5 rounded-xl text-corps text-neutre-900">
+    </form>
+    <div id="compte-sans" role="status" class="mt-3 flex items-start gap-4 rounded-[22px] bg-sable-100 p-5">
+      <span class="pastille pastille--sable w-11 h-11 mt-0.5 bg-white text-sable-800" aria-hidden="true"><svg class="w-[22px] h-[22px]"><use href="#i-horloge"/></svg></span>
+      <div class="min-w-0">
+        <p class="ff text-[22px] leading-tight text-teal-950">Pas encore de compte à cette adresse</p>
+        <p class="mt-1.5 text-[16px] leading-snug text-teal-950">Nadia doit se connecter une fois avec cette adresse. Associez ensuite.</p>
+        <button type="button" class="mt-4 inline-flex items-center gap-2 min-h-[48px] px-5 rounded-full text-corps font-semibold text-white bg-teal-700 hover:bg-teal-600">
+          <svg class="w-5 h-5" aria-hidden="true"><use href="#i-mail"/></svg>Envoyer l'invitation
+        </button>
+      </div>
+    </div>
+  </section>
+</template>
+
+<!-- ─── les vignettes de diapositive : des images, dessinées ici en HTML.
+     Les mots qu'elles portent ne vivent, pour un lecteur d'écran, que dans leur texte. ─── -->
+<template id="p-d1">
+  <div class="relative aspect-[4/5] w-full overflow-hidden rounded-[10px] bg-teal-900 grid place-items-center" style="container-type:inline-size">
+    <div class="text-center">
+      <img src="https://randomuser.me/api/portraits/women/57.jpg" alt="" width="128" height="128" class="arche mx-auto object-cover" style="width:44cqw; height:53cqw; object-position:50% 22%; box-shadow:0 0 0 1.4cqw #fff">
+      <p class="ff text-white leading-none" style="font-size:10cqw; margin-top:5cqw">Nadia Berrada</p>
+      <p class="text-teal-100" style="font-size:6cqw; margin-top:2cqw">Traiteur, cuisine maison</p>
+    </div>
+  </div>
+</template>
+<template id="p-d2">
+  <div class="ventouses relative aspect-[4/5] w-full overflow-hidden rounded-[10px] bg-sable-200" style="container-type:inline-size; background-size:28cqw 28cqw">
+    <div class="absolute inset-0 grid place-items-center" style="padding:9cqw">
+      <p class="ff text-teal-950 leading-[1.05]" style="font-size:12cqw">«&nbsp;Je cuisine chez moi, comme à la maison.&nbsp;»</p>
+    </div>
+  </div>
+</template>
+<template id="p-d3">
+  <div class="relative aspect-[4/5] w-full overflow-hidden rounded-[10px] bg-sauge-100" style="container-type:inline-size">
+    <div class="absolute inset-0 flex flex-col justify-center" style="padding:9cqw">
+      <p class="ff text-teal-950 leading-none" style="font-size:12cqw">Commandes</p>
+      <p class="text-teal-950 leading-snug" style="font-size:7.5cqw; margin-top:4cqw">Vendredi et samedi<br>Buffets de fête<br>Livraison dans le quartier</p>
+    </div>
+  </div>
+</template>
+<template id="p-d4">
+  <div class="relative aspect-[4/5] w-full overflow-hidden rounded-[10px] bg-teal-100 grid place-items-center" style="container-type:inline-size">
+    <div class="text-center text-teal-800">
+      <svg aria-hidden="true" style="width:46cqw; height:46cqw"><use href="#c-alimentation"/></svg>
+      <p class="ff text-teal-950 leading-tight" style="font-size:9cqw; margin-top:3cqw">Fête de la Halle<br>juin 2026</p>
+    </div>
+  </div>
+</template>
+
+<!-- une diapositive : vignette, position, monter / descendre / supprimer, son texte.
+     Grille : sur téléphone le texte passe sous la vignette ; à partir de lg, à côté. -->
+<template id="p-diapos-tete">
+  <h2 id="t-diapos" class="ff text-[22px] text-teal-900">Diapositives</h2>
+  <p class="mt-1 text-[16px] text-neutre-700">Montrées sous le portrait de Nadia, dans cet ordre.</p>
+</template>
+
+<template id="p-diapo-1">
+  <li class="carte rounded-[18px] bg-white p-3 grid grid-cols-[88px_minmax(0,1fr)] lg:grid-cols-[132px_minmax(0,1fr)] gap-x-3.5 gap-y-3">
+    <div class="lg:row-span-2"><div data-inclure="p-d1"></div></div>
+    <div class="flex flex-col justify-between gap-2">
+      <p class="text-etiquette font-semibold uppercase text-teal-700">1 sur 4</p>
+      <div class="flex gap-1.5">
+        <button type="button" aria-label="Descendre la diapositive 1" class="grid place-items-center w-11 h-11 rounded-full text-teal-700 bg-teal-50 hover:bg-teal-100"><svg class="w-5 h-5" aria-hidden="true"><use href="#i-bas"/></svg></button>
+        <button type="button" aria-label="Supprimer la diapositive 1" class="ml-auto grid place-items-center w-11 h-11 rounded-full text-teal-700 bg-teal-50 hover:bg-teal-100"><svg class="w-5 h-5" aria-hidden="true"><use href="#i-corbeille"/></svg></button>
+      </div>
+    </div>
+    <div data-etat="ok" class="col-span-2 lg:col-span-1 lg:col-start-2">
+      <label for="alt-1" class="block text-[16px] font-semibold text-neutre-800">Texte de la diapositive</label>
+      <textarea id="alt-1" rows="2" class="champ mt-1.5 block w-full min-h-[76px] px-3.5 py-2.5 rounded-xl text-corps leading-relaxed text-neutre-900">Nadia Berrada, traiteur, cuisine maison. Son portrait, souriante, sur fond vert sombre.</textarea>
+    </div>
+  </li>
+</template>
+
+<template id="p-diapo-2">
+  <li class="carte rounded-[18px] bg-white p-3 grid grid-cols-[88px_minmax(0,1fr)] lg:grid-cols-[132px_minmax(0,1fr)] gap-x-3.5 gap-y-3">
+    <div class="lg:row-span-2"><div data-inclure="p-d2"></div></div>
+    <div class="flex flex-col justify-between gap-2">
+      <p class="text-etiquette font-semibold uppercase text-teal-700">2 sur 4</p>
+      <div class="flex gap-1.5">
+        <button type="button" aria-label="Monter la diapositive 2" class="grid place-items-center w-11 h-11 rounded-full text-teal-700 bg-teal-50 hover:bg-teal-100"><svg class="w-5 h-5" aria-hidden="true"><use href="#i-haut"/></svg></button>
+        <button type="button" aria-label="Descendre la diapositive 2" class="grid place-items-center w-11 h-11 rounded-full text-teal-700 bg-teal-50 hover:bg-teal-100"><svg class="w-5 h-5" aria-hidden="true"><use href="#i-bas"/></svg></button>
+        <button type="button" aria-label="Supprimer la diapositive 2" class="ml-auto grid place-items-center w-11 h-11 rounded-full text-teal-700 bg-teal-50 hover:bg-teal-100"><svg class="w-5 h-5" aria-hidden="true"><use href="#i-corbeille"/></svg></button>
+      </div>
+    </div>
+    <div data-etat="ok" class="col-span-2 lg:col-span-1 lg:col-start-2">
+      <label for="alt-2" class="block text-[16px] font-semibold text-neutre-800">Texte de la diapositive</label>
+      <textarea id="alt-2" rows="2" class="champ mt-1.5 block w-full min-h-[76px] px-3.5 py-2.5 rounded-xl text-corps leading-relaxed text-neutre-900">«&nbsp;Je cuisine chez moi, comme à la maison.&nbsp;» Citation de Nadia.</textarea>
+    </div>
+  </li>
+</template>
+
+<template id="p-diapo-3">
+  <li class="carte rounded-[18px] bg-white p-3 grid grid-cols-[88px_minmax(0,1fr)] lg:grid-cols-[132px_minmax(0,1fr)] gap-x-3.5 gap-y-3">
+    <div class="lg:row-span-2"><div data-inclure="p-d3"></div></div>
+    <div class="flex flex-col justify-between gap-2">
+      <p class="text-etiquette font-semibold uppercase text-teal-700">3 sur 4</p>
+      <div class="flex gap-1.5">
+        <button type="button" aria-label="Monter la diapositive 3" class="grid place-items-center w-11 h-11 rounded-full text-teal-700 bg-teal-50 hover:bg-teal-100"><svg class="w-5 h-5" aria-hidden="true"><use href="#i-haut"/></svg></button>
+        <button type="button" aria-label="Descendre la diapositive 3" class="grid place-items-center w-11 h-11 rounded-full text-teal-700 bg-teal-50 hover:bg-teal-100"><svg class="w-5 h-5" aria-hidden="true"><use href="#i-bas"/></svg></button>
+        <button type="button" aria-label="Supprimer la diapositive 3" class="ml-auto grid place-items-center w-11 h-11 rounded-full text-teal-700 bg-teal-50 hover:bg-teal-100"><svg class="w-5 h-5" aria-hidden="true"><use href="#i-corbeille"/></svg></button>
+      </div>
+    </div>
+    <div data-etat="ok" class="col-span-2 lg:col-span-1 lg:col-start-2">
+      <label for="alt-3" class="block text-[16px] font-semibold text-neutre-800">Texte de la diapositive</label>
+      <textarea id="alt-3" rows="2" class="champ mt-1.5 block w-full min-h-[76px] px-3.5 py-2.5 rounded-xl text-corps leading-relaxed text-neutre-900">Commandes : vendredi et samedi. Buffets de fête. Livraison dans le quartier.</textarea>
+    </div>
+  </li>
+</template>
+
+<!-- la nouvelle, sans texte : l'état erreur du champ, verbatim -->
+<template id="p-diapo-4-erreur">
+  <li class="carte rounded-[18px] bg-white p-3 grid grid-cols-[88px_minmax(0,1fr)] lg:grid-cols-[132px_minmax(0,1fr)] gap-x-3.5 gap-y-3">
+    <div class="lg:row-span-2"><div data-inclure="p-d4"></div></div>
+    <div class="flex flex-col justify-between gap-2">
+      <p class="text-etiquette font-semibold uppercase text-teal-700">4 sur 4 · nouvelle</p>
+      <div class="flex gap-1.5">
+        <button type="button" aria-label="Monter la diapositive 4" class="grid place-items-center w-11 h-11 rounded-full text-teal-700 bg-teal-50 hover:bg-teal-100"><svg class="w-5 h-5" aria-hidden="true"><use href="#i-haut"/></svg></button>
+        <button type="button" aria-label="Supprimer la diapositive 4" class="ml-auto grid place-items-center w-11 h-11 rounded-full text-teal-700 bg-teal-50 hover:bg-teal-100"><svg class="w-5 h-5" aria-hidden="true"><use href="#i-corbeille"/></svg></button>
+      </div>
+    </div>
+    <div data-etat="erreur" class="col-span-2 lg:col-span-1 lg:col-start-2">
+      <div class="flex items-end justify-between gap-3">
+        <label for="alt-4" class="block pb-1.5 text-[16px] font-semibold text-neutre-800">Texte de la diapositive</label>
+        <button type="button" class="-mr-2 -mb-0.5 grid place-items-center w-11 h-11 shrink-0 rounded-full"
+                aria-expanded="false" aria-controls="alt-4-aide" onclick="var b=document.getElementById('alt-4-aide');b.hidden=!b.hidden;this.setAttribute('aria-expanded',String(!b.hidden))">
+          <span class="pastille pastille--teal w-7 h-7 bg-teal-50 ff text-[16px] text-teal-800" aria-hidden="true">?</span>
+          <span class="sr-only">Aide : le texte de la diapositive</span>
+        </button>
+      </div>
+      <p id="alt-4-aide" hidden class="bulle mb-2.5 rounded-[14px] bg-teal-50 px-4 py-3 text-[16px] leading-snug text-teal-950">
+        Recopiez d'abord les mots écrits sur l'image, puis dites ce qu'on y voit.
+      </p>
+      <textarea id="alt-4" rows="2" aria-invalid="true" aria-describedby="alt-4-err"
+                class="champ block w-full min-h-[76px] px-3.5 py-2.5 rounded-xl text-corps leading-relaxed text-neutre-900"></textarea>
+      <p id="alt-4-err" class="mt-1.5 flex items-start gap-1.5 text-[16px] font-semibold text-rouge-700">
+        <svg class="w-[18px] h-[18px] shrink-0 mt-0.5" aria-hidden="true"><use href="#i-alerte"/></svg>
+        Écrivez ce que dit et montre l'image. Exemple&nbsp;: «&nbsp;Fête de la Halle, juin 2026. Un buffet de plats marocains.&nbsp;»
+      </p>
+    </div>
+  </li>
+</template>
+
+<template id="p-diapos-ajouter">
+  <label class="inline-flex items-center gap-2 min-h-[48px] px-5 rounded-full text-corps font-semibold text-teal-700 bg-teal-50 hover:bg-teal-100 cursor-pointer has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-teal-600">
+    <svg class="w-5 h-5" aria-hidden="true"><use href="#i-plus"/></svg>Ajouter des diapositives
+    <input type="file" multiple accept="image/jpeg,image/png,image/webp" class="sr-only">
+  </label>
+  <p class="mt-1.5 text-[16px] text-neutre-700">Format Instagram, réduites à 1080&nbsp;px de large avant l'envoi.</p>
+</template>
+
+<template id="p-diapos-erreur">
+  <section aria-labelledby="t-diapos">
+    <div data-inclure="p-diapos-tete"></div>
+    <ol class="mt-4 grid gap-3 list-none p-0 m-0">
+      <div data-inclure="p-diapo-1"></div>
+      <div data-inclure="p-diapo-2"></div>
+      <div data-inclure="p-diapo-3"></div>
+      <div data-inclure="p-diapo-4-erreur"></div>
+    </ol>
+    <div class="mt-4"><div data-inclure="p-diapos-ajouter"></div></div>
+    <div class="mt-6 border-t border-neutre-300 pt-4">
+      <p class="flex items-start gap-1.5 text-[16px] font-semibold text-rouge-700">
+        <svg class="w-[18px] h-[18px] shrink-0 mt-0.5" aria-hidden="true"><use href="#i-alerte"/></svg>
+        Il manque le texte de la diapositive&nbsp;4.
+      </p>
+      <button type="button" class="mt-3 inline-flex items-center gap-2 min-h-[48px] px-5 rounded-full text-corps font-semibold text-white bg-teal-700 hover:bg-teal-600">
+        Enregistrer les diapositives
+      </button>
+    </div>
+  </section>
+</template>
+
+<!-- 5b : la 3 vient de monter ; la 2 attend sa confirmation ; deux nouvelles s'envoient -->
+<template id="p-diapos-edition">
+  <section aria-labelledby="t-diapos">
+    <div data-inclure="p-diapos-tete"></div>
+    <p role="status" class="mt-3 inline-flex items-center gap-1.5 text-[16px] text-sauge-800">
+      <svg class="w-[18px] h-[18px]" aria-hidden="true"><use href="#i-coche"/></svg>«&nbsp;Commandes&nbsp;» est passée en premier.
+    </p>
+    <ol class="mt-3 grid gap-3 list-none p-0 m-0">
+      <li class="carte rounded-[18px] bg-white p-3 grid grid-cols-[88px_minmax(0,1fr)] gap-x-3.5 gap-y-3" style="box-shadow: var(--shadow-carte), inset 0 0 0 2px var(--color-teal-600)">
+        <div><div data-inclure="p-d3"></div></div>
+        <div class="flex flex-col justify-between gap-2">
+          <p class="text-etiquette font-semibold uppercase text-teal-700">1 sur 3</p>
+          <div class="flex gap-1.5">
+            <button type="button" aria-label="Descendre la diapositive 1" class="grid place-items-center w-11 h-11 rounded-full text-teal-700 bg-teal-50 hover:bg-teal-100"><svg class="w-5 h-5" aria-hidden="true"><use href="#i-bas"/></svg></button>
+            <button type="button" aria-label="Supprimer la diapositive 1" class="ml-auto grid place-items-center w-11 h-11 rounded-full text-teal-700 bg-teal-50 hover:bg-teal-100"><svg class="w-5 h-5" aria-hidden="true"><use href="#i-corbeille"/></svg></button>
+          </div>
+        </div>
+      </li>
+      <!-- la suppression se confirme sur place : le panneau rouge avertit, le bouton reste teal plein (trois boutons, pas quatre) -->
+      <li class="rounded-[18px] bg-rouge-50 p-4" style="box-shadow: inset 0 0 0 1.5px var(--color-rouge-600)">
+        <div class="flex items-start gap-3.5">
+          <div class="w-[56px] shrink-0"><div data-inclure="p-d1"></div></div>
+          <div class="min-w-0">
+            <p class="text-corps font-semibold text-teal-950">Supprimer la diapositive&nbsp;2&nbsp;?</p>
+            <p class="mt-1 text-[16px] leading-snug text-teal-950">Elle quittera la fiche à la prochaine mise en ligne.</p>
+          </div>
+        </div>
+        <div class="mt-3 flex gap-2.5">
+          <button type="button" class="flex-1 inline-flex items-center justify-center gap-2 min-h-[48px] px-5 rounded-full text-corps font-semibold text-white bg-teal-700 hover:bg-teal-600">
+            <svg class="w-5 h-5" aria-hidden="true"><use href="#i-corbeille"/></svg>Supprimer
+          </button>
+          <button type="button" class="inline-flex items-center justify-center min-h-[48px] px-5 rounded-full text-corps font-semibold text-teal-700 bg-white hover:bg-teal-50">
+            Garder
+          </button>
+        </div>
+      </li>
+      <li class="carte rounded-[18px] bg-white p-3 grid grid-cols-[88px_minmax(0,1fr)] gap-x-3.5 gap-y-3">
+        <div><div data-inclure="p-d2"></div></div>
+        <div class="flex flex-col justify-between gap-2">
+          <p class="text-etiquette font-semibold uppercase text-teal-700">3 sur 3</p>
+          <div class="flex gap-1.5">
+            <button type="button" aria-label="Monter la diapositive 3" class="grid place-items-center w-11 h-11 rounded-full text-teal-700 bg-teal-50 hover:bg-teal-100"><svg class="w-5 h-5" aria-hidden="true"><use href="#i-haut"/></svg></button>
+            <button type="button" aria-label="Supprimer la diapositive 3" class="ml-auto grid place-items-center w-11 h-11 rounded-full text-teal-700 bg-teal-50 hover:bg-teal-100"><svg class="w-5 h-5" aria-hidden="true"><use href="#i-corbeille"/></svg></button>
+          </div>
+        </div>
+      </li>
+      <!-- l'envoi : la ventouse respire -->
+      <li class="rounded-[18px] bg-neutre-100 p-3 grid grid-cols-[88px_minmax(0,1fr)] gap-x-3.5 items-center">
+        <div class="aspect-[4/5] rounded-[10px] bg-white grid place-items-center" style="box-shadow: inset 0 0 0 1.5px var(--color-neutre-300)">
+          <svg class="respire w-8 h-8 text-teal-600" aria-hidden="true"><use href="#i-ventouse"/></svg>
+        </div>
+        <p role="status" class="text-[16px] leading-snug text-neutre-800">Envoi de 2&nbsp;nouvelles diapositives… <span class="block text-neutre-700">1 sur 2</span></p>
+      </li>
+    </ol>
+  </section>
+</template>
+
+<!-- ─── la page d'une fiche, composée ─── -->
+<template id="e-nadia-a">
+  <div data-inclure="p-entete"></div>
+  <main class="mx-auto max-w-[1160px] px-5 pt-3 pb-12">
+    <div data-inclure="p-nadia-identite"></div>
+    <div class="mt-8 grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)] lg:gap-12 lg:items-start">
+      <div data-inclure="p-compte-vide"></div>
+      <div data-inclure="p-diapos-erreur"></div>
+    </div>
+  </main>
+</template>
+<template id="e-nadia-ok">
+  <div data-inclure="p-entete"></div>
+  <main class="mx-auto max-w-[1160px] px-5 pt-3 pb-12">
+    <div data-inclure="p-nadia-identite"></div>
+    <div class="mt-8 grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)] lg:gap-12 lg:items-start">
+      <div data-inclure="p-compte-ok"></div>
+      <div data-inclure="p-diapos-erreur"></div>
+    </div>
+  </main>
+</template>
+<template id="e-nadia-sans">
+  <div data-inclure="p-entete"></div>
+  <main class="mx-auto max-w-[1160px] px-5 pt-3 pb-12">
+    <div data-inclure="p-nadia-identite"></div>
+    <div class="mt-8 grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)] lg:gap-12 lg:items-start">
+      <div data-inclure="p-compte-sans"></div>
+      <div data-inclure="p-diapos-erreur"></div>
+    </div>
+  </main>
+</template>
+<template id="e-nadia-diapos">
+  <div data-inclure="p-entete"></div>
+  <main class="mx-auto max-w-[1160px] px-5 pt-3 pb-12">
+    <div data-inclure="p-nadia-identite"></div>
+    <div class="mt-8 grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)] lg:gap-12 lg:items-start">
+      <div data-inclure="p-compte-ok"></div>
+      <div data-inclure="p-diapos-erreur"></div>
+    </div>
+  </main>
+</template>
+<template id="e-nadia-diapos-edition">
+  <div data-inclure="p-entete"></div>
+  <main class="mx-auto max-w-[1160px] px-5 pt-3 pb-12">
+    <div data-inclure="p-nadia-identite"></div>
+    <div class="mt-8 grid gap-10">
+      <div data-inclure="p-compte-ok"></div>
+      <div data-inclure="p-diapos-edition"></div>
+    </div>
+  </main>
+</template>
+
+<!-- ─── 3c · masquer : Inès a un compte, le motif lui est envoyé ─── -->
+<template id="e-ines-masquer">
+  <div data-inclure="p-entete"></div>
+  <main class="mx-auto max-w-[1160px] px-5 pt-3 pb-12">
+    <div data-inclure="p-retour-fiches"></div>
+    <div class="mt-3 flex items-center gap-4">
+      <img src="https://randomuser.me/api/portraits/women/90.jpg" alt="Portrait d'Inès Lacombe"
+           width="128" height="128" class="arche w-[96px] h-[116px] shrink-0 object-cover" style="object-position:50% 22%">
+      <div class="min-w-0">
+        <h1 class="ff text-nom text-teal-900">Inès Lacombe</h1>
+        <p class="mt-1 text-corps leading-snug text-neutre-800">Professeure de yoga</p>
+        <p class="mt-2"><span class="inline-flex items-center gap-1.5 rounded-full bg-sauge-100 px-2.5 py-0.5 text-[16px] font-semibold text-teal-950"><svg class="w-4 h-4 shrink-0" aria-hidden="true"><use href="#i-coche"/></svg>En ligne</span></p>
+      </div>
+    </div>
+    <form class="mt-5 rounded-[20px] bg-neutre-50 p-4" onsubmit="return false" style="box-shadow: inset 0 0 0 1px var(--color-neutre-200)">
+      <p class="flex items-center gap-2 text-corps font-semibold text-teal-900"><svg class="w-5 h-5 text-teal-700" aria-hidden="true"><use href="#i-masque"/></svg>Masquer la fiche</p>
+      <label for="masque-motif" class="mt-3 block text-[16px] font-semibold text-neutre-800">Motif, envoyé à Inès par e-mail</label>
+      <textarea id="masque-motif" rows="4" class="champ mt-1.5 block w-full min-h-[104px] px-3.5 py-3 rounded-xl text-corps leading-relaxed text-neutre-900">Un voisin signale que les cours du mardi à la Halle n'ont plus lieu. Je masque votre fiche le temps que vous la mettiez à jour.</textarea>
+      <p class="mt-2 text-[16px] text-neutre-700">Elle quitte l'annuaire à la prochaine mise en ligne. Inès la retrouve dans son espace.</p>
+      <div class="mt-3 flex gap-2.5">
+        <button type="submit" class="flex-1 inline-flex items-center justify-center gap-2 min-h-[48px] px-5 rounded-full text-corps font-semibold text-white bg-teal-700 hover:bg-teal-600">
+          Masquer la fiche
+        </button>
+        <button type="button" class="inline-flex items-center justify-center min-h-[48px] px-5 rounded-full text-corps font-semibold text-teal-700 bg-teal-50 hover:bg-teal-100">
+          Annuler
+        </button>
+      </div>
+    </form>
+  </main>
+</template>
+
+<!-- ─── 3d · masquée : le motif reste ; elle a été corrigée depuis ─── -->
+<template id="e-julien-masquee">
+  <div data-inclure="p-entete"></div>
+  <main class="mx-auto max-w-[1160px] px-5 pt-3 pb-12">
+    <div data-inclure="p-retour-fiches"></div>
+    <div class="mt-3 flex items-center gap-4">
+      <img src="https://randomuser.me/api/portraits/men/46.jpg" alt="Portrait de Julien Marty"
+           width="128" height="128" class="arche w-[96px] h-[116px] shrink-0 object-cover" style="object-position:50% 22%">
+      <div class="min-w-0">
+        <h1 class="ff text-nom text-teal-900">Julien Marty</h1>
+        <p class="mt-1 text-corps leading-snug text-neutre-800">Électricien</p>
+        <p class="mt-2"><span class="inline-flex items-center gap-1.5 rounded-full bg-neutre-200 px-2.5 py-0.5 text-[16px] font-semibold text-neutre-900"><svg class="w-4 h-4 shrink-0" aria-hidden="true"><use href="#i-masque"/></svg>Masquée</span></p>
+      </div>
+    </div>
+    <div role="status" class="mt-5 flex items-start gap-4 rounded-[22px] bg-neutre-100 p-5">
+      <span class="pastille pastille--teal w-11 h-11 mt-0.5 bg-white text-neutre-800" aria-hidden="true"><svg class="w-[22px] h-[22px]"><use href="#i-masque"/></svg></span>
+      <div class="min-w-0">
+        <p class="ff text-[22px] leading-tight text-teal-950">Masquée depuis le 20&nbsp;oct.</p>
+        <blockquote class="mt-2 mx-0 mb-0 border-l-[3px] border-neutre-400 pl-3 text-[16px] leading-snug text-teal-950">
+          «&nbsp;Votre numéro ne répond plus. Je masque la fiche le temps que vous le corrigiez.&nbsp;»
+          <span class="mt-1 block text-neutre-700">— envoyé à Julien, le 20&nbsp;oct.</span>
+        </blockquote>
+        <p class="mt-3 flex items-start gap-1.5 text-[16px] font-semibold text-teal-950">
+          <svg class="w-[18px] h-[18px] mt-0.5 shrink-0 text-sauge-700" aria-hidden="true"><use href="#i-coche"/></svg>
+          Julien a changé son numéro le 26&nbsp;oct.
+        </p>
+        <button type="button" class="mt-4 inline-flex items-center gap-2 min-h-[48px] px-5 rounded-full text-corps font-semibold text-white bg-teal-700 hover:bg-teal-600">
+          <svg class="w-5 h-5" aria-hidden="true"><use href="#i-oeil"/></svg>Remettre en ligne
+        </button>
+      </div>
+    </div>
+  </main>
+</template>
+
+
+<script>
+/* ── Les écrans : chaque <iframe data-ecran> reçoit les fondations de la page
+   (polices, daisyUI, Tailwind, @theme, classes produit et v2) et le sprite, puis
+   son gabarit. Un vrai viewport de 360 ou 1280 px : `sm:` et `lg:` y répondent à
+   l'écran, pas à la planche. Rien d'autre que des états illustrés. ── */
+(function(){
+  var tete = Array.prototype.filter.call(
+    document.head.querySelectorAll('link[rel="preconnect"], link[rel="stylesheet"], script[src], style'),
+    function(e){
+      /* pas la planche, ni la feuille que Tailwind a générée pour la planche :
+         chaque écran compile la sienne */
+      if(e.hasAttribute('data-planche')) return false;
+      return e.tagName !== 'STYLE' || e.id || e.type === 'text/tailwindcss';
+    }
+  ).map(function(e){ return e.outerHTML; }).join('\n');
+  var sprite = document.getElementById('src-sprite').outerHTML;
+
+  function deplier(html){
+    return html.replace(/<div data-inclure="([^"]+)"><\/div>/g, function(m, id){
+      var t = document.getElementById(id);
+      return t ? deplier(t.innerHTML) : m;
+    });
+  }
+
+  function apres(f){
+    var d = f.contentDocument;
+    var onglet = d.querySelector('[data-onglet="' + (f.dataset.onglet || 'file') + '"]');
+    if(onglet) onglet.setAttribute('aria-current', 'page');
+    if(f.dataset.compte){ d.querySelectorAll('[data-compte-file]').forEach(function(s){ s.textContent = f.dataset.compte; }); }
+    if(f.dataset.recherche){
+      var c = d.getElementById('cherche');
+      if(c){ c.value = f.dataset.recherche; c.dispatchEvent(new Event('input')); }
+    }
+    if(f.dataset.defile){
+      var cible = d.querySelector(f.dataset.defile);
+      var defiler = function(){ if(cible) d.defaultView.scrollTo(0, cible.getBoundingClientRect().top + d.defaultView.scrollY - 16); };
+      (d.fonts ? d.fonts.ready : Promise.resolve()).then(function(){ setTimeout(defiler, 350); });
+    }
+  }
+
+  document.querySelectorAll('iframe[data-ecran]').forEach(function(f){
+    var t = document.getElementById(f.dataset.ecran);
+    f.addEventListener('load', function(){ apres(f); });
+    f.srcdoc = '<!DOCTYPE html><html lang="fr" data-theme="cartoucherie"><head><meta charset="utf-8">'
+      + '<meta name="viewport" content="width=device-width, initial-scale=1">' + tete
+      + '</head><body class="font-sans text-neutre-900 antialiased bg-white">' + sprite + deplier(t.innerHTML)
+      + '</body></html>';
+  });
+})();
+</script>
+</body>
+</html>
