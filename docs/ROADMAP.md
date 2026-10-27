@@ -4,7 +4,7 @@ Where the Annuaire stands and what comes next. This file is the single place for
 spec (`docs/superpowers/specs/2026-08-29-annuaire-cartoucherie-design.md`) holds the reasoning,
 and each version gets its own spec and plan when its turn comes.
 
-Last updated: 2026-10-26.
+Last updated: 2026-10-27.
 
 | Version      | What it delivers                                                                                         | Status                                                       |
 | ------------ | -------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------ |
@@ -63,6 +63,6 @@ links the 6 existing profiles to their owners by hand.
 | Field list and decisions                                      | ✅ Done (2026-10-26)               |
 | v2 spec                                                       | 📝 Draft, awaiting Adrien's review |
 | CPU test (spec §13 step 0): fits, with a hand-written sign-in | ✅ Done (2026-10-26)               |
-| Mockups: form, `/espace`, profile with new fields, `/admin`   | ⏳ Not started                     |
+| Mockups: form, `/espace`, profile with new fields, `/admin`   | 📝 Drafted, awaiting Adrien        |
 | Implementation plan                                           | ⏳ Not started                     |
 | Build, migration of the 6 profiles to D1, invitations         | ⏳ Not started                     |
