@@ -426,6 +426,15 @@ textarea.champ{ field-sizing: content; resize: vertical; }
 /* « Placer sur la carte » : le repère posé, pas encore nommé */
 .lieu--pose{ background:#fff; color:var(--color-sauge-800);
        box-shadow: 0 0 0 2px var(--color-sauge-700), var(--shadow-flottant); outline:2px dashed var(--color-sauge-700); outline-offset:5px; }
+/* le groupe : des lieux à moins de 44 px l'un de l'autre. Le carré du lieu, un
+   peu plus grand, son nombre en blanc (6,9:1), et un second carré décalé
+   derrière lui pour dire « plusieurs ». Jamais orange. */
+.lieu--groupe{ width:34px; height:34px; font:700 17px/1 var(--font-sans); font-variant-numeric:tabular-nums;
+  box-shadow: 0 0 0 2px #fff, 5px -5px 0 0 var(--color-sauge-400), 5px -5px 0 2px #fff, var(--shadow-carte); }
+/* la marque de lieu : l'épingle d'un voisin dont l'activité est un lieu
+   préféré. Pas de second repère : un coin sauge sur son épingle. */
+.marque-lieu{ position:absolute; top:0; right:0; display:grid; place-items:center; width:18px; height:18px;
+  border-radius:6px; background:var(--color-sauge-700); color:#fff; box-shadow:0 0 0 2px #fff; }
 </style>
 
 <!-- ═══════════════════════════════════════════════════════════════════════════
@@ -537,6 +546,20 @@ textarea.champ{ field-sizing: content; resize: vertical; }
 <!-- ═══════════ le catalogue lui-même — pas le produit ═══════════ -->
 <style>
   .doc{ background: var(--color-neutre-100); }
+
+  /* le catalogue à 200 % sur 360 px : la largeur utile d'un bloc est 100vw − 5rem
+     (gouttière et rembourrage). Les titres rapetissent jusqu'à y loger leur plus
+     long mot (« typographique », 13 lettres) ; un jeton de code peut se couper,
+     ce n'est pas un mot. Tout est préfixé par .doc : rien n'atteint les spécimens. */
+  .doc .titre-doc{ font-size:clamp(min(2.5rem, calc((100vw - 2.5rem) / 6.6)), 9vw, 4.5rem); }
+  .doc .bloc > h2{ font-size:min(var(--text-nom), calc((100vw - 5rem) / 8.5)); }
+  .doc .bloc > p.text-etiquette{ font-size:min(var(--text-etiquette), calc((100vw - 5rem) / 14)); }
+  .doc .bloc code:not(.scene *){ overflow-wrap:anywhere; }
+  /* la prose du catalogue, pas le produit : à 200 %, « transcription » ne tient pas
+     dans 200 px. Elle se coupe (avec un trait d'union là où le navigateur sait
+     césurer le français) ; les spécimens, eux, gardent la règle des mots entiers. */
+  .doc .bloc{ hyphens:auto; overflow-wrap:anywhere; }
+  .doc .bloc .scene, .doc .bloc pre.code{ hyphens:manual; overflow-wrap:normal; }
 
   /* la scène : un téléphone de 390 px posé sur la page.
      `contain:layout` fait de la scène le bloc conteneur des descendants
@@ -672,7 +695,7 @@ textarea.champ{ field-sizing: content; resize: vertical; }
         <span class="ff block text-[20px] text-teal-900 leading-tight">la Cartoucherie</span>
       </span>
     </p>
-    <h1 class="ff mt-7 text-[clamp(2.5rem,9vw,4.5rem)] leading-[0.9] tracking-[-0.032em] text-teal-900 max-w-[16ch]">
+    <h1 class="ff mt-7 titre-doc leading-[0.9] tracking-[-0.032em] text-teal-900 max-w-[16ch]">
       La bibliothèque<br>de blocs<span class="text-orange-800">.</span>
     </h1>
     <p class="mt-6 text-chapo text-neutre-800 max-w-[54ch]">
@@ -763,7 +786,7 @@ textarea.champ{ field-sizing: content; resize: vertical; }
       <svg class="w-5 h-5 shrink-0" aria-hidden="true"><use href="#i-alerte"/></svg>
       Remplissage seul — ne jamais écrire en texte
     </p>
-    <ul class="mt-2.5 grid gap-1.5 sm:grid-cols-2 text-corps text-neutre-900 list-none p-0 m-0">
+    <ul class="mt-2.5 grid grid-cols-[minmax(0,1fr)] gap-1.5 sm:grid-cols-2 text-corps text-neutre-900 list-none p-0 m-0">
       <li><code class="font-mono text-[15px]">text-accent</code> · <code class="font-mono text-[15px]">text-orange-300…600</code> <span class="text-neutre-700">→ <code class="font-mono text-[15px]">text-orange-800</code></span></li>
       <li><code class="font-mono text-[15px]">text-warning</code> · <code class="font-mono text-[15px]">text-sable-50…600</code> <span class="text-neutre-700">→ <code class="font-mono text-[15px]">text-sable-800</code></span></li>
       <li><code class="font-mono text-[15px]">text-teal-300/400/500</code> <span class="text-neutre-700">→ <code class="font-mono text-[15px]">text-teal-700</code></span></li>
@@ -820,7 +843,7 @@ textarea.champ{ field-sizing: content; resize: vertical; }
 
   <div class="mt-6 rounded-[16px] bg-neutre-100 p-4 sm:p-5">
     <p class="text-etiquette font-semibold uppercase text-sauge-800">Les cinq mesures qui ne se négocient pas</p>
-    <ul class="mt-3 grid gap-2 sm:grid-cols-2 text-corps text-neutre-900 list-none p-0 m-0">
+    <ul class="mt-3 grid grid-cols-[minmax(0,1fr)] gap-2 sm:grid-cols-2 text-corps text-neutre-900 list-none p-0 m-0">
       <li><strong class="font-semibold">44 px</strong> — cible tactile minimale, partout</li>
       <li><strong class="font-semibold">52–54 px</strong> — hauteur du CTA « Appeler »</li>
       <li><strong class="font-semibold">88 px</strong> — plancher d'un visage en ligne de liste</li>
@@ -1037,13 +1060,14 @@ textarea.champ{ field-sizing: content; resize: vertical; }
     <p class="variante">Accueil — le lien d'inscription apparaît à partir de 640 px, la place manque avant.</p>
     <template>
       <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-sm">
-        <div class="mx-auto max-w-[1160px] px-5 h-16 flex items-center justify-between gap-3">
-          <a href="index.html" class="flex items-center gap-2.5 -ml-0.5" aria-label="Annuaire de la Cartoucherie, accueil">
+        <div class="mx-auto max-w-[1160px] px-5 min-h-16 flex flex-wrap items-center justify-between gap-3">
+          <a href="index.html" class="flex items-center gap-2.5 -ml-0.5 min-h-[44px]">
             <svg class="w-8 h-8 text-teal-700 shrink-0" aria-hidden="true"><use href="#i-ventouse"/></svg>
             <span class="leading-none">
               <span class="block text-[11.5px] uppercase tracking-[.18em] text-neutre-700 font-semibold">Annuaire de</span>
               <span class="ff block text-[20px] text-teal-900 leading-tight">la Cartoucherie</span>
             </span>
+            <span class="sr-only">, Accueil</span>
           </a>
           <a href="#rejoindre" class="hidden sm:inline-flex items-center gap-1.5 min-h-[44px] px-4 rounded-full text-etiquette tracking-normal font-semibold text-teal-700 hover:bg-teal-50">
             Je veux y figurer
@@ -1062,13 +1086,14 @@ textarea.champ{ field-sizing: content; resize: vertical; }
     <p class="variante">Fiche membre — le lien de retour remplace l'inscription, et il est nommé.</p>
     <template>
       <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-sm">
-        <div class="mx-auto max-w-[1160px] px-5 h-16 flex items-center justify-between gap-3">
-          <a href="index.html" class="flex items-center gap-2.5 -ml-0.5" aria-label="Annuaire de la Cartoucherie, accueil">
+        <div class="mx-auto max-w-[1160px] px-5 min-h-16 flex flex-wrap items-center justify-between gap-3">
+          <a href="index.html" class="flex items-center gap-2.5 -ml-0.5 min-h-[44px] py-1">
             <svg class="w-8 h-8 text-teal-700 shrink-0" aria-hidden="true"><use href="#i-ventouse"/></svg>
             <span class="leading-none">
               <span class="block text-[11.5px] uppercase tracking-[.18em] text-neutre-700 font-semibold">Annuaire de</span>
               <span class="ff block text-[20px] text-teal-900 leading-tight">la Cartoucherie</span>
             </span>
+            <span class="sr-only">, Accueil</span>
           </a>
           <a href="index.html" class="inline-flex items-center gap-2 min-h-[44px] px-3.5 rounded-full text-etiquette tracking-normal font-semibold text-teal-700 hover:bg-teal-50">
             <svg class="w-5 h-5" aria-hidden="true"><use href="#i-retour"/></svg>
@@ -1117,8 +1142,8 @@ textarea.champ{ field-sizing: content; resize: vertical; }
         </p>
         <form class="flottant relative rounded-[22px] bg-white p-3.5" role="search" onsubmit="return false">
           <label for="q" class="block px-1 pb-1.5 text-etiquette tracking-normal font-semibold text-neutre-800">Un métier, un prénom, un besoin</label>
-          <div class="flex gap-2">
-            <div class="relative flex-1 min-w-0">
+          <div class="flex flex-wrap gap-2">
+            <div class="relative flex-1 min-w-[min(12rem,100%)]">
               <svg class="w-5 h-5 absolute left-3.5 top-1/2 -translate-y-1/2 text-teal-600 pointer-events-none" aria-hidden="true"><use href="#i-loupe"/></svg>
               <input id="q" type="search" autocomplete="off" placeholder="électricien, yoga…"
                      class="w-full min-h-[52px] pl-11 pr-3 rounded-xl bg-white text-corps text-neutre-900 placeholder:text-neutre-600"
@@ -1210,64 +1235,64 @@ textarea.champ{ field-sizing: content; resize: vertical; }
         <ul id="index-besoins" class="list-none p-0 m-0">
           <li><a class="besoin flex items-start gap-3 px-5 py-1.5 min-h-[56px]" href="/annuaire?c=sante-bien-etre">
             <span class="num tnum mt-1 w-6 shrink-0 text-[16px] font-bold text-neutre-600">01</span>
-            <span class="min-w-0 flex-1">
-              <span class="ff block text-besoin text-teal-800">Retrouver l'équilibre</span>
+            <span class="@container min-w-0 flex-1">
+              <span class="ff block text-besoin mots-entiers text-teal-800" style="--taille:var(--text-besoin); --mot:11">Retrouver l'équilibre</span>
               <span class="mt-0.5 block text-[16px] leading-[1.15] text-neutre-700">stress, sommeil, énergie · <span class="font-semibold text-neutre-800">4 voisins</span></span>
             </span>
           </a></li>
           <li><a class="besoin flex items-start gap-3 px-5 py-1.5 min-h-[56px]" href="/annuaire?c=artisanat-travaux">
             <span class="num tnum mt-1 w-6 shrink-0 text-[16px] font-bold text-neutre-600">02</span>
-            <span class="min-w-0 flex-1">
-              <span class="ff block text-besoin text-teal-800">Réparer, installer chez moi</span>
+            <span class="@container min-w-0 flex-1">
+              <span class="ff block text-besoin mots-entiers text-teal-800" style="--taille:var(--text-besoin); --mot:9">Réparer, installer chez moi</span>
               <span class="mt-0.5 block text-[16px] leading-[1.15] text-neutre-700">travaux, dépannage · <span class="font-semibold text-neutre-800">2 voisins</span></span>
             </span>
           </a></li>
           <li><a class="besoin flex items-start gap-3 px-5 py-1.5 min-h-[56px]" href="/annuaire?c=numerique-creation">
             <span class="num tnum mt-1 w-6 shrink-0 text-[16px] font-bold text-neutre-600">03</span>
-            <span class="min-w-0 flex-1">
-              <span class="ff block text-besoin text-teal-800">Un site, un logo, une image</span>
+            <span class="@container min-w-0 flex-1">
+              <span class="ff block text-besoin mots-entiers text-teal-800" style="--taille:var(--text-besoin); --mot:5">Un site, un logo, une image</span>
               <span class="mt-0.5 block text-[16px] leading-[1.15] text-neutre-700">web, graphisme, photo · <span class="font-semibold text-neutre-800">3 voisins</span></span>
             </span>
           </a></li>
           <li><a class="besoin flex items-start gap-3 px-5 py-1.5 min-h-[56px]" href="/annuaire?c=sport-mouvement">
             <span class="num tnum mt-1 w-6 shrink-0 text-[16px] font-bold text-neutre-600">04</span>
-            <span class="min-w-0 flex-1">
-              <span class="ff block text-besoin text-teal-800">Me remettre en mouvement</span>
+            <span class="@container min-w-0 flex-1">
+              <span class="ff block text-besoin mots-entiers text-teal-800" style="--taille:var(--text-besoin); --mot:9">Me remettre en mouvement</span>
               <span class="mt-0.5 block text-[16px] leading-[1.15] text-neutre-700">coaching, yoga · <span class="font-semibold text-neutre-800">2 voisins</span></span>
             </span>
           </a></li>
           <li><a class="besoin flex items-start gap-3 px-5 py-1.5 min-h-[56px]" href="/annuaire?c=services-domicile">
             <span class="num tnum mt-1 w-6 shrink-0 text-[16px] font-bold text-neutre-600">05</span>
-            <span class="min-w-0 flex-1">
-              <span class="ff block text-besoin text-teal-800">Un coup de main chez moi</span>
+            <span class="@container min-w-0 flex-1">
+              <span class="ff block text-besoin mots-entiers text-teal-800" style="--taille:var(--text-besoin); --mot:4">Un coup de main chez moi</span>
               <span class="mt-0.5 block text-[16px] leading-[1.15] text-neutre-700">à domicile, dépannage · <span class="font-semibold text-neutre-800">2 voisins</span></span>
             </span>
           </a></li>
           <li><a class="besoin flex items-start gap-3 px-5 py-1.5 min-h-[56px]" href="/annuaire?c=conseil-entreprise">
             <span class="num tnum mt-1 w-6 shrink-0 text-[16px] font-bold text-neutre-600">06</span>
-            <span class="min-w-0 flex-1">
-              <span class="ff block text-besoin text-teal-800">Faire tourner mon activité</span>
+            <span class="@container min-w-0 flex-1">
+              <span class="ff block text-besoin mots-entiers text-teal-800" style="--taille:var(--text-besoin); --mot:8">Faire tourner mon activité</span>
               <span class="mt-0.5 block text-[16px] leading-[1.15] text-neutre-700">comptabilité, conseil · <span class="font-semibold text-neutre-800">2 voisins</span></span>
             </span>
           </a></li>
           <li><a class="besoin flex items-start gap-3 px-5 py-1.5 min-h-[56px]" href="/annuaire?c=art-culture">
             <span class="num tnum mt-1 w-6 shrink-0 text-[16px] font-bold text-neutre-600">07</span>
-            <span class="min-w-0 flex-1">
-              <span class="ff block text-besoin text-teal-800">Un souvenir, une envie de créer</span>
+            <span class="@container min-w-0 flex-1">
+              <span class="ff block text-besoin mots-entiers text-teal-800" style="--taille:var(--text-besoin); --mot:9">Un souvenir, une envie de créer</span>
               <span class="mt-0.5 block text-[16px] leading-[1.15] text-neutre-700">photo, illustration · <span class="font-semibold text-neutre-800">2 voisins</span></span>
             </span>
           </a></li>
           <li><a class="besoin flex items-start gap-3 px-5 py-1.5 min-h-[56px]" href="/annuaire?c=beaute-soins">
             <span class="num tnum mt-1 w-6 shrink-0 text-[16px] font-bold text-neutre-600">08</span>
-            <span class="min-w-0 flex-1">
-              <span class="ff block text-besoin text-teal-800">Prendre soin de moi</span>
+            <span class="@container min-w-0 flex-1">
+              <span class="ff block text-besoin mots-entiers text-teal-800" style="--taille:var(--text-besoin); --mot:7">Prendre soin de moi</span>
               <span class="mt-0.5 block text-[16px] leading-[1.15] text-neutre-700">coiffure, couleur, soins · <span class="font-semibold text-neutre-800">1 voisine</span></span>
             </span>
           </a></li>
           <li><a class="besoin flex items-start gap-3 px-5 py-1.5 min-h-[56px]" href="/annuaire?c=alimentation-traiteur">
             <span class="num tnum mt-1 w-6 shrink-0 text-[16px] font-bold text-neutre-600">09</span>
-            <span class="min-w-0 flex-1">
-              <span class="ff block text-besoin text-teal-800">Manger bon sans cuisiner ce soir</span>
+            <span class="@container min-w-0 flex-1">
+              <span class="ff block text-besoin mots-entiers text-teal-800" style="--taille:var(--text-besoin); --mot:8">Manger bon sans cuisiner ce soir</span>
               <span class="mt-0.5 block text-[16px] leading-[1.15] text-neutre-700">traiteur, plats à emporter · <span class="font-semibold text-neutre-800">1 voisine</span></span>
             </span>
           </a></li>
@@ -1306,8 +1331,8 @@ textarea.champ{ field-sizing: content; resize: vertical; }
     agrandissement ×1,4 le visage devient mou, et un visage flou détruit exactement la confiance
     qu'on construit. La contrainte est donc respectée à sa lettre utile — le visage est à fond
     perdu dans la carte, <strong class="font-semibold text-neutre-900">116 px de large sur
-    152 px de haut</strong>, bien au-dessus du plancher de 88 px, et net. Avec les portraits
-    réels de Sandra, les mêmes cadres se remplissent sans changer une ligne.
+    152 px de haut</strong>, bien au-dessus du plancher de 88 px, et net. Avec les vrais
+    portraits, les mêmes cadres se remplissent sans changer une ligne.
   </p>
 
   <div class="mt-5 rounded-[16px] bg-sauge-50 p-4 sm:p-5">
@@ -1326,22 +1351,22 @@ textarea.champ{ field-sizing: content; resize: vertical; }
     <p class="variante">Ligne de liste, avec adresse. Le nom couvre toute la carte (<code class="font-mono text-[15px] text-teal-800">before:inset-0</code>) ; le bouton d'appel remonte en <code class="font-mono text-[15px] text-teal-800">z-10</code> pour rester cliquable.</p>
     <template>
       <li>
-        <article class="carte carte-lien relative flex min-h-[152px] rounded-[20px] bg-white overflow-hidden">
+        <article class="carte carte-lien relative flex flex-wrap min-h-[152px] rounded-[20px] bg-white overflow-hidden">
           <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Portrait de Camille Roussel"
                width="128" height="128" loading="lazy"
                class="w-[116px] shrink-0 self-stretch object-cover" style="object-position:50% 25%">
-          <div class="flex-1 min-w-0 py-4 pl-4 pr-1 flex flex-col justify-center gap-1">
-            <h3 class="ff text-[20px] leading-tight text-teal-900">
+          <div class="@container flex-1 min-w-[min(7.5rem,100%)] py-4 pl-4 pr-1 flex flex-col justify-center gap-1">
+            <h3 class="ff text-[20px] leading-tight mots-entiers text-teal-900" style="--taille:20px; --mot:7">
               <a href="/membre/camille-roussel" class="before:absolute before:inset-0 before:content-['']">Camille Roussel</a>
             </h3>
-            <p class="text-corps text-neutre-800 leading-snug">Sophrologue</p>
+            <p class="text-corps text-neutre-800 leading-snug mots-entiers" style="--taille:var(--text-corps); --lettre:.56; --mot:11">Sophrologue</p>
             <p class="flex flex-wrap items-center gap-x-3 gap-y-1 text-[16px] text-neutre-700 mt-0.5">
               <span class="inline-flex items-center gap-1"><svg class="w-4 h-4 text-sable-700" aria-hidden="true"><use href="#i-etoile"/></svg>4,8<span class="sr-only"> sur 5,</span> <span class="text-neutre-600">(12)</span></span>
               <span class="inline-flex items-center gap-1"><svg class="w-4 h-4 text-teal-600" aria-hidden="true"><use href="#i-pin"/></svg>120 m</span>
             </p>
           </div>
-          <a href="tel:+33612345678" class="relative z-10 shrink-0 self-center mr-2.5 grid place-items-center w-11 h-11 rounded-full text-teal-700 bg-teal-50 hover:bg-teal-100"
-             aria-label="Appeler Camille Roussel au 06 12 34 56 78">
+          <a href="tel:+33639980017" class="relative z-10 shrink-0 self-center ml-auto mr-2.5 grid place-items-center w-11 h-11 rounded-full text-teal-700 bg-teal-50 hover:bg-teal-100"
+             aria-label="Appeler Camille Roussel au 06 39 98 00 17">
             <svg class="w-5 h-5" aria-hidden="true"><use href="#i-tel"/></svg>
           </a>
         </article>
@@ -1657,7 +1682,7 @@ textarea.champ{ field-sizing: content; resize: vertical; }
       <section class="px-5 py-6" aria-labelledby="t-contact">
         <h2 id="t-contact" class="ff text-nom text-teal-900">La contacter</h2>
         <div class="filet h-[3px] w-16 rounded-full mt-2.5 mb-5"></div>
-        <ul class="grid gap-2.5 list-none p-0 m-0">
+        <ul class="grid grid-cols-[minmax(0,1fr)] gap-2.5 list-none p-0 m-0">
           <li><a href="mailto:camille.roussel@example.fr" class="carte carte-lien flex flex-wrap items-center gap-x-3.5 gap-y-2 min-h-[64px] px-4 py-3 rounded-[16px] bg-white">
             <span class="pastille pastille--teal w-10 h-10 bg-teal-50 text-teal-700 shrink-0"><svg class="w-5 h-5" aria-hidden="true"><use href="#i-mail"/></svg></span>
             <span class="min-w-[min(12rem,100%)] flex-1">
@@ -1697,7 +1722,7 @@ textarea.champ{ field-sizing: content; resize: vertical; }
       <section class="px-5 py-6" aria-labelledby="t-contact-m">
         <h2 id="t-contact-m" class="ff text-nom text-teal-900">Le contacter</h2>
         <div class="filet h-[3px] w-16 rounded-full mt-2.5 mb-5"></div>
-        <ul class="grid gap-2.5 list-none p-0 m-0">
+        <ul class="grid grid-cols-[minmax(0,1fr)] gap-2.5 list-none p-0 m-0">
           <li><a href="mailto:atelier.ollivier@example.fr" class="carte carte-lien flex flex-wrap items-center gap-x-3.5 gap-y-2 min-h-[64px] px-4 py-3 rounded-[16px] bg-white">
             <span class="pastille pastille--teal w-10 h-10 bg-teal-50 text-teal-700 shrink-0"><svg class="w-5 h-5" aria-hidden="true"><use href="#i-mail"/></svg></span>
             <span class="min-w-[min(12rem,100%)] flex-1">
@@ -1727,7 +1752,7 @@ textarea.champ{ field-sizing: content; resize: vertical; }
       <section class="px-5 py-6" aria-labelledby="t-contact-j">
         <h2 id="t-contact-j" class="ff text-nom text-teal-900">Le contacter</h2>
         <div class="filet h-[3px] w-16 rounded-full mt-2.5 mb-5"></div>
-        <ul class="grid gap-2.5 list-none p-0 m-0">
+        <ul class="grid grid-cols-[minmax(0,1fr)] gap-2.5 list-none p-0 m-0">
           <li><a href="mailto:jmarty.elec@example.fr" class="carte carte-lien flex flex-wrap items-center gap-x-3.5 gap-y-2 min-h-[64px] px-4 py-3 rounded-[16px] bg-white">
             <span class="pastille pastille--teal w-10 h-10 bg-teal-50 text-teal-700 shrink-0"><svg class="w-5 h-5" aria-hidden="true"><use href="#i-mail"/></svg></span>
             <span class="min-w-[min(12rem,100%)] flex-1">
@@ -1760,6 +1785,11 @@ textarea.champ{ field-sizing: content; resize: vertical; }
     ombre : ces tuiles vivent déjà dans une page qui a des cartes, et on n'imbrique pas une
     marche 1 dans une marche 1. Le titre, comme « Où la trouver » et « Son portrait », s'accorde au
     champ <code class="font-mono text-[15px] text-teal-800">genre</code>.
+    À 200&nbsp;% sur 360&nbsp;px, la tuile se replie comme une ligne de « La contacter »
+    (<code class="font-mono text-[15px] text-teal-800">flex-wrap</code> +
+    <code class="font-mono text-[15px] text-teal-800">min-w-[min(12rem,100%)]</code>) et l'intitulé
+    porte <code class="font-mono text-[15px] text-teal-800">mots-entiers</code> : il rapetisse avant
+    de couper un mot.
   </p>
 
   <div data-specimen class="mt-6">
@@ -1768,18 +1798,18 @@ textarea.champ{ field-sizing: content; resize: vertical; }
       <section class="px-5 py-6" aria-labelledby="t-services-f">
         <h2 id="t-services-f" class="ff text-nom text-teal-900">Ce qu'elle propose</h2>
         <div class="filet h-[3px] w-16 rounded-full mt-2.5 mb-5"></div>
-        <ul class="grid gap-3 list-none p-0 m-0">
-          <li class="flex items-center gap-3.5 rounded-[16px] bg-neutre-100 px-4 py-4 min-h-[64px]">
+        <ul class="grid grid-cols-[minmax(0,1fr)] gap-3 list-none p-0 m-0">
+          <li class="@container flex flex-wrap items-center gap-x-3.5 gap-y-2 rounded-[16px] bg-neutre-100 px-4 py-4 min-h-[64px]">
             <span class="pastille w-9 h-9 bg-white text-sauge-700 shrink-0"><svg class="w-[18px] h-[18px]" aria-hidden="true"><use href="#c-sante"/></svg></span>
-            <span class="text-corps font-semibold text-teal-900">Séance individuelle</span>
+            <span class="min-w-[min(12rem,100%)] flex-1 mots-entiers text-corps font-semibold text-teal-900" style="--taille:var(--text-corps); --lettre:.56; --mot:12">Séance individuelle</span>
           </li>
-          <li class="flex items-center gap-3.5 rounded-[16px] bg-neutre-100 px-4 py-4 min-h-[64px]">
+          <li class="@container flex flex-wrap items-center gap-x-3.5 gap-y-2 rounded-[16px] bg-neutre-100 px-4 py-4 min-h-[64px]">
             <span class="pastille w-9 h-9 bg-white text-sauge-700 shrink-0"><svg class="w-[18px] h-[18px]" aria-hidden="true"><use href="#i-groupe"/></svg></span>
-            <span class="text-corps font-semibold text-teal-900">Atelier collectif</span>
+            <span class="min-w-[min(12rem,100%)] flex-1 mots-entiers text-corps font-semibold text-teal-900" style="--taille:var(--text-corps); --lettre:.56; --mot:9">Atelier collectif</span>
           </li>
-          <li class="flex items-center gap-3.5 rounded-[16px] bg-neutre-100 px-4 py-4 min-h-[64px]">
+          <li class="@container flex flex-wrap items-center gap-x-3.5 gap-y-2 rounded-[16px] bg-neutre-100 px-4 py-4 min-h-[64px]">
             <span class="pastille w-9 h-9 bg-white text-sauge-700 shrink-0"><svg class="w-[18px] h-[18px]" aria-hidden="true"><use href="#i-visio"/></svg></span>
-            <span class="text-corps font-semibold text-teal-900">Visio</span>
+            <span class="min-w-[min(12rem,100%)] flex-1 mots-entiers text-corps font-semibold text-teal-900" style="--taille:var(--text-corps); --lettre:.56; --mot:5">Visio</span>
           </li>
         </ul>
       </section>
@@ -1796,26 +1826,26 @@ textarea.champ{ field-sizing: content; resize: vertical; }
       <section class="px-5 py-6" aria-labelledby="t-services-h">
         <h2 id="t-services-h" class="ff text-nom text-teal-900">Ce qu'il propose</h2>
         <div class="filet h-[3px] w-16 rounded-full mt-2.5 mb-5"></div>
-        <ul class="grid gap-3 list-none p-0 m-0">
-          <li class="flex items-center gap-3.5 rounded-[16px] bg-neutre-100 px-4 py-4 min-h-[64px]">
+        <ul class="grid grid-cols-[minmax(0,1fr)] gap-3 list-none p-0 m-0">
+          <li class="@container flex flex-wrap items-center gap-x-3.5 gap-y-2 rounded-[16px] bg-neutre-100 px-4 py-4 min-h-[64px]">
             <span class="pastille w-9 h-9 bg-white text-sauge-700 shrink-0"><svg class="w-[18px] h-[18px]" aria-hidden="true"><use href="#c-artisanat"/></svg></span>
-            <span class="text-corps font-semibold text-teal-900">Meuble sur mesure</span>
+            <span class="min-w-[min(12rem,100%)] flex-1 mots-entiers text-corps font-semibold text-teal-900" style="--taille:var(--text-corps); --lettre:.56; --mot:6">Meuble sur mesure</span>
           </li>
-          <li class="flex items-center gap-3.5 rounded-[16px] bg-neutre-100 px-4 py-4 min-h-[64px]">
+          <li class="@container flex flex-wrap items-center gap-x-3.5 gap-y-2 rounded-[16px] bg-neutre-100 px-4 py-4 min-h-[64px]">
             <span class="pastille w-9 h-9 bg-white text-sauge-700 shrink-0"><svg class="w-[18px] h-[18px]" aria-hidden="true"><use href="#c-domicile"/></svg></span>
-            <span class="text-corps font-semibold text-teal-900">Agencement</span>
+            <span class="min-w-[min(12rem,100%)] flex-1 mots-entiers text-corps font-semibold text-teal-900" style="--taille:var(--text-corps); --lettre:.56; --mot:10">Agencement</span>
           </li>
-          <li class="flex items-center gap-3.5 rounded-[16px] bg-neutre-100 px-4 py-4 min-h-[64px]">
+          <li class="@container flex flex-wrap items-center gap-x-3.5 gap-y-2 rounded-[16px] bg-neutre-100 px-4 py-4 min-h-[64px]">
             <span class="pastille w-9 h-9 bg-white text-sauge-700 shrink-0"><svg class="w-[18px] h-[18px]" aria-hidden="true"><use href="#c-artisanat"/></svg></span>
-            <span class="text-corps font-semibold text-teal-900">Réparation</span>
+            <span class="min-w-[min(12rem,100%)] flex-1 mots-entiers text-corps font-semibold text-teal-900" style="--taille:var(--text-corps); --lettre:.56; --mot:10">Réparation</span>
           </li>
         </ul>
 
         <h2 class="ff mt-8 text-nom text-teal-900">Où le trouver</h2>
         <div class="filet h-[3px] w-16 rounded-full mt-2.5 mb-5"></div>
-        <div class="carte rounded-[20px] bg-white p-5 flex items-start gap-4">
+        <div class="carte rounded-[20px] bg-white p-5 flex flex-wrap items-start gap-x-4 gap-y-3">
           <span class="pastille pastille--teal w-11 h-11 bg-teal-50 text-teal-700 shrink-0 mt-0.5"><svg class="w-5 h-5" aria-hidden="true"><use href="#i-pin"/></svg></span>
-          <div class="min-w-0">
+          <div class="min-w-[min(12rem,100%)] flex-1">
             <address class="not-italic text-[18px] leading-snug text-neutre-900 font-semibold">
               Atelier, route de Bayonne<br>31300 Toulouse
             </address>
@@ -1823,7 +1853,7 @@ textarea.champ{ field-sizing: content; resize: vertical; }
               À 800 m de la Halle · Tram T1, arrêt Arènes Romaines
             </p>
             <a href="https://www.openstreetmap.org/search?query=route%20de%20Bayonne%2031300%20Toulouse"
-               class="mt-3 inline-flex items-center gap-2 min-h-[44px] text-corps font-semibold text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">
+               class="mt-3 inline-flex max-w-full min-w-0 items-center gap-2 min-h-[44px] text-corps font-semibold text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">
               Voir l'itinéraire <svg class="w-4 h-4" aria-hidden="true"><use href="#i-chev"/></svg>
             </a>
           </div>
@@ -1864,11 +1894,11 @@ textarea.champ{ field-sizing: content; resize: vertical; }
         </div>
         <div class="filet h-[3px] w-16 rounded-full mt-2.5 mb-5"></div>
 
-        <ul class="grid gap-3.5 list-none p-0 m-0">
+        <ul class="grid grid-cols-[minmax(0,1fr)] gap-3.5 list-none p-0 m-0">
           <li class="carte rounded-[20px] bg-white p-5">
-            <div class="flex items-center gap-3">
+            <div class="flex flex-wrap items-center gap-x-3 gap-y-2">
               <span class="pastille w-11 h-11 bg-sauge-100 text-sauge-800 text-[16px] font-bold shrink-0">HM</span>
-              <span class="min-w-0">
+              <span class="min-w-[min(8rem,100%)] flex-1">
                 <span class="block text-corps font-semibold text-teal-900">Hélène M.</span>
                 <span class="block text-[16px] text-neutre-700">12 août 2026</span>
               </span>
@@ -1883,9 +1913,9 @@ textarea.champ{ field-sizing: content; resize: vertical; }
             <p class="mt-2.5 text-corps text-neutre-900">Trois séances et je dors enfin. Camille explique très bien, on n'a jamais l'impression de perdre son temps. Et c'est à deux pas de chez moi.</p>
           </li>
           <li class="carte rounded-[20px] bg-white p-5">
-            <div class="flex items-center gap-3">
+            <div class="flex flex-wrap items-center gap-x-3 gap-y-2">
               <span class="pastille w-11 h-11 bg-sauge-100 text-sauge-800 text-[16px] font-bold shrink-0">FD</span>
-              <span class="min-w-0">
+              <span class="min-w-[min(8rem,100%)] flex-1">
                 <span class="block text-corps font-semibold text-teal-900">Fatou D.</span>
                 <span class="block text-[16px] text-neutre-700">18 juin 2026</span>
               </span>
@@ -1906,12 +1936,12 @@ textarea.champ{ field-sizing: content; resize: vertical; }
                style="box-shadow: inset 0 0 0 2px var(--color-sauge-200)">
             <img src="../_shared/colly/colly-joyeux.png" alt="" width="260" height="260" class="croquis w-[104px] h-auto">
           </div>
-          <div class="mt-4 text-center">
-            <p class="ff text-[22px] leading-snug text-teal-900">Vous la connaissez déjà&nbsp;?</p>
+          <div class="@container mt-4 text-center">
+            <p class="ff mots-entiers leading-snug text-teal-900" style="--taille:22px; --mot:10">Vous la connaissez déjà&nbsp;?</p>
             <p class="mt-1.5 text-corps text-neutre-800">
               Un avis de voisin vaut mieux que dix étoiles anonymes. Trois lignes suffisent.
             </p>
-            <button type="button" class="mt-4 inline-flex items-center gap-2 min-h-[48px] px-5 rounded-full text-corps font-semibold text-white bg-teal-700 hover:bg-teal-600">
+            <button type="button" class="mt-4 inline-flex max-w-full items-center gap-2 min-h-[48px] px-5 rounded-full text-corps font-semibold text-white bg-teal-700 hover:bg-teal-600">
               <svg class="w-[18px] h-[18px]" aria-hidden="true"><use href="#i-plume"/></svg>
               Laisser un avis
             </button>
@@ -1936,7 +1966,7 @@ textarea.champ{ field-sizing: content; resize: vertical; }
             <strong class="font-semibold">Aucun avis pour l'instant.</strong> Pierre est inscrit
             depuis peu&nbsp;; personne n'a encore écrit.
           </p>
-          <button type="button" class="mt-4 inline-flex items-center gap-2 min-h-[48px] px-5 rounded-full text-corps font-semibold text-white bg-teal-700 hover:bg-teal-600">
+          <button type="button" class="mt-4 inline-flex max-w-full items-center gap-2 min-h-[48px] px-5 rounded-full text-corps font-semibold text-white bg-teal-700 hover:bg-teal-600">
             <svg class="w-[18px] h-[18px]" aria-hidden="true"><use href="#i-plume"/></svg>
             Être le premier
           </button>
@@ -1980,10 +2010,10 @@ textarea.champ{ field-sizing: content; resize: vertical; }
             <span class="ff block text-[19px] text-teal-900 leading-tight">Camille Roussel</span>
             <span class="block text-[16px] text-neutre-700">Sophrologue · 120 m</span>
           </p>
-          <a href="tel:+33612345678"
+          <a href="tel:+33639980017"
              class="cta flex-1 sm:flex-none inline-flex items-center justify-center gap-2.5 min-h-[54px] px-6 rounded-full text-[18px] font-bold tracking-tight transition">
             <svg class="w-5 h-5" aria-hidden="true"><use href="#i-tel"/></svg>
-            Appeler 06 12 34 56 78
+            Appeler 06 39 98 00 17
           </a>
         </div>
       </div>
@@ -1998,10 +2028,10 @@ textarea.champ{ field-sizing: content; resize: vertical; }
     <p class="variante">En ligne — dans le flux, sur une carte, en tête de fiche sur grand écran.</p>
     <template>
       <div class="p-5">
-        <a href="tel:+33612345678"
+        <a href="tel:+33639980017"
            class="cta inline-flex items-center gap-2.5 min-h-[52px] px-6 rounded-full text-[17px] font-bold tracking-tight transition">
           <svg class="w-5 h-5" aria-hidden="true"><use href="#i-tel"/></svg>
-          Appeler 06 12 34 56 78
+          Appeler 06 39 98 00 17
         </a>
       </div>
     </template>
@@ -2125,7 +2155,7 @@ textarea.champ{ field-sizing: content; resize: vertical; }
     <p class="variante">Les boutons, y compris désactivé.</p>
     <template>
       <div class="p-5 flex flex-col items-start gap-3">
-        <a href="tel:+33612345678" class="cta inline-flex items-center gap-2.5 min-h-[52px] px-6 rounded-full text-corps font-bold tracking-tight transition">
+        <a href="tel:+33639980017" class="cta inline-flex items-center gap-2.5 min-h-[52px] px-6 rounded-full text-corps font-bold tracking-tight transition">
           <svg class="w-5 h-5" aria-hidden="true"><use href="#i-tel"/></svg>Appeler
         </a>
         <button type="button" class="inline-flex items-center gap-2 min-h-[48px] px-5 rounded-full text-corps font-semibold text-white bg-teal-700 hover:bg-teal-600">
@@ -2327,7 +2357,7 @@ textarea.champ{ field-sizing: content; resize: vertical; }
     </p>
   </div>
 
-  <ol class="relative mt-7 grid gap-3 sm:grid-cols-2 list-none p-0 m-0 text-corps text-neutre-800">
+  <ol class="relative mt-7 grid grid-cols-[minmax(0,1fr)] gap-3 sm:grid-cols-2 list-none p-0 m-0 text-corps text-neutre-800">
     <li class="rounded-[16px] bg-neutre-100 p-4"><strong class="font-semibold text-neutre-900">Une question par écran.</strong>
       Le titre d'étape <em>est</em> l'étiquette du champ&nbsp;: <code class="font-mono text-[15px] text-teal-800">&lt;h1&gt;&lt;label&gt;</code>.</li>
     <li class="rounded-[16px] bg-neutre-100 p-4"><strong class="font-semibold text-neutre-900">Choisir, c'est teal.</strong>
@@ -2397,9 +2427,9 @@ textarea.champ{ field-sizing: content; resize: vertical; }
   <div data-specimen class="mt-6">
     <p class="variante">Se connecter. Le bouton n'est jamais grisé&nbsp;: on valide au toucher.</p>
     <template>
-      <main class="px-5 pt-8 pb-10">
+      <main class="@container px-5 pt-8 pb-10">
         <p class="text-etiquette font-semibold uppercase text-sauge-800">Espace entrepreneur</p>
-        <h1 class="ff mt-1.5 text-nom text-teal-900">Connexion</h1>
+        <h1 class="ff mt-1.5 text-nom mots-entiers text-teal-900" style="--taille:var(--text-nom); --mot:9">Connexion</h1>
         <p class="mt-3 text-corps text-neutre-800">Sans mot de passe&nbsp;: on vous envoie un lien par e-mail.</p>
         <form class="mt-6" onsubmit="return false" novalidate>
           <div data-etat="ok">
@@ -2427,7 +2457,7 @@ textarea.champ{ field-sizing: content; resize: vertical; }
   <div data-specimen class="mt-8">
     <p class="variante">Erreur — sous le champ, en mots, avec un exemple. Après 30 jours, le bandeau dit pourquoi on redemande.</p>
     <template>
-      <main class="px-5 pt-6 pb-10">
+      <main class="@container px-5 pt-6 pb-10">
         <div role="status" class="flex items-start gap-4 rounded-[22px] bg-teal-50 p-5">
           <span class="pastille pastille--teal w-11 h-11 mt-0.5 bg-white text-teal-700" aria-hidden="true"><svg class="w-[22px] h-[22px]"><use href="#i-horloge"/></svg></span>
           <div class="min-w-0">
@@ -2436,7 +2466,7 @@ textarea.champ{ field-sizing: content; resize: vertical; }
           </div>
         </div>
         <p class="mt-8 text-etiquette font-semibold uppercase text-sauge-800">Espace entrepreneur</p>
-        <h1 class="ff mt-1.5 text-nom text-teal-900">Connexion</h1>
+        <h1 class="ff mt-1.5 text-nom mots-entiers text-teal-900" style="--taille:var(--text-nom); --mot:9">Connexion</h1>
         <form class="mt-6" onsubmit="return false" novalidate>
           <div data-etat="erreur">
             <label for="v2c-mail-e" class="block text-[16px] font-semibold text-neutre-800">Votre e-mail</label>
@@ -2467,9 +2497,9 @@ textarea.champ{ field-sizing: content; resize: vertical; }
   <div data-specimen class="mt-8">
     <p class="variante">Lien envoyé — l'adresse en toutes lettres, pour repérer une faute de frappe. La durée du lien est dite une fois. Pas d'orange&nbsp;: il n'y a rien à faire ici.</p>
     <template>
-      <main class="px-5 pt-10 pb-10">
+      <main class="@container px-5 pt-10 pb-10">
         <span class="pastille pastille--teal w-16 h-16 bg-teal-50 text-teal-700" aria-hidden="true"><svg class="w-8 h-8"><use href="#i-mail"/></svg></span>
-        <h1 class="ff mt-6 text-nom text-teal-900">Regardez vos e-mails</h1>
+        <h1 class="ff mt-6 text-nom mots-entiers text-teal-900" style="--taille:var(--text-nom); --mot:8">Regardez vos e-mails</h1>
         <p class="mt-3 text-corps text-neutre-800">Lien envoyé à <strong class="font-semibold text-neutre-900 break-words">sophie<wbr>.arnaud<wbr>@example<wbr>.fr</strong>. Il sert une fois, pendant 15&nbsp;minutes.</p>
         <p class="mt-3 text-[16px] text-neutre-700">Rien reçu&nbsp;? Regardez dans les courriers indésirables.</p>
         <div class="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2">
@@ -2489,9 +2519,9 @@ textarea.champ{ field-sizing: content; resize: vertical; }
   <div data-specimen class="mt-8">
     <p class="variante">Le lien a expiré — pas de rouge&nbsp;: personne ne s'est trompé. L'adresse n'est pas pré-remplie&nbsp;: un lien périmé ne doit plus rien révéler.</p>
     <template>
-      <main class="px-5 pt-10 pb-10">
+      <main class="@container px-5 pt-10 pb-10">
         <span class="pastille pastille--sable w-16 h-16 bg-white text-sable-800" aria-hidden="true"><svg class="w-8 h-8"><use href="#i-horloge"/></svg></span>
-        <h1 class="ff mt-6 text-nom text-teal-900">Ce lien a expiré</h1>
+        <h1 class="ff mt-6 text-nom mots-entiers text-teal-900" style="--taille:var(--text-nom); --mot:6">Ce lien a expiré</h1>
         <p class="mt-3 text-corps text-neutre-800">Un lien sert une fois, pendant 15&nbsp;minutes. Votre brouillon, lui, est gardé&nbsp;: demandez un nouveau lien.</p>
         <form class="mt-6" onsubmit="return false" novalidate>
           <div data-etat="ok">
@@ -2765,7 +2795,7 @@ textarea.champ{ field-sizing: content; resize: vertical; }
             </button>
           </div>
           <div id="v2-bio-aide" class="bulle mb-2.5 rounded-[14px] bg-teal-50 px-4 py-3 text-[16px] leading-snug text-teal-950">
-            <ul class="grid gap-1 list-none p-0 m-0">
+            <ul class="grid grid-cols-[minmax(0,1fr)] gap-1 list-none p-0 m-0">
               <li class="flex gap-2"><svg class="w-4 h-4 mt-1 shrink-0 text-teal-600" aria-hidden="true"><use href="#i-ventouse"/></svg>Depuis quand êtes-vous ici&nbsp;?</li>
               <li class="flex gap-2"><svg class="w-4 h-4 mt-1 shrink-0 text-teal-600" aria-hidden="true"><use href="#i-ventouse"/></svg>Pour qui travaillez-vous&nbsp;?</li>
               <li class="flex gap-2"><svg class="w-4 h-4 mt-1 shrink-0 text-teal-600" aria-hidden="true"><use href="#i-ventouse"/></svg>Comment se passe un rendez-vous&nbsp;?</li>
@@ -2803,20 +2833,20 @@ textarea.champ{ field-sizing: content; resize: vertical; }
     <p class="variante">Radio — où travaillez-vous. Chaque réponse dit ce qu'elle implique, en une ligne.</p>
     <template>
       <form class="p-5" onsubmit="return false">
-        <fieldset class="border-0 p-0 m-0">
+        <fieldset class="min-w-0 border-0 p-0 m-0">
           <legend class="ff mb-4 text-[24px] leading-tight text-teal-900">Où travaillez-vous&nbsp;?</legend>
-          <div class="grid gap-3">
-            <label class="choix flex items-center gap-3.5">
+          <div class="grid grid-cols-[minmax(0,1fr)] gap-3">
+            <label class="choix flex flex-wrap items-center gap-x-3.5 gap-y-2">
               <input type="radio" name="v2-lieu" value="adresse" class="rond" checked>
-              <span class="min-w-0 flex-1">
+              <span class="min-w-[min(8rem,100%)] flex-1">
                 <span class="block text-corps font-semibold text-teal-900">Je reçois à une adresse</span>
                 <span class="block text-[16px] leading-snug text-neutre-700">Cabinet, atelier, boutique.</span>
               </span>
               <span class="pastille pastille--teal w-10 h-10 bg-white text-teal-700" aria-hidden="true"><svg class="w-5 h-5"><use href="#i-pin"/></svg></span>
             </label>
-            <label class="choix flex items-center gap-3.5">
+            <label class="choix flex flex-wrap items-center gap-x-3.5 gap-y-2">
               <input type="radio" name="v2-lieu" value="deplace" class="rond">
-              <span class="min-w-0 flex-1">
+              <span class="min-w-[min(8rem,100%)] flex-1">
                 <span class="block text-corps font-semibold text-teal-900">Je me déplace</span>
                 <span class="block text-[16px] leading-snug text-neutre-700">Chez vos clients, ou en visio. Aucune adresse affichée.</span>
               </span>
@@ -2841,20 +2871,20 @@ textarea.champ{ field-sizing: content; resize: vertical; }
     <p class="variante">Radio en erreur — rien de choisi. Le filet rouge de 3 px tient tout le groupe, le message est sous la question.</p>
     <template>
       <form class="p-5" onsubmit="return false">
-        <fieldset class="groupe-erreur border-0 p-0 m-0" aria-describedby="v2-lieu-c-err">
+        <fieldset class="groupe-erreur min-w-0 border-0 p-0 m-0" aria-describedby="v2-lieu-c-err">
           <legend class="ff text-[24px] leading-tight text-teal-900">Où travaillez-vous&nbsp;?</legend>
           <p id="v2-lieu-c-err" class="mt-1.5 mb-4 flex items-start gap-1.5 text-[16px] font-semibold text-rouge-700">
             <svg class="w-[18px] h-[18px] shrink-0 mt-0.5" aria-hidden="true"><use href="#i-alerte"/></svg>
             Choisissez une réponse.
           </p>
-          <div class="grid gap-3">
-            <label class="choix flex items-center gap-3.5">
+          <div class="grid grid-cols-[minmax(0,1fr)] gap-3">
+            <label class="choix flex flex-wrap items-center gap-x-3.5 gap-y-2">
               <input type="radio" name="v2-lieu-c" value="adresse" class="rond">
-              <span class="min-w-0 flex-1 text-corps font-semibold text-teal-900">Je reçois à une adresse</span>
+              <span class="min-w-[min(8rem,100%)] flex-1 text-corps font-semibold text-teal-900">Je reçois à une adresse</span>
             </label>
-            <label class="choix flex items-center gap-3.5">
+            <label class="choix flex flex-wrap items-center gap-x-3.5 gap-y-2">
               <input type="radio" name="v2-lieu-c" value="deplace" class="rond">
-              <span class="min-w-0 flex-1 text-corps font-semibold text-teal-900">Je me déplace</span>
+              <span class="min-w-[min(8rem,100%)] flex-1 text-corps font-semibold text-teal-900">Je me déplace</span>
             </label>
           </div>
         </fieldset>
@@ -3017,9 +3047,9 @@ textarea.champ{ field-sizing: content; resize: vertical; }
     <p class="variante">Trois réponses, chacune avec ses deux phrases. «&nbsp;iel&nbsp;» choisi.</p>
     <template>
       <form class="p-5" onsubmit="return false">
-        <fieldset class="border-0 p-0 m-0">
+        <fieldset class="min-w-0 border-0 p-0 m-0">
           <legend class="ff mb-4 text-[24px] leading-tight text-teal-900">Sur votre fiche, on écrit&nbsp;:</legend>
-          <div class="grid gap-3">
+          <div class="grid grid-cols-[minmax(0,1fr)] gap-3">
             <label class="choix flex items-start gap-3.5">
               <input type="radio" name="v2-genre3" value="f" class="rond mt-0.5">
               <span class="min-w-0 flex-1">
@@ -3069,10 +3099,10 @@ textarea.champ{ field-sizing: content; resize: vertical; }
     <p class="variante">Trois services. Ajoutez, retirez : la numérotation et le compte suivent.</p>
     <template>
       <form class="p-5" onsubmit="return false">
-        <fieldset class="border-0 p-0 m-0">
+        <fieldset class="min-w-0 border-0 p-0 m-0">
           <legend class="ff text-[24px] leading-tight text-teal-900">Ce que vous proposez</legend>
           <p class="mt-1 text-[16px] text-neutre-700"><span data-nombre>3 sur 6</span> · un service par ligne</p>
-          <ol id="v2-serv" data-max="6" class="mt-4 grid gap-2.5 list-none p-0 m-0">
+          <ol id="v2-serv" data-max="6" class="mt-4 grid grid-cols-[minmax(0,1fr)] gap-2.5 list-none p-0 m-0">
             <li class="flex items-center gap-2.5">
               <label for="v2-serv-1" class="pastille w-9 h-9 bg-white text-sauge-800 tnum text-[16px] font-bold"><span class="sr-only">Service </span><span>1</span></label>
               <input id="v2-serv-1" type="text" value="Bilan naturopathique" class="champ min-w-0 flex-1 min-h-[52px] px-3.5 rounded-xl text-corps text-neutre-900">
@@ -3116,10 +3146,10 @@ textarea.champ{ field-sizing: content; resize: vertical; }
     <p class="variante">Six — le maximum. Le bouton s'efface, la phrase le remplace.</p>
     <template>
       <form class="p-5" onsubmit="return false">
-        <fieldset class="border-0 p-0 m-0">
+        <fieldset class="min-w-0 border-0 p-0 m-0">
           <legend class="ff text-[24px] leading-tight text-teal-900">Ce que vous proposez</legend>
           <p class="mt-1 text-[16px] text-neutre-700"><span data-nombre>6 sur 6</span> · un service par ligne</p>
-          <ol id="v2-serv-b" data-max="6" class="mt-4 grid gap-2.5 list-none p-0 m-0">
+          <ol id="v2-serv-b" data-max="6" class="mt-4 grid grid-cols-[minmax(0,1fr)] gap-2.5 list-none p-0 m-0">
             <li class="flex items-center gap-2.5">
               <label for="v2-serv-b-1" class="pastille w-9 h-9 bg-white text-sauge-800 tnum text-[16px] font-bold"><span class="sr-only">Service </span><span>1</span></label>
               <input id="v2-serv-b-1" type="text" value="Bilan naturopathique" class="champ min-w-0 flex-1 min-h-[52px] px-3.5 rounded-xl text-corps text-neutre-900">
@@ -3169,10 +3199,10 @@ textarea.champ{ field-sizing: content; resize: vertical; }
     <p class="variante">Une seule ligne, vide, en erreur — pas de corbeille : il en faut au moins une.</p>
     <template>
       <form class="p-5" onsubmit="return false">
-        <fieldset class="border-0 p-0 m-0">
+        <fieldset class="min-w-0 border-0 p-0 m-0">
           <legend class="ff text-[24px] leading-tight text-teal-900">Ce que vous proposez</legend>
           <p class="mt-1 text-[16px] text-neutre-700"><span data-nombre>1 sur 6</span> · un service par ligne</p>
-          <ol id="v2-serv-c" data-max="6" class="mt-4 grid gap-2.5 list-none p-0 m-0">
+          <ol id="v2-serv-c" data-max="6" class="mt-4 grid grid-cols-[minmax(0,1fr)] gap-2.5 list-none p-0 m-0">
             <li data-etat="erreur" class="flex flex-wrap items-center gap-2.5">
               <label for="v2-serv-c-1" class="pastille w-9 h-9 bg-white text-sauge-800 tnum text-[16px] font-bold"><span class="sr-only">Service </span><span>1</span></label>
               <input id="v2-serv-c-1" type="text" aria-invalid="true" aria-describedby="v2-serv-c-err" class="champ min-w-0 flex-1 min-h-[52px] px-3.5 rounded-xl text-corps text-neutre-900">
@@ -3312,15 +3342,64 @@ textarea.champ{ field-sizing: content; resize: vertical; }
     motto)&nbsp;: au-delà, le compteur passe au rouge en mots, et «&nbsp;Continuer&nbsp;» renvoie au champ. Toujours pas de
     <code class="font-mono text-[15px] text-teal-800">maxlength</code>&nbsp;: une phrase collée n'est jamais avalée en silence.
     La photo est facultative&nbsp;; sans elle, la page prend la version maison. Orange&nbsp;: «&nbsp;Continuer&nbsp;» et le filet
-    de la page, deux. «&nbsp;Passer&nbsp;» laisse la question vide, sans page.
+    de la page, deux. «&nbsp;Passer&nbsp;» laisse la question vide, sans page&nbsp;; «&nbsp;Terminer plus tard&nbsp;», un lien sous
+    la barre, mène tout de suite à la relecture.
+  </p>
+  <p class="mt-3 text-corps text-neutre-800 max-w-[72ch]">
+    <strong class="font-semibold text-neutre-900">L'histoire est proposée, jamais imposée.</strong> Après l'étape&nbsp;9, un écran
+    «&nbsp;Votre fiche est complète&nbsp;»&nbsp;: «&nbsp;Vérifier et envoyer&nbsp;» est le seul orange et mène à la relecture&nbsp;;
+    «&nbsp;Raconter mon histoire (facultatif)&nbsp;» est le bouton secondaire, pleine largeur lui aussi.
   </p>
 
   <div data-specimen class="mt-6">
+    <p class="variante">Après l'étape&nbsp;9 — la fiche peut partir maintenant. Un seul orange.</p>
+    <template>
+      <div class="pb-[150px]">
+        <header class="px-5 pt-2 pb-2 bg-white">
+          <div class="-mx-2 flex flex-wrap items-center justify-between gap-x-3">
+            <a href="#etape-9" class="inline-flex items-center gap-1.5 min-h-[44px] px-2 rounded-full text-corps font-semibold text-teal-700 hover:bg-teal-50">
+              <svg class="w-5 h-5" aria-hidden="true"><use href="#i-retour"/></svg>Retour
+            </a>
+            <p role="status" class="inline-flex items-center gap-1.5 px-2 text-[16px] text-sauge-800">
+              <svg class="w-[18px] h-[18px]" aria-hidden="true"><use href="#i-coche"/></svg>Brouillon enregistré
+            </p>
+          </div>
+          <p class="mt-4 text-etiquette font-semibold uppercase text-teal-700">Fiche complète</p>
+        </header>
+        <div class="@container px-5 pt-6">
+          <span class="pastille w-16 h-16 bg-white text-sauge-700" aria-hidden="true"><svg class="w-8 h-8"><use href="#i-coche"/></svg></span>
+          <h1 class="ff mt-6 text-nom mots-entiers text-teal-900" style="--taille:var(--text-nom); --mot:8">Votre fiche est complète</h1>
+          <p class="mt-3 text-corps text-neutre-800">Vous pouvez l'envoyer maintenant&nbsp;: Adrien la relit avant de la publier.</p>
+          <div class="mt-7 rounded-[22px] bg-teal-50 p-5">
+            <h2 class="ff text-[22px] leading-tight text-teal-950">Envie d'en dire plus&nbsp;?</h2>
+            <p class="mt-1.5 text-[16px] leading-snug text-teal-950">Six questions sur votre histoire et vos lieux favoris. Chaque réponse devient une image de votre fiche. Tout est facultatif, et vous pourrez y revenir depuis votre espace.</p>
+          </div>
+        </div>
+        <div class="fixed bottom-0 inset-x-0 z-40 bg-white/95 backdrop-blur-sm"
+             style="box-shadow: 0 -4px 8px oklch(17.5% .03 202/.06), 0 -28px 64px -20px oklch(17.5% .03 202/.28)">
+          <div class="mx-auto max-w-[640px] px-4 pt-3 pb-3 grid grid-cols-[minmax(0,1fr)] gap-2.5">
+            <a href="#relecture" class="cta w-full inline-flex items-center justify-center gap-2 min-h-[54px] px-6 rounded-full text-[18px] font-bold tracking-tight transition">
+              Vérifier et envoyer
+            </a>
+            <a href="#histoire-1" class="w-full inline-flex items-center justify-center gap-2 min-h-[54px] px-5 rounded-full text-corps font-semibold text-teal-700 bg-teal-50 hover:bg-teal-100">
+              <span class="text-center">Raconter mon histoire <span class="font-normal">(facultatif)</span></span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </template>
+    <div class="duo mt-3">
+      <div class="scene-boite"><div class="scene min-h-[640px]" data-rendu></div></div>
+      <div class="relative min-w-0"><pre class="code" data-code></pre></div>
+    </div>
+  </div>
+
+  <div data-specimen class="mt-8">
     <p class="variante">Question 1 sur 6, en cours d'écriture, sans photo — l'aperçu est la page maison.</p>
     <template>
-      <form class="pb-[96px]" onsubmit="return false">
+      <form class="pb-[150px]" onsubmit="return false">
         <header class="px-5 pt-2 pb-2 bg-white">
-          <div class="-mx-2 flex items-center justify-between gap-3">
+          <div class="-mx-2 flex flex-wrap items-center justify-between gap-x-3">
             <a href="#etape-9" class="inline-flex items-center gap-1.5 min-h-[44px] px-2 rounded-full text-corps font-semibold text-teal-700 hover:bg-teal-50">
               <svg class="w-5 h-5" aria-hidden="true"><use href="#i-retour"/></svg>Retour
             </a>
@@ -3382,7 +3461,7 @@ textarea.champ{ field-sizing: content; resize: vertical; }
         </div>
         <div class="fixed bottom-0 inset-x-0 z-40 bg-white/95 backdrop-blur-sm"
              style="box-shadow: 0 -4px 8px oklch(17.5% .03 202/.06), 0 -28px 64px -20px oklch(17.5% .03 202/.28)">
-          <div class="mx-auto max-w-[640px] px-4 py-3 flex flex-wrap items-center gap-3">
+          <div class="mx-auto max-w-[640px] px-4 pt-3 pb-1.5 flex flex-wrap items-center gap-3">
             <a href="#histoire-2" class="inline-flex items-center justify-center min-h-[54px] px-5 rounded-full text-corps font-semibold text-teal-700 bg-teal-50 hover:bg-teal-100">
               Passer
             </a>
@@ -3390,6 +3469,7 @@ textarea.champ{ field-sizing: content; resize: vertical; }
                     class="cta flex-1 inline-flex items-center justify-center gap-2 min-h-[54px] px-6 rounded-full text-[18px] font-bold tracking-tight transition">
               Continuer<svg class="w-5 h-5" aria-hidden="true"><use href="#i-chev"/></svg>
             </button>
+            <a href="#relecture" class="basis-full inline-flex items-center justify-center min-h-[44px] text-[16px] font-semibold text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">Terminer plus tard</a>
           </div>
         </div>
       </form>
@@ -3403,9 +3483,9 @@ textarea.champ{ field-sizing: content; resize: vertical; }
   <div data-specimen class="mt-8">
     <p class="variante">Au-delà de 300 — rouge, icône, «&nbsp;trop long, raccourcissez&nbsp;». Une photo est ajoutée&nbsp;: l'aperçu passe en version photo, et la photo rétrécit pour laisser la place au texte.</p>
     <template>
-      <form class="px-5 pt-6 pb-6" onsubmit="return false">
+      <form class="@container px-5 pt-6 pb-6" onsubmit="return false">
         <div data-etat="erreur">
-          <h1 class="ff text-nom text-teal-900"><label for="v2h-r2">Mon déclic</label></h1>
+          <h1 class="ff text-nom mots-entiers text-teal-900" style="--taille:var(--text-nom); --mot:6"><label for="v2h-r2">Mon déclic</label></h1>
           <p id="v2h-r2-q" class="mt-2 text-corps text-neutre-800">Le moment où vous avez su que c'était le bon chemin.</p>
           <textarea id="v2h-r2" rows="8" data-doux="300" data-dur="300" data-diapo="v2h-d2" oninput="compter(this); apercuDiapo(this)"
                     aria-invalid="true" aria-describedby="v2h-r2-q v2h-r2-compte"
@@ -3474,7 +3554,7 @@ textarea.champ{ field-sizing: content; resize: vertical; }
     Adrien l'approuve avec la fiche. Un lieu qui est l'activité d'un voisin montre son portrait, pas une icône.
   </p>
 
-  <div class="mt-5 grid grid-cols-[repeat(auto-fill,minmax(9.5rem,1fr))] gap-2.5" aria-label="Les sept types de lieux et leur icône">
+  <div class="mt-5 grid grid-cols-[repeat(auto-fill,minmax(min(9.5rem,100%),1fr))] gap-2.5" aria-label="Les sept types de lieux et leur icône">
     <p class="flex items-center gap-2.5 rounded-[14px] bg-neutre-100 px-3 py-2.5 text-[16px] font-semibold text-teal-900"><span class="lieu shrink-0" aria-hidden="true"><svg class="w-[18px] h-[18px]"><use href="#l-cafe"/></svg></span>Café, bar</p>
     <p class="flex items-center gap-2.5 rounded-[14px] bg-neutre-100 px-3 py-2.5 text-[16px] font-semibold text-teal-900"><span class="lieu shrink-0" aria-hidden="true"><svg class="w-[18px] h-[18px]"><use href="#l-restaurant"/></svg></span>Restaurant</p>
     <p class="flex items-center gap-2.5 rounded-[14px] bg-neutre-100 px-3 py-2.5 text-[16px] font-semibold text-teal-900"><span class="lieu shrink-0" aria-hidden="true"><svg class="w-[18px] h-[18px]"><use href="#l-parc"/></svg></span>Parc, jardin</p>
@@ -3493,19 +3573,19 @@ textarea.champ{ field-sizing: content; resize: vertical; }
   <div data-specimen class="mt-6">
     <p class="variante">Deux lieux déjà choisis, on cherche «&nbsp;bar&nbsp;». La première suggestion est active.</p>
     <template>
-      <form class="p-5" onsubmit="return false">
+      <form class="@container p-5" onsubmit="return false">
         <fieldset class="min-w-0 border-0 p-0 m-0">
-          <legend class="ff text-[24px] leading-tight text-teal-900">Vos lieux favoris à la Cartoucherie</legend>
+          <legend class="ff mots-entiers leading-tight text-teal-900" style="--taille:24px; --mot:12">Vos lieux favoris à la Cartoucherie</legend>
           <p class="mt-1 text-[16px] text-neutre-700">2 sur 5</p>
-          <ul class="mt-4 grid gap-2.5 list-none p-0 m-0">
-            <li class="flex items-center gap-3 rounded-[18px] bg-neutre-100 px-3.5 py-2.5">
+          <ul class="mt-4 grid grid-cols-[minmax(0,1fr)] gap-2.5 list-none p-0 m-0">
+            <li class="flex flex-wrap items-center gap-3 rounded-[18px] bg-neutre-100 px-3.5 py-2.5">
               <span class="lieu shrink-0" aria-hidden="true"><svg class="w-[18px] h-[18px]"><use href="#l-cafe"/></svg></span>
-              <span class="min-w-0 flex-1"><span class="ff block text-[19px] leading-tight text-teal-900">Les P'tits Tous</span><span class="block text-[16px] text-neutre-700">Café, bar</span></span>
+              <span class="min-w-[min(8rem,100%)] flex-1"><span class="ff block text-[19px] leading-tight text-teal-900">Les P'tits Tous</span><span class="block text-[16px] text-neutre-700">Café, bar</span></span>
               <button type="button" aria-label="Retirer Les P'tits Tous" class="grid place-items-center w-11 h-11 shrink-0 rounded-full text-teal-700 hover:bg-white"><svg class="w-5 h-5" aria-hidden="true"><use href="#i-corbeille"/></svg></button>
             </li>
-            <li class="flex items-center gap-3 rounded-[18px] bg-neutre-100 px-3.5 py-2.5">
+            <li class="flex flex-wrap items-center gap-3 rounded-[18px] bg-neutre-100 px-3.5 py-2.5">
               <span class="lieu shrink-0" aria-hidden="true"><svg class="w-[18px] h-[18px]"><use href="#l-parc"/></svg></span>
-              <span class="min-w-0 flex-1"><span class="ff block text-[19px] leading-tight text-teal-900">Parc Pouvillon</span><span class="block text-[16px] text-neutre-700">Parc, jardin</span></span>
+              <span class="min-w-[min(8rem,100%)] flex-1"><span class="ff block text-[19px] leading-tight text-teal-900">Parc Pouvillon</span><span class="block text-[16px] text-neutre-700">Parc, jardin</span></span>
               <button type="button" aria-label="Retirer Parc Pouvillon" class="grid place-items-center w-11 h-11 shrink-0 rounded-full text-teal-700 hover:bg-white"><svg class="w-5 h-5" aria-hidden="true"><use href="#i-corbeille"/></svg></button>
             </li>
           </ul>
@@ -3548,17 +3628,17 @@ textarea.champ{ field-sizing: content; resize: vertical; }
   </div>
 
   <div data-specimen class="mt-8">
-    <p class="variante">Trois lieux, chacun avec son «&nbsp;pourquoi&nbsp;» facultatif. Le troisième est l'activité d'une voisine&nbsp;: son portrait, et le lien vers sa fiche.</p>
+    <p class="variante">Trois lieux, chacun avec son «&nbsp;pourquoi&nbsp;» facultatif. Le troisième est l'activité d'une voisine&nbsp;: son portrait, et le lien vers sa fiche. Sous la liste, une phrase facultative de 160 signes, puis la page «&nbsp;Mes lieux favoris&nbsp;» telle qu'elle sortira.</p>
     <template>
-      <form class="p-5" onsubmit="return false">
+      <form class="@container p-5" onsubmit="return false">
         <fieldset class="min-w-0 border-0 p-0 m-0">
-          <legend class="ff text-[24px] leading-tight text-teal-900">Vos lieux favoris à la Cartoucherie</legend>
+          <legend class="ff mots-entiers leading-tight text-teal-900" style="--taille:24px; --mot:12">Vos lieux favoris à la Cartoucherie</legend>
           <p class="mt-1 text-[16px] text-neutre-700">3 sur 5</p>
-          <ul class="mt-4 grid gap-3 list-none p-0 m-0">
+          <ul class="mt-4 grid grid-cols-[minmax(0,1fr)] gap-3 list-none p-0 m-0">
             <li class="rounded-[18px] bg-neutre-100 p-3.5">
-              <div class="flex items-center gap-3">
+              <div class="flex flex-wrap items-center gap-3">
                 <span class="lieu shrink-0" aria-hidden="true"><svg class="w-[18px] h-[18px]"><use href="#l-cafe"/></svg></span>
-                <span class="min-w-0 flex-1"><span class="ff block text-[19px] leading-tight text-teal-900">Le Bar des 500</span><span class="block text-[16px] text-neutre-700">Café, bar</span></span>
+                <span class="min-w-[min(8rem,100%)] flex-1"><span class="ff block text-[19px] leading-tight text-teal-900">Le Bar des 500</span><span class="block text-[16px] text-neutre-700">Café, bar</span></span>
                 <button type="button" aria-label="Retirer Le Bar des 500" class="grid place-items-center w-11 h-11 shrink-0 rounded-full text-teal-700 hover:bg-white"><svg class="w-5 h-5" aria-hidden="true"><use href="#i-corbeille"/></svg></button>
               </div>
               <div class="mt-3" data-etat="ok">
@@ -3569,9 +3649,9 @@ textarea.champ{ field-sizing: content; resize: vertical; }
               </div>
             </li>
             <li class="rounded-[18px] bg-neutre-100 p-3.5">
-              <div class="flex items-center gap-3">
+              <div class="flex flex-wrap items-center gap-3">
                 <span class="lieu shrink-0" aria-hidden="true"><svg class="w-[18px] h-[18px]"><use href="#l-parc"/></svg></span>
-                <span class="min-w-0 flex-1"><span class="ff block text-[19px] leading-tight text-teal-900">Parc Pouvillon</span><span class="block text-[16px] text-neutre-700">Parc, jardin</span></span>
+                <span class="min-w-[min(8rem,100%)] flex-1"><span class="ff block text-[19px] leading-tight text-teal-900">Parc Pouvillon</span><span class="block text-[16px] text-neutre-700">Parc, jardin</span></span>
                 <button type="button" aria-label="Retirer Parc Pouvillon" class="grid place-items-center w-11 h-11 shrink-0 rounded-full text-teal-700 hover:bg-white"><svg class="w-5 h-5" aria-hidden="true"><use href="#i-corbeille"/></svg></button>
               </div>
               <div class="mt-3" data-etat="ok">
@@ -3582,10 +3662,10 @@ textarea.champ{ field-sizing: content; resize: vertical; }
               </div>
             </li>
             <li class="rounded-[18px] bg-neutre-100 p-3.5">
-              <div class="flex items-center gap-3">
+              <div class="flex flex-wrap items-center gap-3">
                 <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="" width="128" height="128"
                      class="arche w-[38px] h-[46px] shrink-0 object-cover" style="object-position:50% 22%; box-shadow: 0 0 0 2px #fff, 0 0 0 4px var(--color-sauge-700)">
-                <span class="min-w-0 flex-1"><span class="ff block text-[19px] leading-tight text-teal-900">Cabinet Souffle Clair</span><a href="/membre/camille-roussel" class="inline-flex items-center min-h-[44px] text-[16px] font-semibold text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">Camille Roussel, sophrologue</a></span>
+                <span class="min-w-[min(8rem,100%)] flex-1"><span class="ff block text-[19px] leading-tight text-teal-900">Cabinet Souffle Clair</span><a href="/membre/camille-roussel" class="inline-flex items-center min-h-[44px] text-[16px] font-semibold text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">Camille Roussel, sophrologue</a></span>
                 <button type="button" aria-label="Retirer Cabinet Souffle Clair" class="grid place-items-center w-11 h-11 shrink-0 rounded-full text-teal-700 hover:bg-white"><svg class="w-5 h-5" aria-hidden="true"><use href="#i-corbeille"/></svg></button>
               </div>
               <div class="mt-1" data-etat="ok">
@@ -3600,6 +3680,39 @@ textarea.champ{ field-sizing: content; resize: vertical; }
             <svg class="w-5 h-5" aria-hidden="true"><use href="#i-plus"/></svg>Ajouter un lieu
           </button>
         </fieldset>
+        <div class="mt-8" data-etat="ok">
+          <label for="v2l-phrase" class="block text-[16px] font-semibold text-neutre-800">Une phrase pour les présenter <span class="font-normal text-neutre-700">(facultatif)</span></label>
+          <textarea id="v2l-phrase" rows="4" data-doux="160" data-dur="160" oninput="compter(this)" aria-describedby="v2l-phrase-compte"
+                    class="champ mt-1.5 block w-full min-h-[104px] px-3.5 py-3 rounded-xl text-corps leading-relaxed text-neutre-900"></textarea>
+          <p id="v2l-phrase-compte" class="compteur tnum mt-1.5 flex items-start justify-end gap-1.5 text-[16px]">0 / 160</p>
+        </div>
+        <figure class="ventouses ventouses--teal mt-6 mx-0 mb-0 rounded-[24px] bg-neutre-100 p-3">
+          <figcaption class="flex items-center gap-2 px-1.5 pt-0.5 pb-3 text-[16px] font-semibold text-teal-800">
+            <svg class="w-5 h-5 shrink-0" aria-hidden="true"><use href="#i-oeil"/></svg>Votre page 6 sur 7
+          </figcaption>
+          <div class="mx-auto w-[260px] max-w-full rounded-[10px] overflow-hidden" style="box-shadow: var(--shadow-carte)">
+            <div class="diapo diapo--maison" role="img" aria-label="Mes lieux favoris — Le Bar des 500, Parc Pouvillon, Cabinet Souffle Clair.">
+              <div class="diapo__motif"></div>
+              <div class="diapo__corps">
+                <div class="diapo__tete">
+                  <span class="diapo__marque"><svg aria-hidden="true"><use href="#i-ventouse"/></svg>Annuaire de la Cartoucherie</span>
+                  <span class="diapo__page">6&nbsp;/&nbsp;7</span>
+                </div>
+                <div class="diapo__arche" style="--fond:var(--color-teal-50); --titre:6.2cqi">
+                  <span class="diapo__medaillon"><svg aria-hidden="true"><use href="#i-carte"/></svg></span>
+                  <p class="diapo__titre">Mes lieux favoris</p>
+                  <span class="diapo__filet"></span>
+                  <ul class="diapo__lieux">
+                    <li class="diapo__lieu"><span class="diapo__lieu-icone"><svg aria-hidden="true"><use href="#l-cafe"/></svg></span><span class="diapo__lieu-nom">Le Bar des 500<span class="diapo__lieu-type">Café, bar</span></span></li>
+                    <li class="diapo__lieu"><span class="diapo__lieu-icone"><svg aria-hidden="true"><use href="#l-parc"/></svg></span><span class="diapo__lieu-nom">Parc Pouvillon<span class="diapo__lieu-type">Parc, jardin</span></span></li>
+                    <li class="diapo__lieu"><span class="diapo__lieu-icone" style="padding:.5cqi"><img src="https://randomuser.me/api/portraits/women/44.jpg" alt="" width="128" height="128" style="width:100%; height:100%; object-fit:cover; object-position:50% 22%; border-radius:1.5cqi"></span><span class="diapo__lieu-nom">Cabinet Souffle Clair<span class="diapo__lieu-type">Camille Roussel</span></span></li>
+                  </ul>
+                  <p class="diapo__signature"><span class="diapo__nom">Sophie Arnaud</span><span>Naturopathe · cartoucherie.fyi</span></p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </figure>
       </form>
     </template>
     <div class="duo mt-3">
@@ -3611,9 +3724,9 @@ textarea.champ{ field-sizing: content; resize: vertical; }
   <div data-specimen class="mt-8">
     <p class="variante">«&nbsp;Placer sur la carte&nbsp;» — le plan au 1:1 du produit, le repère posé en pointillés, le nom, le type. Adrien approuve avec la fiche&nbsp;; ajouté à OpenStreetMap, le lieu entre dans le relevé pour tous.</p>
     <template>
-      <form class="p-5" onsubmit="return false">
+      <form class="@container p-5" onsubmit="return false">
         <fieldset class="min-w-0 border-0 p-0 m-0">
-          <legend class="ff text-[24px] leading-tight text-teal-900">Placer un lieu sur le plan</legend>
+          <legend class="ff mots-entiers leading-tight text-teal-900" style="--taille:24px; --mot:6">Placer un lieu sur le plan</legend>
           <p id="v2l-plan-aide" class="mt-1 text-[16px] text-neutre-700">Touchez le plan à l'endroit du lieu. Le plan défile avec le doigt.</p>
           <div class="relative mt-4 w-[350px] max-w-full h-[220px] overflow-hidden rounded-[18px] bg-neutre-200"
                style="box-shadow: inset 0 0 0 1px var(--color-neutre-300)">
@@ -3629,7 +3742,7 @@ textarea.champ{ field-sizing: content; resize: vertical; }
           </div>
           <fieldset class="mt-5 min-w-0 border-0 p-0 m-0">
             <legend class="block mb-2 text-[16px] font-semibold text-neutre-800">Son type</legend>
-            <div class="grid grid-cols-[repeat(auto-fill,minmax(9.5rem,1fr))] gap-2">
+            <div class="grid grid-cols-[repeat(auto-fill,minmax(min(9.5rem,100%),1fr))] gap-2">
               <label class="choix flex items-center gap-2.5 min-h-[52px]! py-2! px-3!"><input type="radio" name="v2l-type" value="cafe" class="sr-only"><svg class="w-5 h-5 shrink-0 text-sauge-700" aria-hidden="true"><use href="#l-cafe"/></svg><span class="text-[16px] font-semibold text-teal-900">Café, bar</span></label>
               <label class="choix flex items-center gap-2.5 min-h-[52px]! py-2! px-3!"><input type="radio" name="v2l-type" value="restaurant" class="sr-only"><svg class="w-5 h-5 shrink-0 text-sauge-700" aria-hidden="true"><use href="#l-restaurant"/></svg><span class="text-[16px] font-semibold text-teal-900">Restaurant</span></label>
               <label class="choix flex items-center gap-2.5 min-h-[52px]! py-2! px-3!"><input type="radio" name="v2l-type" value="parc" class="sr-only"><svg class="w-5 h-5 shrink-0 text-sauge-700" aria-hidden="true"><use href="#l-parc"/></svg><span class="text-[16px] font-semibold text-teal-900">Parc, jardin</span></label>
@@ -3694,8 +3807,8 @@ textarea.champ{ field-sizing: content; resize: vertical; }
   <div data-specimen class="mt-6">
     <p class="variante">Étape 3 sur 9, brouillon enregistré.</p>
     <template>
-      <header class="px-5 pt-2 pb-5 bg-white">
-        <div class="-mx-2 flex items-center justify-between gap-3">
+      <header class="@container px-5 pt-2 pb-5 bg-white">
+        <div class="-mx-2 flex flex-wrap items-center justify-between gap-x-3">
           <a href="#etape-2" class="inline-flex items-center gap-1.5 min-h-[44px] px-2 rounded-full text-corps font-semibold text-teal-700 hover:bg-teal-50">
             <svg class="w-5 h-5" aria-hidden="true"><use href="#i-retour"/></svg>Retour
           </a>
@@ -3715,7 +3828,7 @@ textarea.champ{ field-sizing: content; resize: vertical; }
           <span class="w-2.5 h-2.5 shrink-0 rounded-full ring-[1.5px] ring-inset ring-neutre-500"></span><span class="h-[2px] flex-1 bg-neutre-300"></span>
           <span class="w-2.5 h-2.5 shrink-0 rounded-full ring-[1.5px] ring-inset ring-neutre-500"></span>
         </div>
-        <h1 class="ff mt-6 text-nom text-teal-900">Votre métier, en quelques mots</h1>
+        <h1 class="ff mt-6 text-nom mots-entiers text-teal-900" style="--taille:var(--text-nom); --mot:8">Votre métier, en quelques mots</h1>
       </header>
     </template>
     <div class="duo mt-3">
@@ -3801,11 +3914,33 @@ textarea.champ{ field-sizing: content; resize: vertical; }
   </div>
 
   <div data-specimen class="mt-8">
+    <p class="variante">Une fiche en ligne — une seule étape à modifier. «&nbsp;Annuler&nbsp;» à la place de «&nbsp;Plus tard&nbsp;», «&nbsp;Enregistrer&nbsp;» à la place de «&nbsp;Continuer&nbsp;». À 200&nbsp;%, la barre passe sur deux lignes plutôt que de déborder.</p>
+    <template>
+      <div class="fixed bottom-0 inset-x-0 z-40 bg-white/95 backdrop-blur-sm"
+           style="box-shadow: 0 -4px 8px oklch(17.5% .03 202/.06), 0 -28px 64px -20px oklch(17.5% .03 202/.28)">
+        <div class="mx-auto max-w-[640px] px-4 py-3 flex flex-wrap items-center gap-3">
+          <a href="/espace" class="inline-flex items-center justify-center min-h-[54px] px-5 rounded-full text-corps font-semibold text-teal-700 bg-teal-50 hover:bg-teal-100">
+            Annuler
+          </a>
+          <button type="submit"
+                  class="cta flex-1 inline-flex items-center justify-center gap-2 min-h-[54px] px-6 rounded-full text-[18px] font-bold tracking-tight transition">
+            Enregistrer
+          </button>
+        </div>
+      </div>
+    </template>
+    <div class="duo mt-3">
+      <div class="scene-boite"><div class="scene h-[200px]" data-rendu></div></div>
+      <div class="relative min-w-0"><pre class="code" data-code></pre></div>
+    </div>
+  </div>
+
+  <div data-specimen class="mt-8">
     <p class="variante">Assemblé — un écran d'étape entier, avec l'aperçu replié. Compter l'orange : un.</p>
     <template>
       <form class="pb-[96px]" onsubmit="return false">
         <header class="px-5 pt-2 pb-2 bg-white">
-          <div class="-mx-2 flex items-center justify-between gap-3">
+          <div class="-mx-2 flex flex-wrap items-center justify-between gap-x-3">
             <a href="#etape-2" class="inline-flex items-center gap-1.5 min-h-[44px] px-2 rounded-full text-corps font-semibold text-teal-700 hover:bg-teal-50">
               <svg class="w-5 h-5" aria-hidden="true"><use href="#i-retour"/></svg>Retour
             </a>
@@ -3828,7 +3963,7 @@ textarea.champ{ field-sizing: content; resize: vertical; }
         </header>
         <div class="px-5" data-etat="ok">
           <div class="mt-6 flex items-start justify-between gap-3">
-            <h1 class="ff text-nom text-teal-900"><label for="v2-metier-e">Votre métier, en quelques mots</label></h1>
+            <h1 class="@container min-w-0 flex-1 ff text-nom text-teal-900"><label for="v2-metier-e" class="block mots-entiers" style="--taille:var(--text-nom); --mot:8">Votre métier, en quelques mots</label></h1>
             <button type="button" class="-mr-2 grid place-items-center w-11 h-11 shrink-0 rounded-full"
                     aria-expanded="false" aria-controls="v2-metier-e-aide" onclick="basculer(this)">
               <span class="pastille pastille--teal w-7 h-7 bg-teal-50 ff text-[16px] text-teal-800" aria-hidden="true">?</span>
@@ -3850,13 +3985,13 @@ textarea.champ{ field-sizing: content; resize: vertical; }
             <figcaption class="flex items-center gap-2 px-1.5 pt-0.5 pb-3 text-[16px] font-semibold text-teal-800">
               <svg class="w-5 h-5" aria-hidden="true"><use href="#i-oeil"/></svg>Ce que vos voisins verront
             </figcaption>
-            <article class="carte relative flex min-h-[152px] rounded-[20px] bg-white overflow-hidden">
+            <article class="carte relative flex flex-wrap min-h-[152px] rounded-[20px] bg-white overflow-hidden">
               <img src="https://randomuser.me/api/portraits/women/26.jpg" alt="Portrait de Sophie Arnaud"
                    width="128" height="128" loading="lazy"
                    class="w-[116px] shrink-0 self-stretch object-cover" style="object-position:50% 25%">
-              <div class="flex-1 min-w-0 py-4 pl-4 pr-3 flex flex-col justify-center gap-1">
-                <h3 class="ff text-[20px] leading-tight text-teal-900">Sophie Arnaud</h3>
-                <p class="text-corps text-neutre-800 leading-snug">Naturopathe</p>
+              <div class="@container flex-1 min-w-[min(7.5rem,100%)] py-4 pl-4 pr-3 flex flex-col justify-center gap-1">
+                <h3 class="ff text-[20px] leading-tight mots-entiers text-teal-900" style="--taille:20px; --mot:6">Sophie Arnaud</h3>
+                <p class="text-corps text-neutre-800 leading-snug mots-entiers" style="--taille:var(--text-corps); --lettre:.56; --mot:11">Naturopathe</p>
               </div>
             </article>
           </figure>
@@ -4045,20 +4180,20 @@ textarea.champ{ field-sizing: content; resize: vertical; }
           </figcaption>
           <ul class="list-none m-0 p-0">
             <li>
-              <article class="carte carte-lien relative flex min-h-[152px] rounded-[20px] bg-white overflow-hidden">
+              <article class="carte carte-lien relative flex flex-wrap min-h-[152px] rounded-[20px] bg-white overflow-hidden">
                 <img src="https://randomuser.me/api/portraits/women/26.jpg" alt="Portrait de Sophie Arnaud"
                      width="128" height="128" loading="lazy"
                      class="w-[116px] shrink-0 self-stretch object-cover" style="object-position:50% 25%">
-                <div class="flex-1 min-w-0 py-4 pl-4 pr-1 flex flex-col justify-center gap-1">
-                  <h3 class="ff text-[20px] leading-tight text-teal-900">
+                <div class="@container flex-1 min-w-[min(7.5rem,100%)] py-4 pl-4 pr-1 flex flex-col justify-center gap-1">
+                  <h3 class="ff text-[20px] leading-tight mots-entiers text-teal-900" style="--taille:20px; --mot:6">
                     <a href="/membre/sophie-arnaud" class="before:absolute before:inset-0 before:content-['']">Sophie Arnaud</a>
                   </h3>
-                  <p class="text-corps text-neutre-800 leading-snug">Naturopathe</p>
+                  <p class="text-corps text-neutre-800 leading-snug mots-entiers" style="--taille:var(--text-corps); --lettre:.56; --mot:11">Naturopathe</p>
                   <p class="flex flex-wrap items-center gap-x-3 gap-y-1 text-[16px] text-neutre-700 mt-0.5">
                     <span class="inline-flex items-center gap-1"><svg class="w-4 h-4 text-teal-600" aria-hidden="true"><use href="#i-pin"/></svg>450 m</span>
                   </p>
                 </div>
-                <a href="tel:+33639980026" class="relative z-10 shrink-0 self-center mr-2.5 grid place-items-center w-11 h-11 rounded-full text-teal-700 bg-teal-50 hover:bg-teal-100"
+                <a href="tel:+33639980026" class="relative z-10 shrink-0 self-center ml-auto mr-2.5 grid place-items-center w-11 h-11 rounded-full text-teal-700 bg-teal-50 hover:bg-teal-100"
                    aria-label="Appeler Sophie Arnaud au 06 39 98 00 26">
                   <svg class="w-5 h-5" aria-hidden="true"><use href="#i-tel"/></svg>
                 </a>
@@ -4091,18 +4226,18 @@ textarea.champ{ field-sizing: content; resize: vertical; }
   <div data-specimen class="mt-6">
     <p class="variante">Sophie Arnaud, avant l'envoi.</p>
     <template>
-      <div class="px-5 py-6">
-        <h1 class="ff text-nom text-teal-900">Vérifiez votre fiche</h1>
+      <div class="@container px-5 py-6">
+        <h1 class="ff text-nom mots-entiers text-teal-900" style="--taille:var(--text-nom); --mot:8">Vérifiez votre fiche</h1>
         <h2 class="ff mt-7 text-[22px] text-teal-900">Vous</h2>
         <dl class="mt-2 m-0 border-t border-neutre-300">
           <div class="grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 py-3 border-b border-neutre-300">
             <dt class="text-[16px] font-semibold text-neutre-700">Nom</dt>
-            <dd class="col-start-1 m-0 text-corps text-neutre-900">Sophie Arnaud</dd>
+            <dd class="@container col-start-1 m-0 text-corps text-neutre-900"><span class="block mots-entiers" style="--taille:var(--text-corps); --lettre:.56; --mot:6">Sophie Arnaud</span></dd>
             <dd class="col-start-2 row-start-1 row-span-2 m-0"><a href="#etape-1" class="inline-flex items-center min-h-[44px] text-[16px] font-semibold text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">Modifier<span class="sr-only"> le nom</span></a></dd>
           </div>
           <div class="grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 py-3 border-b border-neutre-300">
             <dt class="text-[16px] font-semibold text-neutre-700">On écrit</dt>
-            <dd class="col-start-1 m-0 text-corps text-neutre-900">elle — «&nbsp;Ce qu'elle propose&nbsp;»</dd>
+            <dd class="@container col-start-1 m-0 text-corps text-neutre-900"><span class="block mots-entiers" style="--taille:var(--text-corps); --lettre:.56; --mot:7">elle — «&nbsp;Ce qu'elle propose&nbsp;»</span></dd>
             <dd class="col-start-2 row-start-1 row-span-2 m-0"><a href="#etape-1" class="inline-flex items-center min-h-[44px] text-[16px] font-semibold text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">Modifier<span class="sr-only"> l'accord</span></a></dd>
           </div>
           <div class="grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 py-3 border-b border-neutre-300">
@@ -4115,12 +4250,12 @@ textarea.champ{ field-sizing: content; resize: vertical; }
         <dl class="mt-2 m-0 border-t border-neutre-300">
           <div class="grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 py-3 border-b border-neutre-300">
             <dt class="text-[16px] font-semibold text-neutre-700">Métier</dt>
-            <dd class="col-start-1 m-0 text-corps text-neutre-900">Naturopathe</dd>
+            <dd class="@container col-start-1 m-0 text-corps text-neutre-900"><span class="block mots-entiers" style="--taille:var(--text-corps); --lettre:.56; --mot:11">Naturopathe</span></dd>
             <dd class="col-start-2 row-start-1 row-span-2 m-0"><a href="#etape-3" class="inline-flex items-center min-h-[44px] text-[16px] font-semibold text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">Modifier<span class="sr-only"> le métier</span></a></dd>
           </div>
           <div class="grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 py-3 border-b border-neutre-300">
             <dt class="text-[16px] font-semibold text-neutre-700">Nom de l'activité</dt>
-            <dd class="col-start-1 m-0 text-corps italic text-neutre-700">Non renseigné</dd>
+            <dd class="@container col-start-1 m-0 text-corps italic text-neutre-700"><span class="block mots-entiers" style="--taille:var(--text-corps); --lettre:.56; --mot:9">Non renseigné</span></dd>
             <dd class="col-start-2 row-start-1 row-span-2 m-0"><a href="#etape-3" class="inline-flex items-center min-h-[44px] text-[16px] font-semibold text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">Ajouter<span class="sr-only"> le nom de l'activité</span></a></dd>
           </div>
           <div class="grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 py-3 border-b border-neutre-300">
@@ -4130,12 +4265,12 @@ textarea.champ{ field-sizing: content; resize: vertical; }
           </div>
           <div class="grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 py-3 border-b border-neutre-300">
             <dt class="text-[16px] font-semibold text-neutre-700">Services</dt>
-            <dd class="col-start-1 m-0 text-corps text-neutre-900"><ul class="list-none p-0 m-0"><li>Bilan naturopathique</li><li>Suivi mensuel</li><li>Consultation en visio</li></ul></dd>
+            <dd class="@container col-start-1 m-0 text-corps text-neutre-900"><span class="block mots-entiers" style="--taille:var(--text-corps); --lettre:.56; --mot:19"><ul class="list-none p-0 m-0"><li>Bilan naturopathique</li><li>Suivi mensuel</li><li>Consultation en visio</li></ul></span></dd>
             <dd class="col-start-2 row-start-1 row-span-2 m-0"><a href="#etape-6" class="inline-flex items-center min-h-[44px] text-[16px] font-semibold text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">Modifier<span class="sr-only"> les services</span></a></dd>
           </div>
           <div class="grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 py-3 border-b border-neutre-300">
             <dt class="text-[16px] font-semibold text-neutre-700">Tarifs</dt>
-            <dd class="col-start-1 m-0 text-corps text-neutre-900">Bilan d'1&nbsp;h&nbsp;30&nbsp;: 70&nbsp;€ · suivi&nbsp;: 50&nbsp;€</dd>
+            <dd class="@container col-start-1 m-0 text-corps text-neutre-900"><span class="block mots-entiers" style="--taille:var(--text-corps); --lettre:.56; --mot:5">Bilan d'1&nbsp;h&nbsp;30&nbsp;: 70&nbsp;€ · suivi&nbsp;: 50&nbsp;€</span></dd>
             <dd class="col-start-2 row-start-1 row-span-2 m-0"><a href="#etape-7" class="inline-flex items-center min-h-[44px] text-[16px] font-semibold text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">Modifier<span class="sr-only"> les tarifs</span></a></dd>
           </div>
         </dl>
@@ -4143,17 +4278,17 @@ textarea.champ{ field-sizing: content; resize: vertical; }
         <dl class="mt-2 m-0 border-t border-neutre-300">
           <div class="grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 py-3 border-b border-neutre-300">
             <dt class="text-[16px] font-semibold text-neutre-700">Adresse</dt>
-            <dd class="col-start-1 m-0 text-corps text-neutre-900">8 allée du Bois Vert, 31300 Toulouse<span class="block text-[16px] text-neutre-700">Sur le plan du quartier · à 450 m de la Halle</span></dd>
+            <dd class="@container col-start-1 m-0 text-corps text-neutre-900"><span class="block mots-entiers" style="--taille:var(--text-corps); --lettre:.56; --mot:11">8 allée du Bois Vert, 31300 Toulouse<span class="block text-[16px] text-neutre-700">Sur le plan du quartier · à 450 m de la Halle</span></span></dd>
             <dd class="col-start-2 row-start-1 row-span-2 m-0"><a href="#etape-8" class="inline-flex items-center min-h-[44px] text-[16px] font-semibold text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">Modifier<span class="sr-only"> l'adresse</span></a></dd>
           </div>
           <div class="grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 py-3 border-b border-neutre-300">
             <dt class="text-[16px] font-semibold text-neutre-700">Téléphone</dt>
-            <dd class="col-start-1 m-0 text-corps tnum text-neutre-900">06&nbsp;39&nbsp;98&nbsp;00&nbsp;26</dd>
+            <dd class="@container col-start-1 m-0 text-corps tnum text-neutre-900"><span class="block mots-entiers" style="--taille:var(--text-corps); --lettre:.56; --mot:14">06&nbsp;39&nbsp;98&nbsp;00&nbsp;26</span></dd>
             <dd class="col-start-2 row-start-1 row-span-2 m-0"><a href="#etape-9" class="inline-flex items-center min-h-[44px] text-[16px] font-semibold text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">Modifier<span class="sr-only"> le téléphone</span></a></dd>
           </div>
           <div class="grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 py-3 border-b border-neutre-300">
             <dt class="text-[16px] font-semibold text-neutre-700">Fiche Google</dt>
-            <dd class="col-start-1 m-0 text-corps italic text-neutre-700">Non renseigné</dd>
+            <dd class="@container col-start-1 m-0 text-corps italic text-neutre-700"><span class="block mots-entiers" style="--taille:var(--text-corps); --lettre:.56; --mot:9">Non renseigné</span></dd>
             <dd class="col-start-2 row-start-1 row-span-2 m-0"><a href="#etape-9" class="inline-flex items-center min-h-[44px] text-[16px] font-semibold text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">Ajouter<span class="sr-only"> la fiche Google</span></a></dd>
           </div>
         </dl>
@@ -4172,7 +4307,7 @@ textarea.champ{ field-sizing: content; resize: vertical; }
         <dl class="m-0 border-t border-neutre-300">
           <div class="grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 py-3 border-b border-neutre-300">
             <dt class="text-[16px] font-semibold text-neutre-700">Métier</dt>
-            <dd class="col-start-1 m-0 text-corps text-neutre-900">Naturopathe</dd>
+            <dd class="@container col-start-1 m-0 text-corps text-neutre-900"><span class="block mots-entiers" style="--taille:var(--text-corps); --lettre:.56; --mot:11">Naturopathe</span></dd>
             <dd class="col-start-2 row-start-1 row-span-2 m-0"><a href="#etape-3" class="inline-flex items-center min-h-[44px] text-[16px] font-semibold text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">Modifier<span class="sr-only"> le métier</span></a></dd>
           </div>
           <div class="groupe-erreur grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 py-3 border-b border-neutre-300">
@@ -4216,9 +4351,9 @@ textarea.champ{ field-sizing: content; resize: vertical; }
             Vos données et vos droits<svg class="w-4 h-4" aria-hidden="true"><use href="#i-chev"/></svg>
           </a>
         </div>
-        <fieldset class="mt-6 border-0 p-0 m-0">
+        <fieldset class="mt-6 min-w-0 border-0 p-0 m-0">
           <legend class="ff mb-4 text-[24px] leading-tight text-teal-900">Avant d'envoyer</legend>
-          <div class="grid gap-3">
+          <div class="grid grid-cols-[minmax(0,1fr)] gap-3">
             <label class="choix flex gap-3.5 items-start">
               <input type="checkbox" name="v2-accord-photo" class="case">
               <span class="text-corps leading-snug text-neutre-900">J'autorise la publication de ma photo sur l'annuaire.</span>
@@ -4245,7 +4380,7 @@ textarea.champ{ field-sizing: content; resize: vertical; }
     <p class="variante">Une case manque — l'erreur se pose sous <em>cette</em> case, pas en haut du groupe.</p>
     <template>
       <form class="px-5 py-6" onsubmit="return false">
-        <div class="grid gap-3">
+        <div class="grid grid-cols-[minmax(0,1fr)] gap-3">
           <label class="choix flex gap-3.5 items-start">
             <input type="checkbox" name="v2-accord-b-photo" class="case" checked>
             <span class="text-corps leading-snug text-neutre-900">J'autorise la publication de ma photo sur l'annuaire.</span>
@@ -4714,7 +4849,7 @@ textarea.champ{ field-sizing: content; resize: vertical; }
                 <span class="pastille pastille--teal mt-0.5 h-10 w-10 shrink-0 bg-teal-50 text-teal-700"><svg class="h-5 w-5" aria-hidden="true"><use href="#i-horloge"/></svg></span>
                 <div class="min-w-[min(12rem,100%)] flex-1">
                   <dt class="text-base text-neutre-700">Horaires</dt>
-                  <dd class="m-0 break-words text-corps font-semibold text-neutre-900">Du mardi au samedi, 9&nbsp;h–19&nbsp;h, sur rendez-vous</dd>
+                  <dd class="m-0 break-words text-corps font-semibold text-neutre-900">Du mardi au samedi, <span class="whitespace-nowrap">9&nbsp;h–19&nbsp;h</span>, sur rendez-vous</dd>
                 </div>
               </div>
             </dl>
@@ -4804,11 +4939,14 @@ textarea.champ{ field-sizing: content; resize: vertical; }
     trouver un voisin, et autour des Halles les lieux se serrent à moins de 44&nbsp;px. On l'allume d'un bouton au-dessus du
     plan. Toucher un lieu ouvre sa feuille sous le plan&nbsp;: les voisins qui l'ont nommé, visage à 88&nbsp;px, et leur
     «&nbsp;pourquoi&nbsp;». Le compte s'accorde&nbsp;: «&nbsp;1 voisine&nbsp;», «&nbsp;3 voisins&nbsp;». Le lieu qui est l'activité d'un
-    voisin n'a pas de repère à lui&nbsp;: c'est déjà son épingle.
+    voisin n'a pas de repère à lui&nbsp;: c'est déjà son épingle, marquée d'un <strong class="font-semibold text-neutre-900">coin
+    sauge</strong>. Des lieux dont les cibles se chevauchent se rassemblent, de proche en proche, en un
+    <strong class="font-semibold text-neutre-900">groupe numéroté</strong>&nbsp;: un carré sauge un peu plus grand, un second décalé
+    derrière lui, le nombre en blanc. Toucher le groupe ouvre une feuille qui liste ses lieux. Seuls les lieux se groupent.
   </p>
 
   <div data-specimen class="mt-6">
-    <p class="variante">Les repères — de gauche à droite&nbsp;: un voisin, un voisin choisi&nbsp;; un lieu, un lieu choisi, un lieu posé par un voisin (en attente d'Adrien).</p>
+    <p class="variante">Les repères — de gauche à droite&nbsp;: un voisin, un voisin choisi&nbsp;; un lieu, un lieu choisi, un lieu posé par un voisin (en attente d'Adrien)&nbsp;; un groupe de lieux trop serrés, numéroté&nbsp;; l'épingle d'un voisin dont l'activité est un lieu préféré, avec son coin sauge.</p>
     <template>
       <div class="p-5">
         <ul class="flex flex-wrap items-end gap-x-6 gap-y-4 list-none p-0 m-0 text-center text-[16px] text-neutre-700">
@@ -4817,6 +4955,8 @@ textarea.champ{ field-sizing: content; resize: vertical; }
           <li><span class="grid place-items-center w-11 h-11 mx-auto"><span class="lieu"><svg class="w-[18px] h-[18px]" aria-hidden="true"><use href="#l-cafe"/></svg></span></span><span class="mt-1 block">Lieu</span></li>
           <li><span class="grid place-items-center w-11 h-11 mx-auto"><span class="lieu lieu--choisi"><svg class="w-[18px] h-[18px]" aria-hidden="true"><use href="#l-cafe"/></svg></span></span><span class="mt-1 block">choisi</span></li>
           <li><span class="grid place-items-center w-11 h-11 mx-auto"><span class="lieu lieu--pose"><svg class="w-[18px] h-[18px]" aria-hidden="true"><use href="#l-sport"/></svg></span></span><span class="mt-1 block">posé</span></li>
+          <li><span class="grid place-items-center w-11 h-11 mx-auto"><span class="lieu lieu--groupe">10</span></span><span class="mt-1 block">groupe</span></li>
+          <li><span class="relative grid place-items-center w-11 h-11 mx-auto"><span class="epingle grid place-items-center w-9 h-9 rounded-full bg-white text-teal-700"><svg class="w-[18px] h-[18px]" aria-hidden="true"><use href="#c-sport"/></svg></span><span class="marque-lieu"><svg class="w-3 h-3" aria-hidden="true"><use href="#l-autre"/></svg></span></span><span class="mt-1 block">voisin + lieu</span></li>
         </ul>
       </div>
     </template>
@@ -4909,22 +5049,22 @@ textarea.champ{ field-sizing: content; resize: vertical; }
           </div>
         </div>
 
-        <section class="mx-4 mt-4 carte rounded-[22px] bg-white p-4" aria-labelledby="v2m-bar">
-          <div class="flex items-start gap-3">
+        <section class="relative mx-4 mt-4 carte rounded-[22px] bg-white p-4" aria-labelledby="v2m-bar">
+          <div class="flex flex-wrap items-start gap-3 pr-11">
             <span class="lieu mt-0.5 shrink-0" aria-hidden="true"><svg class="w-[18px] h-[18px]"><use href="#l-cafe"/></svg></span>
-            <div class="min-w-0 flex-1">
+            <div class="min-w-0 flex-1 basis-[7rem]">
               <h3 id="v2m-bar" class="ff text-[22px] leading-tight text-teal-900">Le Bar des 500</h3>
               <p class="text-[16px] text-neutre-700">Café, bar · lieu préféré de 3 voisins</p>
             </div>
-            <a href="#plan" aria-label="Fermer" class="-mr-1.5 -mt-1.5 grid place-items-center w-11 h-11 shrink-0 rounded-full text-teal-800 hover:bg-teal-50">
+            <a href="#plan" aria-label="Fermer" class="absolute top-2.5 right-2.5 grid place-items-center w-11 h-11 rounded-full text-teal-800 hover:bg-teal-50">
               <svg class="w-5 h-5" aria-hidden="true"><use href="#i-fermer"/></svg>
             </a>
           </div>
-          <ul class="mt-4 grid gap-2.5 list-none p-0 m-0">
+          <ul class="mt-4 grid grid-cols-[minmax(0,1fr)] gap-2.5 list-none p-0 m-0">
             <li>
-              <a href="/membre/sophie-arnaud" class="flex gap-3.5 rounded-[16px] bg-neutre-100 p-2.5 hover:bg-teal-50">
+              <a href="/membre/sophie-arnaud" class="flex flex-wrap gap-3.5 rounded-[16px] bg-neutre-100 p-2.5 hover:bg-teal-50">
                 <img src="https://randomuser.me/api/portraits/women/26.jpg" alt="" width="128" height="128" class="arche w-[74px] h-[88px] shrink-0 object-cover" style="object-position:50% 22%">
-                <span class="min-w-0 py-0.5">
+                <span class="min-w-0 flex-1 basis-[8rem] py-0.5">
                   <span class="ff block text-[19px] leading-tight text-teal-900">Sophie Arnaud</span>
                   <span class="block text-[16px] text-neutre-800">Naturopathe</span>
                   <span class="mt-1 block text-[16px] leading-snug text-neutre-900">«&nbsp;Le café du samedi, après le marché&nbsp;: on y croise tout le quartier.&nbsp;»</span>
@@ -4932,9 +5072,9 @@ textarea.champ{ field-sizing: content; resize: vertical; }
               </a>
             </li>
             <li>
-              <a href="/membre/karim-ziani" class="flex gap-3.5 rounded-[16px] bg-neutre-100 p-2.5 hover:bg-teal-50">
+              <a href="/membre/karim-ziani" class="flex flex-wrap gap-3.5 rounded-[16px] bg-neutre-100 p-2.5 hover:bg-teal-50">
                 <img src="https://randomuser.me/api/portraits/men/83.jpg" alt="" width="128" height="128" class="arche w-[74px] h-[88px] shrink-0 object-cover" style="object-position:50% 22%">
-                <span class="min-w-0 py-0.5">
+                <span class="min-w-0 flex-1 basis-[8rem] py-0.5">
                   <span class="ff block text-[19px] leading-tight text-teal-900">Karim Ziani</span>
                   <span class="block text-[16px] text-neutre-800">Photographe</span>
                   <span class="mt-1 block text-[16px] leading-snug text-neutre-900">«&nbsp;La terrasse au soleil, la plus belle lumière de fin d'après-midi.&nbsp;»</span>
@@ -4942,9 +5082,9 @@ textarea.champ{ field-sizing: content; resize: vertical; }
               </a>
             </li>
             <li>
-              <a href="/membre/lea-fontaine" class="flex gap-3.5 rounded-[16px] bg-neutre-100 p-2.5 hover:bg-teal-50">
+              <a href="/membre/lea-fontaine" class="flex flex-wrap gap-3.5 rounded-[16px] bg-neutre-100 p-2.5 hover:bg-teal-50">
                 <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="" width="128" height="128" class="arche w-[74px] h-[88px] shrink-0 object-cover" style="object-position:50% 22%">
-                <span class="min-w-0 py-0.5 self-center">
+                <span class="min-w-0 flex-1 basis-[8rem] py-0.5 self-center">
                   <span class="ff block text-[19px] leading-tight text-teal-900">Léa Fontaine</span>
                   <span class="block text-[16px] text-neutre-800">Graphiste &amp; illustratrice</span>
                 </span>
@@ -4970,7 +5110,9 @@ textarea.champ{ field-sizing: content; resize: vertical; }
     En haut de <code class="font-mono text-[15px] text-teal-800">/espace</code>, une phrase sur la fiche, au lieu
     d'un badge. Chaque état a sa teinte <em>et</em> son icône dans une ventouse, et son titre en toutes lettres&nbsp;:
     on comprend sans voir la couleur. Le refus cite le motif d'Adrien mot pour mot (DSA art.&nbsp;17) et
-    propose tout de suite de corriger.
+    propose tout de suite de corriger. À 200&nbsp;%, le texte passe sous la ventouse plutôt que de s'écraser à côté
+    (<code class="font-mono text-[15px] text-teal-800">flex-wrap</code> + <code class="font-mono text-[15px] text-teal-800">min-w-[min(12rem,100%)]</code>,
+    le motif de «&nbsp;La contacter&nbsp;»)&nbsp;; l'adresse de la fiche est en <code class="font-mono text-[15px] text-teal-800">mots-entiers</code>.
   </p>
   <p class="mt-3 text-corps text-neutre-800 max-w-[72ch]">
     «&nbsp;En attente&nbsp;» prend le panneau <code class="font-mono text-[15px] text-teal-800">sable-100</code> de la page
@@ -4981,9 +5123,9 @@ textarea.champ{ field-sizing: content; resize: vertical; }
     <p class="variante">En attente de validation.</p>
     <template>
       <div class="p-4">
-        <div role="status" class="flex items-start gap-4 rounded-[22px] bg-sable-100 p-5">
+        <div role="status" class="flex flex-wrap items-start gap-x-4 gap-y-3 rounded-[22px] bg-sable-100 p-5">
           <span class="pastille pastille--sable w-11 h-11 mt-0.5 bg-white text-sable-800" aria-hidden="true"><svg class="w-[22px] h-[22px]"><use href="#i-horloge"/></svg></span>
-          <div class="min-w-0">
+          <div class="@container min-w-[min(12rem,100%)] flex-1">
             <p class="ff text-[22px] leading-tight text-teal-950">En attente de validation</p>
             <p class="mt-1.5 text-[16px] leading-snug text-teal-950">Envoyée le 24 octobre. Adrien la relit et vous écrit par e-mail.</p>
           </div>
@@ -5000,15 +5142,15 @@ textarea.champ{ field-sizing: content; resize: vertical; }
     <p class="variante">Refusée, avec le motif.</p>
     <template>
       <div class="p-4">
-        <div role="status" class="flex items-start gap-4 rounded-[22px] bg-rouge-50 p-5">
+        <div role="status" class="flex flex-wrap items-start gap-x-4 gap-y-3 rounded-[22px] bg-rouge-50 p-5">
           <span class="pastille pastille--rouge w-11 h-11 mt-0.5 bg-white text-rouge-700" aria-hidden="true"><svg class="w-[22px] h-[22px]"><use href="#i-alerte"/></svg></span>
-          <div class="min-w-0">
+          <div class="@container min-w-[min(12rem,100%)] flex-1">
             <p class="ff text-[22px] leading-tight text-teal-950">Refusée&nbsp;: à corriger</p>
             <blockquote class="mt-2 mx-0 mb-0 border-l-[3px] border-rouge-300 pl-3 text-[16px] leading-snug text-teal-950">
               «&nbsp;Sur la photo, on voit deux personnes. Il en faut une où vous êtes seule.&nbsp;»
               <span class="mt-1 block text-neutre-700">— Adrien, le 25 octobre</span>
             </blockquote>
-            <a href="#etape-2" class="mt-4 inline-flex items-center gap-2 min-h-[48px] px-5 rounded-full text-corps font-semibold text-white bg-teal-700 hover:bg-teal-600">
+            <a href="#etape-2" class="mt-4 inline-flex max-w-full items-center gap-2 min-h-[48px] px-5 rounded-full text-corps font-semibold text-white bg-teal-700 hover:bg-teal-600">
               Corriger ma fiche<svg class="w-4 h-4" aria-hidden="true"><use href="#i-chev"/></svg>
             </a>
           </div>
@@ -5025,9 +5167,9 @@ textarea.champ{ field-sizing: content; resize: vertical; }
     <p class="variante">Mise en ligne en cours — après une modification d'une fiche déjà publiée. La ventouse respire.</p>
     <template>
       <div class="p-4">
-        <div role="status" class="flex items-start gap-4 rounded-[22px] bg-teal-50 p-5">
+        <div role="status" class="flex flex-wrap items-start gap-x-4 gap-y-3 rounded-[22px] bg-teal-50 p-5">
           <span class="pastille pastille--teal w-11 h-11 mt-0.5 bg-white text-teal-600" aria-hidden="true"><svg class="respire w-[22px] h-[22px]"><use href="#i-ventouse"/></svg></span>
-          <div class="min-w-0">
+          <div class="@container min-w-[min(12rem,100%)] flex-1">
             <p class="ff text-[22px] leading-tight text-teal-950">Mise en ligne en cours…</p>
             <p class="mt-1.5 text-[16px] leading-snug text-teal-950">Vos changements seront visibles d'ici quelques minutes.</p>
           </div>
@@ -5044,12 +5186,12 @@ textarea.champ{ field-sizing: content; resize: vertical; }
     <p class="variante">En ligne — l'adresse de la fiche en toutes lettres : c'est celle du QR code.</p>
     <template>
       <div class="p-4">
-        <div role="status" class="flex items-start gap-4 rounded-[22px] bg-sauge-50 p-5" style="box-shadow: inset 0 0 0 1px var(--color-sauge-200)">
+        <div role="status" class="flex flex-wrap items-start gap-x-4 gap-y-3 rounded-[22px] bg-sauge-50 p-5" style="box-shadow: inset 0 0 0 1px var(--color-sauge-200)">
           <span class="pastille w-11 h-11 mt-0.5 bg-white text-sauge-700" aria-hidden="true"><svg class="w-[22px] h-[22px]"><use href="#i-coche"/></svg></span>
-          <div class="min-w-0">
+          <div class="@container min-w-[min(12rem,100%)] flex-1">
             <p class="ff text-[22px] leading-tight text-teal-950">En ligne</p>
-            <p class="mt-1.5 text-[16px] leading-snug text-teal-950 break-words">cartoucherie.fyi/membre/sophie-arnaud</p>
-            <a href="/membre/sophie-arnaud" class="mt-2 inline-flex items-center gap-1.5 min-h-[44px] text-corps font-semibold text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">
+            <p class="mt-1.5 leading-snug text-teal-950 mots-entiers" style="--taille:16px; --lettre:.56; --mot:12">cartoucherie<wbr>.fyi/<wbr>membre/<wbr>sophie-arnaud</p>
+            <a href="/membre/sophie-arnaud" class="mt-2 inline-flex max-w-full items-center gap-1.5 min-h-[44px] text-corps font-semibold text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">
               Voir ma fiche<svg class="w-4 h-4" aria-hidden="true"><use href="#i-chev"/></svg>
             </a>
           </div>
@@ -5079,19 +5221,19 @@ textarea.champ{ field-sizing: content; resize: vertical; }
     <template>
       <div class="p-4">
         <aside data-rappel aria-labelledby="v2-rappel-titre" class="relative rounded-[22px] bg-teal-50 p-5 pr-12">
-          <div class="flex items-start gap-4">
+          <div class="flex flex-wrap items-start gap-x-4 gap-y-3">
             <div class="w-[72px] h-[72px] shrink-0 rounded-full bg-white overflow-hidden grid place-items-center"
                  style="box-shadow: inset 0 0 0 1.5px var(--color-teal-200)">
               <img src="../_shared/colly/colly-joyeux.png" alt="" width="260" height="260" class="croquis w-[88px] h-auto">
             </div>
-            <div class="min-w-0">
+            <div class="min-w-[min(12rem,100%)] flex-1">
               <h2 id="v2-rappel-titre" class="ff text-[21px] leading-tight text-teal-950">Ajoutez votre fiche Google</h2>
               <p class="mt-1.5 text-[16px] leading-snug text-teal-950">Vos voisins liront vos avis Google depuis votre fiche.</p>
+              <a href="#etape-google" class="mt-4 inline-flex max-w-full items-center gap-2 min-h-[48px] px-5 rounded-full text-corps font-semibold text-white bg-teal-700 hover:bg-teal-600">
+                Ajouter le lien
+              </a>
             </div>
           </div>
-          <a href="#etape-google" class="mt-4 ml-[88px] inline-flex items-center gap-2 min-h-[48px] px-5 rounded-full text-corps font-semibold text-white bg-teal-700 hover:bg-teal-600">
-            Ajouter le lien
-          </a>
           <button type="button" aria-label="Masquer ce rappel" onclick="this.closest('[data-rappel]').hidden = true"
                   class="absolute top-2 right-2 grid place-items-center w-11 h-11 rounded-full text-teal-800 hover:bg-teal-100">
             <svg class="w-5 h-5" aria-hidden="true"><use href="#i-fermer"/></svg>
@@ -5123,7 +5265,7 @@ textarea.champ{ field-sizing: content; resize: vertical; }
   <div data-specimen class="mt-6">
     <p class="variante">La confirmation — Camille Roussel.</p>
     <template>
-      <form class="px-5 pt-2 pb-10" onsubmit="return false">
+      <form class="@container px-5 pt-2 pb-10" onsubmit="return false">
         <a href="/espace" class="-mx-2 inline-flex items-center gap-1.5 min-h-[44px] px-2 rounded-full text-corps font-semibold text-teal-700 hover:bg-teal-50">
           <svg class="w-5 h-5" aria-hidden="true"><use href="#i-retour"/></svg>Mon espace
         </a>
@@ -5135,13 +5277,13 @@ textarea.champ{ field-sizing: content; resize: vertical; }
             <p class="text-corps text-neutre-800">Sophrologue</p>
           </div>
         </div>
-        <h1 class="ff mt-6 text-nom text-teal-900">Supprimer votre fiche&nbsp;?</h1>
+        <h1 class="ff mt-6 text-nom mots-entiers text-teal-900" style="--taille:var(--text-nom); --mot:9">Supprimer votre fiche&nbsp;?</h1>
         <div class="mt-5 rounded-[22px] bg-rouge-50 p-5">
-          <p class="flex items-start gap-2.5 text-corps font-semibold text-teal-950">
+          <p class="flex flex-wrap items-start gap-2.5 text-corps font-semibold text-teal-950">
             <span class="pastille pastille--rouge w-9 h-9 bg-white text-rouge-700" aria-hidden="true"><svg class="w-[18px] h-[18px]"><use href="#i-corbeille"/></svg></span>
             <span class="pt-1.5">Seront effacés&nbsp;:</span>
           </p>
-          <ul class="mt-3 grid gap-1.5 list-none p-0 m-0 text-corps leading-snug text-teal-950">
+          <ul class="mt-3 grid grid-cols-[minmax(0,1fr)] gap-1.5 list-none p-0 m-0 text-corps leading-snug text-teal-950">
             <li class="flex gap-2.5"><svg class="w-4 h-4 mt-1.5 shrink-0 text-rouge-700" aria-hidden="true"><use href="#i-fermer"/></svg>votre fiche et tous ses textes</li>
             <li class="flex gap-2.5"><svg class="w-4 h-4 mt-1.5 shrink-0 text-rouge-700" aria-hidden="true"><use href="#i-fermer"/></svg>votre photo et vos pages «&nbsp;Votre histoire&nbsp;»</li>
             <li class="flex gap-2.5"><svg class="w-4 h-4 mt-1.5 shrink-0 text-rouge-700" aria-hidden="true"><use href="#i-fermer"/></svg>votre point sur le plan du quartier</li>
@@ -5188,18 +5330,18 @@ textarea.champ{ field-sizing: content; resize: vertical; }
   <div data-specimen class="mt-6">
     <p class="variante">Deux fiches en attente, deux signaux différents.</p>
     <template>
-      <ul class="p-4 grid gap-3 list-none m-0">
+      <ul class="p-4 grid grid-cols-[minmax(0,1fr)] gap-3 list-none m-0">
         <li>
           <article class="carte rounded-[20px] bg-white overflow-hidden">
-            <div class="flex gap-4 p-4">
+            <div class="flex flex-wrap gap-4 p-4">
               <img src="https://randomuser.me/api/portraits/men/59.jpg" alt="Portrait de Pierre Delmas"
                    width="128" height="128" class="arche w-[96px] h-[116px] shrink-0 object-cover" style="object-position:50% 22%">
-              <div class="min-w-0 flex-1">
+              <div class="min-w-[min(10rem,100%)] flex-1">
                 <h3 class="ff text-[21px] leading-tight text-teal-900">
                   <a href="/admin/fiche/pierre-delmas" class="underline decoration-teal-300 underline-offset-4 hover:decoration-teal-600">Pierre Delmas</a>
                 </h3>
                 <p class="mt-0.5 text-corps leading-snug text-neutre-800">Expert-comptable</p>
-                <p class="mt-1 text-[16px] text-neutre-700">Envoyée le 22 oct.</p>
+                <p class="mt-1 text-[16px] text-neutre-700">Envoyée le 22&nbsp;oct.</p>
                 <ul class="mt-2 flex flex-wrap gap-1.5 list-none p-0 m-0">
                   <li class="inline-flex items-center gap-1.5 rounded-full bg-sable-200 px-2.5 py-1 text-[16px] font-semibold text-teal-950">
                     <svg class="w-4 h-4 shrink-0" aria-hidden="true"><use href="#i-signal"/></svg>Hors du quartier
@@ -5207,7 +5349,7 @@ textarea.champ{ field-sizing: content; resize: vertical; }
                 </ul>
               </div>
             </div>
-            <div class="flex gap-2.5 px-4 pb-4">
+            <div class="flex flex-wrap gap-2.5 px-4 pb-4">
               <button type="button" class="flex-1 inline-flex items-center justify-center gap-2 min-h-[48px] px-5 rounded-full text-corps font-semibold text-white bg-teal-700 hover:bg-teal-600">
                 <svg class="w-5 h-5" aria-hidden="true"><use href="#i-coche"/></svg>Publier
               </button>
@@ -5219,15 +5361,15 @@ textarea.champ{ field-sizing: content; resize: vertical; }
         </li>
         <li>
           <article class="carte rounded-[20px] bg-white overflow-hidden">
-            <div class="flex gap-4 p-4">
+            <div class="flex flex-wrap gap-4 p-4">
               <img src="https://randomuser.me/api/portraits/men/83.jpg" alt="Portrait de Karim Ziani"
                    width="128" height="128" class="arche w-[96px] h-[116px] shrink-0 object-cover" style="object-position:50% 22%">
-              <div class="min-w-0 flex-1">
+              <div class="min-w-[min(10rem,100%)] flex-1">
                 <h3 class="ff text-[21px] leading-tight text-teal-900">
                   <a href="/admin/fiche/karim-ziani" class="underline decoration-teal-300 underline-offset-4 hover:decoration-teal-600">Karim Ziani</a>
                 </h3>
                 <p class="mt-0.5 text-corps leading-snug text-neutre-800">Photographe</p>
-                <p class="mt-1 text-[16px] text-neutre-700">Envoyée le 24 oct.</p>
+                <p class="mt-1 text-[16px] text-neutre-700">Envoyée le 24&nbsp;oct.</p>
                 <ul class="mt-2 flex flex-wrap gap-1.5 list-none p-0 m-0">
                   <li class="inline-flex items-center gap-1.5 rounded-full bg-sable-200 px-2.5 py-1 text-[16px] font-semibold text-teal-950">
                     <svg class="w-4 h-4 shrink-0" aria-hidden="true"><use href="#i-signal"/></svg>Doublon possible
@@ -5238,7 +5380,7 @@ textarea.champ{ field-sizing: content; resize: vertical; }
                 </ul>
               </div>
             </div>
-            <div class="flex gap-2.5 px-4 pb-4">
+            <div class="flex flex-wrap gap-2.5 px-4 pb-4">
               <button type="button" class="flex-1 inline-flex items-center justify-center gap-2 min-h-[48px] px-5 rounded-full text-corps font-semibold text-white bg-teal-700 hover:bg-teal-600">
                 <svg class="w-5 h-5" aria-hidden="true"><use href="#i-coche"/></svg>Publier
               </button>
@@ -5261,15 +5403,15 @@ textarea.champ{ field-sizing: content; resize: vertical; }
     <template>
       <div class="p-4">
         <article class="carte rounded-[20px] bg-white overflow-hidden">
-          <div class="flex gap-4 p-4">
+          <div class="flex flex-wrap gap-4 p-4">
             <img src="https://randomuser.me/api/portraits/men/59.jpg" alt="Portrait de Pierre Delmas"
                  width="128" height="128" class="arche w-[96px] h-[116px] shrink-0 object-cover" style="object-position:50% 22%">
-            <div class="min-w-0 flex-1">
+            <div class="min-w-[min(10rem,100%)] flex-1">
               <h3 class="ff text-[21px] leading-tight text-teal-900">
                 <a href="/admin/fiche/pierre-delmas" class="underline decoration-teal-300 underline-offset-4 hover:decoration-teal-600">Pierre Delmas</a>
               </h3>
               <p class="mt-0.5 text-corps leading-snug text-neutre-800">Expert-comptable</p>
-              <p class="mt-1 text-[16px] text-neutre-700">Envoyée le 22 oct.</p>
+              <p class="mt-1 text-[16px] text-neutre-700">Envoyée le 22&nbsp;oct.</p>
               <ul class="mt-2 flex flex-wrap gap-1.5 list-none p-0 m-0">
                 <li class="inline-flex items-center gap-1.5 rounded-full bg-sable-200 px-2.5 py-1 text-[16px] font-semibold text-teal-950">
                   <svg class="w-4 h-4 shrink-0" aria-hidden="true"><use href="#i-signal"/></svg>Hors du quartier
@@ -5288,7 +5430,7 @@ textarea.champ{ field-sizing: content; resize: vertical; }
                       class="inline-flex items-center min-h-[44px] px-3.5 rounded-full text-[16px] font-semibold text-teal-800 bg-white hover:bg-teal-50" style="box-shadow: inset 0 0 0 1.5px var(--color-teal-200)">Coordonnées</button>
             </div>
             <textarea id="v2-motif" rows="3" class="champ mt-3 block w-full min-h-[104px] px-3.5 py-3 rounded-xl text-corps leading-relaxed text-neutre-900">Votre adresse est en dehors du quartier : l'annuaire ne présente que des voisins de la Cartoucherie.</textarea>
-            <div class="mt-3 flex gap-2.5">
+            <div class="mt-3 flex flex-wrap gap-2.5">
               <button type="submit" class="flex-1 inline-flex items-center justify-center min-h-[48px] px-5 rounded-full text-corps font-semibold text-white bg-teal-700 hover:bg-teal-600">
                 Envoyer le refus
               </button>
@@ -5298,6 +5440,242 @@ textarea.champ{ field-sizing: content; resize: vertical; }
             </div>
           </form>
         </article>
+      </div>
+    </template>
+    <div class="duo mt-3">
+      <div class="scene-boite"><div class="scene" data-rendu></div></div>
+      <div class="relative min-w-0"><pre class="code" data-code></pre></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ╔═══ v2 · la revue d'un lieu ═════════════════════════════════════════════╗ -->
+<section class="bloc carte rounded-[22px] bg-white p-5 sm:p-7" id="b-v2-lieu-revue" data-bloc>
+  <p class="text-etiquette font-semibold uppercase text-sauge-800">v2 · l'admin</p>
+  <h2 data-court="La revue d'un lieu posé" class="ff mt-1.5 text-nom text-teal-900">La revue d'un lieu posé</h2>
+  <p class="mt-3 text-corps text-neutre-800 max-w-[72ch]">
+    Un lieu posé sur le plan par un voisin («&nbsp;Placer sur la carte&nbsp;») attend Adrien, comme une fiche. La file des lieux
+    reprend la carte de «&nbsp;La file d'attente&nbsp;», le plan à la place du portrait&nbsp;: le repère posé en pointillés, son nom
+    tel qu'il a été écrit, qui l'a posé, son «&nbsp;pourquoi&nbsp;», et les signaux en pastilles <code class="font-mono text-[15px] text-teal-800">sable-200</code>.
+  </p>
+  <p class="mt-3 text-corps text-neutre-800 max-w-[72ch]">
+    <strong class="font-semibold text-neutre-900">Quatre décisions.</strong> «&nbsp;Approuver le lieu&nbsp;», teal plein, pleine largeur.
+    «&nbsp;Modifier…&nbsp;» corrige le nom, le type et le point (on touche le plan). «&nbsp;Fusionner…&nbsp;» rattache le point à un lieu du
+    relevé&nbsp;: le point disparaît, son «&nbsp;pourquoi&nbsp;» passe au lieu choisi. «&nbsp;Refuser…&nbsp;» exige un motif, envoyé à la
+    personne — le même formulaire que pour une fiche. Le panneau ouvert se lit à son bouton, passé en <code class="font-mono text-[15px] text-teal-800">teal-800</code>
+    plein. Aucun orange&nbsp;: l'admin n'en a pas besoin.
+  </p>
+
+  <div data-specimen class="mt-6">
+    <p class="variante">Dans la file — un lieu posé par Camille, signalé «&nbsp;Proche de&nbsp;» un lieu du relevé.</p>
+    <template>
+      <ul class="p-4 grid grid-cols-[minmax(0,1fr)] gap-3 list-none m-0">
+        <li>
+          <article class="carte rounded-[20px] bg-white overflow-hidden">
+            <div class="relative h-[120px] overflow-hidden bg-neutre-200">
+          <svg class="absolute inset-0 w-full h-full" viewBox="68 306 328 120" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Plan du quartier, autour du lieu posé"><use href="#plan-quartier" width="722" height="676"/></svg>
+          <span class="lieu-cible" style="left:50%; top:50%" aria-hidden="true"><span class="lieu lieu--pose"><svg class="w-[18px] h-[18px]"><use href="#l-autre"/></svg></span></span>
+        </div>
+            <div class="p-4">
+              <h3 class="ff text-[21px] leading-tight text-teal-900"><a href="/admin/lieux/camille" class="underline decoration-teal-300 underline-offset-4 hover:decoration-teal-600">Le marché du samedi</a></h3>
+              <p class="mt-0.5 text-[16px] text-neutre-700">Autre · posé le 26&nbsp;oct.</p>
+              <p class="mt-2 flex flex-wrap items-center gap-x-2 gap-y-1.5 text-[16px] text-neutre-800">Par <a href="/admin/fiche/camille-roussel" class="font-semibold text-teal-800 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">Camille Roussel</a> · fiche <span class="inline-flex items-center gap-1.5 rounded-full bg-sauge-100 px-2.5 py-0.5 text-[16px] font-semibold text-teal-950"><svg class="w-4 h-4 shrink-0" aria-hidden="true"><use href="#i-coche"/></svg>En ligne</span></p>
+              <blockquote class="mt-2 mx-0 mb-0 border-l-[3px] border-neutre-300 pl-3 text-[16px] leading-snug text-neutre-900">«&nbsp;Fruits, fleurs, et un bonjour à tout le monde.&nbsp;»</blockquote>
+              <ul class="mt-2.5 flex flex-wrap gap-1.5 list-none p-0 m-0"><li class="inline-flex items-center gap-1.5 rounded-full bg-sable-200 px-2.5 py-1 text-[16px] font-semibold text-teal-950"><svg class="w-4 h-4 shrink-0" aria-hidden="true"><use href="#i-signal"/></svg>Proche de : Le Marché des 500</li></ul>
+            </div>
+            <div class="flex flex-wrap gap-2.5 px-4 pb-4">
+              <button type="button" class="flex-1 inline-flex items-center justify-center gap-2 min-h-[48px] px-[16px] rounded-full text-corps font-semibold text-white bg-teal-700 hover:bg-teal-600"><svg class="w-5 h-5" aria-hidden="true"><use href="#i-coche"/></svg>Approuver</button>
+              <a href="/admin/lieux/camille" class="inline-flex items-center justify-center min-h-[48px] px-[16px] rounded-full text-corps font-semibold text-teal-700 bg-teal-50 hover:bg-teal-100">Décider…</a>
+            </div>
+          </article>
+        </li>
+      </ul>
+    </template>
+    <div class="duo mt-3">
+      <div class="scene-boite"><div class="scene" data-rendu></div></div>
+      <div class="relative min-w-0"><pre class="code" data-code></pre></div>
+    </div>
+  </div>
+
+  <div data-specimen class="mt-8">
+    <p class="variante">«&nbsp;Fusionner…&nbsp;» ouvert — les lieux du relevé les plus proches du point, ou un autre, cherché.</p>
+    <template>
+      <div class="@container p-4">
+          <a href="/admin/lieux" class="-ml-2 inline-flex items-center gap-1.5 min-h-[44px] px-2 rounded-full text-corps font-semibold text-teal-700 hover:bg-teal-50">
+            <svg class="w-5 h-5" aria-hidden="true"><use href="#i-retour"/></svg>Lieux à vérifier
+          </a>
+          <div class="mt-3"><div class="relative h-[180px] rounded-[16px] overflow-hidden bg-neutre-200" style="box-shadow: inset 0 0 0 1px var(--color-neutre-300)">
+          <svg class="absolute inset-0 w-full h-full" viewBox="72 276 320 180" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Plan du quartier, autour du lieu posé"><use href="#plan-quartier" width="722" height="676"/></svg>
+          <span class="lieu-cible" style="left:50%; top:50%" aria-hidden="true"><span class="lieu lieu--pose"><svg class="w-[18px] h-[18px]"><use href="#l-autre"/></svg></span></span>
+        </div></div>
+          <p class="mt-1.5 text-[15px] text-neutre-700">Plan&nbsp;: © les contributeurs OpenStreetMap</p>
+          <div class="mt-4 flex items-start gap-3">
+            <span class="lieu mt-1 shrink-0" aria-hidden="true"><svg class="w-[18px] h-[18px]"><use href="#l-autre"/></svg></span>
+            <div class="@container min-w-0 flex-1">
+              <h1 class="ff text-nom mots-entiers text-teal-900" style="--taille:var(--text-nom); --mot:6">Le marché du samedi</h1>
+              <p class="mt-1 text-[16px] text-neutre-700">Autre · posé le 26&nbsp;oct.</p>
+            </div>
+          </div>
+          <p class="mt-2 flex flex-wrap items-center gap-x-2 gap-y-1.5 text-[16px] text-neutre-800">Par <a href="/admin/fiche/camille-roussel" class="font-semibold text-teal-800 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">Camille Roussel</a> · fiche <span class="inline-flex items-center gap-1.5 rounded-full bg-sauge-100 px-2.5 py-0.5 text-[16px] font-semibold text-teal-950"><svg class="w-4 h-4 shrink-0" aria-hidden="true"><use href="#i-coche"/></svg>En ligne</span></p>
+          <blockquote class="mt-3 mx-0 mb-0 border-l-[3px] border-neutre-300 pl-3 text-[16px] leading-snug text-neutre-900">«&nbsp;Fruits, fleurs, et un bonjour à tout le monde.&nbsp;»</blockquote>
+          <div class="mt-5 flex flex-wrap gap-2.5">
+            <button type="button" class="basis-full inline-flex items-center justify-center gap-2 flex-1 min-h-[48px] px-[16px] rounded-full text-corps font-semibold text-white bg-teal-700 hover:bg-teal-600"><svg class="w-5 h-5" aria-hidden="true"><use href="#i-coche"/></svg>Approuver le lieu</button>
+            <button type="button" aria-expanded="false" class="inline-flex items-center justify-center flex-1 min-h-[48px] px-[16px] rounded-full text-corps font-semibold text-teal-700 bg-teal-50 hover:bg-teal-100">Modifier…</button>
+            <button type="button" aria-expanded="true" class="inline-flex items-center justify-center flex-1 min-h-[48px] px-[16px] rounded-full text-corps font-semibold text-white bg-teal-800">Fusionner…</button>
+            <div class="basis-full flex"><button type="button" aria-expanded="false" class="inline-flex items-center justify-center flex-1 min-h-[48px] px-[16px] rounded-full text-corps font-semibold text-teal-700 bg-teal-50 hover:bg-teal-100">Refuser…</button></div>
+          </div>
+          <form class="mt-4 rounded-[20px] bg-neutre-50 p-4" onsubmit="return false" style="box-shadow: inset 0 0 0 1px var(--color-neutre-200)">
+            <fieldset class="min-w-0 border-0 p-0 m-0">
+              <legend class="text-corps font-semibold text-teal-900">Fusionner avec un lieu du relevé</legend>
+              <p class="mt-1 text-[16px] text-neutre-700">Les plus proches du point.</p>
+              <div class="mt-3 grid grid-cols-[minmax(0,1fr)] gap-2.5">
+                <label class="choix flex flex-wrap items-center gap-3">
+                  <input type="radio" name="v2lr-fusion" value="osm-marche-500" class="rond" checked>
+                  <span class="lieu shrink-0" aria-hidden="true"><svg class="w-[18px] h-[18px]"><use href="#l-restaurant"/></svg></span>
+                  <span class="min-w-[min(8rem,100%)] flex-1"><span class="block text-corps font-semibold text-teal-900">Le Marché des 500</span><span class="block text-[16px] text-neutre-700">Restaurant · à 10&nbsp;m</span></span>
+                </label>
+                <label class="choix flex flex-wrap items-center gap-3">
+                  <input type="radio" name="v2lr-fusion" value="osm-les-500" class="rond">
+                  <span class="lieu shrink-0" aria-hidden="true"><svg class="w-[18px] h-[18px]"><use href="#l-restaurant"/></svg></span>
+                  <span class="min-w-[min(8rem,100%)] flex-1"><span class="block text-corps font-semibold text-teal-900">Les 500</span><span class="block text-[16px] text-neutre-700">Restaurant · à 20&nbsp;m</span></span>
+                </label>
+                <label class="choix flex flex-wrap items-center gap-3">
+                  <input type="radio" name="v2lr-fusion" value="osm-bar-500" class="rond">
+                  <span class="lieu shrink-0" aria-hidden="true"><svg class="w-[18px] h-[18px]"><use href="#l-cafe"/></svg></span>
+                  <span class="min-w-[min(8rem,100%)] flex-1"><span class="block text-corps font-semibold text-teal-900">Le Bar des 500</span><span class="block text-[16px] text-neutre-700">Café, bar · à 25&nbsp;m</span></span>
+                </label>
+              </div>
+            </fieldset>
+            <div class="mt-4">
+              <label for="v2lr-fusion-q" class="block text-[16px] font-semibold text-neutre-800">Ou un autre lieu du relevé</label>
+              <div class="relative mt-1.5">
+                <svg class="w-5 h-5 absolute left-3.5 top-[16px] text-teal-600 pointer-events-none" aria-hidden="true"><use href="#i-loupe"/></svg>
+                <input id="v2lr-fusion-q" type="search" autocomplete="off" class="champ w-full min-h-[52px] pl-11 pr-3.5 rounded-xl text-corps text-neutre-900">
+              </div>
+            </div>
+            <p class="mt-4 text-[16px] leading-snug text-neutre-800">Le point de Camille disparaît&nbsp;; son «&nbsp;pourquoi&nbsp;» passe au lieu choisi.</p>
+            <div class="mt-3 flex flex-wrap gap-2.5">
+              <button type="submit" class="flex-1 inline-flex items-center justify-center min-h-[48px] px-5 rounded-full text-corps font-semibold text-white bg-teal-700 hover:bg-teal-600">Fusionner</button>
+              <button type="button" class="inline-flex items-center justify-center min-h-[48px] px-5 rounded-full text-corps font-semibold text-teal-700 bg-teal-50 hover:bg-teal-100">Annuler</button>
+            </div>
+          </form>
+      </div>
+    </template>
+    <div class="duo mt-3">
+      <div class="scene-boite"><div class="scene" data-rendu></div></div>
+      <div class="relative min-w-0"><pre class="code" data-code></pre></div>
+    </div>
+  </div>
+
+  <div data-specimen class="mt-8">
+    <p class="variante">«&nbsp;Modifier…&nbsp;» ouvert — renommer, changer le type, toucher le plan pour déplacer le point. L'ancien point reste en transparence.</p>
+    <template>
+      <div class="@container p-4">
+          <a href="/admin/lieux" class="-ml-2 inline-flex items-center gap-1.5 min-h-[44px] px-2 rounded-full text-corps font-semibold text-teal-700 hover:bg-teal-50">
+            <svg class="w-5 h-5" aria-hidden="true"><use href="#i-retour"/></svg>Lieux à vérifier
+          </a>
+          <div class="mt-3"><div class="relative h-[180px] overflow-hidden rounded-[16px] bg-neutre-200 cursor-crosshair" style="box-shadow: inset 0 0 0 1px var(--color-neutre-300)"
+               onclick="var r=this.getBoundingClientRect(),p=this.querySelector('[data-nouveau]');p.style.left=(event.clientX-r.left)+'px';p.style.top=(event.clientY-r.top)+'px'">
+          <svg class="absolute inset-0 w-full h-full" viewBox="88 418 320 180" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Plan du quartier : touchez pour déplacer le point"><use href="#plan-quartier" width="722" height="676"/></svg>
+          <span class="lieu-cible" style="left:50%; top:50%; opacity:.4" aria-hidden="true"><span class="lieu lieu--pose"><svg class="w-[18px] h-[18px]"><use href="#l-sport"/></svg></span></span>
+          <span data-nouveau class="lieu-cible" style="left:calc(50% + 52px); top:calc(50% - 22px)" aria-hidden="true"><span class="lieu lieu--choisi"><svg class="w-[18px] h-[18px]"><use href="#l-sport"/></svg></span></span>
+        </div></div>
+          <p class="mt-1.5 text-[15px] text-neutre-700">Plan&nbsp;: © les contributeurs OpenStreetMap</p>
+          <div class="mt-4 flex items-start gap-3">
+            <span class="lieu mt-1 shrink-0" aria-hidden="true"><svg class="w-[18px] h-[18px]"><use href="#l-sport"/></svg></span>
+            <div class="@container min-w-0 flex-1">
+              <h1 class="ff text-nom mots-entiers text-teal-900" style="--taille:var(--text-nom); --mot:8">le terrain de petanque du jardin</h1>
+              <p class="mt-1 text-[16px] text-neutre-700">Sport · posé le 25&nbsp;oct.</p>
+            </div>
+          </div>
+          <p class="mt-2 flex flex-wrap items-center gap-x-2 gap-y-1.5 text-[16px] text-neutre-800">Par <a href="/admin/fiche/sacha-morel" class="font-semibold text-teal-800 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">Sacha Morel</a> · fiche <span class="inline-flex items-center gap-1.5 rounded-full bg-sable-200 px-2.5 py-0.5 text-[16px] font-semibold text-teal-950"><svg class="w-4 h-4 shrink-0" aria-hidden="true"><use href="#i-horloge"/></svg>En attente</span></p>
+          <blockquote class="mt-3 mx-0 mb-0 border-l-[3px] border-neutre-300 pl-3 text-[16px] leading-snug text-neutre-900">«&nbsp;Les parties du dimanche, entre voisins.&nbsp;»</blockquote>
+          <div class="mt-5 flex flex-wrap gap-2.5">
+            <button type="button" class="basis-full inline-flex items-center justify-center gap-2 flex-1 min-h-[48px] px-[16px] rounded-full text-corps font-semibold text-white bg-teal-700 hover:bg-teal-600"><svg class="w-5 h-5" aria-hidden="true"><use href="#i-coche"/></svg>Approuver le lieu</button>
+            <button type="button" aria-expanded="true" class="inline-flex items-center justify-center flex-1 min-h-[48px] px-[16px] rounded-full text-corps font-semibold text-white bg-teal-800">Modifier…</button>
+            <button type="button" aria-expanded="false" class="inline-flex items-center justify-center flex-1 min-h-[48px] px-[16px] rounded-full text-corps font-semibold text-teal-700 bg-teal-50 hover:bg-teal-100">Fusionner…</button>
+            <div class="basis-full flex"><button type="button" aria-expanded="false" class="inline-flex items-center justify-center flex-1 min-h-[48px] px-[16px] rounded-full text-corps font-semibold text-teal-700 bg-teal-50 hover:bg-teal-100">Refuser…</button></div>
+          </div>
+          <form class="mt-4 rounded-[20px] bg-neutre-50 p-[16px]" onsubmit="return false" style="box-shadow: inset 0 0 0 1px var(--color-neutre-200)">
+            <p class="text-corps font-semibold text-teal-900">Modifier le lieu</p>
+            <p class="mt-1 text-[16px] text-neutre-700">Le point&nbsp;: touchez le plan, plus haut.</p>
+            <div class="mt-4" data-etat="ok">
+              <label for="v2lr-nom" class="block text-[16px] font-semibold text-neutre-800">Le nom du lieu</label>
+              <input id="v2lr-nom" type="text" value="Terrain de pétanque du jardin" aria-describedby="v2lr-nom-avant"
+                     class="champ mt-1.5 w-full min-h-[52px] px-3.5 rounded-xl text-corps text-neutre-900">
+              <p id="v2lr-nom-avant" class="mt-1.5 text-[16px] text-neutre-700">Sacha avait écrit «&nbsp;le terrain de petanque du jardin&nbsp;».</p>
+            </div>
+            <fieldset class="mt-5 min-w-0 border-0 p-0 m-0">
+              <legend class="block mb-2 text-[16px] font-semibold text-neutre-800">Son type</legend>
+              <div class="grid grid-cols-[repeat(auto-fill,minmax(min(9.5rem,100%),1fr))] gap-2">
+                <label class="choix flex items-center gap-2.5 min-h-[52px]! py-2! px-3!"><input type="radio" name="v2lr-type" value="cafe" class="sr-only"><svg class="w-5 h-5 shrink-0 text-sauge-700" aria-hidden="true"><use href="#l-cafe"/></svg><span class="text-[16px] font-semibold text-teal-900">Café, bar</span></label>
+                <label class="choix flex items-center gap-2.5 min-h-[52px]! py-2! px-3!"><input type="radio" name="v2lr-type" value="restaurant" class="sr-only"><svg class="w-5 h-5 shrink-0 text-sauge-700" aria-hidden="true"><use href="#l-restaurant"/></svg><span class="text-[16px] font-semibold text-teal-900">Restaurant</span></label>
+                <label class="choix flex items-center gap-2.5 min-h-[52px]! py-2! px-3!"><input type="radio" name="v2lr-type" value="parc" class="sr-only"><svg class="w-5 h-5 shrink-0 text-sauge-700" aria-hidden="true"><use href="#l-parc"/></svg><span class="text-[16px] font-semibold text-teal-900">Parc, jardin</span></label>
+                <label class="choix flex items-center gap-2.5 min-h-[52px]! py-2! px-3!"><input type="radio" name="v2lr-type" value="boutique" class="sr-only"><svg class="w-5 h-5 shrink-0 text-sauge-700" aria-hidden="true"><use href="#l-boutique"/></svg><span class="text-[16px] font-semibold text-teal-900">Boutique</span></label>
+                <label class="choix flex items-center gap-2.5 min-h-[52px]! py-2! px-3!"><input type="radio" name="v2lr-type" value="sport" class="sr-only" checked><svg class="w-5 h-5 shrink-0 text-sauge-700" aria-hidden="true"><use href="#l-sport"/></svg><span class="text-[16px] font-semibold text-teal-900">Sport</span></label>
+                <label class="choix flex items-center gap-2.5 min-h-[52px]! py-2! px-3!"><input type="radio" name="v2lr-type" value="culture" class="sr-only"><svg class="w-5 h-5 shrink-0 text-sauge-700" aria-hidden="true"><use href="#l-culture"/></svg><span class="text-[16px] font-semibold text-teal-900">Culture</span></label>
+                <label class="choix flex items-center gap-2.5 min-h-[52px]! py-2! px-3!"><input type="radio" name="v2lr-type" value="autre" class="sr-only"><svg class="w-5 h-5 shrink-0 text-sauge-700" aria-hidden="true"><use href="#l-autre"/></svg><span class="text-[16px] font-semibold text-teal-900">Autre</span></label>
+              </div>
+            </fieldset>
+            <p class="mt-4 text-[16px] leading-snug text-neutre-800">Sacha verra le nouveau nom dans son espace et sur sa page «&nbsp;Mes lieux favoris&nbsp;».</p>
+            <div class="mt-3 flex flex-wrap gap-2.5">
+              <button type="submit" class="w-full inline-flex items-center justify-center min-h-[48px] px-[16px] py-2 rounded-full text-center text-corps font-semibold text-white bg-teal-700 hover:bg-teal-600">Enregistrer et approuver</button>
+              <button type="button" class="inline-flex items-center justify-center min-h-[48px] px-5 rounded-full text-corps font-semibold text-teal-700 bg-teal-50 hover:bg-teal-100">Annuler</button>
+            </div>
+          </form>
+      </div>
+    </template>
+    <div class="duo mt-3">
+      <div class="scene-boite"><div class="scene" data-rendu></div></div>
+      <div class="relative min-w-0"><pre class="code" data-code></pre></div>
+    </div>
+  </div>
+
+  <div data-specimen class="mt-8">
+    <p class="variante">«&nbsp;Refuser…&nbsp;» ouvert — le motif, adressé à la personne. Trois motifs fréquents pré-remplissent&nbsp;; le texte reste modifiable.</p>
+    <template>
+      <div class="@container p-4">
+          <a href="/admin/lieux" class="-ml-2 inline-flex items-center gap-1.5 min-h-[44px] px-2 rounded-full text-corps font-semibold text-teal-700 hover:bg-teal-50">
+            <svg class="w-5 h-5" aria-hidden="true"><use href="#i-retour"/></svg>Lieux à vérifier
+          </a>
+          <div class="mt-3"><div class="relative h-[180px] rounded-[16px] overflow-hidden bg-neutre-200" style="box-shadow: inset 0 0 0 1px var(--color-neutre-300)">
+          <svg class="absolute inset-0 w-full h-full" viewBox="170 380 320 180" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Plan du quartier, autour du lieu posé"><use href="#plan-quartier" width="722" height="676"/></svg>
+          <span class="lieu-cible" style="left:50%; top:50%" aria-hidden="true"><span class="lieu lieu--pose"><svg class="w-[18px] h-[18px]"><use href="#l-autre"/></svg></span></span>
+        </div></div>
+          <p class="mt-1.5 text-[15px] text-neutre-700">Plan&nbsp;: © les contributeurs OpenStreetMap</p>
+          <div class="mt-4 flex items-start gap-3">
+            <span class="lieu mt-1 shrink-0" aria-hidden="true"><svg class="w-[18px] h-[18px]"><use href="#l-autre"/></svg></span>
+            <div class="@container min-w-0 flex-1">
+              <h1 class="ff text-nom mots-entiers text-teal-900" style="--taille:var(--text-nom); --mot:6">Mon bureau</h1>
+              <p class="mt-1 text-[16px] text-neutre-700">Autre · posé le 23&nbsp;oct.</p>
+            </div>
+          </div>
+          <p class="mt-2 flex flex-wrap items-center gap-x-2 gap-y-1.5 text-[16px] text-neutre-800">Par <a href="/admin/fiche/yanis-belhadj" class="font-semibold text-teal-800 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">Yanis Belhadj</a> · fiche <span class="inline-flex items-center gap-1.5 rounded-full bg-sauge-100 px-2.5 py-0.5 text-[16px] font-semibold text-teal-950"><svg class="w-4 h-4 shrink-0" aria-hidden="true"><use href="#i-coche"/></svg>En ligne</span></p>
+          <blockquote class="mt-3 mx-0 mb-0 border-l-[3px] border-neutre-300 pl-3 text-[16px] leading-snug text-neutre-900">«&nbsp;Là où je code, au calme.&nbsp;»</blockquote>
+          <div class="mt-5 flex flex-wrap gap-2.5">
+            <button type="button" class="basis-full inline-flex items-center justify-center gap-2 flex-1 min-h-[48px] px-[16px] rounded-full text-corps font-semibold text-white bg-teal-700 hover:bg-teal-600"><svg class="w-5 h-5" aria-hidden="true"><use href="#i-coche"/></svg>Approuver le lieu</button>
+            <button type="button" aria-expanded="false" class="inline-flex items-center justify-center flex-1 min-h-[48px] px-[16px] rounded-full text-corps font-semibold text-teal-700 bg-teal-50 hover:bg-teal-100">Modifier…</button>
+            <button type="button" aria-expanded="false" class="inline-flex items-center justify-center flex-1 min-h-[48px] px-[16px] rounded-full text-corps font-semibold text-teal-700 bg-teal-50 hover:bg-teal-100">Fusionner…</button>
+            <div class="basis-full flex"><button type="button" aria-expanded="true" class="inline-flex items-center justify-center flex-1 min-h-[48px] px-[16px] rounded-full text-corps font-semibold text-white bg-teal-800">Refuser…</button></div>
+          </div>
+          <form class="mt-4 rounded-[20px] bg-neutre-50 p-4" onsubmit="return false" style="box-shadow: inset 0 0 0 1px var(--color-neutre-200)">
+            <label for="v2lr-motif" class="block text-[16px] font-semibold text-neutre-800">Motif, envoyé à Yanis par e-mail</label>
+            <div class="mt-2 flex flex-wrap gap-2">
+              <button type="button" onclick="document.getElementById('v2lr-motif').value = this.dataset.motif" data-motif="Un lieu favori doit être ouvert à tous : une adresse privée n'apparaît pas sur le plan."
+                      class="inline-flex items-center min-h-[44px] px-3.5 rounded-full text-[16px] font-semibold text-teal-800 bg-white hover:bg-teal-50" style="box-shadow: inset 0 0 0 1.5px var(--color-teal-200)">Adresse privée</button>
+              <button type="button" onclick="document.getElementById('v2lr-motif').value = this.dataset.motif" data-motif="Ce lieu est en dehors du quartier : le plan ne montre que la Cartoucherie."
+                      class="inline-flex items-center min-h-[44px] px-3.5 rounded-full text-[16px] font-semibold text-teal-800 bg-white hover:bg-teal-50" style="box-shadow: inset 0 0 0 1.5px var(--color-teal-200)">Hors du quartier</button>
+              <button type="button" onclick="document.getElementById('v2lr-motif').value = this.dataset.motif" data-motif="Je ne trouve pas ce lieu à cet endroit. Pouvez-vous le replacer sur le plan ?"
+                      class="inline-flex items-center min-h-[44px] px-3.5 rounded-full text-[16px] font-semibold text-teal-800 bg-white hover:bg-teal-50" style="box-shadow: inset 0 0 0 1.5px var(--color-teal-200)">Introuvable</button>
+            </div>
+            <textarea id="v2lr-motif" rows="3" class="champ mt-3 block w-full min-h-[104px] px-3.5 py-3 rounded-xl text-corps leading-relaxed text-neutre-900">Un lieu favori doit être ouvert à tous : une adresse privée n'apparaît pas sur le plan.</textarea>
+            <p class="mt-2 text-[16px] text-neutre-700">Le lieu quitte la fiche de Yanis&nbsp;; sa fiche reste en ligne.</p>
+            <div class="mt-3 flex flex-wrap gap-2.5">
+              <button type="submit" class="flex-1 inline-flex items-center justify-center min-h-[48px] px-5 rounded-full text-corps font-semibold text-white bg-teal-700 hover:bg-teal-600">Envoyer le refus</button>
+              <button type="button" class="inline-flex items-center justify-center min-h-[48px] px-5 rounded-full text-corps font-semibold text-teal-700 bg-teal-50 hover:bg-teal-100">Annuler</button>
+            </div>
+          </form>
       </div>
     </template>
     <div class="duo mt-3">
@@ -5366,7 +5744,7 @@ textarea.champ{ field-sizing: content; resize: vertical; }
     ressentent pas.
   </p>
 
-  <ol class="mt-7 grid gap-5 sm:grid-cols-2 list-none p-0 m-0">
+  <ol class="mt-7 grid grid-cols-[minmax(0,1fr)] gap-5 sm:grid-cols-2 list-none p-0 m-0">
     <li class="rounded-[18px] bg-teal-800/70 p-5">
       <p class="ff text-[21px] text-white">1 · Trois objets orange, maximum</p>
       <p class="mt-2 text-corps text-teal-100">
@@ -5426,7 +5804,7 @@ textarea.champ{ field-sizing: content; resize: vertical; }
     <li class="rounded-[18px] bg-teal-800/70 p-5">
       <p class="ff text-[21px] text-white">6 · L'honnêteté est un bloc, pas une intention</p>
       <p class="mt-2 text-corps text-teal-100">
-        Un annuaire de 12 membres dit 12. La catégorie vide s'affiche avec son zéro. Un canal de
+        Un annuaire de 12 voisins dit 12. La catégorie vide s'affiche avec son zéro. Un canal de
         contact absent n'est pas rendu — pas de ligne grisée. Zéro avis s'écrit « aucun avis pour
         l'instant », jamais « 0,0 ★ ». Aucun compte n'est arrondi vers le haut.
       </p>
@@ -5703,14 +6081,17 @@ function choisirLieu(b){
   var he = document.querySelector('[data-echelle]');
   if(he) ECHELLE.forEach(function(e){
     var d = document.createElement('div');
-    d.className = 'py-3.5 grid gap-1 sm:grid-cols-[150px_minmax(0,1fr)] sm:gap-5 sm:items-baseline';
+    d.className = 'py-3.5 grid grid-cols-[minmax(0,1fr)] gap-1 sm:grid-cols-[150px_minmax(0,1fr)] sm:gap-5 sm:items-baseline';
+    /* le plus long mot du spécimen, pour qu'il rapetisse plutôt que de déborder à 360 px */
+    var mot = Math.max.apply(null, e[4].split(/\s+/).map(function(w){ return w.length; }));
     var ech = e[0] === 'etiquette'
       ? '<p class="text-etiquette font-semibold uppercase text-teal-800">' + e[4] + '</p>'
-      : '<p class="' + e[2] + ' text-' + e[0] + ' text-teal-800">' + e[4] + '</p>';
+      : '<p class="' + e[2] + ' text-' + e[0] + ' mots-entiers text-teal-800" style="--taille:var(--text-' + e[0] + '); --mot:' + mot +
+        (e[2] ? '' : '; --lettre:.56') + '">' + e[4] + '</p>';
     d.innerHTML =
       '<p class="tnum text-[16px] text-neutre-700"><code class="font-mono text-[15px] text-teal-800">text-' + e[0] +
       '</code><br><span class="text-neutre-600">' + e[1] + ' px · ' + (e[2] ? 'Literata' : 'Source\u00a0Sans\u00a03') + '</span></p>' +
-      '<div class="min-w-0">' + ech + '<p class="mt-1 text-[16px] text-neutre-700">' + e[3] + '</p></div>';
+      '<div class="@container min-w-0">' + ech + '<p class="mt-1 text-[16px] text-neutre-700">' + e[3] + '</p></div>';
     he.appendChild(d);
   });
 
