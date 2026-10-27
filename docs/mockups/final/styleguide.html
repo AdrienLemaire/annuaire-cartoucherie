@@ -300,6 +300,78 @@ body{ font-family:var(--font-sans); font-size:17px; line-height:1.55; color:var(
 @media (prefers-reduced-motion: reduce){ *{ transition:none !important; animation:none !important; } }
 </style>
 
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     FONDATION 5 — v2, les fiches en libre-service. Ce qu'ajoutent le
+     formulaire, l'espace membre et l'admin. Mêmes jetons, aucune couleur neuve.
+     ═══════════════════════════════════════════════════════════════════════ -->
+<style id="src-css-v2">
+/* le champ : l'anneau neutre-500 de « Les petites pièces », en classe.
+   L'état vit sur le conteneur, pour que le champ, le compteur et le
+   message changent ensemble. */
+.champ{ background:#fff; box-shadow: inset 0 0 0 1.5px var(--color-neutre-500); }
+textarea.champ{ field-sizing: content; resize: vertical; }
+[data-etat="long"]   .champ{ background:var(--color-sable-50); box-shadow: inset 0 0 0 1.5px var(--color-sable-700); }
+[data-etat="erreur"] .champ{ background:var(--color-rouge-50); box-shadow: inset 0 0 0 1.5px var(--color-rouge-600); }
+.compteur{ color:var(--color-neutre-700); }
+[data-etat="long"]   .compteur{ color:var(--color-sable-800); font-weight:600; }
+[data-etat="erreur"] .compteur{ color:var(--color-rouge-700); font-weight:600; }
+
+/* la bulle d'aide : un panneau dans le flux, pas une infobulle flottante.
+   Elle ne déborde jamais d'un écran de 360 px, même à 200 % de zoom. */
+.bulle{ position:relative; }
+.bulle::before{ content:""; position:absolute; top:-6px; right:var(--fleche, 8px);
+  width:13px; height:13px; background:inherit; transform:rotate(45deg); border-radius:3px 0 0 0; }
+
+/* la case et le rond : natifs, redessinés. Le rond coché EST la ventouse —
+   anneau, blanc, point. Sélection = teal : l'orange reste au bouton. */
+.case, .rond{ appearance:none; -webkit-appearance:none; flex:none; margin:0; cursor:pointer;
+  width:26px; height:26px; background:#fff; box-shadow: inset 0 0 0 1.5px var(--color-neutre-500);
+  transition: background-color .15s ease, box-shadow .15s ease; }
+.case{ border-radius:7px; }
+.rond{ border-radius:999px; }
+.case:checked{ box-shadow:none; background: var(--color-teal-700) no-repeat center / 18px
+  url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m5 12.6 4.4 4.4L19 7.4'/%3E%3C/svg%3E"); }
+.rond:checked{ box-shadow:none;
+  background: radial-gradient(circle, var(--color-teal-700) 0 4.4px, #fff 4.9px 7.6px, var(--color-teal-700) 8.1px); }
+
+/* la carte de choix : toute la carte est l'étiquette, donc la cible */
+.choix{ min-height:64px; padding:14px 16px;
+  border-radius:16px; background:#fff; cursor:pointer;
+  box-shadow: var(--shadow-carte), inset 0 0 0 1.5px var(--color-neutre-300);
+  transition: box-shadow .15s ease, background-color .15s ease; }
+.choix:hover{ box-shadow: var(--shadow-carte), inset 0 0 0 1.5px var(--color-teal-400); }
+.choix:has(:checked){ background:var(--color-teal-50);
+  box-shadow: var(--shadow-carte), inset 0 0 0 2px var(--color-teal-600); }
+.choix:has(:focus-visible){ outline:2px solid var(--color-teal-600); outline-offset:2px; }
+/* « Aucune ne convient » : en pointillés, hors de la liste officielle */
+.choix--libre, .choix--libre:hover{ background:transparent; box-shadow:none;
+  outline:1.5px dashed var(--color-neutre-500); outline-offset:-1.5px; }
+.choix--libre:has(:checked){ background:var(--color-teal-50); outline:2px solid var(--color-teal-600); }
+
+/* le groupe en erreur : le filet de 3 px, à gauche, comme une marge corrigée */
+.groupe-erreur{ box-shadow: inset 3px 0 0 var(--color-rouge-600); padding-left:15px; }
+
+/* deux médaillons de plus pour la ventouse */
+.pastille--sable{ box-shadow: inset 0 0 0 1.5px var(--color-sable-400), 0 0 0 4px var(--color-sable-50), 0 0 0 5.5px var(--color-sable-300); }
+.pastille--rouge{ box-shadow: inset 0 0 0 1.5px var(--color-rouge-300), 0 0 0 4px var(--color-rouge-50), 0 0 0 5.5px var(--color-rouge-200); }
+
+/* la ventouse qui respire : « enregistrement », « mise en ligne » */
+.respire{ animation: respire 1.6s ease-in-out infinite; transform-origin:center; }
+@keyframes respire{ 0%,100%{ transform:scale(.82); opacity:.55 } 50%{ transform:scale(1); opacity:1 } }
+
+/* le cadre de recadrage : l'arche de la fiche, découpée dans le carré.
+   Le voile sombre est l'ombre portée de l'arche elle-même. */
+.recadrage{ position:relative; overflow:hidden; border-radius:14px; }
+.recadrage > img{ display:block; width:100%; height:100%; object-fit:cover; }
+.recadrage__arche{ position:absolute; inset:0 8.5%; border-radius:999px 999px 18px 18px;
+  box-shadow: 0 0 0 999px oklch(19% .03 201 / .66), inset 0 0 0 2px #fff; }
+.recadrage__visage{ position:absolute; left:50%; top:9%; width:46%; height:40%; translate:-50% 0;
+  border-radius:50%; border:2px dashed oklch(100% 0 0 / .9); }
+
+/* l'aperçu : un puits de ventouses teal — « ceci n'est pas encore en ligne » */
+.puits{ background-color:var(--color-neutre-100); }
+</style>
+
 <!-- ═══════════ le catalogue lui-même — pas le produit ═══════════ -->
 <style>
   .doc{ background: var(--color-neutre-100); }
@@ -385,6 +457,14 @@ body{ font-family:var(--font-sans); font-size:17px; line-height:1.55; color:var(
 <symbol id="c-sport" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="15.4" cy="4.9" r="2.1"/><path d="m12.4 21 2.2-6-3.6-2.6.9-4.8 3 3 3.1 1"/><path d="m8.2 21 2.6-5.2M11.9 8.6 8.4 10"/></symbol>
 <symbol id="c-art" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20.8a8.8 8.8 0 1 1 8.8-8.8c0 2-1.7 2.6-3.1 2.6h-1.3a2.3 2.3 0 0 0-2.3 2.3c0 .8.5 1.2.5 2 0 1.1-.9 1.9-2.6 1.9Z"/><circle cx="8" cy="9.4" r="1.1" fill="currentColor" stroke="none"/><circle cx="12.4" cy="7.4" r="1.1" fill="currentColor" stroke="none"/><circle cx="16.3" cy="9.8" r="1.1" fill="currentColor" stroke="none"/></symbol>
 <symbol id="c-domicile" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m3.4 11.2 8.6-7.4 8.6 7.4"/><path d="M6.2 9.6v10.6h11.6V9.6"/><path d="M10 20.2v-5.2h4v5.2"/></symbol>
+<!-- v2 · fiches en libre-service -->
+<symbol id="i-coche" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.6 4.4 4.4L19 7.4"/></symbol>
+<symbol id="i-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></symbol>
+<symbol id="i-horloge" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.6"/><path d="M12 7.4V12l3.2 2"/></symbol>
+<symbol id="i-oeil" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M2.6 12S6 5.6 12 5.6 21.4 12 21.4 12 18 18.4 12 18.4 2.6 12 2.6 12Z"/><circle cx="12" cy="12" r="3"/></symbol>
+<symbol id="i-photo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4.4 7.6h3l1.6-2.4h6l1.6 2.4h3a1.6 1.6 0 0 1 1.6 1.6v9a1.6 1.6 0 0 1-1.6 1.6H4.4a1.6 1.6 0 0 1-1.6-1.6v-9a1.6 1.6 0 0 1 1.6-1.6Z"/><circle cx="12" cy="13.4" r="3.6"/></symbol>
+<symbol id="i-corbeille" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4.6 6.8h14.8M9.4 6.8V4.6h5.2v2.2M6.6 6.8l.9 12.6a1.6 1.6 0 0 0 1.6 1.4h5.8a1.6 1.6 0 0 0 1.6-1.4l.9-12.6M10.2 10.6v6M13.8 10.6v6"/></symbol>
+<symbol id="c-logement" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="15.6" r="4.2"/><path d="m11 12.6 8.4-8.4"/><path d="m16.6 7 2.6 2.6"/><path d="m14 9.6 2 2"/></symbol>
 </defs></svg>
 
 
@@ -670,7 +750,7 @@ body{ font-family:var(--font-sans); font-size:17px; line-height:1.55; color:var(
   <details class="mt-6 group">
     <summary class="inline-flex items-center gap-2 min-h-[44px] cursor-pointer text-corps font-semibold text-teal-700">
       <svg class="w-4 h-4 transition group-open:rotate-90" aria-hidden="true"><use href="#i-chev"/></svg>
-      Le sprite complet à coller (28 symboles)
+      Le sprite complet à coller (35 symboles)
     </summary>
     <div class="relative min-w-0 mt-3"><pre class="code" data-source="src-sprite"></pre></div>
   </details>
@@ -1946,6 +2026,1547 @@ body{ font-family:var(--font-sans); font-size:17px; line-height:1.55; color:var(
 </section>
 
 
+<!-- ╔═══════════════════════════════════════════════════════════════════════╗
+     ║  v2 — FICHES EN LIBRE-SERVICE                                         ║
+     ║  Le formulaire (/espace), l'espace membre, l'admin.                   ║
+     ╚═══════════════════════════════════════════════════════════════════════╝ -->
+<section class="bloc rounded-[22px] bg-white p-5 sm:p-8 overflow-hidden relative" id="b-v2" data-bloc
+         style="box-shadow: var(--shadow-carte), inset 0 0 0 2px var(--color-teal-600)">
+  <div class="ventouses ventouses--teal pointer-events-none absolute inset-x-0 top-0 h-[180px]" aria-hidden="true"
+       style="-webkit-mask-image:linear-gradient(to bottom,#000 30%,transparent); mask-image:linear-gradient(to bottom,#000 30%,transparent)"></div>
+  <div class="relative">
+    <p class="text-etiquette font-semibold uppercase text-teal-700">Nouvelle partie · v2</p>
+    <h2 data-court="v2 — fiches en libre-service" class="ff mt-1.5 text-grand text-teal-900">v2 — fiches en libre-service</h2>
+    <div class="filet h-[3px] w-16 rounded-full mt-3"></div>
+    <p class="mt-4 text-chapo text-neutre-800 max-w-[60ch]">
+      Les blocs du formulaire <code class="font-mono text-[0.75em] text-teal-800">/espace</code>, de
+      l'espace membre et de <code class="font-mono text-[0.75em] text-teal-800">/admin</code>.
+      Une voisine de 70 ans remplit sa fiche sur son téléphone&nbsp;: ces écrans doivent ressembler
+      à l'annuaire qu'elle connaît, pas à un logiciel.
+    </p>
+  </div>
+
+  <ol class="relative mt-7 grid gap-3 sm:grid-cols-2 list-none p-0 m-0 text-corps text-neutre-800">
+    <li class="rounded-[16px] bg-neutre-100 p-4"><strong class="font-semibold text-neutre-900">Une question par écran.</strong>
+      Le titre d'étape <em>est</em> l'étiquette du champ&nbsp;: <code class="font-mono text-[15px] text-teal-800">&lt;h1&gt;&lt;label&gt;</code>.</li>
+    <li class="rounded-[16px] bg-neutre-100 p-4"><strong class="font-semibold text-neutre-900">Choisir, c'est teal.</strong>
+      Cases, ronds et cartes cochés sont <code class="font-mono text-[15px] text-teal-800">teal-700</code>.
+      L'orange reste à «&nbsp;Continuer&nbsp;» et «&nbsp;Envoyer ma fiche&nbsp;»&nbsp;: un objet orange par étape.</li>
+    <li class="rounded-[16px] bg-neutre-100 p-4"><strong class="font-semibold text-neutre-900">L'aide se demande.</strong>
+      Pas de prose sous chaque champ&nbsp;: une ventouse «&nbsp;?&nbsp;» ouvre une bulle dans le flux, jamais une
+      infobulle flottante qui déborderait à 200&nbsp;%.</li>
+    <li class="rounded-[16px] bg-neutre-100 p-4"><strong class="font-semibold text-neutre-900">Les limites sont douces.</strong>
+      Au-delà de la limite conseillée, le compteur passe en <code class="font-mono text-[15px] text-teal-800">sable-800</code>
+      avec une icône et des mots. Le refus (rouge) n'arrive qu'à la limite dure. Jamais de
+      <code class="font-mono text-[15px] text-teal-800">maxlength</code> qui avale la fin d'une phrase collée.</li>
+    <li class="rounded-[16px] bg-neutre-100 p-4"><strong class="font-semibold text-neutre-900">Une seule voisine, du début à la fin.</strong>
+      Sophie Arnaud (f) remplit le formulaire, se voit en aperçu, attend, puis est en ligne&nbsp;: les
+      blocs se racontent. L'admin montre des voisins (h) pour l'accord. Téléphones en
+      <span class="tnum">06&nbsp;39&nbsp;98&nbsp;00&nbsp;xx</span>.</li>
+    <li class="rounded-[16px] bg-neutre-100 p-4"><strong class="font-semibold text-neutre-900">Colly, une fois.</strong>
+      Dans l'espace membre, elle n'apparaît que dans le rappel «&nbsp;fiche Google&nbsp;». Jamais dans le
+      formulaire&nbsp;: on y remplit sa fiche, on n'y est pas accueilli.</li>
+  </ol>
+
+  <p class="relative mt-7 text-corps text-neutre-800 max-w-[72ch]">
+    Ce que la v2 ajoute aux fondations&nbsp;: sept icônes au sprite (<code class="font-mono text-[15px] text-teal-800">i-coche
+    i-plus i-horloge i-oeil i-photo i-corbeille c-logement</code>), une feuille de classes, et un script
+    qui ne fait qu'illustrer les états. Les deux sont lus depuis la page, comme le bloc «&nbsp;Les classes CSS&nbsp;».
+  </p>
+  <div class="relative mt-4 grid gap-4">
+    <div class="relative min-w-0"><pre class="code" data-source="src-css-v2"></pre></div>
+    <details class="group">
+      <summary class="inline-flex items-center gap-2 min-h-[44px] cursor-pointer text-corps font-semibold text-teal-700">
+        <svg class="w-4 h-4 transition group-open:rotate-90" aria-hidden="true"><use href="#i-chev"/></svg>
+        Le script des états (bulle, aperçu, compteur, maximum, services)
+      </summary>
+      <div class="relative min-w-0 mt-3"><pre class="code" data-source="src-js-v2"></pre></div>
+    </details>
+  </div>
+</section>
+
+
+<!-- ╔═══ v2 · le champ texte et la zone de texte ═════════════════════════════╗ -->
+<section class="bloc carte rounded-[22px] bg-white p-5 sm:p-7" id="b-v2-champ" data-bloc>
+  <p class="text-etiquette font-semibold uppercase text-sauge-800">v2 · le formulaire</p>
+  <h2 data-court="Le champ, l'aide, le compteur" class="ff mt-1.5 text-nom text-teal-900">Le champ, l'aide, le compteur</h2>
+  <p class="mt-3 text-corps text-neutre-800 max-w-[72ch]">
+    Le champ de «&nbsp;Les petites pièces&nbsp;», mêmes valeurs, devenu la classe <code class="font-mono text-[15px] text-teal-800">.champ</code>&nbsp;:
+    anneau <code class="font-mono text-[15px] text-teal-800">neutre-500</code>, 52&nbsp;px, texte à 17&nbsp;px — au-dessus
+    des 16&nbsp;px qui font zoomer iOS. L'état vit sur le conteneur
+    (<code class="font-mono text-[15px] text-teal-800">data-etat="ok | long | erreur"</code>)&nbsp;: le champ,
+    le compteur et le message changent ensemble, et jamais par la couleur seule.
+  </p>
+  <p class="mt-3 text-corps text-neutre-800 max-w-[72ch]">
+    «&nbsp;(facultatif)&nbsp;» se lit dans l'étiquette, en graisse normale. Rien n'est marqué «&nbsp;obligatoire&nbsp;»&nbsp;:
+    c'est le cas général.
+  </p>
+
+  <div data-specimen class="mt-6">
+    <p class="variante">Par défaut — l'aide fermée, le compteur sous la limite. Tapez : le compteur suit.</p>
+    <template>
+      <form class="p-5 grid gap-6" onsubmit="return false">
+        <div data-etat="ok">
+          <div class="flex items-end justify-between gap-3">
+            <label for="v2-metier" class="block pb-1.5 text-[16px] font-semibold text-neutre-800">Votre métier, en quelques mots</label>
+            <button type="button" class="-mr-2 -mb-0.5 grid place-items-center w-11 h-11 shrink-0 rounded-full"
+                    aria-expanded="false" aria-controls="v2-metier-aide" onclick="basculer(this)">
+              <span class="pastille pastille--teal w-7 h-7 bg-teal-50 ff text-[16px] text-teal-800" aria-hidden="true">?</span>
+              <span class="sr-only">Aide : votre métier</span>
+            </button>
+          </div>
+          <p id="v2-metier-aide" hidden class="bulle mb-2.5 rounded-[14px] bg-teal-50 px-4 py-3 text-[16px] leading-snug text-teal-950">
+            Il s'affiche sous votre nom. Par exemple&nbsp;: «&nbsp;Naturopathe&nbsp;», «&nbsp;Menuisier-ébéniste&nbsp;».
+          </p>
+          <input id="v2-metier" type="text" value="Naturopathe" data-doux="45" oninput="compter(this)"
+                 aria-describedby="v2-metier-compte"
+                 class="champ w-full min-h-[52px] px-3.5 rounded-xl text-corps text-neutre-900">
+          <p id="v2-metier-compte" class="compteur tnum mt-1.5 flex items-start justify-end gap-1.5 text-[16px]">11 / 45</p>
+        </div>
+        <div>
+          <label for="v2-enseigne" class="block text-[16px] font-semibold text-neutre-800">Le nom de votre activité <span class="font-normal text-neutre-700">(facultatif)</span></label>
+          <input id="v2-enseigne" type="text" autocomplete="organization"
+                 class="champ mt-1.5 w-full min-h-[52px] px-3.5 rounded-xl text-corps text-neutre-900">
+        </div>
+      </form>
+    </template>
+    <div class="duo mt-3">
+      <div class="scene-boite"><div class="scene" data-rendu></div></div>
+      <div class="relative min-w-0"><pre class="code" data-code></pre></div>
+    </div>
+  </div>
+
+  <div data-specimen class="mt-8">
+    <p class="variante">L'aide ouverte — une bulle <code class="font-mono text-[15px] text-teal-800">teal-50</code> dans le flux, sa pointe sous la ventouse. Elle pousse le champ, elle ne le couvre pas.</p>
+    <template>
+      <form class="p-5" onsubmit="return false">
+        <div data-etat="ok">
+          <div class="flex items-end justify-between gap-3">
+            <label for="v2-metier-b" class="block pb-1.5 text-[16px] font-semibold text-neutre-800">Votre métier, en quelques mots</label>
+            <button type="button" class="-mr-2 -mb-0.5 grid place-items-center w-11 h-11 shrink-0 rounded-full"
+                    aria-expanded="true" aria-controls="v2-metier-b-aide" onclick="basculer(this)">
+              <span class="pastille pastille--teal w-7 h-7 bg-teal-50 ff text-[16px] text-teal-800" aria-hidden="true">?</span>
+              <span class="sr-only">Aide : votre métier</span>
+            </button>
+          </div>
+          <p id="v2-metier-b-aide" class="bulle mb-2.5 rounded-[14px] bg-teal-50 px-4 py-3 text-[16px] leading-snug text-teal-950">
+            Il s'affiche sous votre nom. Par exemple&nbsp;: «&nbsp;Naturopathe&nbsp;», «&nbsp;Menuisier-ébéniste&nbsp;».
+          </p>
+          <input id="v2-metier-b" type="text" value="Naturopathe" data-doux="45" oninput="compter(this)"
+                 aria-describedby="v2-metier-b-compte"
+                 class="champ w-full min-h-[52px] px-3.5 rounded-xl text-corps text-neutre-900">
+          <p id="v2-metier-b-compte" class="compteur tnum mt-1.5 flex items-start justify-end gap-1.5 text-[16px]">11 / 45</p>
+        </div>
+      </form>
+    </template>
+    <div class="duo mt-3">
+      <div class="scene-boite"><div class="scene" data-rendu></div></div>
+      <div class="relative min-w-0"><pre class="code" data-code></pre></div>
+    </div>
+  </div>
+
+  <div data-specimen class="mt-8">
+    <p class="variante">Au-delà de la limite douce — encre <code class="font-mono text-[15px] text-teal-800">sable-800</code>, icône, «&nbsp;un peu long&nbsp;». Rien n'est refusé : la carte passera simplement à la ligne.</p>
+    <template>
+      <form class="p-5" onsubmit="return false">
+        <div data-etat="long">
+          <label for="v2-metier-c" class="block text-[16px] font-semibold text-neutre-800">Votre métier, en quelques mots</label>
+          <input id="v2-metier-c" type="text" value="Naturopathe et praticienne en réflexologie plantaire" data-doux="45" oninput="compter(this)"
+                 aria-describedby="v2-metier-c-compte"
+                 class="champ mt-1.5 w-full min-h-[52px] px-3.5 rounded-xl text-corps text-neutre-900">
+          <p id="v2-metier-c-compte" class="compteur tnum mt-1.5 flex items-start justify-end gap-1.5 text-[16px]"><svg class="w-[18px] h-[18px] shrink-0" aria-hidden="true"><use href="#i-alerte"/></svg>52 / 45 · un peu long</p>
+        </div>
+      </form>
+    </template>
+    <div class="duo mt-3">
+      <div class="scene-boite"><div class="scene" data-rendu></div></div>
+      <div class="relative min-w-0"><pre class="code" data-code></pre></div>
+    </div>
+  </div>
+
+  <div data-specimen class="mt-8">
+    <p class="variante">Erreur — le motif de «&nbsp;Les petites pièces&nbsp;», verbatim : un texte, une icône, l'anneau rouge. Le message dit quoi faire, avec un exemple.</p>
+    <template>
+      <form class="p-5" onsubmit="return false">
+        <div data-etat="erreur">
+          <label for="v2-tel" class="block text-[16px] font-semibold text-neutre-800">Le numéro où vos voisins peuvent vous appeler</label>
+          <input id="v2-tel" type="tel" inputmode="tel" autocomplete="tel" value="06 39 98 00"
+                 aria-invalid="true" aria-describedby="v2-tel-err"
+                 class="champ mt-1.5 w-full min-h-[52px] px-3.5 rounded-xl text-corps text-neutre-900 tnum">
+          <p id="v2-tel-err" class="mt-1.5 flex items-start gap-1.5 text-[16px] font-semibold text-rouge-700">
+            <svg class="w-[18px] h-[18px] shrink-0 mt-0.5" aria-hidden="true"><use href="#i-alerte"/></svg>
+            Il manque deux chiffres. Exemple&nbsp;: 06&nbsp;39&nbsp;98&nbsp;00&nbsp;26
+          </p>
+        </div>
+      </form>
+    </template>
+    <div class="duo mt-3">
+      <div class="scene-boite"><div class="scene" data-rendu></div></div>
+      <div class="relative min-w-0"><pre class="code" data-code></pre></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ╔═══ v2 · la zone de texte ═══════════════════════════════════════════════╗ -->
+<section class="bloc carte rounded-[22px] bg-white p-5 sm:p-7" id="b-v2-zone" data-bloc>
+  <p class="text-etiquette font-semibold uppercase text-sauge-800">v2 · le formulaire</p>
+  <h2 data-court="La zone de texte" class="ff mt-1.5 text-nom text-teal-900">La zone de texte — accroche et présentation</h2>
+  <p class="mt-3 text-corps text-neutre-800 max-w-[72ch]">
+    Le même champ, sur plusieurs lignes, qui grandit avec le texte
+    (<code class="font-mono text-[15px] text-teal-800">field-sizing: content</code>). L'accroche est aussi la
+    description vue par Google&nbsp;: douce à 160, refusée au-delà de 200. La présentation&nbsp;: douce à 600,
+    refusée au-delà de 800. Les questions qui aident à écrire vivent dans la bulle.
+  </p>
+
+  <div data-specimen class="mt-6">
+    <p class="variante">L'accroche, sous la limite.</p>
+    <template>
+      <form class="p-5" onsubmit="return false">
+        <div data-etat="ok">
+          <div class="flex items-end justify-between gap-3">
+            <label for="v2-accroche" class="block pb-1.5 text-[16px] font-semibold text-neutre-800">En une phrase&nbsp;: ce que vous faites pour vos voisins</label>
+            <button type="button" class="-mr-2 -mb-0.5 grid place-items-center w-11 h-11 shrink-0 rounded-full"
+                    aria-expanded="false" aria-controls="v2-accroche-aide" onclick="basculer(this)">
+              <span class="pastille pastille--teal w-7 h-7 bg-teal-50 ff text-[16px] text-teal-800" aria-hidden="true">?</span>
+              <span class="sr-only">Aide : l'accroche</span>
+            </button>
+          </div>
+          <p id="v2-accroche-aide" hidden class="bulle mb-2.5 rounded-[14px] bg-teal-50 px-4 py-3 text-[16px] leading-snug text-teal-950">
+            Écrivez «&nbsp;je&nbsp;». C'est la phrase sous votre nom, et celle que Google montre.
+          </p>
+          <textarea id="v2-accroche" rows="3" data-doux="160" data-dur="200" oninput="compter(this)"
+                    aria-describedby="v2-accroche-compte"
+                    class="champ block w-full min-h-[104px] px-3.5 py-3 rounded-xl text-corps leading-relaxed text-neutre-900">J'aide les adultes fatigués à retrouver de l'énergie : alimentation, digestion, sommeil. Bilan complet, puis un suivi simple, à votre rythme.</textarea>
+          <p id="v2-accroche-compte" class="compteur tnum mt-1.5 flex items-start justify-end gap-1.5 text-[16px]">141 / 160</p>
+        </div>
+      </form>
+    </template>
+    <div class="duo mt-3">
+      <div class="scene-boite"><div class="scene" data-rendu></div></div>
+      <div class="relative min-w-0"><pre class="code" data-code></pre></div>
+    </div>
+  </div>
+
+  <div data-specimen class="mt-8">
+    <p class="variante">Un peu long (161 à 200) — prévenu, pas bloqué.</p>
+    <template>
+      <form class="p-5" onsubmit="return false">
+        <div data-etat="long">
+          <label for="v2-accroche-b" class="block text-[16px] font-semibold text-neutre-800">En une phrase&nbsp;: ce que vous faites pour vos voisins</label>
+          <textarea id="v2-accroche-b" rows="4" data-doux="160" data-dur="200" oninput="compter(this)"
+                    aria-describedby="v2-accroche-b-compte"
+                    class="champ mt-1.5 block w-full min-h-[104px] px-3.5 py-3 rounded-xl text-corps leading-relaxed text-neutre-900">J'aide les adultes fatigués à retrouver de l'énergie : alimentation, digestion, sommeil. Bilan complet à la première séance, puis un suivi simple, à votre rythme, au cabinet.</textarea>
+          <p id="v2-accroche-b-compte" class="compteur tnum mt-1.5 flex items-start justify-end gap-1.5 text-[16px]"><svg class="w-[18px] h-[18px] shrink-0" aria-hidden="true"><use href="#i-alerte"/></svg>174 / 160 · un peu long</p>
+        </div>
+      </form>
+    </template>
+    <div class="duo mt-3">
+      <div class="scene-boite"><div class="scene" data-rendu></div></div>
+      <div class="relative min-w-0"><pre class="code" data-code></pre></div>
+    </div>
+  </div>
+
+  <div data-specimen class="mt-8">
+    <p class="variante">Trop long (au-delà de 200) — le rouge, et seulement là. Le texte reste entier pour qu'on puisse le couper soi-même.</p>
+    <template>
+      <form class="p-5" onsubmit="return false">
+        <div data-etat="erreur">
+          <label for="v2-accroche-c" class="block text-[16px] font-semibold text-neutre-800">En une phrase&nbsp;: ce que vous faites pour vos voisins</label>
+          <textarea id="v2-accroche-c" rows="5" data-doux="160" data-dur="200" oninput="compter(this)"
+                    aria-invalid="true" aria-describedby="v2-accroche-c-compte"
+                    class="champ mt-1.5 block w-full min-h-[104px] px-3.5 py-3 rounded-xl text-corps leading-relaxed text-neutre-900">J'aide les adultes fatigués à retrouver de l'énergie : alimentation, digestion, sommeil, stress. Bilan complet à la première séance, puis un suivi simple chaque mois, à votre rythme, au cabinet ou en visio.</textarea>
+          <p id="v2-accroche-c-compte" class="compteur tnum mt-1.5 flex items-start justify-end gap-1.5 text-[16px]"><svg class="w-[18px] h-[18px] shrink-0" aria-hidden="true"><use href="#i-alerte"/></svg>206 / 200 · trop long, raccourcissez</p>
+        </div>
+      </form>
+    </template>
+    <div class="duo mt-3">
+      <div class="scene-boite"><div class="scene" data-rendu></div></div>
+      <div class="relative min-w-0"><pre class="code" data-code></pre></div>
+    </div>
+  </div>
+
+  <div data-specimen class="mt-8">
+    <p class="variante">La présentation, l'aide ouverte : trois questions, pas un mode d'emploi.</p>
+    <template>
+      <form class="p-5" onsubmit="return false">
+        <div data-etat="ok">
+          <div class="flex items-end justify-between gap-3">
+            <label for="v2-bio" class="block pb-1.5 text-[16px] font-semibold text-neutre-800">Présentez-vous comme à un voisin</label>
+            <button type="button" class="-mr-2 -mb-0.5 grid place-items-center w-11 h-11 shrink-0 rounded-full"
+                    aria-expanded="true" aria-controls="v2-bio-aide" onclick="basculer(this)">
+              <span class="pastille pastille--teal w-7 h-7 bg-teal-50 ff text-[16px] text-teal-800" aria-hidden="true">?</span>
+              <span class="sr-only">Aide : la présentation</span>
+            </button>
+          </div>
+          <div id="v2-bio-aide" class="bulle mb-2.5 rounded-[14px] bg-teal-50 px-4 py-3 text-[16px] leading-snug text-teal-950">
+            <ul class="grid gap-1 list-none p-0 m-0">
+              <li class="flex gap-2"><svg class="w-4 h-4 mt-1 shrink-0 text-teal-600" aria-hidden="true"><use href="#i-ventouse"/></svg>Depuis quand êtes-vous ici&nbsp;?</li>
+              <li class="flex gap-2"><svg class="w-4 h-4 mt-1 shrink-0 text-teal-600" aria-hidden="true"><use href="#i-ventouse"/></svg>Pour qui travaillez-vous&nbsp;?</li>
+              <li class="flex gap-2"><svg class="w-4 h-4 mt-1 shrink-0 text-teal-600" aria-hidden="true"><use href="#i-ventouse"/></svg>Comment se passe un rendez-vous&nbsp;?</li>
+            </ul>
+          </div>
+          <textarea id="v2-bio" rows="9" data-doux="600" data-dur="800" oninput="compter(this)"
+                    aria-describedby="v2-bio-compte"
+                    class="champ block w-full min-h-[104px] px-3.5 py-3 rounded-xl text-corps leading-relaxed text-neutre-900">Installée allée du Bois Vert depuis 2021, j'accompagne surtout des adultes fatigués, des femmes en période de transition et des étudiants en fin d'année. La première séance dure une heure et demie : on fait le point sur l'alimentation, le sommeil, la digestion et le stress, sans jugement. Je vous remets ensuite un programme simple, adapté à votre quotidien et à votre budget. Le suivi se fait chaque mois, au cabinet ou en visio, et vous pouvez m'écrire entre deux séances.</textarea>
+          <p id="v2-bio-compte" class="compteur tnum mt-1.5 flex items-start justify-end gap-1.5 text-[16px]">475 / 600</p>
+        </div>
+      </form>
+    </template>
+    <div class="duo mt-3">
+      <div class="scene-boite"><div class="scene" data-rendu></div></div>
+      <div class="relative min-w-0"><pre class="code" data-code></pre></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ╔═══ v2 · les cartes de choix ════════════════════════════════════════════╗ -->
+<section class="bloc carte rounded-[22px] bg-white p-5 sm:p-7" id="b-v2-choix" data-bloc>
+  <p class="text-etiquette font-semibold uppercase text-sauge-800">v2 · le formulaire</p>
+  <h2 data-court="Les cartes de choix" class="ff mt-1.5 text-nom text-teal-900">Les cartes de choix</h2>
+  <p class="mt-3 text-corps text-neutre-800 max-w-[72ch]">
+    Toute la carte est l'étiquette&nbsp;: on touche n'importe où, au moins 64&nbsp;px de haut. Le rond coché
+    <strong class="font-semibold text-neutre-900">est la ventouse</strong> — anneau, blanc, point — et la case cochée est
+    pleine <code class="font-mono text-[15px] text-teal-800">teal-700</code>. Cochée, la carte prend
+    <code class="font-mono text-[15px] text-teal-800">teal-50</code> et un anneau de 2&nbsp;px&nbsp;: la sélection
+    se voit à la forme, pas seulement à la teinte. Jamais orange&nbsp;: deux catégories cochées plus
+    «&nbsp;Continuer&nbsp;» feraient déjà trois.
+  </p>
+
+  <div data-specimen class="mt-6">
+    <p class="variante">Radio — où travaillez-vous. Chaque réponse dit ce qu'elle implique, en une ligne.</p>
+    <template>
+      <form class="p-5" onsubmit="return false">
+        <fieldset class="border-0 p-0 m-0">
+          <legend class="ff mb-4 text-[24px] leading-tight text-teal-900">Où travaillez-vous&nbsp;?</legend>
+          <div class="grid gap-3">
+            <label class="choix flex items-center gap-3.5">
+              <input type="radio" name="v2-lieu" value="adresse" class="rond" checked>
+              <span class="min-w-0 flex-1">
+                <span class="block text-corps font-semibold text-teal-900">Je reçois à une adresse</span>
+                <span class="block text-[16px] leading-snug text-neutre-700">Cabinet, atelier, boutique.</span>
+              </span>
+              <span class="pastille pastille--teal w-10 h-10 bg-white text-teal-700" aria-hidden="true"><svg class="w-5 h-5"><use href="#i-pin"/></svg></span>
+            </label>
+            <label class="choix flex items-center gap-3.5">
+              <input type="radio" name="v2-lieu" value="deplace" class="rond">
+              <span class="min-w-0 flex-1">
+                <span class="block text-corps font-semibold text-teal-900">Je me déplace</span>
+                <span class="block text-[16px] leading-snug text-neutre-700">Chez vos clients, ou en visio. Aucune adresse affichée.</span>
+              </span>
+              <span class="pastille pastille--teal w-10 h-10 bg-white text-teal-700" aria-hidden="true"><svg class="w-5 h-5"><use href="#c-domicile"/></svg></span>
+            </label>
+          </div>
+        </fieldset>
+      </form>
+    </template>
+    <div class="duo mt-3">
+      <div class="scene-boite"><div class="scene" data-rendu></div></div>
+      <div class="relative min-w-0"><pre class="code" data-code></pre></div>
+    </div>
+  </div>
+
+  <div data-specimen class="mt-8">
+    <p class="variante">Radio en deux colonnes — l'accord. La réponse montre son effet : «&nbsp;Ce qu'<strong class="font-semibold text-neutre-900">elle</strong> propose&nbsp;».</p>
+    <template>
+      <form class="p-5" onsubmit="return false">
+        <fieldset class="border-0 p-0 m-0">
+          <legend class="ff mb-4 text-[24px] leading-tight text-teal-900">Sur votre fiche, on écrit&nbsp;:</legend>
+          <div class="grid grid-cols-2 gap-3">
+            <label class="choix flex flex-col items-start gap-2">
+              <input type="radio" name="v2-genre" value="f" class="rond" checked>
+              <span class="ff text-[24px] leading-none text-teal-900">elle</span>
+              <span class="text-[16px] leading-snug text-neutre-700">«&nbsp;Ce qu'elle propose&nbsp;»</span>
+            </label>
+            <label class="choix flex flex-col items-start gap-2">
+              <input type="radio" name="v2-genre" value="h" class="rond">
+              <span class="ff text-[24px] leading-none text-teal-900">il</span>
+              <span class="text-[16px] leading-snug text-neutre-700">«&nbsp;Ce qu'il propose&nbsp;»</span>
+            </label>
+          </div>
+        </fieldset>
+      </form>
+    </template>
+    <div class="duo mt-3">
+      <div class="scene-boite"><div class="scene" data-rendu></div></div>
+      <div class="relative min-w-0"><pre class="code" data-code></pre></div>
+    </div>
+  </div>
+
+  <div data-specimen class="mt-8">
+    <p class="variante">Radio en erreur — rien de choisi. Le filet rouge de 3 px tient tout le groupe, le message est sous la question.</p>
+    <template>
+      <form class="p-5" onsubmit="return false">
+        <fieldset class="groupe-erreur border-0 p-0 m-0" aria-describedby="v2-lieu-c-err">
+          <legend class="ff text-[24px] leading-tight text-teal-900">Où travaillez-vous&nbsp;?</legend>
+          <p id="v2-lieu-c-err" class="mt-1.5 mb-4 flex items-start gap-1.5 text-[16px] font-semibold text-rouge-700">
+            <svg class="w-[18px] h-[18px] shrink-0 mt-0.5" aria-hidden="true"><use href="#i-alerte"/></svg>
+            Choisissez une réponse.
+          </p>
+          <div class="grid gap-3">
+            <label class="choix flex items-center gap-3.5">
+              <input type="radio" name="v2-lieu-c" value="adresse" class="rond">
+              <span class="min-w-0 flex-1 text-corps font-semibold text-teal-900">Je reçois à une adresse</span>
+            </label>
+            <label class="choix flex items-center gap-3.5">
+              <input type="radio" name="v2-lieu-c" value="deplace" class="rond">
+              <span class="min-w-0 flex-1 text-corps font-semibold text-teal-900">Je me déplace</span>
+            </label>
+          </div>
+        </fieldset>
+      </form>
+    </template>
+    <div class="duo mt-3">
+      <div class="scene-boite"><div class="scene" data-rendu></div></div>
+      <div class="relative min-w-0"><pre class="code" data-code></pre></div>
+    </div>
+  </div>
+
+  <div data-specimen class="mt-8">
+    <p class="variante">Cases — les catégories, dites comme sur l'accueil («&nbsp;Je cherche…&nbsp;»), avec leur icône. Deux cochées : le maximum, dit en mots. Une troisième n'est pas bloquée — le message passe au rouge. «&nbsp;Aucune ne convient&nbsp;» écrit à Adrien.</p>
+    <template>
+      <form class="p-5" onsubmit="return false">
+        <fieldset class="border-0 p-0 m-0" data-max="2" onchange="compterChoix(this)">
+          <legend class="ff text-[24px] leading-tight text-teal-900">Vos voisins vous trouvent quand ils cherchent…</legend>
+          <p data-statut class="mt-1 text-[16px] text-neutre-700">2 sur 2&nbsp;: c'est le maximum.</p>
+          <div class="mt-4 grid gap-2.5">
+            <label class="choix flex items-center gap-3.5">
+              <input type="checkbox" name="v2-cat" value="sante-bien-etre" class="case" checked>
+              <span class="min-w-0 flex-1">
+                <span class="ff block text-besoin text-teal-800">Retrouver l'équilibre</span>
+                <span class="block text-[16px] leading-snug text-neutre-700">Santé &amp; bien-être</span>
+              </span>
+              <span class="pastille w-9 h-9 bg-white text-sauge-700" aria-hidden="true"><svg class="w-[18px] h-[18px]"><use href="#c-sante"/></svg></span>
+            </label>
+            <label class="choix flex items-center gap-3.5">
+              <input type="checkbox" name="v2-cat" value="beaute-soins" class="case">
+              <span class="min-w-0 flex-1">
+                <span class="ff block text-besoin text-teal-800">Prendre soin de moi</span>
+                <span class="block text-[16px] leading-snug text-neutre-700">Beauté &amp; soins</span>
+              </span>
+              <span class="pastille w-9 h-9 bg-white text-sauge-700" aria-hidden="true"><svg class="w-[18px] h-[18px]"><use href="#c-beaute"/></svg></span>
+            </label>
+            <label class="choix flex items-center gap-3.5">
+              <input type="checkbox" name="v2-cat" value="artisanat-travaux" class="case">
+              <span class="min-w-0 flex-1">
+                <span class="ff block text-besoin text-teal-800">Réparer, installer chez moi</span>
+                <span class="block text-[16px] leading-snug text-neutre-700">Artisanat &amp; travaux</span>
+              </span>
+              <span class="pastille w-9 h-9 bg-white text-sauge-700" aria-hidden="true"><svg class="w-[18px] h-[18px]"><use href="#c-artisanat"/></svg></span>
+            </label>
+            <label class="choix flex items-center gap-3.5">
+              <input type="checkbox" name="v2-cat" value="alimentation-traiteur" class="case" checked>
+              <span class="min-w-0 flex-1">
+                <span class="ff block text-besoin text-teal-800">Manger bon sans cuisiner ce soir</span>
+                <span class="block text-[16px] leading-snug text-neutre-700">Alimentation &amp; traiteur</span>
+              </span>
+              <span class="pastille w-9 h-9 bg-white text-sauge-700" aria-hidden="true"><svg class="w-[18px] h-[18px]"><use href="#c-alimentation"/></svg></span>
+            </label>
+            <label class="choix flex items-center gap-3.5">
+              <input type="checkbox" name="v2-cat" value="conseil-entreprise" class="case">
+              <span class="min-w-0 flex-1">
+                <span class="ff block text-besoin text-teal-800">Faire tourner mon activité</span>
+                <span class="block text-[16px] leading-snug text-neutre-700">Conseil &amp; entreprise</span>
+              </span>
+              <span class="pastille w-9 h-9 bg-white text-sauge-700" aria-hidden="true"><svg class="w-[18px] h-[18px]"><use href="#c-conseil"/></svg></span>
+            </label>
+            <label class="choix flex items-center gap-3.5">
+              <input type="checkbox" name="v2-cat" value="numerique-creation" class="case">
+              <span class="min-w-0 flex-1">
+                <span class="ff block text-besoin text-teal-800">Un site, un logo, une image</span>
+                <span class="block text-[16px] leading-snug text-neutre-700">Numérique &amp; création</span>
+              </span>
+              <span class="pastille w-9 h-9 bg-white text-sauge-700" aria-hidden="true"><svg class="w-[18px] h-[18px]"><use href="#c-numerique"/></svg></span>
+            </label>
+            <label class="choix flex items-center gap-3.5">
+              <input type="checkbox" name="v2-cat" value="enfance-education" class="case">
+              <span class="min-w-0 flex-1">
+                <span class="ff block text-besoin text-teal-800">S'occuper des enfants, apprendre</span>
+                <span class="block text-[16px] leading-snug text-neutre-700">Enfance &amp; éducation</span>
+              </span>
+              <span class="pastille w-9 h-9 bg-white text-sauge-700" aria-hidden="true"><svg class="w-[18px] h-[18px]"><use href="#c-enfance"/></svg></span>
+            </label>
+            <label class="choix flex items-center gap-3.5">
+              <input type="checkbox" name="v2-cat" value="sport-mouvement" class="case">
+              <span class="min-w-0 flex-1">
+                <span class="ff block text-besoin text-teal-800">Me remettre en mouvement</span>
+                <span class="block text-[16px] leading-snug text-neutre-700">Sport &amp; mouvement</span>
+              </span>
+              <span class="pastille w-9 h-9 bg-white text-sauge-700" aria-hidden="true"><svg class="w-[18px] h-[18px]"><use href="#c-sport"/></svg></span>
+            </label>
+            <label class="choix flex items-center gap-3.5">
+              <input type="checkbox" name="v2-cat" value="art-culture" class="case">
+              <span class="min-w-0 flex-1">
+                <span class="ff block text-besoin text-teal-800">Un souvenir, une envie de créer</span>
+                <span class="block text-[16px] leading-snug text-neutre-700">Art &amp; culture</span>
+              </span>
+              <span class="pastille w-9 h-9 bg-white text-sauge-700" aria-hidden="true"><svg class="w-[18px] h-[18px]"><use href="#c-art"/></svg></span>
+            </label>
+            <label class="choix flex items-center gap-3.5">
+              <input type="checkbox" name="v2-cat" value="services-domicile" class="case">
+              <span class="min-w-0 flex-1">
+                <span class="ff block text-besoin text-teal-800">Un coup de main chez moi</span>
+                <span class="block text-[16px] leading-snug text-neutre-700">Services à domicile</span>
+              </span>
+              <span class="pastille w-9 h-9 bg-white text-sauge-700" aria-hidden="true"><svg class="w-[18px] h-[18px]"><use href="#c-domicile"/></svg></span>
+            </label>
+            <label class="choix flex items-center gap-3.5">
+              <input type="checkbox" name="v2-cat" value="logement-immobilier" class="case">
+              <span class="min-w-0 flex-1">
+                <span class="ff block text-besoin text-teal-800">Vendre, acheter ou louer</span>
+                <span class="block text-[16px] leading-snug text-neutre-700">Logement &amp; immobilier</span>
+              </span>
+              <span class="pastille w-9 h-9 bg-white text-sauge-700" aria-hidden="true"><svg class="w-[18px] h-[18px]"><use href="#c-logement"/></svg></span>
+            </label>
+            <label class="choix flex items-center gap-3.5 choix--libre mt-2">
+              <input type="checkbox" name="v2-cat-aucune" value="aucune" class="case">
+              <span class="min-w-0 flex-1">
+                <span class="block text-corps font-semibold text-teal-900">Aucune ne convient</span>
+                <span class="block text-[16px] leading-snug text-neutre-700">Adrien reçoit un mot et vous répond.</span>
+              </span>
+            </label>
+          </div>
+        </fieldset>
+      </form>
+    </template>
+    <div class="duo mt-3">
+      <div class="scene-boite"><div class="scene" data-rendu></div></div>
+      <div class="relative min-w-0"><pre class="code" data-code></pre></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ╔═══ v2 · la liste de services ═══════════════════════════════════════════╗ -->
+<section class="bloc carte rounded-[22px] bg-white p-5 sm:p-7" id="b-v2-services" data-bloc>
+  <p class="text-etiquette font-semibold uppercase text-sauge-800">v2 · le formulaire</p>
+  <h2 data-court="La liste de services" class="ff mt-1.5 text-nom text-teal-900">La liste de services</h2>
+  <p class="mt-3 text-corps text-neutre-800 max-w-[72ch]">
+    Une ligne par service, de une à six. Le numéro dans sa ventouse <strong class="font-semibold text-neutre-900">est
+    l'étiquette</strong> du champ («&nbsp;Service&nbsp;1&nbsp;» pour un lecteur d'écran) — le même médaillon que les tuiles de
+    «&nbsp;Ce qu'elle propose&nbsp;», pour qu'on reconnaisse sa future fiche. La dernière ligne ne se retire pas&nbsp;; à
+    six, «&nbsp;Ajouter&nbsp;» laisse la place à une phrase. Retirer, c'est la corbeille, pas la croix&nbsp;: la croix
+    ferme, elle ne supprime pas.
+  </p>
+
+  <div data-specimen class="mt-6">
+    <p class="variante">Trois services. Ajoutez, retirez : la numérotation et le compte suivent.</p>
+    <template>
+      <form class="p-5" onsubmit="return false">
+        <fieldset class="border-0 p-0 m-0">
+          <legend class="ff text-[24px] leading-tight text-teal-900">Ce que vous proposez</legend>
+          <p class="mt-1 text-[16px] text-neutre-700"><span data-nombre>3 sur 6</span> · un service par ligne</p>
+          <ol id="v2-serv" data-max="6" class="mt-4 grid gap-2.5 list-none p-0 m-0">
+            <li class="flex items-center gap-2.5">
+              <label for="v2-serv-1" class="pastille w-9 h-9 bg-white text-sauge-800 tnum text-[16px] font-bold"><span class="sr-only">Service </span><span>1</span></label>
+              <input id="v2-serv-1" type="text" value="Bilan naturopathique" class="champ min-w-0 flex-1 min-h-[52px] px-3.5 rounded-xl text-corps text-neutre-900">
+              <button type="button" onclick="retirerService(this)" aria-label="Retirer le service 1"
+                      class="grid place-items-center w-11 h-11 shrink-0 rounded-full text-teal-700 hover:bg-teal-50">
+                <svg class="w-5 h-5" aria-hidden="true"><use href="#i-corbeille"/></svg>
+              </button>
+            </li>
+            <li class="flex items-center gap-2.5">
+              <label for="v2-serv-2" class="pastille w-9 h-9 bg-white text-sauge-800 tnum text-[16px] font-bold"><span class="sr-only">Service </span><span>2</span></label>
+              <input id="v2-serv-2" type="text" value="Suivi mensuel" class="champ min-w-0 flex-1 min-h-[52px] px-3.5 rounded-xl text-corps text-neutre-900">
+              <button type="button" onclick="retirerService(this)" aria-label="Retirer le service 2"
+                      class="grid place-items-center w-11 h-11 shrink-0 rounded-full text-teal-700 hover:bg-teal-50">
+                <svg class="w-5 h-5" aria-hidden="true"><use href="#i-corbeille"/></svg>
+              </button>
+            </li>
+            <li class="flex items-center gap-2.5">
+              <label for="v2-serv-3" class="pastille w-9 h-9 bg-white text-sauge-800 tnum text-[16px] font-bold"><span class="sr-only">Service </span><span>3</span></label>
+              <input id="v2-serv-3" type="text" value="Consultation en visio" class="champ min-w-0 flex-1 min-h-[52px] px-3.5 rounded-xl text-corps text-neutre-900">
+              <button type="button" onclick="retirerService(this)" aria-label="Retirer le service 3"
+                      class="grid place-items-center w-11 h-11 shrink-0 rounded-full text-teal-700 hover:bg-teal-50">
+                <svg class="w-5 h-5" aria-hidden="true"><use href="#i-corbeille"/></svg>
+              </button>
+            </li>
+          </ol>
+          <button type="button" data-ajouter onclick="ajouterService(this)"
+                  class="mt-4 inline-flex items-center gap-2 min-h-[48px] px-5 rounded-full text-corps font-semibold text-teal-700 bg-teal-50 hover:bg-teal-100">
+            <svg class="w-5 h-5" aria-hidden="true"><use href="#i-plus"/></svg>Ajouter un service
+          </button>
+          <p data-plein hidden class="mt-4 text-[16px] text-neutre-700">Six services, c'est le maximum.</p>
+        </fieldset>
+      </form>
+    </template>
+    <div class="duo mt-3">
+      <div class="scene-boite"><div class="scene" data-rendu></div></div>
+      <div class="relative min-w-0"><pre class="code" data-code></pre></div>
+    </div>
+  </div>
+
+  <div data-specimen class="mt-8">
+    <p class="variante">Six — le maximum. Le bouton s'efface, la phrase le remplace.</p>
+    <template>
+      <form class="p-5" onsubmit="return false">
+        <fieldset class="border-0 p-0 m-0">
+          <legend class="ff text-[24px] leading-tight text-teal-900">Ce que vous proposez</legend>
+          <p class="mt-1 text-[16px] text-neutre-700"><span data-nombre>6 sur 6</span> · un service par ligne</p>
+          <ol id="v2-serv-b" data-max="6" class="mt-4 grid gap-2.5 list-none p-0 m-0">
+            <li class="flex items-center gap-2.5">
+              <label for="v2-serv-b-1" class="pastille w-9 h-9 bg-white text-sauge-800 tnum text-[16px] font-bold"><span class="sr-only">Service </span><span>1</span></label>
+              <input id="v2-serv-b-1" type="text" value="Bilan naturopathique" class="champ min-w-0 flex-1 min-h-[52px] px-3.5 rounded-xl text-corps text-neutre-900">
+              <button type="button" onclick="retirerService(this)" aria-label="Retirer le service 1" class="grid place-items-center w-11 h-11 shrink-0 rounded-full text-teal-700 hover:bg-teal-50"><svg class="w-5 h-5" aria-hidden="true"><use href="#i-corbeille"/></svg></button>
+            </li>
+            <li class="flex items-center gap-2.5">
+              <label for="v2-serv-b-2" class="pastille w-9 h-9 bg-white text-sauge-800 tnum text-[16px] font-bold"><span class="sr-only">Service </span><span>2</span></label>
+              <input id="v2-serv-b-2" type="text" value="Suivi mensuel" class="champ min-w-0 flex-1 min-h-[52px] px-3.5 rounded-xl text-corps text-neutre-900">
+              <button type="button" onclick="retirerService(this)" aria-label="Retirer le service 2" class="grid place-items-center w-11 h-11 shrink-0 rounded-full text-teal-700 hover:bg-teal-50"><svg class="w-5 h-5" aria-hidden="true"><use href="#i-corbeille"/></svg></button>
+            </li>
+            <li class="flex items-center gap-2.5">
+              <label for="v2-serv-b-3" class="pastille w-9 h-9 bg-white text-sauge-800 tnum text-[16px] font-bold"><span class="sr-only">Service </span><span>3</span></label>
+              <input id="v2-serv-b-3" type="text" value="Consultation en visio" class="champ min-w-0 flex-1 min-h-[52px] px-3.5 rounded-xl text-corps text-neutre-900">
+              <button type="button" onclick="retirerService(this)" aria-label="Retirer le service 3" class="grid place-items-center w-11 h-11 shrink-0 rounded-full text-teal-700 hover:bg-teal-50"><svg class="w-5 h-5" aria-hidden="true"><use href="#i-corbeille"/></svg></button>
+            </li>
+            <li class="flex items-center gap-2.5">
+              <label for="v2-serv-b-4" class="pastille w-9 h-9 bg-white text-sauge-800 tnum text-[16px] font-bold"><span class="sr-only">Service </span><span>4</span></label>
+              <input id="v2-serv-b-4" type="text" value="Atelier cuisine de saison" class="champ min-w-0 flex-1 min-h-[52px] px-3.5 rounded-xl text-corps text-neutre-900">
+              <button type="button" onclick="retirerService(this)" aria-label="Retirer le service 4" class="grid place-items-center w-11 h-11 shrink-0 rounded-full text-teal-700 hover:bg-teal-50"><svg class="w-5 h-5" aria-hidden="true"><use href="#i-corbeille"/></svg></button>
+            </li>
+            <li class="flex items-center gap-2.5">
+              <label for="v2-serv-b-5" class="pastille w-9 h-9 bg-white text-sauge-800 tnum text-[16px] font-bold"><span class="sr-only">Service </span><span>5</span></label>
+              <input id="v2-serv-b-5" type="text" value="Réflexologie plantaire" class="champ min-w-0 flex-1 min-h-[52px] px-3.5 rounded-xl text-corps text-neutre-900">
+              <button type="button" onclick="retirerService(this)" aria-label="Retirer le service 5" class="grid place-items-center w-11 h-11 shrink-0 rounded-full text-teal-700 hover:bg-teal-50"><svg class="w-5 h-5" aria-hidden="true"><use href="#i-corbeille"/></svg></button>
+            </li>
+            <li class="flex items-center gap-2.5">
+              <label for="v2-serv-b-6" class="pastille w-9 h-9 bg-white text-sauge-800 tnum text-[16px] font-bold"><span class="sr-only">Service </span><span>6</span></label>
+              <input id="v2-serv-b-6" type="text" value="Bilan pour étudiants" class="champ min-w-0 flex-1 min-h-[52px] px-3.5 rounded-xl text-corps text-neutre-900">
+              <button type="button" onclick="retirerService(this)" aria-label="Retirer le service 6" class="grid place-items-center w-11 h-11 shrink-0 rounded-full text-teal-700 hover:bg-teal-50"><svg class="w-5 h-5" aria-hidden="true"><use href="#i-corbeille"/></svg></button>
+            </li>
+          </ol>
+          <button type="button" data-ajouter hidden onclick="ajouterService(this)"
+                  class="mt-4 inline-flex items-center gap-2 min-h-[48px] px-5 rounded-full text-corps font-semibold text-teal-700 bg-teal-50 hover:bg-teal-100">
+            <svg class="w-5 h-5" aria-hidden="true"><use href="#i-plus"/></svg>Ajouter un service
+          </button>
+          <p data-plein class="mt-4 text-[16px] text-neutre-700">Six services, c'est le maximum.</p>
+        </fieldset>
+      </form>
+    </template>
+    <div class="duo mt-3">
+      <div class="scene-boite"><div class="scene" data-rendu></div></div>
+      <div class="relative min-w-0"><pre class="code" data-code></pre></div>
+    </div>
+  </div>
+
+  <div data-specimen class="mt-8">
+    <p class="variante">Une seule ligne, vide, en erreur — pas de corbeille : il en faut au moins une.</p>
+    <template>
+      <form class="p-5" onsubmit="return false">
+        <fieldset class="border-0 p-0 m-0">
+          <legend class="ff text-[24px] leading-tight text-teal-900">Ce que vous proposez</legend>
+          <p class="mt-1 text-[16px] text-neutre-700"><span data-nombre>1 sur 6</span> · un service par ligne</p>
+          <ol id="v2-serv-c" data-max="6" class="mt-4 grid gap-2.5 list-none p-0 m-0">
+            <li data-etat="erreur" class="flex flex-wrap items-center gap-2.5">
+              <label for="v2-serv-c-1" class="pastille w-9 h-9 bg-white text-sauge-800 tnum text-[16px] font-bold"><span class="sr-only">Service </span><span>1</span></label>
+              <input id="v2-serv-c-1" type="text" aria-invalid="true" aria-describedby="v2-serv-c-err" class="champ min-w-0 flex-1 min-h-[52px] px-3.5 rounded-xl text-corps text-neutre-900">
+              <button type="button" hidden onclick="retirerService(this)" aria-label="Retirer le service 1" class="grid place-items-center w-11 h-11 shrink-0 rounded-full text-teal-700 hover:bg-teal-50"><svg class="w-5 h-5" aria-hidden="true"><use href="#i-corbeille"/></svg></button>
+              <p data-message id="v2-serv-c-err" class="basis-full pl-[46px] flex items-start gap-1.5 text-[16px] font-semibold text-rouge-700">
+                <svg class="w-[18px] h-[18px] shrink-0 mt-0.5" aria-hidden="true"><use href="#i-alerte"/></svg>
+                Écrivez au moins un service. Exemple&nbsp;: «&nbsp;Bilan naturopathique&nbsp;»
+              </p>
+            </li>
+          </ol>
+          <button type="button" data-ajouter onclick="ajouterService(this)"
+                  class="mt-4 inline-flex items-center gap-2 min-h-[48px] px-5 rounded-full text-corps font-semibold text-teal-700 bg-teal-50 hover:bg-teal-100">
+            <svg class="w-5 h-5" aria-hidden="true"><use href="#i-plus"/></svg>Ajouter un service
+          </button>
+          <p data-plein hidden class="mt-4 text-[16px] text-neutre-700">Six services, c'est le maximum.</p>
+        </fieldset>
+      </form>
+    </template>
+    <div class="duo mt-3">
+      <div class="scene-boite"><div class="scene" data-rendu></div></div>
+      <div class="relative min-w-0"><pre class="code" data-code></pre></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ╔═══ v2 · l'en-tête d'étape ══════════════════════════════════════════════╗ -->
+<section class="bloc carte rounded-[22px] bg-white p-5 sm:p-7" id="b-v2-etape" data-bloc>
+  <p class="text-etiquette font-semibold uppercase text-sauge-800">v2 · le formulaire</p>
+  <h2 data-court="L'en-tête d'étape" class="ff mt-1.5 text-nom text-teal-900">L'en-tête d'étape</h2>
+  <p class="mt-3 text-corps text-neutre-800 max-w-[72ch]">
+    «&nbsp;Étape 3 sur 9&nbsp;» en toutes lettres, puis le chemin&nbsp;: des points teal pour ce qui est fait, la
+    <strong class="font-semibold text-neutre-900">ventouse</strong> pour l'étape en cours, des anneaux pour la suite.
+    Pas de barre en dégradé&nbsp;: le filet n'a que deux usages. Le titre est la question, en Literata 30&nbsp;px —
+    et quand l'étape n'a qu'un champ, il enveloppe son <code class="font-mono text-[15px] text-teal-800">&lt;label&gt;</code>.
+  </p>
+  <p class="mt-3 text-corps text-neutre-800 max-w-[72ch]">
+    L'indicateur d'enregistrement rassure sans interrompre&nbsp;: on peut fermer le téléphone à tout moment, le
+    lien magique ramène au même endroit.
+  </p>
+
+  <div data-specimen class="mt-6">
+    <p class="variante">Étape 3 sur 9, brouillon enregistré.</p>
+    <template>
+      <header class="px-5 pt-2 pb-5 bg-white">
+        <div class="-mx-2 flex items-center justify-between gap-3">
+          <a href="#etape-2" class="inline-flex items-center gap-1.5 min-h-[44px] px-2 rounded-full text-corps font-semibold text-teal-700 hover:bg-teal-50">
+            <svg class="w-5 h-5" aria-hidden="true"><use href="#i-retour"/></svg>Retour
+          </a>
+          <p role="status" class="inline-flex items-center gap-1.5 px-2 text-[16px] text-sauge-800">
+            <svg class="w-[18px] h-[18px]" aria-hidden="true"><use href="#i-coche"/></svg>Brouillon enregistré
+          </p>
+        </div>
+        <p class="mt-4 text-etiquette font-semibold uppercase text-teal-700">Étape 3 sur 9</p>
+        <div class="mt-3 flex items-center" aria-hidden="true">
+          <span class="w-2.5 h-2.5 shrink-0 rounded-full bg-teal-700"></span><span class="h-[2px] flex-1 bg-teal-700"></span>
+          <span class="w-2.5 h-2.5 shrink-0 rounded-full bg-teal-700"></span><span class="h-[2px] flex-1 bg-teal-700"></span>
+          <svg class="w-5 h-5 shrink-0 text-teal-700"><use href="#i-ventouse"/></svg><span class="h-[2px] flex-1 bg-neutre-300"></span>
+          <span class="w-2.5 h-2.5 shrink-0 rounded-full ring-[1.5px] ring-inset ring-neutre-500"></span><span class="h-[2px] flex-1 bg-neutre-300"></span>
+          <span class="w-2.5 h-2.5 shrink-0 rounded-full ring-[1.5px] ring-inset ring-neutre-500"></span><span class="h-[2px] flex-1 bg-neutre-300"></span>
+          <span class="w-2.5 h-2.5 shrink-0 rounded-full ring-[1.5px] ring-inset ring-neutre-500"></span><span class="h-[2px] flex-1 bg-neutre-300"></span>
+          <span class="w-2.5 h-2.5 shrink-0 rounded-full ring-[1.5px] ring-inset ring-neutre-500"></span><span class="h-[2px] flex-1 bg-neutre-300"></span>
+          <span class="w-2.5 h-2.5 shrink-0 rounded-full ring-[1.5px] ring-inset ring-neutre-500"></span><span class="h-[2px] flex-1 bg-neutre-300"></span>
+          <span class="w-2.5 h-2.5 shrink-0 rounded-full ring-[1.5px] ring-inset ring-neutre-500"></span>
+        </div>
+        <h1 class="ff mt-6 text-nom text-teal-900">Votre métier, en quelques mots</h1>
+      </header>
+    </template>
+    <div class="duo mt-3">
+      <div class="scene-boite"><div class="scene" data-rendu></div></div>
+      <div class="relative min-w-0"><pre class="code" data-code></pre></div>
+    </div>
+  </div>
+
+  <div data-specimen class="mt-8">
+    <p class="variante">Les trois états de l'indicateur — il remplace le texte à droite de «&nbsp;Retour&nbsp;». La ventouse respire pendant l'envoi (immobile si l'on a réduit les animations).</p>
+    <template>
+      <div class="p-5 grid gap-4">
+        <p role="status" class="inline-flex items-center gap-1.5 text-[16px] text-neutre-700">
+          <svg class="respire w-[18px] h-[18px] text-teal-600" aria-hidden="true"><use href="#i-ventouse"/></svg>Enregistrement…
+        </p>
+        <p role="status" class="inline-flex items-center gap-1.5 text-[16px] text-sauge-800">
+          <svg class="w-[18px] h-[18px]" aria-hidden="true"><use href="#i-coche"/></svg>Brouillon enregistré
+        </p>
+        <p role="status" class="inline-flex items-center gap-1.5 text-[16px] font-semibold text-sable-800">
+          <svg class="w-[18px] h-[18px]" aria-hidden="true"><use href="#i-alerte"/></svg>Hors connexion&nbsp;: on réessaie
+        </p>
+      </div>
+    </template>
+    <div class="duo mt-3">
+      <div class="scene-boite"><div class="scene" data-rendu></div></div>
+      <div class="relative min-w-0"><pre class="code" data-code></pre></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ╔═══ v2 · les actions d'étape ════════════════════════════════════════════╗ -->
+<section class="bloc carte rounded-[22px] bg-white p-5 sm:p-7" id="b-v2-actions" data-bloc>
+  <p class="text-etiquette font-semibold uppercase text-sauge-800">v2 · le formulaire</p>
+  <h2 data-court="«&nbsp;Continuer&nbsp;», «&nbsp;Plus tard&nbsp;»" class="ff mt-1.5 text-nom text-teal-900">«&nbsp;Continuer&nbsp;», «&nbsp;Plus tard&nbsp;»</h2>
+  <p class="mt-3 text-corps text-neutre-800 max-w-[72ch]">
+    La barre de «&nbsp;Appeler&nbsp;», reprise telle quelle&nbsp;: collée en bas, dans la zone du pouce, 54&nbsp;px de haut.
+    «&nbsp;Continuer&nbsp;» est <strong class="font-semibold text-neutre-900">le seul objet orange de l'étape</strong>. «&nbsp;Plus
+    tard&nbsp;» est le bouton fantôme&nbsp;: il garde le brouillon et ramène à l'espace. On ne grise jamais
+    «&nbsp;Continuer&nbsp;»&nbsp;: un bouton qui ne répond pas n'explique rien — on valide au toucher, et l'erreur dit quoi faire.
+  </p>
+
+  <div data-specimen class="mt-6">
+    <p class="variante">Une étape ordinaire.</p>
+    <template>
+      <div class="fixed bottom-0 inset-x-0 z-40 bg-white/95 backdrop-blur-sm"
+           style="box-shadow: 0 -4px 8px oklch(17.5% .03 202/.06), 0 -28px 64px -20px oklch(17.5% .03 202/.28)">
+        <div class="mx-auto max-w-[640px] px-4 py-3 flex items-center gap-3">
+          <a href="/espace" class="inline-flex items-center justify-center min-h-[54px] px-5 rounded-full text-corps font-semibold text-teal-700 bg-teal-50 hover:bg-teal-100">
+            Plus tard
+          </a>
+          <button type="submit"
+                  class="cta flex-1 inline-flex items-center justify-center gap-2 min-h-[54px] px-6 rounded-full text-[18px] font-bold tracking-tight transition">
+            Continuer<svg class="w-5 h-5" aria-hidden="true"><use href="#i-chev"/></svg>
+          </button>
+        </div>
+      </div>
+    </template>
+    <div class="duo mt-3">
+      <div class="scene-boite"><div class="scene h-[200px]" data-rendu></div></div>
+      <div class="relative min-w-0"><pre class="code" data-code></pre></div>
+    </div>
+  </div>
+
+  <div data-specimen class="mt-8">
+    <p class="variante">La dernière — après la relecture. Une ligne dit ce qui suit l'envoi. Une fois la fiche en ligne, le même bouton dit «&nbsp;Enregistrer&nbsp;».</p>
+    <template>
+      <div class="fixed bottom-0 inset-x-0 z-40 bg-white/95 backdrop-blur-sm"
+           style="box-shadow: 0 -4px 8px oklch(17.5% .03 202/.06), 0 -28px 64px -20px oklch(17.5% .03 202/.28)">
+        <div class="mx-auto max-w-[640px] px-4 pt-2.5 pb-3">
+          <p class="text-center text-[16px] text-neutre-700">Adrien la relit avant de la publier.</p>
+          <button type="submit"
+                  class="cta mt-2 w-full inline-flex items-center justify-center gap-2 min-h-[54px] px-6 rounded-full text-[18px] font-bold tracking-tight transition">
+            Envoyer ma fiche
+          </button>
+        </div>
+      </div>
+    </template>
+    <div class="duo mt-3">
+      <div class="scene-boite"><div class="scene h-[200px]" data-rendu></div></div>
+      <div class="relative min-w-0"><pre class="code" data-code></pre></div>
+    </div>
+  </div>
+
+  <div data-specimen class="mt-8">
+    <p class="variante">Assemblé — un écran d'étape entier, avec l'aperçu replié. Compter l'orange : un.</p>
+    <template>
+      <form class="pb-[96px]" onsubmit="return false">
+        <header class="px-5 pt-2 pb-2 bg-white">
+          <div class="-mx-2 flex items-center justify-between gap-3">
+            <a href="#etape-2" class="inline-flex items-center gap-1.5 min-h-[44px] px-2 rounded-full text-corps font-semibold text-teal-700 hover:bg-teal-50">
+              <svg class="w-5 h-5" aria-hidden="true"><use href="#i-retour"/></svg>Retour
+            </a>
+            <p role="status" class="inline-flex items-center gap-1.5 px-2 text-[16px] text-sauge-800">
+              <svg class="w-[18px] h-[18px]" aria-hidden="true"><use href="#i-coche"/></svg>Brouillon enregistré
+            </p>
+          </div>
+          <p class="mt-4 text-etiquette font-semibold uppercase text-teal-700">Étape 3 sur 9</p>
+          <div class="mt-3 flex items-center" aria-hidden="true">
+            <span class="w-2.5 h-2.5 shrink-0 rounded-full bg-teal-700"></span><span class="h-[2px] flex-1 bg-teal-700"></span>
+            <span class="w-2.5 h-2.5 shrink-0 rounded-full bg-teal-700"></span><span class="h-[2px] flex-1 bg-teal-700"></span>
+            <svg class="w-5 h-5 shrink-0 text-teal-700"><use href="#i-ventouse"/></svg><span class="h-[2px] flex-1 bg-neutre-300"></span>
+            <span class="w-2.5 h-2.5 shrink-0 rounded-full ring-[1.5px] ring-inset ring-neutre-500"></span><span class="h-[2px] flex-1 bg-neutre-300"></span>
+            <span class="w-2.5 h-2.5 shrink-0 rounded-full ring-[1.5px] ring-inset ring-neutre-500"></span><span class="h-[2px] flex-1 bg-neutre-300"></span>
+            <span class="w-2.5 h-2.5 shrink-0 rounded-full ring-[1.5px] ring-inset ring-neutre-500"></span><span class="h-[2px] flex-1 bg-neutre-300"></span>
+            <span class="w-2.5 h-2.5 shrink-0 rounded-full ring-[1.5px] ring-inset ring-neutre-500"></span><span class="h-[2px] flex-1 bg-neutre-300"></span>
+            <span class="w-2.5 h-2.5 shrink-0 rounded-full ring-[1.5px] ring-inset ring-neutre-500"></span><span class="h-[2px] flex-1 bg-neutre-300"></span>
+            <span class="w-2.5 h-2.5 shrink-0 rounded-full ring-[1.5px] ring-inset ring-neutre-500"></span>
+          </div>
+        </header>
+        <div class="px-5" data-etat="ok">
+          <div class="mt-6 flex items-start justify-between gap-3">
+            <h1 class="ff text-nom text-teal-900"><label for="v2-metier-e">Votre métier, en quelques mots</label></h1>
+            <button type="button" class="-mr-2 grid place-items-center w-11 h-11 shrink-0 rounded-full"
+                    aria-expanded="false" aria-controls="v2-metier-e-aide" onclick="basculer(this)">
+              <span class="pastille pastille--teal w-7 h-7 bg-teal-50 ff text-[16px] text-teal-800" aria-hidden="true">?</span>
+              <span class="sr-only">Aide : votre métier</span>
+            </button>
+          </div>
+          <p id="v2-metier-e-aide" hidden class="bulle mt-3 rounded-[14px] bg-teal-50 px-4 py-3 text-[16px] leading-snug text-teal-950">
+            Il s'affiche sous votre nom. Par exemple&nbsp;: «&nbsp;Naturopathe&nbsp;», «&nbsp;Menuisier-ébéniste&nbsp;».
+          </p>
+          <input id="v2-metier-e" type="text" value="Naturopathe" data-doux="45" oninput="compter(this)"
+                 aria-describedby="v2-metier-e-compte"
+                 class="champ mt-4 w-full min-h-[52px] px-3.5 rounded-xl text-corps text-neutre-900">
+          <p id="v2-metier-e-compte" class="compteur tnum mt-1.5 flex items-start justify-end gap-1.5 text-[16px]">11 / 45</p>
+          <button type="button" aria-expanded="false" aria-controls="v2-apercu-e" onclick="basculer(this)"
+                  class="mt-4 inline-flex items-center gap-2 min-h-[44px] px-4 rounded-full text-corps font-semibold text-teal-700 bg-teal-50 hover:bg-teal-100 aria-expanded:bg-teal-700 aria-expanded:text-white">
+            <svg class="w-5 h-5" aria-hidden="true"><use href="#i-oeil"/></svg>Aperçu
+          </button>
+          <figure id="v2-apercu-e" hidden class="ventouses ventouses--teal mt-3 mx-0 mb-0 rounded-[24px] bg-neutre-100 p-3">
+            <figcaption class="flex items-center gap-2 px-1.5 pt-0.5 pb-3 text-[16px] font-semibold text-teal-800">
+              <svg class="w-5 h-5" aria-hidden="true"><use href="#i-oeil"/></svg>Ce que vos voisins verront
+            </figcaption>
+            <article class="carte relative flex min-h-[152px] rounded-[20px] bg-white overflow-hidden">
+              <img src="https://randomuser.me/api/portraits/women/26.jpg" alt="Portrait de Sophie Arnaud"
+                   width="128" height="128" loading="lazy"
+                   class="w-[116px] shrink-0 self-stretch object-cover" style="object-position:50% 25%">
+              <div class="flex-1 min-w-0 py-4 pl-4 pr-3 flex flex-col justify-center gap-1">
+                <h3 class="ff text-[20px] leading-tight text-teal-900">Sophie Arnaud</h3>
+                <p class="text-corps text-neutre-800 leading-snug">Naturopathe</p>
+              </div>
+            </article>
+          </figure>
+        </div>
+        <div class="fixed bottom-0 inset-x-0 z-40 bg-white/95 backdrop-blur-sm"
+             style="box-shadow: 0 -4px 8px oklch(17.5% .03 202/.06), 0 -28px 64px -20px oklch(17.5% .03 202/.28)">
+          <div class="mx-auto max-w-[640px] px-4 py-3 flex items-center gap-3">
+            <a href="/espace" class="inline-flex items-center justify-center min-h-[54px] px-5 rounded-full text-corps font-semibold text-teal-700 bg-teal-50 hover:bg-teal-100">
+              Plus tard
+            </a>
+            <button type="submit"
+                    class="cta flex-1 inline-flex items-center justify-center gap-2 min-h-[54px] px-6 rounded-full text-[18px] font-bold tracking-tight transition">
+              Continuer<svg class="w-5 h-5" aria-hidden="true"><use href="#i-chev"/></svg>
+            </button>
+          </div>
+        </div>
+      </form>
+    </template>
+    <div class="duo mt-3">
+      <div class="scene-boite"><div class="scene min-h-[640px]" data-rendu></div></div>
+      <div class="relative min-w-0"><pre class="code" data-code></pre></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ╔═══ v2 · la photo ═══════════════════════════════════════════════════════╗ -->
+<section class="bloc carte rounded-[22px] bg-white p-5 sm:p-7" id="b-v2-photo" data-bloc>
+  <p class="text-etiquette font-semibold uppercase text-sauge-800">v2 · le formulaire</p>
+  <h2 data-court="La photo et son cadre" class="ff mt-1.5 text-nom text-teal-900">La photo et son cadre</h2>
+  <p class="mt-3 text-corps text-neutre-800 max-w-[72ch]">
+    On recadre dans un carré, mais on <strong class="font-semibold text-neutre-900">montre l'arche</strong>&nbsp;:
+    c'est la forme sous laquelle la voisine se verra sur sa fiche. Hors de l'arche, un voile
+    <code class="font-mono text-[15px] text-teal-800">teal-950</code>&nbsp;; dans le tiers haut, l'ovale du visage, là où
+    les pages placent le regard (<code class="font-mono text-[15px] text-teal-800">object-position: 50% 22%</code>).
+    Sous le cadre, les trois formes réelles — arche, carte, disque — pour vérifier d'un coup d'œil.
+  </p>
+  <p class="mt-3 text-corps text-neutre-800 max-w-[72ch]">
+    Le cadre fait 176&nbsp;px pour un portrait de 128&nbsp;: ×1,375, sous le plafond de ×1,4. Une vraie photo de
+    téléphone (≥&nbsp;768&nbsp;px) peut l'occuper plus grand&nbsp;; la règle s'applique au portrait affiché, pas au cadre.
+  </p>
+
+  <div data-specimen class="mt-6">
+    <p class="variante">Vide — l'arche en pointillés, un seul bouton. Le sélecteur natif est dans l'étiquette, invisible : sur un téléphone, il propose l'appareil photo.</p>
+    <template>
+      <div class="p-5 flex flex-col items-center text-center">
+        <div class="arche grid place-items-center w-[172px] h-[208px] bg-neutre-100"
+             style="outline:2px dashed var(--color-neutre-500); outline-offset:-2px">
+          <span class="pastille pastille--teal w-14 h-14 bg-white text-teal-700" aria-hidden="true"><svg class="w-7 h-7"><use href="#i-photo"/></svg></span>
+        </div>
+        <p class="mt-4 text-[16px] text-neutre-700">Une seule personne, vous, de face et en pleine lumière.</p>
+        <label class="mt-4 inline-flex items-center gap-2 min-h-[48px] px-5 rounded-full text-corps font-semibold text-white bg-teal-700 hover:bg-teal-600 cursor-pointer has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-teal-600">
+          <svg class="w-5 h-5" aria-hidden="true"><use href="#i-photo"/></svg>Choisir une photo
+          <input type="file" accept="image/jpeg,image/png,image/webp" class="sr-only">
+        </label>
+      </div>
+    </template>
+    <div class="duo mt-3">
+      <div class="scene-boite"><div class="scene" data-rendu></div></div>
+      <div class="relative min-w-0"><pre class="code" data-code></pre></div>
+    </div>
+  </div>
+
+  <div data-specimen class="mt-8">
+    <p class="variante">Le recadrage — la chambre noire teal, l'arche découpée, l'ovale du visage. Puis les trois formes telles qu'elles seront publiées.</p>
+    <template>
+      <div class="p-5">
+        <div class="relative rounded-[24px] bg-teal-950 px-5 pt-6 pb-4 overflow-hidden">
+          <div class="ventouses ventouses--teal absolute inset-0" aria-hidden="true"></div>
+          <div class="recadrage relative mx-auto w-[176px] h-[176px]">
+            <img src="https://randomuser.me/api/portraits/women/26.jpg" alt="Votre photo, à recadrer" width="128" height="128">
+            <div class="recadrage__arche" aria-hidden="true"></div>
+            <div class="recadrage__visage" aria-hidden="true"></div>
+          </div>
+          <p class="relative mt-3 text-center text-[16px] text-teal-100">Le visage dans l'ovale. Glissez pour ajuster.</p>
+          <label class="relative mt-1 flex items-center gap-3 text-[16px] font-semibold text-white">
+            Zoom
+            <input type="range" min="1" max="2" step="0.05" value="1" class="flex-1 min-h-[44px] accent-teal-300">
+          </label>
+        </div>
+        <ul class="mt-5 flex items-end justify-center gap-6 list-none p-0 m-0 text-center text-[16px] text-neutre-700">
+          <li>
+            <img src="https://randomuser.me/api/portraits/women/26.jpg" alt="" width="128" height="128"
+                 class="arche mx-auto w-[64px] h-[78px] object-cover" style="object-position:50% 22%; box-shadow: 0 0 0 3px #fff, var(--shadow-carte)">
+            <span class="mt-2 block">Fiche</span>
+          </li>
+          <li>
+            <img src="https://randomuser.me/api/portraits/women/26.jpg" alt="" width="128" height="128"
+                 class="mx-auto w-[46px] h-[60px] rounded-[8px] object-cover" style="object-position:50% 25%; box-shadow: var(--shadow-carte)">
+            <span class="mt-2 block">Liste</span>
+          </li>
+          <li>
+            <img src="https://randomuser.me/api/portraits/women/26.jpg" alt="" width="128" height="128"
+                 class="mx-auto w-[52px] h-[52px] rounded-full object-cover" style="object-position:50% 22%; box-shadow: 0 0 0 3px #fff, var(--shadow-carte)">
+            <span class="mt-2 block">Plan</span>
+          </li>
+        </ul>
+        <div class="mt-5 text-center">
+          <label class="inline-flex items-center gap-2 min-h-[44px] px-4 rounded-full text-corps font-semibold text-teal-700 bg-teal-50 hover:bg-teal-100 cursor-pointer has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-teal-600">
+            Choisir une autre photo
+            <input type="file" accept="image/jpeg,image/png,image/webp" class="sr-only">
+          </label>
+        </div>
+      </div>
+    </template>
+    <div class="duo mt-3">
+      <div class="scene-boite"><div class="scene" data-rendu></div></div>
+      <div class="relative min-w-0"><pre class="code" data-code></pre></div>
+    </div>
+  </div>
+
+  <div data-specimen class="mt-8">
+    <p class="variante">«&nbsp;Photo trop petite&nbsp;» — montrée à sa taille réelle, pour que le problème se voie. Le message donne les deux nombres.</p>
+    <template>
+      <div class="p-5">
+        <div class="flex items-center gap-4 rounded-[18px] bg-rouge-50 p-4"
+             style="box-shadow: inset 0 0 0 1.5px var(--color-rouge-600)">
+          <img src="https://randomuser.me/api/portraits/med/women/26.jpg" alt="La photo choisie, en 72 × 72 pixels"
+               width="72" height="72" class="w-[72px] h-[72px] shrink-0 rounded-[10px]">
+          <p role="alert" class="flex items-start gap-1.5 text-[16px] font-semibold text-rouge-700">
+            <svg class="w-[18px] h-[18px] shrink-0 mt-0.5" aria-hidden="true"><use href="#i-alerte"/></svg>
+            <span>Photo trop petite&nbsp;: <span class="tnum">72&nbsp;×&nbsp;72</span>&nbsp;px. Il en faut au moins <span class="tnum">200</span> de côté.</span>
+          </p>
+        </div>
+        <p class="mt-3 text-[16px] text-neutre-700">Une photo prise avec votre téléphone convient.</p>
+        <label class="mt-4 inline-flex items-center gap-2 min-h-[48px] px-5 rounded-full text-corps font-semibold text-white bg-teal-700 hover:bg-teal-600 cursor-pointer has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-teal-600">
+          <svg class="w-5 h-5" aria-hidden="true"><use href="#i-photo"/></svg>Choisir une autre photo
+          <input type="file" accept="image/jpeg,image/png,image/webp" class="sr-only">
+        </label>
+      </div>
+    </template>
+    <div class="duo mt-3">
+      <div class="scene-boite"><div class="scene" data-rendu></div></div>
+      <div class="relative min-w-0"><pre class="code" data-code></pre></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ╔═══ v2 · l'aperçu ═══════════════════════════════════════════════════════╗ -->
+<section class="bloc carte rounded-[22px] bg-white p-5 sm:p-7" id="b-v2-apercu" data-bloc>
+  <p class="text-etiquette font-semibold uppercase text-sauge-800">v2 · le formulaire</p>
+  <h2 data-court="L'aperçu" class="ff mt-1.5 text-nom text-teal-900">L'aperçu</h2>
+  <p class="mt-3 text-corps text-neutre-800 max-w-[72ch]">
+    Un bouton fantôme qui s'allume en teal plein quand l'aperçu est ouvert
+    (<code class="font-mono text-[15px] text-teal-800">aria-expanded</code>, pas seulement une couleur&nbsp;: l'œil
+    et la forme pleine changent ensemble). L'aperçu est posé dans un <strong class="font-semibold text-neutre-900">puits</strong>
+    <code class="font-mono text-[15px] text-teal-800">neutre-100</code> à ventouses teal — ni carte ni page,
+    clairement «&nbsp;pas encore en ligne&nbsp;». Dedans, la carte-portrait
+    <strong class="font-semibold text-neutre-900">du bloc «&nbsp;La carte-portrait&nbsp;», classes identiques</strong>&nbsp;;
+    seules les données changent.
+  </p>
+  <p class="mt-3 text-corps text-neutre-800 max-w-[72ch]">
+    Une fiche neuve n'a pas d'avis&nbsp;: la ligne d'étoiles n'est pas rendue, comme un canal absent. Le numéro
+    est déjà normalisé — c'est l'aperçu qui le montre.
+  </p>
+
+  <div data-specimen class="mt-6">
+    <p class="variante">Le bouton, fermé puis ouvert.</p>
+    <template>
+      <div class="p-5 flex flex-wrap items-center gap-3">
+        <button type="button" aria-expanded="false" aria-controls="v2-apercu-a"
+                class="inline-flex items-center gap-2 min-h-[44px] px-4 rounded-full text-corps font-semibold text-teal-700 bg-teal-50 hover:bg-teal-100 aria-expanded:bg-teal-700 aria-expanded:text-white">
+          <svg class="w-5 h-5" aria-hidden="true"><use href="#i-oeil"/></svg>Aperçu
+        </button>
+        <button type="button" aria-expanded="true" aria-controls="v2-apercu-a"
+                class="inline-flex items-center gap-2 min-h-[44px] px-4 rounded-full text-corps font-semibold text-teal-700 bg-teal-50 hover:bg-teal-100 aria-expanded:bg-teal-700 aria-expanded:text-white">
+          <svg class="w-5 h-5" aria-hidden="true"><use href="#i-oeil"/></svg>Aperçu
+        </button>
+        <div id="v2-apercu-a" hidden></div>
+      </div>
+    </template>
+    <div class="duo mt-3">
+      <div class="scene-boite"><div class="scene" data-rendu></div></div>
+      <div class="relative min-w-0"><pre class="code" data-code></pre></div>
+    </div>
+  </div>
+
+  <div data-specimen class="mt-8">
+    <p class="variante">Le puits, avec la carte de Sophie Arnaud telle qu'elle sera publiée.</p>
+    <template>
+      <div class="p-4">
+        <figure class="ventouses ventouses--teal m-0 rounded-[24px] bg-neutre-100 p-3">
+          <figcaption class="flex items-center gap-2 px-1.5 pt-0.5 pb-3 text-[16px] font-semibold text-teal-800">
+            <svg class="w-5 h-5" aria-hidden="true"><use href="#i-oeil"/></svg>Ce que vos voisins verront
+          </figcaption>
+          <ul class="list-none m-0 p-0">
+            <li>
+              <article class="carte carte-lien relative flex min-h-[152px] rounded-[20px] bg-white overflow-hidden">
+                <img src="https://randomuser.me/api/portraits/women/26.jpg" alt="Portrait de Sophie Arnaud"
+                     width="128" height="128" loading="lazy"
+                     class="w-[116px] shrink-0 self-stretch object-cover" style="object-position:50% 25%">
+                <div class="flex-1 min-w-0 py-4 pl-4 pr-1 flex flex-col justify-center gap-1">
+                  <h3 class="ff text-[20px] leading-tight text-teal-900">
+                    <a href="/membre/sophie-arnaud" class="before:absolute before:inset-0 before:content-['']">Sophie Arnaud</a>
+                  </h3>
+                  <p class="text-corps text-neutre-800 leading-snug">Naturopathe</p>
+                  <p class="flex flex-wrap items-center gap-x-3 gap-y-1 text-[16px] text-neutre-700 mt-0.5">
+                    <span class="inline-flex items-center gap-1"><svg class="w-4 h-4 text-teal-600" aria-hidden="true"><use href="#i-pin"/></svg>450 m</span>
+                  </p>
+                </div>
+                <a href="tel:+33639980026" class="relative z-10 shrink-0 self-center mr-2.5 grid place-items-center w-11 h-11 rounded-full text-teal-700 bg-teal-50 hover:bg-teal-100"
+                   aria-label="Appeler Sophie Arnaud au 06 39 98 00 26">
+                  <svg class="w-5 h-5" aria-hidden="true"><use href="#i-tel"/></svg>
+                </a>
+              </article>
+            </li>
+          </ul>
+          <p class="px-1.5 pt-3 pb-0.5 text-[16px] text-neutre-700">Pas encore en ligne.</p>
+        </figure>
+      </div>
+    </template>
+    <div class="duo mt-3">
+      <div class="scene-boite"><div class="scene" data-rendu></div></div>
+      <div class="relative min-w-0"><pre class="code" data-code></pre></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ╔═══ v2 · la relecture ═══════════════════════════════════════════════════╗ -->
+<section class="bloc carte rounded-[22px] bg-white p-5 sm:p-7" id="b-v2-relecture" data-bloc>
+  <p class="text-etiquette font-semibold uppercase text-sauge-800">v2 · le formulaire</p>
+  <h2 data-court="La relecture" class="ff mt-1.5 text-nom text-teal-900">La relecture — «&nbsp;Vérifiez votre fiche&nbsp;»</h2>
+  <p class="mt-3 text-corps text-neutre-800 max-w-[72ch]">
+    Le motif du GOV.UK, une liste <code class="font-mono text-[15px] text-teal-800">&lt;dl&gt;</code>&nbsp;: la question
+    courte, la réponse, «&nbsp;Modifier&nbsp;» — qui ramène à l'étape, puis ici. Chaque «&nbsp;Modifier&nbsp;» porte son contexte
+    pour un lecteur d'écran («&nbsp;Modifier <em>le métier</em>&nbsp;»). Un champ facultatif vide dit «&nbsp;Non renseigné&nbsp;»
+    et propose «&nbsp;Ajouter&nbsp;»&nbsp;; un champ obligatoire vide passe en erreur, et «&nbsp;Envoyer ma fiche&nbsp;» y renvoie.
+  </p>
+
+  <div data-specimen class="mt-6">
+    <p class="variante">Sophie Arnaud, avant l'envoi.</p>
+    <template>
+      <div class="px-5 py-6">
+        <h1 class="ff text-nom text-teal-900">Vérifiez votre fiche</h1>
+        <h2 class="ff mt-7 text-[22px] text-teal-900">Vous</h2>
+        <dl class="mt-2 m-0 border-t border-neutre-300">
+          <div class="grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 py-3 border-b border-neutre-300">
+            <dt class="text-[16px] font-semibold text-neutre-700">Nom</dt>
+            <dd class="col-start-1 m-0 text-corps text-neutre-900">Sophie Arnaud</dd>
+            <dd class="col-start-2 row-start-1 row-span-2 m-0"><a href="#etape-1" class="inline-flex items-center min-h-[44px] text-[16px] font-semibold text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">Modifier<span class="sr-only"> le nom</span></a></dd>
+          </div>
+          <div class="grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 py-3 border-b border-neutre-300">
+            <dt class="text-[16px] font-semibold text-neutre-700">On écrit</dt>
+            <dd class="col-start-1 m-0 text-corps text-neutre-900">elle — «&nbsp;Ce qu'elle propose&nbsp;»</dd>
+            <dd class="col-start-2 row-start-1 row-span-2 m-0"><a href="#etape-1" class="inline-flex items-center min-h-[44px] text-[16px] font-semibold text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">Modifier<span class="sr-only"> l'accord</span></a></dd>
+          </div>
+          <div class="grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 py-3 border-b border-neutre-300">
+            <dt class="text-[16px] font-semibold text-neutre-700">Photo</dt>
+            <dd class="col-start-1 m-0 mt-1.5"><img src="https://randomuser.me/api/portraits/women/26.jpg" alt="Votre photo" width="128" height="128" class="arche w-[56px] h-[68px] object-cover" style="object-position:50% 22%"></dd>
+            <dd class="col-start-2 row-start-1 row-span-2 m-0"><a href="#etape-2" class="inline-flex items-center min-h-[44px] text-[16px] font-semibold text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">Modifier<span class="sr-only"> la photo</span></a></dd>
+          </div>
+        </dl>
+        <h2 class="ff mt-8 text-[22px] text-teal-900">Votre activité</h2>
+        <dl class="mt-2 m-0 border-t border-neutre-300">
+          <div class="grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 py-3 border-b border-neutre-300">
+            <dt class="text-[16px] font-semibold text-neutre-700">Métier</dt>
+            <dd class="col-start-1 m-0 text-corps text-neutre-900">Naturopathe</dd>
+            <dd class="col-start-2 row-start-1 row-span-2 m-0"><a href="#etape-3" class="inline-flex items-center min-h-[44px] text-[16px] font-semibold text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">Modifier<span class="sr-only"> le métier</span></a></dd>
+          </div>
+          <div class="grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 py-3 border-b border-neutre-300">
+            <dt class="text-[16px] font-semibold text-neutre-700">Nom de l'activité</dt>
+            <dd class="col-start-1 m-0 text-corps italic text-neutre-700">Non renseigné</dd>
+            <dd class="col-start-2 row-start-1 row-span-2 m-0"><a href="#etape-3" class="inline-flex items-center min-h-[44px] text-[16px] font-semibold text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">Ajouter<span class="sr-only"> le nom de l'activité</span></a></dd>
+          </div>
+          <div class="grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 py-3 border-b border-neutre-300">
+            <dt class="text-[16px] font-semibold text-neutre-700">Catégorie</dt>
+            <dd class="col-start-1 m-0 mt-1"><span class="chip inline-flex items-center gap-2 rounded-full px-3 py-1 text-[16px] font-semibold"><svg class="w-[18px] h-[18px]" aria-hidden="true"><use href="#c-sante"/></svg>Santé &amp; bien-être</span></dd>
+            <dd class="col-start-2 row-start-1 row-span-2 m-0"><a href="#etape-4" class="inline-flex items-center min-h-[44px] text-[16px] font-semibold text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">Modifier<span class="sr-only"> les catégories</span></a></dd>
+          </div>
+          <div class="grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 py-3 border-b border-neutre-300">
+            <dt class="text-[16px] font-semibold text-neutre-700">Services</dt>
+            <dd class="col-start-1 m-0 text-corps text-neutre-900"><ul class="list-none p-0 m-0"><li>Bilan naturopathique</li><li>Suivi mensuel</li><li>Consultation en visio</li></ul></dd>
+            <dd class="col-start-2 row-start-1 row-span-2 m-0"><a href="#etape-6" class="inline-flex items-center min-h-[44px] text-[16px] font-semibold text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">Modifier<span class="sr-only"> les services</span></a></dd>
+          </div>
+          <div class="grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 py-3 border-b border-neutre-300">
+            <dt class="text-[16px] font-semibold text-neutre-700">Tarifs</dt>
+            <dd class="col-start-1 m-0 text-corps text-neutre-900">Bilan d'1&nbsp;h&nbsp;30&nbsp;: 70&nbsp;€ · suivi&nbsp;: 50&nbsp;€</dd>
+            <dd class="col-start-2 row-start-1 row-span-2 m-0"><a href="#etape-7" class="inline-flex items-center min-h-[44px] text-[16px] font-semibold text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">Modifier<span class="sr-only"> les tarifs</span></a></dd>
+          </div>
+        </dl>
+        <h2 class="ff mt-8 text-[22px] text-teal-900">Vous trouver</h2>
+        <dl class="mt-2 m-0 border-t border-neutre-300">
+          <div class="grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 py-3 border-b border-neutre-300">
+            <dt class="text-[16px] font-semibold text-neutre-700">Adresse</dt>
+            <dd class="col-start-1 m-0 text-corps text-neutre-900">8 allée du Bois Vert, 31300 Toulouse<span class="block text-[16px] text-neutre-700">Sur le plan du quartier · à 450 m de la Halle</span></dd>
+            <dd class="col-start-2 row-start-1 row-span-2 m-0"><a href="#etape-8" class="inline-flex items-center min-h-[44px] text-[16px] font-semibold text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">Modifier<span class="sr-only"> l'adresse</span></a></dd>
+          </div>
+          <div class="grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 py-3 border-b border-neutre-300">
+            <dt class="text-[16px] font-semibold text-neutre-700">Téléphone</dt>
+            <dd class="col-start-1 m-0 text-corps tnum text-neutre-900">06&nbsp;39&nbsp;98&nbsp;00&nbsp;26</dd>
+            <dd class="col-start-2 row-start-1 row-span-2 m-0"><a href="#etape-9" class="inline-flex items-center min-h-[44px] text-[16px] font-semibold text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">Modifier<span class="sr-only"> le téléphone</span></a></dd>
+          </div>
+          <div class="grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 py-3 border-b border-neutre-300">
+            <dt class="text-[16px] font-semibold text-neutre-700">Fiche Google</dt>
+            <dd class="col-start-1 m-0 text-corps italic text-neutre-700">Non renseigné</dd>
+            <dd class="col-start-2 row-start-1 row-span-2 m-0"><a href="#etape-9" class="inline-flex items-center min-h-[44px] text-[16px] font-semibold text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">Ajouter<span class="sr-only"> la fiche Google</span></a></dd>
+          </div>
+        </dl>
+      </div>
+    </template>
+    <div class="duo mt-3">
+      <div class="scene-boite"><div class="scene" data-rendu></div></div>
+      <div class="relative min-w-0"><pre class="code" data-code></pre></div>
+    </div>
+  </div>
+
+  <div data-specimen class="mt-8">
+    <p class="variante">Une réponse obligatoire manque — le filet rouge sur la ligne, «&nbsp;À compléter&nbsp;» en mots, et le lien dit «&nbsp;Compléter&nbsp;».</p>
+    <template>
+      <div class="px-5 py-6">
+        <dl class="m-0 border-t border-neutre-300">
+          <div class="grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 py-3 border-b border-neutre-300">
+            <dt class="text-[16px] font-semibold text-neutre-700">Métier</dt>
+            <dd class="col-start-1 m-0 text-corps text-neutre-900">Naturopathe</dd>
+            <dd class="col-start-2 row-start-1 row-span-2 m-0"><a href="#etape-3" class="inline-flex items-center min-h-[44px] text-[16px] font-semibold text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">Modifier<span class="sr-only"> le métier</span></a></dd>
+          </div>
+          <div class="groupe-erreur grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 py-3 border-b border-neutre-300">
+            <dt class="text-[16px] font-semibold text-neutre-700">Accroche</dt>
+            <dd class="col-start-1 m-0 flex items-start gap-1.5 text-[16px] font-semibold text-rouge-700"><svg class="w-[18px] h-[18px] shrink-0 mt-0.5" aria-hidden="true"><use href="#i-alerte"/></svg>À compléter</dd>
+            <dd class="col-start-2 row-start-1 row-span-2 m-0"><a href="#etape-5" class="inline-flex items-center min-h-[44px] text-[16px] font-semibold text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">Compléter<span class="sr-only"> l'accroche</span></a></dd>
+          </div>
+        </dl>
+      </div>
+    </template>
+    <div class="duo mt-3">
+      <div class="scene-boite"><div class="scene" data-rendu></div></div>
+      <div class="relative min-w-0"><pre class="code" data-code></pre></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ╔═══ v2 · les accords ════════════════════════════════════════════════════╗ -->
+<section class="bloc carte rounded-[22px] bg-white p-5 sm:p-7" id="b-v2-accords" data-bloc>
+  <p class="text-etiquette font-semibold uppercase text-sauge-800">v2 · le formulaire</p>
+  <h2 data-court="Les accords" class="ff mt-1.5 text-nom text-teal-900">Les accords</h2>
+  <p class="mt-3 text-corps text-neutre-800 max-w-[72ch]">
+    Trois cases <strong class="font-semibold text-neutre-900">séparées, décochées</strong>, chacune pour une seule
+    chose&nbsp;: publier la photo, en avoir les droits, avoir 18 ans. Une case qui dirait «&nbsp;j'accepte tout&nbsp;» ne
+    vaudrait rien. Au-dessus, la notice courte, en mots simples, et le lien vers
+    <code class="font-mono text-[15px] text-teal-800">/confidentialite</code>.
+  </p>
+
+  <div data-specimen class="mt-6">
+    <p class="variante">Avant l'envoi.</p>
+    <template>
+      <form class="px-5 py-6" onsubmit="return false">
+        <div class="rounded-[18px] bg-teal-50 p-4">
+          <p class="text-[16px] leading-snug text-teal-950">
+            <strong class="font-semibold">Votre fiche sera publique</strong>&nbsp;: nom, photo, métier, coordonnées.
+            Adrien la relit avant de la publier. Vous pouvez la supprimer quand vous voulez.
+            Responsable des données&nbsp;: Adrien, pour l'annuaire.
+          </p>
+          <a href="/confidentialite" class="mt-1 inline-flex items-center gap-1.5 min-h-[44px] text-[16px] font-semibold text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">
+            Vos données et vos droits<svg class="w-4 h-4" aria-hidden="true"><use href="#i-chev"/></svg>
+          </a>
+        </div>
+        <fieldset class="mt-6 border-0 p-0 m-0">
+          <legend class="ff mb-4 text-[24px] leading-tight text-teal-900">Avant d'envoyer</legend>
+          <div class="grid gap-3">
+            <label class="choix flex gap-3.5 items-start">
+              <input type="checkbox" name="v2-accord-photo" class="case">
+              <span class="text-corps leading-snug text-neutre-900">J'autorise la publication de ma photo sur l'annuaire.</span>
+            </label>
+            <label class="choix flex gap-3.5 items-start">
+              <input type="checkbox" name="v2-accord-droits" class="case">
+              <span class="text-corps leading-snug text-neutre-900">Cette photo est de moi ou j'en ai les droits, et personne d'autre n'y figure.</span>
+            </label>
+            <label class="choix flex gap-3.5 items-start">
+              <input type="checkbox" name="v2-accord-age" class="case">
+              <span class="text-corps leading-snug text-neutre-900">J'ai 18 ans ou plus.</span>
+            </label>
+          </div>
+        </fieldset>
+      </form>
+    </template>
+    <div class="duo mt-3">
+      <div class="scene-boite"><div class="scene" data-rendu></div></div>
+      <div class="relative min-w-0"><pre class="code" data-code></pre></div>
+    </div>
+  </div>
+
+  <div data-specimen class="mt-8">
+    <p class="variante">Une case manque — l'erreur se pose sous <em>cette</em> case, pas en haut du groupe.</p>
+    <template>
+      <form class="px-5 py-6" onsubmit="return false">
+        <div class="grid gap-3">
+          <label class="choix flex gap-3.5 items-start">
+            <input type="checkbox" name="v2-accord-b-photo" class="case" checked>
+            <span class="text-corps leading-snug text-neutre-900">J'autorise la publication de ma photo sur l'annuaire.</span>
+          </label>
+          <div class="groupe-erreur">
+            <label class="choix flex gap-3.5 items-start">
+              <input type="checkbox" name="v2-accord-b-droits" class="case" aria-invalid="true" aria-describedby="v2-accord-b-err">
+              <span class="text-corps leading-snug text-neutre-900">Cette photo est de moi ou j'en ai les droits, et personne d'autre n'y figure.</span>
+            </label>
+            <p id="v2-accord-b-err" class="mt-2 flex items-start gap-1.5 text-[16px] font-semibold text-rouge-700">
+              <svg class="w-[18px] h-[18px] shrink-0 mt-0.5" aria-hidden="true"><use href="#i-alerte"/></svg>
+              Sans cette case, la photo ne peut pas être publiée.
+            </p>
+          </div>
+          <label class="choix flex gap-3.5 items-start">
+            <input type="checkbox" name="v2-accord-b-age" class="case" checked>
+            <span class="text-corps leading-snug text-neutre-900">J'ai 18 ans ou plus.</span>
+          </label>
+        </div>
+      </form>
+    </template>
+    <div class="duo mt-3">
+      <div class="scene-boite"><div class="scene" data-rendu></div></div>
+      <div class="relative min-w-0"><pre class="code" data-code></pre></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ╔═══ v2 · le bandeau d'état ══════════════════════════════════════════════╗ -->
+<section class="bloc carte rounded-[22px] bg-white p-5 sm:p-7" id="b-v2-statut" data-bloc>
+  <p class="text-etiquette font-semibold uppercase text-sauge-800">v2 · l'espace</p>
+  <h2 data-court="Le bandeau d'état" class="ff mt-1.5 text-nom text-teal-900">Le bandeau d'état de la fiche</h2>
+  <p class="mt-3 text-corps text-neutre-800 max-w-[72ch]">
+    En haut de <code class="font-mono text-[15px] text-teal-800">/espace</code>, une phrase sur la fiche, au lieu
+    d'un badge. Chaque état a sa teinte <em>et</em> son icône dans une ventouse, et son titre en toutes lettres&nbsp;:
+    on comprend sans voir la couleur. Le refus cite le motif d'Adrien mot pour mot (DSA art.&nbsp;17) et
+    propose tout de suite de corriger.
+  </p>
+  <p class="mt-3 text-corps text-neutre-800 max-w-[72ch]">
+    «&nbsp;En attente&nbsp;» prend le panneau <code class="font-mono text-[15px] text-teal-800">sable-100</code> de la page
+    — il n'y en a qu'un&nbsp;; le rappel «&nbsp;fiche Google&nbsp;» est donc <code class="font-mono text-[15px] text-teal-800">teal-50</code>.
+  </p>
+
+  <div data-specimen class="mt-6">
+    <p class="variante">En attente de validation.</p>
+    <template>
+      <div class="p-4">
+        <div role="status" class="flex items-start gap-4 rounded-[22px] bg-sable-100 p-5">
+          <span class="pastille pastille--sable w-11 h-11 mt-0.5 bg-white text-sable-800" aria-hidden="true"><svg class="w-[22px] h-[22px]"><use href="#i-horloge"/></svg></span>
+          <div class="min-w-0">
+            <p class="ff text-[22px] leading-tight text-teal-950">En attente de validation</p>
+            <p class="mt-1.5 text-[16px] leading-snug text-teal-950">Envoyée le 24 octobre. Adrien la relit et vous écrit par e-mail.</p>
+          </div>
+        </div>
+      </div>
+    </template>
+    <div class="duo mt-3">
+      <div class="scene-boite"><div class="scene" data-rendu></div></div>
+      <div class="relative min-w-0"><pre class="code" data-code></pre></div>
+    </div>
+  </div>
+
+  <div data-specimen class="mt-8">
+    <p class="variante">Refusée, avec le motif.</p>
+    <template>
+      <div class="p-4">
+        <div role="status" class="flex items-start gap-4 rounded-[22px] bg-rouge-50 p-5">
+          <span class="pastille pastille--rouge w-11 h-11 mt-0.5 bg-white text-rouge-700" aria-hidden="true"><svg class="w-[22px] h-[22px]"><use href="#i-alerte"/></svg></span>
+          <div class="min-w-0">
+            <p class="ff text-[22px] leading-tight text-teal-950">Refusée&nbsp;: à corriger</p>
+            <blockquote class="mt-2 mx-0 mb-0 border-l-[3px] border-rouge-300 pl-3 text-[16px] leading-snug text-teal-950">
+              «&nbsp;Sur la photo, on voit deux personnes. Il en faut une où vous êtes seule.&nbsp;»
+              <span class="mt-1 block text-neutre-700">— Adrien, le 25 octobre</span>
+            </blockquote>
+            <a href="#etape-2" class="mt-4 inline-flex items-center gap-2 min-h-[48px] px-5 rounded-full text-corps font-semibold text-white bg-teal-700 hover:bg-teal-600">
+              Corriger ma fiche<svg class="w-4 h-4" aria-hidden="true"><use href="#i-chev"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </template>
+    <div class="duo mt-3">
+      <div class="scene-boite"><div class="scene" data-rendu></div></div>
+      <div class="relative min-w-0"><pre class="code" data-code></pre></div>
+    </div>
+  </div>
+
+  <div data-specimen class="mt-8">
+    <p class="variante">Mise en ligne en cours — après une modification d'une fiche déjà publiée. La ventouse respire.</p>
+    <template>
+      <div class="p-4">
+        <div role="status" class="flex items-start gap-4 rounded-[22px] bg-teal-50 p-5">
+          <span class="pastille pastille--teal w-11 h-11 mt-0.5 bg-white text-teal-600" aria-hidden="true"><svg class="respire w-[22px] h-[22px]"><use href="#i-ventouse"/></svg></span>
+          <div class="min-w-0">
+            <p class="ff text-[22px] leading-tight text-teal-950">Mise en ligne en cours…</p>
+            <p class="mt-1.5 text-[16px] leading-snug text-teal-950">Vos changements seront visibles d'ici quelques minutes.</p>
+          </div>
+        </div>
+      </div>
+    </template>
+    <div class="duo mt-3">
+      <div class="scene-boite"><div class="scene" data-rendu></div></div>
+      <div class="relative min-w-0"><pre class="code" data-code></pre></div>
+    </div>
+  </div>
+
+  <div data-specimen class="mt-8">
+    <p class="variante">En ligne — l'adresse de la fiche en toutes lettres : c'est celle du QR code.</p>
+    <template>
+      <div class="p-4">
+        <div role="status" class="flex items-start gap-4 rounded-[22px] bg-sauge-50 p-5" style="box-shadow: inset 0 0 0 1px var(--color-sauge-200)">
+          <span class="pastille w-11 h-11 mt-0.5 bg-white text-sauge-700" aria-hidden="true"><svg class="w-[22px] h-[22px]"><use href="#i-coche"/></svg></span>
+          <div class="min-w-0">
+            <p class="ff text-[22px] leading-tight text-teal-950">En ligne</p>
+            <p class="mt-1.5 text-[16px] leading-snug text-teal-950 break-words">cartoucherie.fyi/membre/sophie-arnaud</p>
+            <a href="/membre/sophie-arnaud" class="mt-2 inline-flex items-center gap-1.5 min-h-[44px] text-corps font-semibold text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">
+              Voir ma fiche<svg class="w-4 h-4" aria-hidden="true"><use href="#i-chev"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </template>
+    <div class="duo mt-3">
+      <div class="scene-boite"><div class="scene" data-rendu></div></div>
+      <div class="relative min-w-0"><pre class="code" data-code></pre></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ╔═══ v2 · le rappel ══════════════════════════════════════════════════════╗ -->
+<section class="bloc carte rounded-[22px] bg-white p-5 sm:p-7" id="b-v2-rappel" data-bloc>
+  <p class="text-etiquette font-semibold uppercase text-sauge-800">v2 · l'espace</p>
+  <h2 data-court="Le rappel «&nbsp;fiche Google&nbsp;»" class="ff mt-1.5 text-nom text-teal-900">Le rappel «&nbsp;fiche Google&nbsp;»</h2>
+  <p class="mt-3 text-corps text-neutre-800 max-w-[72ch]">
+    Il reste dans l'espace tant qu'aucun lien n'est collé, et la croix le masque. C'est le seul endroit de
+    l'espace où Colly passe une tête — le croquis joyeux, multiplié sur un médaillon blanc, à côté d'une
+    invitation, jamais d'un visage. La croix fait 44&nbsp;px et dit ce qu'elle fait.
+  </p>
+
+  <div data-specimen class="mt-6">
+    <p class="variante">Le rappel. Touchez la croix : il disparaît.</p>
+    <template>
+      <div class="p-4">
+        <aside data-rappel aria-labelledby="v2-rappel-titre" class="relative rounded-[22px] bg-teal-50 p-5 pr-12">
+          <div class="flex items-start gap-4">
+            <div class="w-[72px] h-[72px] shrink-0 rounded-full bg-white overflow-hidden grid place-items-center"
+                 style="box-shadow: inset 0 0 0 1.5px var(--color-teal-200)">
+              <img src="../_shared/colly/colly-joyeux.png" alt="" width="260" height="260" class="croquis w-[88px] h-auto">
+            </div>
+            <div class="min-w-0">
+              <h2 id="v2-rappel-titre" class="ff text-[21px] leading-tight text-teal-950">Ajoutez votre fiche Google</h2>
+              <p class="mt-1.5 text-[16px] leading-snug text-teal-950">Vos voisins liront vos avis Google depuis votre fiche.</p>
+            </div>
+          </div>
+          <a href="#etape-google" class="mt-4 ml-[88px] inline-flex items-center gap-2 min-h-[48px] px-5 rounded-full text-corps font-semibold text-white bg-teal-700 hover:bg-teal-600">
+            Ajouter le lien
+          </a>
+          <button type="button" aria-label="Masquer ce rappel" onclick="this.closest('[data-rappel]').hidden = true"
+                  class="absolute top-2 right-2 grid place-items-center w-11 h-11 rounded-full text-teal-800 hover:bg-teal-100">
+            <svg class="w-5 h-5" aria-hidden="true"><use href="#i-fermer"/></svg>
+          </button>
+        </aside>
+      </div>
+    </template>
+    <div class="duo mt-3">
+      <div class="scene-boite"><div class="scene" data-rendu></div></div>
+      <div class="relative min-w-0"><pre class="code" data-code></pre></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ╔═══ v2 · la file d'attente de l'admin ═══════════════════════════════════╗ -->
+<section class="bloc carte rounded-[22px] bg-white p-5 sm:p-7" id="b-v2-file" data-bloc>
+  <p class="text-etiquette font-semibold uppercase text-sauge-800">v2 · l'admin</p>
+  <h2 data-court="La file d'attente" class="ff mt-1.5 text-nom text-teal-900">La file d'attente</h2>
+  <p class="mt-3 text-corps text-neutre-800 max-w-[72ch]">
+    Une carte par fiche, la plus ancienne en haut. Le portrait sous l'arche, à 96&nbsp;px — au-dessus du plancher
+    de 88 —, le nom entier, le métier, la date d'envoi. Les signaux sont des pastilles
+    <code class="font-mono text-[15px] text-teal-800">sable-200</code> à encre sombre, avec le drapeau&nbsp;: ils
+    demandent de regarder, ils ne décident rien. Le nom ouvre l'aperçu complet.
+  </p>
+  <p class="mt-3 text-corps text-neutre-800 max-w-[72ch]">
+    «&nbsp;Publier&nbsp;» est le bouton teal plein, pas le CTA&nbsp;: dix fiches en attente feraient dix objets orange.
+    «&nbsp;Refuser…&nbsp;» ouvre le motif sur place&nbsp;; trois motifs fréquents se touchent pour pré-remplir, et le texte
+    reste modifiable. Il part tel quel à la personne.
+  </p>
+
+  <div data-specimen class="mt-6">
+    <p class="variante">Deux fiches en attente, deux signaux différents.</p>
+    <template>
+      <ul class="p-4 grid gap-3 list-none m-0">
+        <li>
+          <article class="carte rounded-[20px] bg-white overflow-hidden">
+            <div class="flex gap-4 p-4">
+              <img src="https://randomuser.me/api/portraits/men/59.jpg" alt="Portrait de Pierre Delmas"
+                   width="128" height="128" class="arche w-[96px] h-[116px] shrink-0 object-cover" style="object-position:50% 22%">
+              <div class="min-w-0 flex-1">
+                <h3 class="ff text-[21px] leading-tight text-teal-900">
+                  <a href="/admin/fiche/pierre-delmas" class="underline decoration-teal-300 underline-offset-4 hover:decoration-teal-600">Pierre Delmas</a>
+                </h3>
+                <p class="mt-0.5 text-corps leading-snug text-neutre-800">Expert-comptable</p>
+                <p class="mt-1 text-[16px] text-neutre-700">Envoyée le 22 oct.</p>
+                <ul class="mt-2 flex flex-wrap gap-1.5 list-none p-0 m-0">
+                  <li class="inline-flex items-center gap-1.5 rounded-full bg-sable-200 px-2.5 py-1 text-[16px] font-semibold text-teal-950">
+                    <svg class="w-4 h-4 shrink-0" aria-hidden="true"><use href="#i-signal"/></svg>Hors du quartier
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="flex gap-2.5 px-4 pb-4">
+              <button type="button" class="flex-1 inline-flex items-center justify-center gap-2 min-h-[48px] px-5 rounded-full text-corps font-semibold text-white bg-teal-700 hover:bg-teal-600">
+                <svg class="w-5 h-5" aria-hidden="true"><use href="#i-coche"/></svg>Publier
+              </button>
+              <button type="button" class="inline-flex items-center justify-center min-h-[48px] px-5 rounded-full text-corps font-semibold text-teal-700 bg-teal-50 hover:bg-teal-100">
+                Refuser…
+              </button>
+            </div>
+          </article>
+        </li>
+        <li>
+          <article class="carte rounded-[20px] bg-white overflow-hidden">
+            <div class="flex gap-4 p-4">
+              <img src="https://randomuser.me/api/portraits/men/83.jpg" alt="Portrait de Karim Ziani"
+                   width="128" height="128" class="arche w-[96px] h-[116px] shrink-0 object-cover" style="object-position:50% 22%">
+              <div class="min-w-0 flex-1">
+                <h3 class="ff text-[21px] leading-tight text-teal-900">
+                  <a href="/admin/fiche/karim-ziani" class="underline decoration-teal-300 underline-offset-4 hover:decoration-teal-600">Karim Ziani</a>
+                </h3>
+                <p class="mt-0.5 text-corps leading-snug text-neutre-800">Photographe</p>
+                <p class="mt-1 text-[16px] text-neutre-700">Envoyée le 24 oct.</p>
+                <ul class="mt-2 flex flex-wrap gap-1.5 list-none p-0 m-0">
+                  <li class="inline-flex items-center gap-1.5 rounded-full bg-sable-200 px-2.5 py-1 text-[16px] font-semibold text-teal-950">
+                    <svg class="w-4 h-4 shrink-0" aria-hidden="true"><use href="#i-signal"/></svg>Doublon possible
+                  </li>
+                  <li class="inline-flex items-center gap-1.5 rounded-full bg-sable-200 px-2.5 py-1 text-[16px] font-semibold text-teal-950">
+                    <svg class="w-4 h-4 shrink-0" aria-hidden="true"><use href="#i-signal"/></svg>Aucune catégorie
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="flex gap-2.5 px-4 pb-4">
+              <button type="button" class="flex-1 inline-flex items-center justify-center gap-2 min-h-[48px] px-5 rounded-full text-corps font-semibold text-white bg-teal-700 hover:bg-teal-600">
+                <svg class="w-5 h-5" aria-hidden="true"><use href="#i-coche"/></svg>Publier
+              </button>
+              <button type="button" class="inline-flex items-center justify-center min-h-[48px] px-5 rounded-full text-corps font-semibold text-teal-700 bg-teal-50 hover:bg-teal-100">
+                Refuser…
+              </button>
+            </div>
+          </article>
+        </li>
+      </ul>
+    </template>
+    <div class="duo mt-3">
+      <div class="scene-boite"><div class="scene" data-rendu></div></div>
+      <div class="relative min-w-0"><pre class="code" data-code></pre></div>
+    </div>
+  </div>
+
+  <div data-specimen class="mt-8">
+    <p class="variante">«&nbsp;Refuser…&nbsp;» ouvert — le motif, adressé à la personne, et la paire d'actions qui le confirme ou l'abandonne.</p>
+    <template>
+      <div class="p-4">
+        <article class="carte rounded-[20px] bg-white overflow-hidden">
+          <div class="flex gap-4 p-4">
+            <img src="https://randomuser.me/api/portraits/men/59.jpg" alt="Portrait de Pierre Delmas"
+                 width="128" height="128" class="arche w-[96px] h-[116px] shrink-0 object-cover" style="object-position:50% 22%">
+            <div class="min-w-0 flex-1">
+              <h3 class="ff text-[21px] leading-tight text-teal-900">
+                <a href="/admin/fiche/pierre-delmas" class="underline decoration-teal-300 underline-offset-4 hover:decoration-teal-600">Pierre Delmas</a>
+              </h3>
+              <p class="mt-0.5 text-corps leading-snug text-neutre-800">Expert-comptable</p>
+              <p class="mt-1 text-[16px] text-neutre-700">Envoyée le 22 oct.</p>
+              <ul class="mt-2 flex flex-wrap gap-1.5 list-none p-0 m-0">
+                <li class="inline-flex items-center gap-1.5 rounded-full bg-sable-200 px-2.5 py-1 text-[16px] font-semibold text-teal-950">
+                  <svg class="w-4 h-4 shrink-0" aria-hidden="true"><use href="#i-signal"/></svg>Hors du quartier
+                </li>
+              </ul>
+            </div>
+          </div>
+          <form class="border-t border-neutre-200 bg-neutre-50 p-4" onsubmit="return false">
+            <label for="v2-motif" class="block text-[16px] font-semibold text-neutre-800">Motif, envoyé à Pierre par e-mail</label>
+            <div class="mt-2 flex flex-wrap gap-2">
+              <button type="button" onclick="document.getElementById('v2-motif').value = this.dataset.motif" data-motif="Votre adresse est en dehors du quartier : l'annuaire ne présente que des voisins de la Cartoucherie."
+                      class="inline-flex items-center min-h-[44px] px-3.5 rounded-full text-[16px] font-semibold text-teal-800 bg-white hover:bg-teal-50" style="box-shadow: inset 0 0 0 1.5px var(--color-teal-200)">Hors du quartier</button>
+              <button type="button" onclick="document.getElementById('v2-motif').value = this.dataset.motif" data-motif="La photo ne convient pas : il en faut une de vous seul, de face, bien nette."
+                      class="inline-flex items-center min-h-[44px] px-3.5 rounded-full text-[16px] font-semibold text-teal-800 bg-white hover:bg-teal-50" style="box-shadow: inset 0 0 0 1.5px var(--color-teal-200)">Photo</button>
+              <button type="button" onclick="document.getElementById('v2-motif').value = this.dataset.motif" data-motif="Il manque un moyen de vous joindre : un téléphone ou un e-mail."
+                      class="inline-flex items-center min-h-[44px] px-3.5 rounded-full text-[16px] font-semibold text-teal-800 bg-white hover:bg-teal-50" style="box-shadow: inset 0 0 0 1.5px var(--color-teal-200)">Coordonnées</button>
+            </div>
+            <textarea id="v2-motif" rows="3" class="champ mt-3 block w-full min-h-[104px] px-3.5 py-3 rounded-xl text-corps leading-relaxed text-neutre-900">Votre adresse est en dehors du quartier : l'annuaire ne présente que des voisins de la Cartoucherie.</textarea>
+            <div class="mt-3 flex gap-2.5">
+              <button type="submit" class="flex-1 inline-flex items-center justify-center min-h-[48px] px-5 rounded-full text-corps font-semibold text-white bg-teal-700 hover:bg-teal-600">
+                Envoyer le refus
+              </button>
+              <button type="button" class="inline-flex items-center justify-center min-h-[48px] px-5 rounded-full text-corps font-semibold text-teal-700 bg-teal-50 hover:bg-teal-100">
+                Annuler
+              </button>
+            </div>
+          </form>
+        </article>
+      </div>
+    </template>
+    <div class="duo mt-3">
+      <div class="scene-boite"><div class="scene" data-rendu></div></div>
+      <div class="relative min-w-0"><pre class="code" data-code></pre></div>
+    </div>
+  </div>
+</section>
+
+
 <!-- ╔═══ 22 · comment composer une page ══════════════════════════════════════╗ -->
 <section class="bloc rounded-[22px] bg-teal-900 text-teal-50 p-5 sm:p-8" id="b-composer" data-bloc>
   <p class="text-etiquette font-semibold uppercase text-sauge-300">Le mode d'emploi</p>
@@ -2074,6 +3695,72 @@ body{ font-family:var(--font-sans); font-size:17px; line-height:1.55; color:var(
 </footer>
 
 <p id="sonde-fonte" class="sr-only"></p>
+
+<script id="src-js-v2">
+/* v2 — rien qu'illustrer les états : la bulle d'aide, l'aperçu, le compteur,
+   le maximum de catégories, la liste de services. Pas une application. */
+
+/* bulle d'aide et « Aperçu » : un bouton ouvre ce que nomme aria-controls */
+function basculer(b){
+  var ouvert = b.getAttribute('aria-expanded') !== 'true';
+  b.setAttribute('aria-expanded', ouvert);
+  document.getElementById(b.getAttribute('aria-controls')).hidden = !ouvert;
+}
+
+/* compteur doux : data-doux = la limite conseillée, data-dur = le refus */
+function compter(champ){
+  var n = champ.value.length, doux = +champ.dataset.doux, dur = +champ.dataset.dur || Infinity;
+  var etat = n > dur ? 'erreur' : n > doux ? 'long' : 'ok';
+  var boite = champ.closest('[data-etat]');
+  boite.dataset.etat = etat;
+  var alerte = '<svg class="w-[18px] h-[18px] shrink-0" aria-hidden="true"><use href="#i-alerte"/></svg>';
+  boite.querySelector('.compteur').innerHTML =
+    etat === 'erreur' ? alerte + n + ' / ' + dur + ' · trop long, raccourcissez'
+  : etat === 'long'   ? alerte + n + ' / ' + doux + ' · un peu long'
+  : n + ' / ' + doux;
+}
+
+/* une ou deux catégories : le message suit, les cases restent libres */
+function compterChoix(groupe){
+  var n = groupe.querySelectorAll('input:checked').length, max = +groupe.dataset.max;
+  var trop = n > max;
+  groupe.classList.toggle('groupe-erreur', trop);
+  groupe.querySelector('[data-statut]').innerHTML = trop
+    ? '<svg class="w-[18px] h-[18px] shrink-0 mt-0.5" aria-hidden="true"><use href="#i-alerte"/></svg>Deux au maximum : décochez-en une.'
+    : n + ' sur ' + max + (n === max ? ' : c’est le maximum.' : '');
+  groupe.querySelector('[data-statut]').className = trop
+    ? 'mt-1 flex items-start gap-1.5 text-[16px] font-semibold text-rouge-700'
+    : 'mt-1 text-[16px] text-neutre-700';
+}
+
+/* services : de 1 à 6 lignes ; on ne retire pas la dernière */
+function renumeroter(liste){
+  var lignes = liste.querySelectorAll('li'), max = +liste.dataset.max;
+  lignes.forEach(function(li, i){
+    var id = liste.id + '-' + (i + 1);
+    li.querySelector('label').htmlFor = id;
+    li.querySelector('label span:last-child').textContent = i + 1;
+    li.querySelector('input').id = id;
+    li.querySelector('button').setAttribute('aria-label', 'Retirer le service ' + (i + 1));
+    li.querySelector('button').hidden = lignes.length === 1;
+  });
+  var bloc = liste.closest('fieldset');
+  bloc.querySelector('[data-ajouter]').hidden = lignes.length >= max;
+  bloc.querySelector('[data-plein]').hidden = lignes.length < max;
+  bloc.querySelector('[data-nombre]').textContent = lignes.length + ' sur ' + max;
+}
+function ajouterService(b){
+  var liste = b.closest('fieldset').querySelector('ol');
+  var li = liste.lastElementChild.cloneNode(true);
+  li.removeAttribute('data-etat');
+  li.querySelector('input').value = '';
+  var err = li.querySelector('[data-message]'); if(err) err.remove();
+  liste.appendChild(li); renumeroter(liste); li.querySelector('input').focus();
+}
+function retirerService(b){
+  var liste = b.closest('ol'); b.closest('li').remove(); renumeroter(liste);
+}
+</script>
 
 <script>
 (function(){
