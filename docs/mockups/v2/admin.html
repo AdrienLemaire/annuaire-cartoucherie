@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Admin — Annuaire de la Cartoucherie (maquette v2)</title>
-<meta name="description" content="Maquette v2 de /admin : la file d'attente, la relecture, toutes les fiches, les comptes et les diapositives.">
+<meta name="description" content="Maquette v2 de /admin : la file d'attente, la relecture (histoire, pages générées, lieu posé), toutes les fiches, les comptes, les diapositives et les lieux à vérifier.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cg fill='none' stroke='%232a5f66' stroke-width='2.1'%3E%3Ccircle cx='16' cy='16' r='13.2'/%3E%3Ccircle cx='16' cy='16' r='7.4'/%3E%3Ccircle cx='16' cy='16' r='2.2' fill='%232a5f66' stroke='none'/%3E%3C/g%3E%3C/svg%3E">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -256,6 +256,17 @@ body{ font-family:var(--font-sans); font-size:17px; line-height:1.55; color:var(
 /* l'arche de la Halle : demi-cercle en haut, base droite */
 .arche{ border-radius:999px 999px 22px 22px; }
 
+/* les mots entiers : un titre ou un métier ne se coupe jamais au milieu
+   d'un mot, et n'est jamais tronqué. À 200 % de texte sur 360 px, la carte
+   de fiche n'a plus que 200 px utiles et « Lacombe » en 80 px en demande 352.
+   La taille suit donc le conteneur (container-type sur la carte) et le plus
+   long mot, dont le build écrit le nombre de lettres dans --mot. --lettre est
+   la chasse d'une lettre large, en em (0,68 pour Literata 600, 0,56 pour
+   Source Sans) ; --taille, la taille normale. À 100 %, rien ne change.
+   overflow-wrap reste un filet, pour un mot qui ne tiendrait même pas là. */
+.mots-entiers{ font-size:min(var(--taille, var(--text-grand)), calc(100cqi / (var(--lettre, 0.68) * var(--mot, 8))));
+               overflow-wrap:break-word; }
+
 /* la pastille de catégorie */
 .chip{ background:var(--color-sauge-100); color:var(--color-sauge-800); }
 
@@ -358,6 +369,157 @@ textarea.champ{ field-sizing: content; resize: vertical; }
 
 /* l'aperçu : un puits de ventouses teal — « ceci n'est pas encore en ligne » */
 .puits{ background-color:var(--color-neutre-100); }
+
+/* l'emplacement du widget Turnstile : 300 × 65, la taille du vrai. Gris
+   neutre, pour qu'on ne le prenne pas pour un objet de la marque ; le vrai
+   widget (une iframe Cloudflare) remplace ce cadre. */
+.turnstile{ display:flex; align-items:center; gap:12px; width:300px; max-width:100%; min-height:65px;
+            padding:8px 14px; border-radius:6px; background:var(--color-neutre-50);
+            box-shadow: inset 0 0 0 1px var(--color-neutre-300); }
+.turnstile__case{ width:26px; height:26px; flex:none; border-radius:4px; background:#fff;
+                  box-shadow: inset 0 0 0 1.5px var(--color-neutre-500); }
+
+/* le bouton destructeur : un seul usage, « Oui, supprimer ma fiche ».
+   Blanc sur rouge-600 = la paire error/error-content du thème (5,63:1, AA). */
+.detruire{ background:var(--color-rouge-600); color:#fff;
+           box-shadow: 0 2px 4px oklch(38% .145 20/.25), 0 10px 24px -8px oklch(38% .145 20/.35); }
+.detruire:hover{ background:var(--color-rouge-700); }
+.detruire:active{ transform:translateY(1px); }
+
+/* ── LES LIEUX PRÉFÉRÉS SUR LE PLAN ─────────────────────────────────────────
+   Le fond est src/assets/quartier.svg (ses classes nomment ce que chaque tracé
+   représente). Un lieu n'est jamais un voisin : l'épingle d'un voisin est un
+   disque blanc à anneau teal, le lieu est un carré arrondi sauge-700, icône
+   blanche (6,9:1). Forme ET teinte différentes, et jamais d'orange — l'orange
+   reste à l'épingle de voisin choisie. Cible de 44 px, repère de 30. */
+#plan-quartier path{ fill:none; stroke-linecap:round; stroke-linejoin:round; }
+#plan-quartier .g{ fill:var(--color-sauge-100); }
+#plan-quartier .w{ fill:var(--color-teal-100); }
+#plan-quartier .s, #plan-quartier .r, #plan-quartier .p{ stroke:#fff; }
+#plan-quartier .s{ stroke-width:3; } #plan-quartier .r{ stroke-width:7; } #plan-quartier .p{ stroke-width:11; }
+#plan-quartier .m{ stroke:var(--color-neutre-300); stroke-width:12; }
+#plan-quartier .t{ stroke:var(--color-teal-600); stroke-width:2; stroke-dasharray:7 7; }
+#plan-quartier .rues{ font-family:var(--font-sans); font-weight:600; fill:var(--color-neutre-700);
+                      stroke:var(--color-neutre-200); stroke-width:3; paint-order:stroke; }
+.epingle{ box-shadow: 0 0 0 2px var(--color-teal-600), var(--shadow-carte); }
+.lieu-cible{ position:absolute; display:grid; place-items:center; width:44px; height:44px; margin:-22px 0 0 -22px; }
+.lieu{ display:grid; place-items:center; width:30px; height:30px; border-radius:9px;
+       background:var(--color-sauge-700); color:#fff;
+       box-shadow: 0 0 0 2px #fff, var(--shadow-carte); transition: transform .18s ease, box-shadow .18s ease; }
+.lieu-cible:hover .lieu{ transform:scale(1.08); }
+.lieu-cible[aria-pressed="true"] .lieu, .lieu--choisi{ transform:scale(1.2); background:var(--color-sauge-900);
+       box-shadow: 0 0 0 2.5px #fff, 0 0 0 5px var(--color-sauge-700), var(--shadow-flottant); }
+/* un lieu choisi : le reste du plan recule d'un cran, voisins compris */
+[data-plan]:has(.lieu-cible[aria-pressed="true"]) :is(.lieu-cible:not([aria-pressed="true"]), .epingle-lien){ opacity:.55; }
+/* « Placer sur la carte » : le repère posé, pas encore nommé */
+.lieu--pose{ background:#fff; color:var(--color-sauge-800);
+       box-shadow: 0 0 0 2px var(--color-sauge-700), var(--shadow-flottant); outline:2px dashed var(--color-sauge-700); outline-offset:5px; }
+</style>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     FONDATION 6 — les diapositives de « Votre histoire » (v2 spec §11).
+     1080 × 1350 au build (satori + sharp) ; ici, une boîte 4:5 mesurée en
+     cqi, pour qu'une diapositive se dessine à n'importe quelle largeur :
+     1 cqi = 10,8 px sur la vraie image. Pensée pour le sous-ensemble de
+     satori — flex, position absolue, dégradés, rayons, ombres, object-fit ;
+     ni grid, ni flou, ni mode de fusion, ni masque, ni pseudo-élément (le
+     halo et le croquis multiplié ne passent donc pas). Non vérifié dans
+     satori : le build doit résoudre var() et cqi en px, et convertir les
+     couleurs en hexadécimal si satori refuse oklch(). text-wrap:balance est
+     un bonus de navigateur, la mise en page tient sans lui.
+     ═══════════════════════════════════════════════════════════════════════ -->
+<style id="src-css-diapos">
+.diapo{ position:relative; display:flex; flex-direction:column; width:100%; aspect-ratio:4/5;
+        container-type:inline-size; overflow:hidden; text-align:left;
+        font-family:var(--font-sans); color:var(--color-teal-950); }
+.diapo__motif{ position:absolute; inset:0; --v: oklch(53% .09 196 / .34);
+  background-image:
+    radial-gradient(circle at 50% 50%, transparent 0 2.5cqi, var(--v) 2.5cqi 2.8cqi, transparent 2.8cqi),
+    radial-gradient(circle at 50% 50%, transparent 0 1.4cqi, var(--v) 1.4cqi 1.68cqi, transparent 1.68cqi),
+    radial-gradient(circle at 50% 50%, var(--v) 0 .52cqi, transparent .52cqi);
+  background-size:11.2cqi 11.2cqi; }
+.diapo__corps{ position:relative; display:flex; flex-direction:column; height:100%; padding:5.2cqi; }
+
+/* l'en-tête de série : la marque à gauche, la page à droite */
+.diapo__tete{ display:flex; align-items:center; justify-content:space-between; gap:3cqi;
+              font-size:2.5cqi; font-weight:600; letter-spacing:.14em; text-transform:uppercase; }
+.diapo__marque{ display:flex; align-items:center; gap:1.6cqi; }
+.diapo__marque svg{ width:4.6cqi; height:4.6cqi; flex:none; }
+.diapo__page{ font-variant-numeric:tabular-nums; letter-spacing:.08em; }
+
+/* l'arche : celle du portrait, à l'échelle de la page. Maison, elle porte le
+   texte sur un fond clair ; photo, elle cadre la photo. */
+.diapo__arche{ position:relative; display:flex; flex-direction:column; flex:1 1 0; min-height:0; margin-top:3.6cqi;
+               border-radius:44.8cqi 44.8cqi 3.4cqi 3.4cqi; padding:6.4cqi 7cqi 5cqi;
+               background:var(--fond, var(--color-sable-100)); }
+.diapo__medaillon{ align-self:center; display:flex; align-items:center; justify-content:center; flex:none;
+                   width:10cqi; height:10cqi; border-radius:50%; background:#fff; color:var(--color-teal-700);
+                   border:.35cqi solid var(--color-teal-300); }
+.diapo__medaillon svg{ width:5cqi; height:5cqi; }
+.diapo__titre{ margin:2.6cqi 0 0; font-family:var(--font-display); font-weight:600; font-size:var(--titre, 7.6cqi);
+               line-height:1.04; letter-spacing:-.02em; text-align:center; text-wrap:balance; }
+.diapo__filet{ align-self:center; flex:none; width:12cqi; height:.9cqi; border-radius:1cqi;
+               margin:3cqi 0 3.4cqi; background-image:var(--gradient-filet); }
+.diapo__texte{ margin:0; font-size:4.1cqi; line-height:1.36; }
+.diapo__signature{ display:flex; align-items:baseline; justify-content:space-between; gap:2cqi; flex-wrap:wrap;
+                   margin-top:auto; padding-top:2.6cqi; border-top:.25cqi solid oklch(19% .03 201 / .16);
+                   font-size:2.5cqi; color:var(--color-teal-800); }
+.diapo__nom{ font-family:var(--font-display); font-weight:600; font-size:3.4cqi; color:var(--color-teal-950); }
+
+/* maison : le teal et ses ventouses autour de l'arche */
+.diapo--maison{ background-color:var(--color-teal-900); }
+.diapo--maison .diapo__tete{ color:var(--color-sable-100); }
+.diapo--maison .diapo__marque svg{ color:var(--color-sable-300); }
+
+/* photo : le papier sable, la photo dans l'arche, le texte dessous */
+.diapo--photo{ background-color:var(--color-sable-100); }
+.diapo--photo .diapo__tete{ color:var(--color-teal-800); }
+.diapo--photo .diapo__marque svg{ color:var(--color-teal-600); }
+.diapo__photo{ flex:1 1 0; min-height:var(--photo-min, 24cqi); margin-top:3.6cqi; overflow:hidden;
+               border-radius:44.8cqi 44.8cqi 3.4cqi 3.4cqi; background:var(--color-sable-200); }
+.diapo__photo img{ display:block; width:100%; height:100%; object-fit:cover; }
+.diapo--photo .diapo__titre{ margin-top:3.6cqi; text-align:left; font-size:var(--titre, 6.2cqi); }
+.diapo--photo .diapo__filet{ align-self:flex-start; margin:2.4cqi 0 2.8cqi; }
+.diapo--photo .diapo__texte{ font-size:3.8cqi; }
+.diapo--photo .diapo__signature{ margin-top:3.2cqi; }
+
+/* la couverture : « À la rencontre de… », toujours tirée du portrait */
+.diapo--couverture .diapo__corps{ align-items:center; text-align:center; }
+.diapo--couverture .diapo__tete{ align-self:stretch; }
+.diapo__portrait{ display:block; flex:0 1 auto; min-height:34cqi; margin-top:6cqi; height:var(--portrait, 55cqi); width:auto; aspect-ratio:5/6;
+                  border-radius:999px 999px 3.4cqi 3.4cqi; object-fit:cover; object-position:50% 22%;
+                  background:#fff; box-shadow:0 0 0 1.4cqi #fff, 0 2cqi 5cqi oklch(19% .03 201 / .45); }
+.diapo__rencontre{ margin:6.4cqi 0 0; font-size:2.8cqi; font-weight:600; letter-spacing:.22em; text-transform:uppercase;
+                   color:var(--color-sable-200); }
+.diapo__nom-grand{ margin:1.4cqi 0 0; font-family:var(--font-display); font-weight:600; font-size:9.4cqi;
+                   line-height:1; letter-spacing:-.025em; color:#fff; text-wrap:balance; }
+.diapo__metier{ margin:2.6cqi 0 0; font-size:3.6cqi; line-height:1.25; color:var(--color-teal-100); }
+.diapo__pied{ margin-top:auto; font-size:2.5cqi; letter-spacing:.04em; color:var(--color-teal-200); }
+
+/* le motto : pas de fond dans l'arche, juste son contour, et la phrase */
+.diapo--motto .diapo__arche{ background:transparent; border:.45cqi solid var(--color-sable-300); }
+.diapo__guillemet{ margin:auto 0 -3cqi; font-family:var(--font-display); font-weight:600; font-size:18cqi; line-height:1;
+                   text-align:center; color:var(--color-sable-300); }
+.diapo__motto{ margin:0; font-family:var(--font-display); font-weight:600; font-size:6.4cqi; line-height:1.14;
+               letter-spacing:-.015em; text-align:center; color:#fff; text-wrap:balance; }
+.diapo--photo .diapo__motto{ color:var(--color-teal-950); text-align:left; font-size:5.4cqi; margin-top:3.6cqi; }
+.diapo--maison.diapo--motto .diapo__signature{ color:var(--color-teal-100); border-color:oklch(100% 0 0 / .2); }
+.diapo--maison.diapo--motto .diapo__nom{ color:#fff; }
+
+/* les lieux : l'icône du plan, le nom, le type */
+.diapo__lieux{ display:flex; flex-direction:column; gap:1.6cqi; margin:0; padding:0; list-style:none; }
+.diapo__lieu{ display:flex; align-items:center; gap:2.6cqi; }
+.diapo__lieu-icone{ display:flex; align-items:center; justify-content:center; flex:none; width:6.4cqi; height:6.4cqi;
+                    border-radius:2cqi; background:var(--color-sauge-700); color:#fff; }
+.diapo__lieu-icone svg{ width:4cqi; height:4cqi; }
+.diapo__lieu-nom{ font-family:var(--font-display); font-weight:600; font-size:3.4cqi; line-height:1.08; }
+.diapo__lieu-type{ display:block; margin-top:.5cqi; font-family:var(--font-sans); font-size:2.2cqi; font-weight:600;
+                   letter-spacing:.12em; text-transform:uppercase; color:var(--color-sauge-800); }
+.diapo__phrase{ margin:2.6cqi 0 0; font-size:3.4cqi; line-height:1.32; }
+
+/* Colly : accrochée au bord de l'arche, jamais près d'un visage.
+   400 × 473 à la source : 24 cqi = 259 px, sous ×1. */
+.diapo__colly{ position:absolute; width:24cqi; height:auto; right:-2.4cqi; top:10.5cqi; transform:rotate(14deg); }
 </style>
 
 <!-- La planche elle-meme — pas le produit. `data-planche` : ce bloc n'entre pas
@@ -418,13 +580,40 @@ textarea.champ{ field-sizing: content; resize: vertical; }
 <symbol id="i-photo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4.4 7.6h3l1.6-2.4h6l1.6 2.4h3a1.6 1.6 0 0 1 1.6 1.6v9a1.6 1.6 0 0 1-1.6 1.6H4.4a1.6 1.6 0 0 1-1.6-1.6v-9a1.6 1.6 0 0 1 1.6-1.6Z"/><circle cx="12" cy="13.4" r="3.6"/></symbol>
 <symbol id="i-corbeille" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4.6 6.8h14.8M9.4 6.8V4.6h5.2v2.2M6.6 6.8l.9 12.6a1.6 1.6 0 0 0 1.6 1.4h5.8a1.6 1.6 0 0 0 1.6-1.4l.9-12.6M10.2 10.6v6M13.8 10.6v6"/></symbol>
 <symbol id="c-logement" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="15.6" r="4.2"/><path d="m11 12.6 8.4-8.4"/><path d="m16.6 7 2.6 2.6"/><path d="m14 9.6 2 2"/></symbol>
-<!-- admin : cinq icones de plus, meme trace (1,7 px, bouts ronds) -->
+<!-- v2 · la fiche (encadré pratique), l'admin, et les types de lieux favoris (l-) -->
+<symbol id="i-euro" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M17.8 6.6a7 7 0 1 0 0 10.8"/><path d="M4.4 10.2h8.8M4.4 13.8h8.8"/></symbol>
+<symbol id="i-agenda" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3.4" y="5" width="17.2" height="15.6" rx="2.6"/><path d="M3.4 9.8h17.2M8 3.4v3.2M16 3.4v3.2"/><path d="m9.2 15 2 2 3.8-3.8"/></symbol>
+<symbol id="i-langues" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3.4 5.6a2 2 0 0 1 2-2h8.4a2 2 0 0 1 2 2v5.2a2 2 0 0 1-2 2H9.2l-3.6 3v-3h-.2a2 2 0 0 1-2-2Z"/><path d="M15.8 8.6h2.8a2 2 0 0 1 2 2v5.2a2 2 0 0 1-2 2h-.2v3l-3.6-3h-3.6a2 2 0 0 1-2-2v-1"/></symbol>
 <symbol id="i-masque" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9.9 5.8A9.7 9.7 0 0 1 12 5.6c6 0 9.4 6.4 9.4 6.4a16.4 16.4 0 0 1-2.7 3.4M6.5 7.5A15.6 15.6 0 0 0 2.6 12S6 18.4 12 18.4a9.4 9.4 0 0 0 4.5-1.1"/><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/><path d="m3.8 3.8 16.4 16.4"/></symbol>
+<symbol id="i-carte" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3.6 6.4 9 4.2l6 2.2 5.4-2.2v13.4L15 19.8l-6-2.2-5.4 2.2Z"/><path d="M9 4.2v13.4M15 6.4v13.4"/></symbol>
+<symbol id="i-ampoule" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9.4 17.6h5.2M10.2 20.6h3.6"/><path d="M8.6 14.6a6 6 0 1 1 6.8 0c-.6.5-.9 1.1-.9 1.9v1.1H9.5v-1.1c0-.8-.3-1.4-.9-1.9Z"/></symbol>
+<symbol id="l-cafe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4.8 9.4h11.4v4.4a5 5 0 0 1-5 5h-1.4a5 5 0 0 1-5-5Z"/><path d="M16.2 10.6h1.2a2.4 2.4 0 0 1 0 4.8h-1.6"/><path d="M8.4 3.6c-.9 1 .9 1.9 0 3M12.4 3.6c-.9 1 .9 1.9 0 3"/><path d="M3.6 21.2h14"/></symbol>
+<symbol id="l-restaurant" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6.6 3.4v6a2.4 2.4 0 0 0 4.8 0v-6M9 3.4v17.2"/><path d="M17.4 20.6V3.4c-2 1-3.2 3.8-3.2 7.4 0 1.4.9 2.4 2.2 2.4h1"/></symbol>
+<symbol id="l-parc" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.4c-2.8 0-4.9 2.1-4.9 4.7 0 .4 0 .7.1 1A3.7 3.7 0 0 0 8.1 16.4h7.8a3.7 3.7 0 0 0 .9-7.3c.1-.3.1-.6.1-1 0-2.6-2.1-4.7-4.9-4.7Z"/><path d="M12 11.4v9.4M12 14.2l-2.2-1.8M8.2 20.8h7.6"/></symbol>
+<symbol id="l-boutique" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5.2 8.2h13.6l-.9 11.4a1.8 1.8 0 0 1-1.8 1.6H7.9a1.8 1.8 0 0 1-1.8-1.6Z"/><path d="M9 10.6V6.8a3 3 0 0 1 6 0v3.8"/></symbol>
+<symbol id="l-sport" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6.8 7.4v9.2M17.2 7.4v9.2M3.8 9.8v4.4M20.2 9.8v4.4M6.8 12h10.4"/></symbol>
+<symbol id="l-culture" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4.8 5.4h14.4a1.4 1.4 0 0 1 1.4 1.4v2.4a2.8 2.8 0 0 0 0 5.6v2.4a1.4 1.4 0 0 1-1.4 1.4H4.8a1.4 1.4 0 0 1-1.4-1.4v-2.4a2.8 2.8 0 0 0 0-5.6V6.8a1.4 1.4 0 0 1 1.4-1.4Z"/><path d="M14.6 7.8v1.4M14.6 11.3v1.4M14.6 14.8v1.4"/></symbol>
+<symbol id="l-autre" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.6c.6 4.4 2.4 6.6 6.8 7.4-4.4.8-6.2 3-6.8 7.4-.6-4.4-2.4-6.6-6.8-7.4 4.4-.8 6.2-3 6.8-7.4Z"/></symbol>
+<!-- admin seulement -->
+<symbol id="i-lien" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M10.2 13.8a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1.1 1.1"/><path d="M13.8 10.2a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1.1-1.1"/></symbol>
+<symbol id="i-relance" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M19.4 12a7.4 7.4 0 1 1-2.2-5.2"/><path d="M19.6 4.4v4.4h-4.4"/></symbol>
 <symbol id="i-haut" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m5.5 15 6.5-6.5 6.5 6.5"/></symbol>
 <symbol id="i-bas" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m5.5 9 6.5 6.5 6.5-6.5"/></symbol>
-<symbol id="i-lien" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M10.2 13.8a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1.1 1.1"/><path d="M13.8 10.2a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1.1-1.1"/></symbol>
-<symbol id="i-euro" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M17.8 6.6a7 7 0 1 0 0 10.8"/><path d="M4.4 10.2h8.8M4.4 13.8h8.8"/></symbol>
-<symbol id="i-relance" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M19.4 12a7.4 7.4 0 1 1-2.2-5.2"/><path d="M19.6 4.4v4.4h-4.4"/></symbol>
+</defs></svg>
+<!-- LE PLAN — src/assets/quartier.svg, rendu par scripts/map-svg.mjs (OpenStreetMap, ODbL),
+     posé une fois comme symbole : les spécimens de « Lieux préférés » l'appellent par <use>
+     et le recadrent par leur viewBox, au 1:1 du produit. -->
+<svg width="0" height="0" class="hidden" aria-hidden="true" focusable="false" id="src-plan"><defs>
+<symbol id="plan-quartier" viewBox="0 0 722 676">
+<path class="g" d="M287 219L287 219ZM405 160L405 160ZM699 400L699 400ZM522 684L525 632L486 629L482 684ZM-8 665L28 671L30 654L25 457L30 382L25 380L-8 381ZM601 665L601 665ZM291 206L291 206ZM651 313L651 313ZM406 160L406 160ZM125 86L125 86ZM646 660L646 660ZM298 199L298 199ZM60 266L60 266ZM379 409L379 409ZM83 220L83 220ZM99 231L99 231ZM104 235L104 235ZM239 329L239 329ZM38 272L38 272ZM1 622L1 622ZM352 684L383 582L385 571L381 571L345 684ZM361 684L394 576L409 577L409 573L385 571L383 582L352 684ZM383 553L383 553ZM385 490L385 490ZM201 452L201 452ZM201 456L201 456ZM201 460L201 460ZM200 468L200 468ZM228 470L228 470ZM285 471L285 471ZM337 478L337 478ZM73 351L73 351ZM81 343L81 343ZM83 340L83 340ZM102 325L102 325ZM111 315L111 315ZM117 302L117 302ZM118 300L118 300ZM64 361L64 361ZM61 361L61 361ZM41 364L41 364ZM59 367L59 367ZM41 370L41 370ZM123 377L123 377ZM71 377L71 377ZM40 389L40 389ZM40 387L40 387ZM37 543L37 543ZM156 514L156 514ZM145 513L145 513ZM376 560L376 560ZM321 557L321 557ZM268 553L268 553ZM191 548L191 548ZM175 547L175 547Z"/>
+<path class="w" d="M-8 483L4 512L5 525L4 529L-7 537L-8 543ZM12 334L12 334ZM416 -8L459 23L474 36L483 39L485 44L498 53L503 60L525 81L615 152L663 184L708 209L730 219L730 137L703 123L574 28L570 17L556 -1L549 3L533 -8Z"/>
+<path class="s" d="M177 685L166 661L161 627L168 588L174 574L186 560L187 554M399 402L401 374L389 372M627 236L605 206L606 202L613 197L617 197L626 209L627 216L637 229M738 249L714 283L719 292L722 292L740 268M704 377L713 369L713 365L703 355L699 359L698 365M34 377L-32 378M714 620L707 636L723 645L725 649L750 664M33 628L39 626L40 581L36 579M-12 15L49 14L55 18M88 558L104 559M84 546L84 554L79 557L82 560M103 576L105 547M659 199L658 222M190 571L238 596L231 613L160 600M159 649L229 640L231 642L237 657L177 685M182 688L220 670L225 670L239 664L250 673L238 685M209 562L202 573M160 605L228 618L229 633L212 638L159 645M181 564L190 571L201 562L247 565L257 577L242 590L229 584L225 584L193 568M266 670L251 660L244 650L240 635L241 611L252 593L265 583L292 569L297 560M170 648L184 682M208 581L197 607M196 611L195 640M214 672L226 687M253 571L234 587M220 563L210 577M205 644L215 667M170 607L170 644M205 613L204 639M193 572L180 604M224 589L214 610M232 564L218 581M231 667L245 679M196 645L207 671M222 641L230 660M216 585L205 609M179 647L192 678M224 670L238 685M187 610L185 626L187 641M221 617L221 636M185 568L176 586L171 602M179 608L178 643M213 642L223 664M213 614L212 638M201 576L188 606M231 593L222 612M244 565L230 578L227 584M188 646L192 661L199 675M739 119L713 105L664 74L465 -79M678 608L677 613L674 613L646 595M86 218L85 210L91 169L94 166L106 174M530 176L514 183M-8 115L-2 121L2 132L23 142M768 383L728 414L711 392L698 365L673 330L661 305L662 296L687 273L694 272L718 308L726 316L754 333M625 385L629 370M394 412L399 402M516 183L516 182M630 240L627 236M637 229L640 234M161 264L159 267M590 153L594 148M586 160L590 153M150 75L151 69M185 288L157 270M609 182L596 191M493 238L490 230M484 233L487 240M524 243L508 222M83 67L114 73M602 187L578 150M184 296L185 288M87 51L90 40L99 43L95 69M108 72L104 93L100 98L92 100L78 98M80 89L61 85L63 70L82 72M326 230L318 228L319 206L323 203L327 205M685 -10L719 12L728 11L759 -39M165 552L170 555L172 567L160 600L157 630L161 655L172 685M335 573L334 587M343 573L341 586L303 592L300 589L300 583L315 579L322 589M329 589L340 608L338 644L332 655L316 665L313 679M493 372L494 368M492 379L493 372M473 402L487 407L492 379M660 562L661 550L667 550L675 557L674 564L670 568M670 580L672 576L670 568L662 562L660 562L654 571M24 135L22 74M13 133L11 74M1 116L5 129L20 136L27 134L32 113L31 85L34 82M1 116L0 75L21 74L27 76L34 82M34 82L39 98M34 82L37 83L40 93M-12 89L-4 115L1 116M317 684L315 680L309 677L281 676L266 670M85 560L88 558L84 554M82 560L85 560M530 584L528 604L525 607L490 604L486 600L488 578M488 578L483 572M142 691L144 660M133 691L135 661M124 690L126 660M109 689L111 659M100 688L102 658M116 690L119 643L117 640L103 638L100 635L103 576M171 270L172 264L170 262L163 260L161 264M114 227L120 188M113 236L114 227M117 205L128 206M130 193L128 213M194 235L178 233L182 204M488 578L491 574M531 578L530 584M708 557L702 557M700 582L703 581M720 568L723 569M712 558L711 577M710 582L711 577M703 581L719 582L720 559L708 557M111 176L106 174M115 144L110 185M567 547L568 540M558 547L559 539M577 582L579 542L559 539M567 405L565 414M569 397L567 405M569 393L569 397M584 391L580 390M619 402L616 401M616 401L584 391M622 387L609 382M624 387L622 387M479 341L473 357L455 353M454 356L455 353M455 353L468 319L485 321M576 328L583 303M584 331L576 328M596 342L585 338L583 335L591 310L590 307L586 305M585 341L576 366M607 315L603 332M20 -7L20 14M25 14L25 3L23 1M661 509L660 514M661 504L661 509M661 516L656 520L651 531L640 524M670 534L675 534L677 525M671 523L671 538L675 542L681 544M660 514L663 520L661 541L677 549L679 549L686 526M637 501L632 531M115 548L115 556M115 556L113 576L115 579L122 579L123 559M12 657L9 641L12 632M122 579L119 631M113 578L110 628L111 630L128 630L129 612M23 1L20 -7M708 521L718 522M705 520L708 521M718 522L729 523L731 519M626 529L634 500M200 98L195 93M22 14L24 70L45 71M464 631L471 630L473 627L475 592L474 588L457 586L416 585M433 636L440 629L464 631M468 679L470 644L464 631M416 585L414 597L406 688M433 691L437 643L433 636L410 635M652 585L628 625M322 562L321 570L329 589M558 581L554 681M555 652L583 654M722 55L706 45M724 43L721 48L722 55L730 64M125 536L124 545M124 545L124 549"/>
+<path class="r" d="M192 248L307 301M553 518L521 566M412 34L385 52M310 36L358 55L380 56M386 58L453 120M386 58L386 58M717 441L710 476L701 572L697 598M598 537L606 507L626 412M616 456L710 476M608 497L706 510M679 587L685 568L701 564M536 320L516 376M574 442L556 511M507 421L574 442M574 442L616 456M457 356L431 433M307 301L300 345L297 351M203 167L126 127L118 134M144 255L149 246M156 233L136 220L144 163L146 160L164 154L169 155M211 139L178 125L184 104L202 99L222 114M249 57L269 65L288 81L297 96L302 110L303 129M217 120L224 123L303 129L343 128L385 110L405 133L412 152M303 167L203 167M326 309L326 234M261 279L272 248M272 248L196 221M225 231L231 205L234 204L283 218M373 176L402 233M357 323L383 242L505 187M455 127L329 202M343 128L344 169M209 -11L310 36M463 131L463 131M471 117L518 87M402 158L438 217M448 212L412 152M579 396L582 386M549 355L539 383M585 369L549 355M616 409L625 385M625 385L696 415L698 419L693 433M628 625L662 648L649 675L665 687M0 631L-18 629M739 53L637 -18M46 138L39 141L32 138L25 140L21 152M186 51L88 14L90 -5L86 -14M201 7L174 -2L139 -16M77 112L87 51M180 127L162 119L165 116L178 121M694 700L717 663L718 642M718 642L718 629L727 616M624 522L604 515M477 198L439 135M56 11L29 10L28 -1L32 -8L34 -22M113 548L50 544M50 551L55 549L70 547L113 548M442 298L451 299L516 281L538 278M491 288L498 315L526 318L531 311L538 278M516 376L498 469L495 474M684 230L663 222L658 222L563 289M547 116L515 138L512 147L551 206M426 347L440 301L442 298L438 272L433 262L434 251L442 246L484 233L517 217L544 197M483 138L503 166M494 172L517 157M438 272L532 247L540 241L543 229L557 217M551 206L551 206M149 246L152 241M152 241L160 226L169 155L171 151M303 129L304 186M576 241L582 249M582 249L594 266M62 375L109 322L113 318L114 304L111 300L64 272M684 230L695 217M563 289L560 327L549 355M580 385L576 396M549 355L526 347M390 -4L458 113M307 301L396 337L717 441M327 562L113 548M521 566L512 572L500 573L327 562M327 562L379 567M585 369L596 342L684 230M326 234L326 210L329 202M538 278L582 249M134 435L137 393M177 370L86 364L75 360M109 322L116 326L176 330L179 332M30 428L173 437M21 152L33 147L34 139M9 171L11 161L21 152M56 11L32 138M582 386L583 380M583 378L581 380M583 380L583 378M581 380L580 385M583 378L585 369M80 118L77 112M507 284L500 256M496 257L488 235M179 332L184 296M98 432L95 472M11 161L-2 164M284 382L284 382M221 513L229 398M284 400L275 539M327 562L335 405M335 405L332 403L235 397L229 398M39 388L99 391M556 511L553 518M553 523L553 518M509 575L525 566L553 523M247 560L247 560M379 567L409 569M409 569L509 575M537 580L621 585L636 594M33 147L45 141L46 138M55 135L46 138M75 123L55 135M84 116L75 123M100 105L84 116M107 101L100 105M111 100L107 101M145 78L131 87M127 90L111 100M131 87L127 90M176 59L159 71L145 78M195 44L176 59M226 437L230 434L335 441M335 441L381 444L386 446L384 503L382 522L380 525M380 525L329 522M33 630L23 629L12 632L0 631M176 394L165 552M220 535L221 513M582 249L611 227M20 1L30 -5M56 11L62 -22M179 332L177 372M177 372L176 394M102 365L98 432M34 377L54 378L62 375M585 689L592 667L620 620M102 391L176 396M99 391L102 391M620 620L652 569M521 566L531 578L537 580M628 625L620 620M717 441L735 447M218 555L220 535M275 539L274 559M272 248L283 218"/>
+<path class="p" d="M185 279L192 248M41 538L32 521M42 559L49 554L51 548L48 542L41 538M9 171L-24 149M248 90L208 48L200 44M196 39L206 -12M740 624L697 598M192 248L203 167M87 219L63 205M63 266L76 255L91 233M82 227L84 235M91 233L87 219M32 589L42 559M34 557L32 589M248 90L306 39M91 233L122 252L154 264M151 258L102 229M63 205L9 171M495 474L409 421M215 125L222 114L248 90M178 274L151 258M188 269L178 274M60 263L55 263L51 266L52 274M82 227L91 233M744 239L695 217M695 217L665 195L557 123L518 87M-11 166L16 183M196 39L195 44L200 44M102 229L90 231L84 235M46 296L57 276M52 274L45 292L46 296M34 557L42 559M34 541L30 547L34 557M52 274L57 276M63 266L60 263M57 276L63 274L63 266M32 521L29 490L30 428L37 334L46 296M32 521L34 541M16 183L64 213M185 279L178 274M41 538L34 541M200 44L200 39L196 39M84 236L69 256L60 263M184 283L234 314L243 318M243 318L185 279M203 167L215 125M402 416L243 318M518 87L491 62L399 -6M409 421L402 416M154 264L184 283M64 213L82 227M310 36L318 32M318 32L390 -4M33 630L32 589M28 685L33 666L33 630M306 39L310 36M102 229L87 219M556 511L495 474M652 569L601 540M84 235L84 236M184 283L185 279M601 540L556 511M697 598L652 569"/>
+<path class="m" d="M-25 265L27 270M206 56L80 134M95 135L163 94M317 -12L276 13M18 188L31 179M80 134L65 141L19 172M219 48L206 56M214 64L228 56M228 56L274 27M288 18L333 -9M274 27L288 18M262 21L219 48M276 13L262 21M61 198L71 171L82 152L95 140L163 94M57 212L61 198M18 201L33 204L40 211L44 219L44 234L34 248L28 251L14 253L-30 248M27 270L45 276L49 282M163 94L214 64M-24 255L9 260L30 256L39 251L47 241L57 212M80 134L23 174M-21 216L18 188M-11 215L4 206L18 201M19 172L6 180M23 174L10 183M31 179L95 135M10 183L-31 211M27 270L51 271M6 180L-15 194"/>
+<path class="t" d="M340 714L379 586M392 459L393 444M218 312L138 261M380 578L324 760M217 314L375 412M-25 155L50 202M50 202L82 222M51 200L-30 150M83 221L51 200M82 222L111 243M100 233L83 221M111 243L155 276L217 314M138 261L100 233M375 412L385 420L390 429L390 459M363 402L218 312M393 444L392 430L387 419L363 402M379 586L383 573M383 573L387 537M387 537L392 459M390 459L383 560M383 560L380 578"/>
+<g class="rues" font-size="14" text-anchor="middle"><text transform="translate(492 471) rotate(32)" dy="5">Avenue de Grande Bretagne</text><text transform="translate(277 559) rotate(4)" dy="5">Avenue Raymond Badiou</text><text transform="translate(553 388) rotate(18)" dy="5">Rue des Fontaines</text><text transform="translate(172 443) rotate(-86)" dy="5">Rue Thomas Dupuy</text><text transform="translate(646 279) rotate(-51)" dy="5">Rue Paul Décamps</text><text transform="translate(279 479) rotate(-86)" dy="5">Rue Roger Sicre</text><text transform="translate(707 519) rotate(-83)" dy="5">Rue des Braves</text><text transform="translate(224 477) rotate(-86)" dy="5">Rue André Saves</text><text transform="translate(331 484) rotate(-87)" dy="5">Rue Jean Guiméra</text><text transform="translate(392 164) rotate(-31)" dy="5">Rue Ledru-Rollin</text><text transform="translate(610 256) rotate(-36)" dy="5">Rue Milhes</text><text transform="translate(562 438) rotate(18)" dy="5">Rue Lespes</text><text transform="translate(663 466) rotate(12)" dy="5">Rue Albus</text></g>
+</symbol>
 </defs></svg>
 
 <!-- ═══════════════════════════════════════════════════════════════════════════
@@ -445,7 +634,7 @@ textarea.champ{ field-sizing: content; resize: vertical; }
         <span>Chaque cadre est un vrai écran : 360&nbsp;px, ou 1280&nbsp;×&nbsp;800 pour le portable. On peut y faire défiler la page.</span></li>
       <li class="flex gap-2.5"><svg class="w-4 h-4 mt-1.5 shrink-0 text-teal-600" aria-hidden="true"><use href="#i-ventouse"/></svg>
         <span><strong class="font-semibold text-neutre-900">Aucun bouton orange hors de l'aperçu.</strong> Les actions d'Adrien
-        sont teal ; le seul bouton orange est l'«&nbsp;Appeler&nbsp;» que verront les voisins.</span></li>
+        sont teal ; le seul bouton orange est l'«&nbsp;Appeler&nbsp;» que verront les voisins, et les filets orange sont ceux de la fiche et de ses pages.</span></li>
       <li class="flex gap-2.5"><svg class="w-4 h-4 mt-1.5 shrink-0 text-teal-600" aria-hidden="true"><use href="#i-ventouse"/></svg>
         <span>Tout motif écrit ici part tel quel à la personne, par e-mail (DSA, art.&nbsp;17).</span></li>
       <li class="flex gap-2.5"><svg class="w-4 h-4 mt-1.5 shrink-0 text-teal-600" aria-hidden="true"><use href="#i-ventouse"/></svg>
@@ -462,9 +651,9 @@ textarea.champ{ field-sizing: content; resize: vertical; }
       <p class="mt-2 text-corps text-neutre-800 max-w-[72ch]">La plus ancienne en haut. Les signaux demandent un regard, ils ne décident rien.</p>
     </div>
     <div class="rangee mt-6">
-      <figure class="cadre"><iframe data-ecran="e-file" title="1a — la file, trois fiches"></iframe>
-        <figcaption><span class="num">1a</span> <span class="text-corps font-semibold text-teal-900">Trois fiches, trois cas.</span>
-          <span class="block text-[16px] text-neutre-700">Hors du quartier ; doublon possible (même téléphone que Léa) et «&nbsp;aucune catégorie ne convient&nbsp;», avec la note de Karim ; rien à signaler.</span></figcaption></figure>
+      <figure class="cadre"><iframe data-ecran="e-file" title="1a — la file, quatre fiches"></iframe>
+        <figcaption><span class="num">1a</span> <span class="text-corps font-semibold text-teal-900">Quatre fiches, quatre cas.</span>
+          <span class="block text-[16px] text-neutre-700">Hors du quartier ; doublon possible (même téléphone que Léa) et «&nbsp;aucune catégorie ne convient&nbsp;», avec la note de Karim ; un lieu posé sur le plan (Sacha, section 6) ; rien à signaler.</span></figcaption></figure>
       <figure class="cadre"><iframe data-ecran="e-file-vide" data-compte="0" title="1b — la file vide"></iframe>
         <figcaption><span class="num">1b</span> <span class="text-corps font-semibold text-teal-900">Rien à relire.</span>
           <span class="block text-[16px] text-neutre-700">La seule apparition de Colly dans l'admin.</span></figcaption></figure>
@@ -491,10 +680,10 @@ textarea.champ{ field-sizing: content; resize: vertical; }
       <figure class="cadre"><iframe data-ecran="e-revue-refus" title="2c — refuser, motif obligatoire"></iframe>
         <figcaption><span class="num">2c</span> <span class="text-corps font-semibold text-teal-900">Refuser : le motif est obligatoire.</span>
           <span class="block text-[16px] text-neutre-700">Envoyé vide, il passe en erreur. Le bouton n'est jamais grisé. Les trois motifs fréquents pré-remplissent.</span></figcaption></figure>
-      <figure class="cadre"><iframe data-ecran="e-refus-ok" data-compte="2" title="2d — refus envoyé"></iframe>
+      <figure class="cadre"><iframe data-ecran="e-refus-ok" data-compte="3" title="2d — refus envoyé"></iframe>
         <figcaption><span class="num">2d</span> <span class="text-corps font-semibold text-teal-900">Après «&nbsp;Envoyer le refus&nbsp;».</span>
           <span class="block text-[16px] text-neutre-700">Le motif exact, à qui et quand. Retour à la file, fiche suivante en haut.</span></figcaption></figure>
-      <figure class="cadre"><iframe data-ecran="e-publie-ok" data-compte="1" title="2e — fiche publiée"></iframe>
+      <figure class="cadre"><iframe data-ecran="e-publie-ok" data-compte="2" title="2e — fiche publiée"></iframe>
         <figcaption><span class="num">2e</span> <span class="text-corps font-semibold text-teal-900">Après «&nbsp;Publier&nbsp;».</span>
           <span class="block text-[16px] text-neutre-700">La mise en ligne prend quelques minutes : l'adresse définitive est donnée tout de suite.</span></figcaption></figure>
     </div>
@@ -571,6 +760,62 @@ textarea.champ{ field-sizing: content; resize: vertical; }
       <figcaption class="px-4 sm:px-0"><span class="num">5c · 1280</span> <span class="text-corps font-semibold text-teal-900">Sur portable.</span>
         <span class="block text-[16px] text-neutre-700">La vignette à gauche de son texte : on écrit en regardant l'image.</span></figcaption></figure>
   </section>
+
+  <!-- ═══ 6 · une fiche « iel », son histoire et son lieu ═══ -->
+  <section class="mt-16" aria-labelledby="s6">
+    <div class="px-4 sm:px-0">
+      <p class="num">6</p>
+      <h2 id="s6" class="ff mt-1 text-nom text-teal-900">Relire une histoire, un lieu, un «&nbsp;iel&nbsp;»</h2>
+      <p class="mt-2 text-corps text-neutre-800 max-w-[72ch]">Sacha Morel (<em>iel</em>, céramiste) a répondu à quatre questions et posé un lieu sur le plan. Adrien lit les réponses, regarde les pages que le build en tirera, décide du lieu, puis publie.</p>
+    </div>
+    <div class="rangee mt-6">
+      <figure class="cadre"><iframe data-ecran="e-sacha" title="6a — relecture de Sacha, le haut"></iframe>
+        <figcaption><span class="num">6a</span> <span class="text-corps font-semibold text-teal-900">«&nbsp;On écrit&nbsp;: iel&nbsp;».</span>
+          <span class="block text-[16px] text-neutre-700">Le signal «&nbsp;Lieu à vérifier&nbsp;» mène au lieu, plus bas. L'accord est dit avec ses deux phrases.</span></figcaption></figure>
+      <figure class="cadre"><iframe data-ecran="e-sacha" data-defile="#histoire" title="6b — les réponses et les pages générées"></iframe>
+        <figcaption><span class="num">6b</span> <span class="text-corps font-semibold text-teal-900">Les pages, puis les réponses.</span>
+          <span class="block text-[16px] text-neutre-700">La série que le build tirera (bloc «&nbsp;Les diapositives&nbsp;»), en bande qui défile&nbsp;: au plus deux filets orange à l'écran. Dessous, chaque réponse en clair.</span></figcaption></figure>
+      <figure class="cadre"><iframe data-ecran="e-sacha" data-defile="#lieu-pose" title="6c — le lieu posé, dans la relecture"></iframe>
+        <figcaption><span class="num">6c</span> <span class="text-corps font-semibold text-teal-900">Le lieu, décidé dans la fiche.</span>
+          <span class="block text-[16px] text-neutre-700">Approuver, modifier (nom, type, point), fusionner, refuser&nbsp;: les mêmes panneaux qu'en 7. Pas décidé, il est approuvé avec la fiche.</span></figcaption></figure>
+      <figure class="cadre"><iframe data-ecran="e-sacha" data-defile="#ap-contact" title="6d — l'aperçu, accordé à iel"></iframe>
+        <figcaption><span class="num">6d</span> <span class="text-corps font-semibold text-teal-900">«&nbsp;Lae contacter&nbsp;», «&nbsp;Ce qu'iel propose&nbsp;».</span>
+          <span class="block text-[16px] text-neutre-700">Et «&nbsp;Où lae trouver&nbsp;», «&nbsp;inscrit·e&nbsp;» : la troisième colonne de <code class="font-mono text-[15px] text-teal-800">gender.ts</code>.</span></figcaption></figure>
+    </div>
+    <figure class="cadre cadre--large mt-10"><div class="boite-large"><iframe data-ecran="l-sacha" title="6e — la relecture de Sacha, sur portable"></iframe></div>
+      <figcaption class="px-4 sm:px-0"><span class="num">6e · 1280</span> <span class="text-corps font-semibold text-teal-900">Sur portable.</span>
+        <span class="block text-[16px] text-neutre-700">La fiche au centre, la décision à droite&nbsp;: signal, faits, lieu, puis l'histoire et ses pages.</span></figcaption></figure>
+  </section>
+
+  <!-- ═══ 7 · les lieux à vérifier ═══ -->
+  <section class="mt-16" aria-labelledby="s7">
+    <div class="px-4 sm:px-0">
+      <p class="num">7</p>
+      <h2 id="s7" class="ff mt-1 text-nom text-teal-900">Les lieux à vérifier</h2>
+      <p class="mt-2 text-corps text-neutre-800 max-w-[72ch]">Une fiche en ligne se modifie sans Adrien&nbsp;; un lieu posé avec «&nbsp;Placer sur la carte&nbsp;», non. D'où cette file à elle&nbsp;: les lieux des fiches en ligne y attendent seuls, ceux d'une fiche en attente renvoient à sa relecture.</p>
+    </div>
+    <div class="rangee mt-6">
+      <figure class="cadre"><iframe data-ecran="e-lieux" data-onglet="lieux" title="7a — la file des lieux"></iframe>
+        <figcaption><span class="num">7a</span> <span class="text-corps font-semibold text-teal-900">Trois lieux, trois cas.</span>
+          <span class="block text-[16px] text-neutre-700">Une adresse privée&nbsp;; un lieu qui arrive avec sa fiche&nbsp;; un doublon probable d'un lieu du relevé (signal «&nbsp;Proche de&nbsp;»).</span></figcaption></figure>
+      <figure class="cadre"><iframe data-ecran="e-lieu-fusion" data-onglet="lieux" data-defile="form" title="7b — fusionner avec un lieu du relevé"></iframe>
+        <figcaption><span class="num">7b</span> <span class="text-corps font-semibold text-teal-900">Fusionner.</span>
+          <span class="block text-[16px] text-neutre-700">Les lieux du relevé OpenStreetMap les plus proches, avec leur type et leur distance&nbsp;; une recherche pour les autres. Le «&nbsp;pourquoi&nbsp;» de Camille suit.</span></figcaption></figure>
+      <figure class="cadre"><iframe data-ecran="e-lieu-modifier" data-onglet="lieux" title="7c — renommer, déplacer le point"></iframe>
+        <figcaption><span class="num">7c</span> <span class="text-corps font-semibold text-teal-900">Renommer, déplacer.</span>
+          <span class="block text-[16px] text-neutre-700">Touchez le plan&nbsp;: le point suit, l'ancien reste en fantôme. Le nom corrigé, le type, puis «&nbsp;Enregistrer et approuver&nbsp;».</span></figcaption></figure>
+      <figure class="cadre"><iframe data-ecran="e-lieu-refus" data-onglet="lieux" data-defile="form" title="7d — refuser, avec un motif"></iframe>
+        <figcaption><span class="num">7d</span> <span class="text-corps font-semibold text-teal-900">Refuser&nbsp;: avec un motif.</span>
+          <span class="block text-[16px] text-neutre-700">Envoyé tel quel à Yanis. Le lieu quitte sa fiche, la fiche reste en ligne.</span></figcaption></figure>
+      <figure class="cadre"><iframe data-ecran="e-lieux-ok" data-onglet="lieux" data-lieux="2" title="7e — lieu fusionné"></iframe>
+        <figcaption><span class="num">7e</span> <span class="text-corps font-semibold text-teal-900">Après «&nbsp;Fusionner&nbsp;».</span>
+          <span class="block text-[16px] text-neutre-700">Approuvé, un lieu n'entre que sur ce site&nbsp;; ajouté à OpenStreetMap, il entre dans le relevé pour tous.</span></figcaption></figure>
+    </div>
+    <figure class="cadre cadre--large mt-10"><div class="boite-large"><iframe data-ecran="l-lieux" data-onglet="lieux" title="7f — les lieux, sur portable"></iframe></div>
+      <figcaption class="px-4 sm:px-0"><span class="num">7f · 1280</span> <span class="text-corps font-semibold text-teal-900">Sur portable.</span>
+        <span class="block text-[16px] text-neutre-700">La file à gauche, le lieu et son plan au centre, la décision à droite.</span></figcaption></figure>
+  </section>
+
 </main>
 
 
@@ -591,11 +836,13 @@ textarea.champ{ field-sizing: content; resize: vertical; }
       </a>
       <p class="text-etiquette font-semibold uppercase text-sauge-800 lg:order-last">Admin</p>
       <nav aria-label="Administration" class="w-full lg:w-auto lg:flex-1 -ml-1">
-        <ul class="flex gap-2 list-none p-0 m-0">
+        <ul class="flex flex-wrap gap-2 list-none p-0 m-0">
           <li><a href="/admin" data-onglet="file" class="group inline-flex items-center gap-2 min-h-[44px] px-4 rounded-full text-corps font-semibold text-teal-700 hover:bg-teal-50 aria-[current=page]:bg-teal-700 aria-[current=page]:text-white">
-            À relire <span data-compte-file class="tnum min-w-[28px] rounded-full bg-teal-100 px-2 text-center text-[16px] text-teal-900 group-aria-[current=page]:bg-white">3</span></a></li>
+            À relire <span data-compte-file class="tnum min-w-[28px] rounded-full bg-teal-100 px-2 text-center text-[16px] text-teal-900 group-aria-[current=page]:bg-white">4</span></a></li>
           <li><a href="/admin/fiches" data-onglet="fiches" class="group inline-flex items-center gap-2 min-h-[44px] px-4 rounded-full text-corps font-semibold text-teal-700 hover:bg-teal-50 aria-[current=page]:bg-teal-700 aria-[current=page]:text-white">
-            Fiches <span class="tnum min-w-[28px] rounded-full bg-teal-100 px-2 text-center text-[16px] text-teal-900 group-aria-[current=page]:bg-white">12</span></a></li>
+            Fiches <span class="tnum min-w-[28px] rounded-full bg-teal-100 px-2 text-center text-[16px] text-teal-900 group-aria-[current=page]:bg-white">13</span></a></li>
+          <li><a href="/admin/lieux" data-onglet="lieux" class="group inline-flex items-center gap-2 min-h-[44px] px-4 rounded-full text-corps font-semibold text-teal-700 hover:bg-teal-50 aria-[current=page]:bg-teal-700 aria-[current=page]:text-white">
+            Lieux <span data-compte-lieux class="tnum min-w-[28px] rounded-full bg-teal-100 px-2 text-center text-[16px] text-teal-900 group-aria-[current=page]:bg-white">3</span></a></li>
         </ul>
       </nav>
     </div>
@@ -708,10 +955,11 @@ textarea.champ{ field-sizing: content; resize: vertical; }
   <div data-inclure="p-entete"></div>
   <main class="px-4 pt-6 pb-10">
     <h1 class="ff px-1 text-nom text-teal-900">À relire</h1>
-    <p class="mt-1.5 px-1 text-[16px] text-neutre-700">3 fiches, la plus ancienne en haut.</p>
+    <p class="mt-1.5 px-1 text-[16px] text-neutre-700">4 fiches, la plus ancienne en haut.</p>
     <ul class="mt-4 grid gap-3 list-none p-0 m-0">
       <div data-inclure="p-ligne-pierre"></div>
       <div data-inclure="p-ligne-karim"></div>
+      <div data-inclure="p-ligne-sacha"></div>
       <div data-inclure="p-ligne-amandine"></div>
     </ul>
   </main>
@@ -758,11 +1006,11 @@ textarea.champ{ field-sizing: content; resize: vertical; }
   <dl class="mt-5 m-0 border-t border-neutre-300">
     <div class="py-3 border-b border-neutre-300">
       <dt class="text-[16px] font-semibold text-neutre-700">Compte</dt>
-      <dd class="m-0 text-corps text-neutre-900 break-words">p.delmas@example.fr</dd>
+      <dd class="m-0 text-corps text-neutre-900 break-words">p<wbr>.delmas<wbr>@example<wbr>.fr</dd>
     </div>
     <div class="py-3 border-b border-neutre-300">
       <dt class="text-[16px] font-semibold text-neutre-700">Adresse de la fiche</dt>
-      <dd class="m-0 text-corps text-neutre-900 break-words">cartoucherie.fyi/membre/pierre-delmas</dd>
+      <dd class="m-0 text-corps text-neutre-900 break-words">cartoucherie<wbr>.fyi/<wbr>membre/<wbr>pierre-delmas</dd>
       <dd class="m-0 text-[16px] text-neutre-700">Figée dès la publication&nbsp;: c'est celle du QR code.</dd>
     </div>
     <div class="py-3 border-b border-neutre-300">
@@ -795,8 +1043,8 @@ textarea.champ{ field-sizing: content; resize: vertical; }
           </div>
         </div>
         <div class="px-4 relative -mt-8">
-          <div class="carte rounded-[24px] bg-white p-5">
-            <h2 id="ap-nom" class="ff text-grand text-teal-900">Pierre Delmas</h2>
+          <div class="@container carte rounded-[24px] bg-white p-5">
+            <h2 id="ap-nom" class="ff text-grand mots-entiers text-teal-900" style="--mot:6">Pierre Delmas</h2>
             <p class="mt-1.5 text-[20px] text-neutre-800">Expert-comptable</p>
             <p class="mt-3 flex flex-wrap gap-2">
               <span class="chip inline-flex items-center gap-2 rounded-full px-3.5 py-2 min-h-[44px] text-[16px] font-semibold">
@@ -844,7 +1092,7 @@ textarea.champ{ field-sizing: content; resize: vertical; }
             <span class="pastille pastille--teal w-10 h-10 bg-teal-50 text-teal-700 shrink-0"><svg class="w-5 h-5" aria-hidden="true"><use href="#i-mail"/></svg></span>
             <span class="min-w-0">
               <span class="block text-[16px] text-neutre-700">E-mail</span>
-              <span class="block text-corps font-semibold text-teal-800 break-words">p.delmas@example.fr</span>
+              <span class="block text-corps font-semibold text-teal-800 break-words">p<wbr>.delmas<wbr>@example<wbr>.fr</span>
             </span>
           </a></li>
           <li><a href="https://delmas-conseil.fr" class="carte carte-lien flex items-center gap-3.5 min-h-[64px] px-4 py-3 rounded-[16px] bg-white">
@@ -958,12 +1206,12 @@ textarea.champ{ field-sizing: content; resize: vertical; }
 
 <template id="p-revue-corps">
   <div data-inclure="p-entete"></div>
-  <main class="px-5 pt-3 pb-[112px]">
+  <main class="@container px-5 pt-3 pb-[112px]">
     <a href="/admin" class="-ml-2 inline-flex items-center gap-1.5 min-h-[44px] px-2 rounded-full text-corps font-semibold text-teal-700 hover:bg-teal-50">
       <svg class="w-5 h-5" aria-hidden="true"><use href="#i-retour"/></svg>À relire
     </a>
-    <p class="mt-3 text-etiquette font-semibold uppercase text-teal-700">1 sur 3 · envoyée le 22&nbsp;oct.</p>
-    <h1 class="ff mt-1.5 text-nom text-teal-900">Pierre Delmas</h1>
+    <p class="mt-3 text-etiquette font-semibold uppercase text-teal-700">1 sur 4 · envoyée le 22&nbsp;oct.</p>
+    <h1 class="ff mt-1.5 text-nom mots-entiers text-teal-900" style="--taille:var(--text-nom); --mot:6">Pierre Delmas</h1>
     <div data-inclure="p-signaux-pierre"></div>
     <div data-inclure="p-faits-pierre"></div>
     <div class="mt-6"><div data-inclure="p-apercu-pierre"></div></div>
@@ -1033,14 +1281,15 @@ textarea.champ{ field-sizing: content; resize: vertical; }
         <p class="ff text-[22px] leading-tight text-teal-950">Refus envoyé à Pierre</p>
         <blockquote class="mt-2 mx-0 mb-0 border-l-[3px] border-teal-300 pl-3 text-[16px] leading-snug text-teal-950">
           «&nbsp;Votre adresse est en dehors du quartier&nbsp;: l'annuaire ne présente que des voisins de la Cartoucherie.&nbsp;»
-          <span class="mt-1 block text-neutre-700 break-words">— à p.delmas@example.fr, aujourd'hui à 10&nbsp;h&nbsp;14</span>
+          <span class="mt-1 block text-neutre-700 break-words">— à p<wbr>.delmas<wbr>@example<wbr>.fr, aujourd'hui à 10&nbsp;h&nbsp;14</span>
         </blockquote>
       </div>
     </div>
     <h1 class="ff mt-7 px-1 text-nom text-teal-900">À relire</h1>
-    <p class="mt-1.5 px-1 text-[16px] text-neutre-700">2 fiches, la plus ancienne en haut.</p>
+    <p class="mt-1.5 px-1 text-[16px] text-neutre-700">3 fiches, la plus ancienne en haut.</p>
     <ul class="mt-4 grid gap-3 list-none p-0 m-0">
       <div data-inclure="p-ligne-karim"></div>
+      <div data-inclure="p-ligne-sacha"></div>
       <div data-inclure="p-ligne-amandine"></div>
     </ul>
   </main>
@@ -1055,13 +1304,14 @@ textarea.champ{ field-sizing: content; resize: vertical; }
       <div class="min-w-0">
         <p class="ff text-[22px] leading-tight text-teal-950">Fiche de Karim publiée</p>
         <p class="mt-1.5 text-[16px] leading-snug text-teal-950">Mise en ligne en cours&nbsp;: visible d'ici quelques minutes à cette adresse.</p>
-        <p class="mt-1.5 text-[16px] font-semibold leading-snug text-teal-950 break-words">cartoucherie.fyi/membre/karim-ziani</p>
+        <p class="mt-1.5 text-[16px] font-semibold leading-snug text-teal-950 break-words">cartoucherie<wbr>.fyi/<wbr>membre/<wbr>karim-ziani</p>
         <p class="mt-1.5 text-[16px] leading-snug text-teal-950">Karim est prévenu par e-mail.</p>
       </div>
     </div>
     <h1 class="ff mt-7 px-1 text-nom text-teal-900">À relire</h1>
-    <p class="mt-1.5 px-1 text-[16px] text-neutre-700">1 fiche.</p>
+    <p class="mt-1.5 px-1 text-[16px] text-neutre-700">2 fiches, la plus ancienne en haut.</p>
     <ul class="mt-4 grid gap-3 list-none p-0 m-0">
+      <div data-inclure="p-ligne-sacha"></div>
       <div data-inclure="p-ligne-amandine"></div>
     </ul>
   </main>
@@ -1071,7 +1321,7 @@ textarea.champ{ field-sizing: content; resize: vertical; }
 <template id="p-file-compacte">
   <nav aria-label="File d'attente" class="min-w-0">
     <h1 class="ff text-[28px] leading-tight text-teal-900">À relire</h1>
-    <p class="mt-1 text-[16px] text-neutre-700">3 fiches, la plus ancienne en haut.</p>
+    <p class="mt-1 text-[16px] text-neutre-700">4 fiches, la plus ancienne en haut.</p>
     <ul class="mt-4 grid gap-2.5 list-none p-0 m-0">
       <li><a href="/admin/fiche/pierre-delmas" aria-current="true" class="flex gap-3 rounded-[18px] bg-teal-50 p-3" style="box-shadow: inset 0 0 0 2px var(--color-teal-600)">
         <img src="https://randomuser.me/api/portraits/men/59.jpg" alt="" width="128" height="128" class="arche w-[64px] h-[78px] shrink-0 object-cover" style="object-position:50% 22%">
@@ -1096,6 +1346,68 @@ textarea.champ{ field-sizing: content; resize: vertical; }
           </span>
         </span>
       </a></li>
+      <li><a href="/admin/fiche/sacha-morel" data-file-sacha class="carte carte-lien flex gap-3 rounded-[18px] bg-white p-3">
+        <img src="https://randomuser.me/api/portraits/women/79.jpg" alt="" width="128" height="128" class="arche w-[64px] h-[78px] shrink-0 object-cover" style="object-position:50% 22%">
+        <span class="min-w-0">
+          <span class="ff block text-[19px] leading-tight text-teal-900">Sacha Morel</span>
+          <span class="block text-[16px] text-neutre-800">Céramiste</span>
+          <span class="block text-[16px] text-neutre-700">Envoyée le 25&nbsp;oct.</span>
+          <span class="mt-1.5 flex flex-wrap gap-1.5">
+            <span class="inline-flex items-center gap-1.5 rounded-full bg-sable-200 px-2.5 py-0.5 text-[16px] font-semibold text-teal-950"><svg class="w-4 h-4 shrink-0" aria-hidden="true"><use href="#i-signal"/></svg>Lieu à vérifier</span>
+          </span>
+        </span>
+      </a></li>
+      <li><a href="/admin/fiche/amandine-rey" class="carte carte-lien flex gap-3 rounded-[18px] bg-white p-3">
+        <img src="https://randomuser.me/api/portraits/women/12.jpg" alt="" width="128" height="128" class="arche w-[64px] h-[78px] shrink-0 object-cover" style="object-position:50% 22%">
+        <span class="min-w-0">
+          <span class="ff block text-[19px] leading-tight text-teal-900">Amandine Rey</span>
+          <span class="block text-[16px] text-neutre-800">Coiffeuse à domicile</span>
+          <span class="block text-[16px] text-neutre-700">Envoyée le 26&nbsp;oct.</span>
+        </span>
+      </a></li>
+    </ul>
+  </nav>
+</template>
+
+<template id="p-file-compacte-sacha">
+  <nav aria-label="File d'attente" class="min-w-0">
+    <h1 class="ff text-[28px] leading-tight text-teal-900">À relire</h1>
+    <p class="mt-1 text-[16px] text-neutre-700">4 fiches, la plus ancienne en haut.</p>
+    <ul class="mt-4 grid gap-2.5 list-none p-0 m-0">
+      <li><a href="/admin/fiche/pierre-delmas" class="carte carte-lien flex gap-3 rounded-[18px] bg-white p-3">
+        <img src="https://randomuser.me/api/portraits/men/59.jpg" alt="" width="128" height="128" class="arche w-[64px] h-[78px] shrink-0 object-cover" style="object-position:50% 22%">
+        <span class="min-w-0">
+          <span class="ff block text-[19px] leading-tight text-teal-900">Pierre Delmas</span>
+          <span class="block text-[16px] text-neutre-800">Expert-comptable</span>
+          <span class="block text-[16px] text-neutre-700">Envoyée le 22&nbsp;oct.</span>
+          <span class="mt-1.5 flex flex-wrap gap-1.5">
+            <span class="inline-flex items-center gap-1.5 rounded-full bg-sable-200 px-2.5 py-0.5 text-[16px] font-semibold text-teal-950"><svg class="w-4 h-4 shrink-0" aria-hidden="true"><use href="#i-signal"/></svg>Hors du quartier</span>
+          </span>
+        </span>
+      </a></li>
+      <li><a href="/admin/fiche/karim-ziani" class="carte carte-lien flex gap-3 rounded-[18px] bg-white p-3">
+        <img src="https://randomuser.me/api/portraits/men/83.jpg" alt="" width="128" height="128" class="arche w-[64px] h-[78px] shrink-0 object-cover" style="object-position:50% 22%">
+        <span class="min-w-0">
+          <span class="ff block text-[19px] leading-tight text-teal-900">Karim Ziani</span>
+          <span class="block text-[16px] text-neutre-800">Photographe</span>
+          <span class="block text-[16px] text-neutre-700">Envoyée le 24&nbsp;oct.</span>
+          <span class="mt-1.5 flex flex-wrap gap-1.5">
+            <span class="inline-flex items-center gap-1.5 rounded-full bg-sable-200 px-2.5 py-0.5 text-[16px] font-semibold text-teal-950"><svg class="w-4 h-4 shrink-0" aria-hidden="true"><use href="#i-signal"/></svg>Doublon possible</span>
+            <span class="inline-flex items-center gap-1.5 rounded-full bg-sable-200 px-2.5 py-0.5 text-[16px] font-semibold text-teal-950"><svg class="w-4 h-4 shrink-0" aria-hidden="true"><use href="#i-signal"/></svg>Aucune catégorie</span>
+          </span>
+        </span>
+      </a></li>
+      <li><a href="/admin/fiche/sacha-morel" data-file-sacha aria-current="true" class="flex gap-3 rounded-[18px] bg-teal-50 p-3" style="box-shadow: inset 0 0 0 2px var(--color-teal-600)">
+        <img src="https://randomuser.me/api/portraits/women/79.jpg" alt="" width="128" height="128" class="arche w-[64px] h-[78px] shrink-0 object-cover" style="object-position:50% 22%">
+        <span class="min-w-0">
+          <span class="ff block text-[19px] leading-tight text-teal-900">Sacha Morel</span>
+          <span class="block text-[16px] text-neutre-800">Céramiste</span>
+          <span class="block text-[16px] text-neutre-700">Envoyée le 25&nbsp;oct.</span>
+          <span class="mt-1.5 flex flex-wrap gap-1.5">
+            <span class="inline-flex items-center gap-1.5 rounded-full bg-sable-200 px-2.5 py-0.5 text-[16px] font-semibold text-teal-950"><svg class="w-4 h-4 shrink-0" aria-hidden="true"><use href="#i-signal"/></svg>Lieu à vérifier</span>
+          </span>
+        </span>
+      </a></li>
       <li><a href="/admin/fiche/amandine-rey" class="carte carte-lien flex gap-3 rounded-[18px] bg-white p-3">
         <img src="https://randomuser.me/api/portraits/women/12.jpg" alt="" width="128" height="128" class="arche w-[64px] h-[78px] shrink-0 object-cover" style="object-position:50% 22%">
         <span class="min-w-0">
@@ -1109,8 +1421,8 @@ textarea.champ{ field-sizing: content; resize: vertical; }
 </template>
 
 <template id="p-decision-tete">
-  <p class="text-etiquette font-semibold uppercase text-teal-700">1 sur 3 · envoyée le 22&nbsp;oct.</p>
-  <h2 class="ff mt-1.5 text-nom text-teal-900">Pierre Delmas</h2>
+  <p class="text-etiquette font-semibold uppercase text-teal-700">1 sur 4 · envoyée le 22&nbsp;oct.</p>
+  <h2 class="ff mt-1.5 text-nom mots-entiers text-teal-900" style="--taille:var(--text-nom); --mot:6">Pierre Delmas</h2>
   <div data-inclure="p-signaux-pierre"></div>
   <div data-inclure="p-faits-pierre"></div>
 </template>
@@ -1121,7 +1433,7 @@ textarea.champ{ field-sizing: content; resize: vertical; }
   <div class="mx-auto max-w-[1160px] px-5 py-7 grid grid-cols-[300px_390px_minmax(0,1fr)] gap-7 items-start">
     <div data-inclure="p-file-compacte"></div>
     <div data-inclure="p-apercu-pierre"></div>
-    <aside class="sticky top-6 min-w-0" aria-label="Décision">
+    <aside class="@container sticky top-6 min-w-0" aria-label="Décision">
       <div data-inclure="p-decision-tete"></div>
       <div class="mt-5 flex gap-2.5">
         <button type="button" class="flex-1 inline-flex items-center justify-center gap-2 min-h-[48px] px-5 rounded-full text-corps font-semibold text-white bg-teal-700 hover:bg-teal-600">
@@ -1141,9 +1453,9 @@ textarea.champ{ field-sizing: content; resize: vertical; }
   <div class="mx-auto max-w-[1160px] px-5 py-7 grid grid-cols-[300px_390px_minmax(0,1fr)] gap-7 items-start">
     <div data-inclure="p-file-compacte"></div>
     <div data-inclure="p-apercu-pierre"></div>
-    <aside class="sticky top-6 min-w-0" aria-label="Décision">
-      <p class="text-etiquette font-semibold uppercase text-teal-700">1 sur 3 · envoyée le 22&nbsp;oct.</p>
-      <h2 class="ff mt-1.5 text-nom text-teal-900">Pierre Delmas</h2>
+    <aside class="@container sticky top-6 min-w-0" aria-label="Décision">
+      <p class="text-etiquette font-semibold uppercase text-teal-700">1 sur 4 · envoyée le 22&nbsp;oct.</p>
+      <h2 class="ff mt-1.5 text-nom mots-entiers text-teal-900" style="--taille:var(--text-nom); --mot:6">Pierre Delmas</h2>
       <div data-inclure="p-signaux-pierre"></div>
       <form class="mt-5 rounded-[20px] border-t border-neutre-200 bg-neutre-50 p-4" onsubmit="return false" style="box-shadow: inset 0 0 0 1px var(--color-neutre-200)">
         <label for="v2-motif" class="block text-[16px] font-semibold text-neutre-800">Motif, envoyé à Pierre par e-mail</label>
@@ -1209,13 +1521,13 @@ textarea.champ{ field-sizing: content; resize: vertical; }
     </div>
   </div>
   <ul class="mt-4 flex flex-wrap gap-2 list-none p-0 m-0" aria-label="État">
-    <li><button type="button" aria-pressed="true" class="inline-flex items-center gap-1.5 min-h-[44px] px-3.5 rounded-full text-[16px] font-semibold text-teal-800 bg-white aria-pressed:bg-teal-700 aria-pressed:text-white" style="box-shadow: inset 0 0 0 1.5px var(--color-teal-200)">Toutes <span class="tnum">12</span></button></li>
-    <li><button type="button" aria-pressed="false" class="inline-flex items-center gap-1.5 min-h-[44px] px-3.5 rounded-full text-[16px] font-semibold text-teal-800 bg-white hover:bg-teal-50" style="box-shadow: inset 0 0 0 1.5px var(--color-teal-200)">En ligne <span class="tnum">7</span></button></li>
-    <li><button type="button" aria-pressed="false" class="inline-flex items-center gap-1.5 min-h-[44px] px-3.5 rounded-full text-[16px] font-semibold text-teal-800 bg-white hover:bg-teal-50" style="box-shadow: inset 0 0 0 1.5px var(--color-teal-200)">En attente <span class="tnum">3</span></button></li>
-    <li><button type="button" aria-pressed="false" class="inline-flex items-center gap-1.5 min-h-[44px] px-3.5 rounded-full text-[16px] font-semibold text-teal-800 bg-white hover:bg-teal-50" style="box-shadow: inset 0 0 0 1.5px var(--color-teal-200)">Masquée <span class="tnum">1</span></button></li>
-    <li><button type="button" aria-pressed="false" class="inline-flex items-center gap-1.5 min-h-[44px] px-3.5 rounded-full text-[16px] font-semibold text-teal-800 bg-white hover:bg-teal-50" style="box-shadow: inset 0 0 0 1.5px var(--color-teal-200)">Refusée <span class="tnum">1</span></button></li>
+    <li><button type="button" aria-pressed="true" class="inline-flex items-center gap-1.5 min-h-[44px] px-3.5 rounded-full text-[16px] font-semibold text-teal-800 bg-white aria-pressed:bg-teal-700 aria-pressed:text-white" style="box-shadow: inset 0 0 0 1.5px var(--color-teal-200)">Toutes <span class="tnum">13</span></button></li>
+    <li><button type="button" aria-pressed="false" class="inline-flex items-center gap-1.5 min-h-[44px] px-3.5 rounded-full text-[16px] font-semibold text-teal-800 bg-white hover:bg-teal-50 aria-pressed:bg-teal-700 aria-pressed:text-white" style="box-shadow: inset 0 0 0 1.5px var(--color-teal-200)">En ligne <span class="tnum">7</span></button></li>
+    <li><button type="button" aria-pressed="false" class="inline-flex items-center gap-1.5 min-h-[44px] px-3.5 rounded-full text-[16px] font-semibold text-teal-800 bg-white hover:bg-teal-50 aria-pressed:bg-teal-700 aria-pressed:text-white" style="box-shadow: inset 0 0 0 1.5px var(--color-teal-200)">En attente <span class="tnum">4</span></button></li>
+    <li><button type="button" aria-pressed="false" class="inline-flex items-center gap-1.5 min-h-[44px] px-3.5 rounded-full text-[16px] font-semibold text-teal-800 bg-white hover:bg-teal-50 aria-pressed:bg-teal-700 aria-pressed:text-white" style="box-shadow: inset 0 0 0 1.5px var(--color-teal-200)">Masquée <span class="tnum">1</span></button></li>
+    <li><button type="button" aria-pressed="false" class="inline-flex items-center gap-1.5 min-h-[44px] px-3.5 rounded-full text-[16px] font-semibold text-teal-800 bg-white hover:bg-teal-50 aria-pressed:bg-teal-700 aria-pressed:text-white" style="box-shadow: inset 0 0 0 1.5px var(--color-teal-200)">Refusée <span class="tnum">1</span></button></li>
   </ul>
-  <p id="compte-liste" role="status" class="mt-4 text-[16px] text-neutre-700">12 fiches</p>
+  <p id="compte-liste" role="status" class="mt-4 text-[16px] text-neutre-700">13 fiches</p>
 
   <div class="max-lg:hidden grid mt-2 grid-cols-[64px_minmax(0,1.5fr)_11rem_minmax(0,1.3fr)_9rem] gap-x-5 px-3 pb-1 text-[16px] font-semibold text-neutre-700" aria-hidden="true">
     <span></span><span>Fiche</span><span>État</span><span>Compte</span><span>Dernier changement</span>
@@ -1225,56 +1537,63 @@ textarea.champ{ field-sizing: content; resize: vertical; }
       <img src="https://randomuser.me/api/portraits/women/12.jpg" alt="" width="128" height="128" class="arche w-[64px] h-[78px] row-span-3 lg:row-span-1 object-cover" style="object-position:50% 22%">
       <span class="min-w-0"><span class="ff block text-[20px] leading-tight text-teal-900">Amandine Rey</span><span class="block text-[16px] text-neutre-800">Coiffeuse à domicile</span></span>
       <span><span class="inline-flex items-center gap-1.5 rounded-full bg-sable-200 px-2.5 py-0.5 text-[16px] font-semibold text-teal-950"><svg class="w-4 h-4 shrink-0" aria-hidden="true"><use href="#i-horloge"/></svg>En attente</span></span>
-      <span class="min-w-0 text-[16px] text-neutre-800 break-words">amandine.rey@example.fr</span>
+      <span class="min-w-0 text-[16px] text-neutre-800 break-words">amandine<wbr>.rey<wbr>@example<wbr>.fr</span>
       <span class="max-lg:hidden text-[16px] text-neutre-700">Envoyée le 26&nbsp;oct.</span>
     </a></li>
     <li data-cherche="ines lacombe professeure de yoga ines.lacombe@example.fr"><a href="/admin/fiche/ines-lacombe" class="carte carte-lien grid grid-cols-[64px_minmax(0,1fr)] lg:grid-cols-[64px_minmax(0,1.5fr)_11rem_minmax(0,1.3fr)_9rem] gap-x-3.5 lg:gap-x-5 gap-y-1 items-center rounded-[18px] bg-white p-3">
       <img src="https://randomuser.me/api/portraits/women/90.jpg" alt="" width="128" height="128" class="arche w-[64px] h-[78px] row-span-3 lg:row-span-1 object-cover" style="object-position:50% 22%">
       <span class="min-w-0"><span class="ff block text-[20px] leading-tight text-teal-900">Inès Lacombe</span><span class="block text-[16px] text-neutre-800">Professeure de yoga</span></span>
       <span><span class="inline-flex items-center gap-1.5 rounded-full bg-sauge-100 px-2.5 py-0.5 text-[16px] font-semibold text-teal-950"><svg class="w-4 h-4 shrink-0" aria-hidden="true"><use href="#i-coche"/></svg>En ligne</span></span>
-      <span class="min-w-0 text-[16px] text-neutre-800 break-words">ines.lacombe@example.fr</span>
+      <span class="min-w-0 text-[16px] text-neutre-800 break-words">ines<wbr>.lacombe<wbr>@example<wbr>.fr</span>
       <span class="max-lg:hidden text-[16px] text-neutre-700">Modifiée le 26&nbsp;oct.</span>
     </a></li>
     <li data-cherche="sophie arnaud naturopathe sophie.arnaud@example.fr"><a href="/admin/fiche/sophie-arnaud" class="carte carte-lien grid grid-cols-[64px_minmax(0,1fr)] lg:grid-cols-[64px_minmax(0,1.5fr)_11rem_minmax(0,1.3fr)_9rem] gap-x-3.5 lg:gap-x-5 gap-y-1 items-center rounded-[18px] bg-white p-3">
       <img src="https://randomuser.me/api/portraits/women/26.jpg" alt="" width="128" height="128" class="arche w-[64px] h-[78px] row-span-3 lg:row-span-1 object-cover" style="object-position:50% 22%">
       <span class="min-w-0"><span class="ff block text-[20px] leading-tight text-teal-900">Sophie Arnaud</span><span class="block text-[16px] text-neutre-800">Naturopathe</span></span>
       <span><span class="inline-flex items-center gap-1.5 rounded-full bg-rouge-50 px-2.5 py-0.5 text-[16px] font-semibold text-rouge-800" style="box-shadow: inset 0 0 0 1px var(--color-rouge-200)"><svg class="w-4 h-4 shrink-0" aria-hidden="true"><use href="#i-alerte"/></svg>Refusée</span></span>
-      <span class="min-w-0 text-[16px] text-neutre-800 break-words">sophie.arnaud@example.fr</span>
+      <span class="min-w-0 text-[16px] text-neutre-800 break-words">sophie<wbr>.arnaud<wbr>@example<wbr>.fr</span>
       <span class="max-lg:hidden text-[16px] text-neutre-700">Refusée le 25&nbsp;oct.</span>
     </a></li>
     <li data-cherche="karim ziani photographe karim.ziani@example.fr"><a href="/admin/fiche/karim-ziani" class="carte carte-lien grid grid-cols-[64px_minmax(0,1fr)] lg:grid-cols-[64px_minmax(0,1.5fr)_11rem_minmax(0,1.3fr)_9rem] gap-x-3.5 lg:gap-x-5 gap-y-1 items-center rounded-[18px] bg-white p-3">
       <img src="https://randomuser.me/api/portraits/men/83.jpg" alt="" width="128" height="128" class="arche w-[64px] h-[78px] row-span-3 lg:row-span-1 object-cover" style="object-position:50% 22%">
       <span class="min-w-0"><span class="ff block text-[20px] leading-tight text-teal-900">Karim Ziani</span><span class="block text-[16px] text-neutre-800">Photographe</span></span>
       <span><span class="inline-flex items-center gap-1.5 rounded-full bg-sable-200 px-2.5 py-0.5 text-[16px] font-semibold text-teal-950"><svg class="w-4 h-4 shrink-0" aria-hidden="true"><use href="#i-horloge"/></svg>En attente</span></span>
-      <span class="min-w-0 text-[16px] text-neutre-800 break-words">karim.ziani@example.fr</span>
+      <span class="min-w-0 text-[16px] text-neutre-800 break-words">karim<wbr>.ziani<wbr>@example<wbr>.fr</span>
       <span class="max-lg:hidden text-[16px] text-neutre-700">Envoyée le 24&nbsp;oct.</span>
+    </a></li>
+    <li data-cherche="sacha morel ceramiste sacha.morel@example.fr"><a href="/admin/fiche/sacha-morel" class="carte carte-lien grid grid-cols-[64px_minmax(0,1fr)] lg:grid-cols-[64px_minmax(0,1.5fr)_11rem_minmax(0,1.3fr)_9rem] gap-x-3.5 lg:gap-x-5 gap-y-1 items-center rounded-[18px] bg-white p-3">
+      <img src="https://randomuser.me/api/portraits/women/79.jpg" alt="" width="128" height="128" class="arche w-[64px] h-[78px] row-span-3 lg:row-span-1 object-cover" style="object-position:50% 22%">
+      <span class="min-w-0"><span class="ff block text-[20px] leading-tight text-teal-900">Sacha Morel</span><span class="block text-[16px] text-neutre-800">Céramiste</span></span>
+      <span><span class="inline-flex items-center gap-1.5 rounded-full bg-sable-200 px-2.5 py-0.5 text-[16px] font-semibold text-teal-950"><svg class="w-4 h-4 shrink-0" aria-hidden="true"><use href="#i-horloge"/></svg>En attente</span></span>
+      <span class="min-w-0 text-[16px] text-neutre-800 break-words">sacha<wbr>.morel<wbr>@example<wbr>.fr</span>
+      <span class="max-lg:hidden text-[16px] text-neutre-700">Envoyée le 25&nbsp;oct.</span>
     </a></li>
     <li data-cherche="camille roussel sophrologue camille.roussel@example.fr"><a href="/admin/fiche/camille-roussel" class="carte carte-lien grid grid-cols-[64px_minmax(0,1fr)] lg:grid-cols-[64px_minmax(0,1.5fr)_11rem_minmax(0,1.3fr)_9rem] gap-x-3.5 lg:gap-x-5 gap-y-1 items-center rounded-[18px] bg-white p-3">
       <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="" width="128" height="128" class="arche w-[64px] h-[78px] row-span-3 lg:row-span-1 object-cover" style="object-position:50% 22%">
       <span class="min-w-0"><span class="ff block text-[20px] leading-tight text-teal-900">Camille Roussel</span><span class="block text-[16px] text-neutre-800">Sophrologue</span></span>
       <span><span class="inline-flex items-center gap-1.5 rounded-full bg-sauge-100 px-2.5 py-0.5 text-[16px] font-semibold text-teal-950"><svg class="w-4 h-4 shrink-0" aria-hidden="true"><use href="#i-coche"/></svg>En ligne</span></span>
-      <span class="min-w-0 text-[16px] text-neutre-800 break-words">camille.roussel@example.fr</span>
+      <span class="min-w-0 text-[16px] text-neutre-800 break-words">camille<wbr>.roussel<wbr>@example<wbr>.fr</span>
       <span class="max-lg:hidden text-[16px] text-neutre-700">Modifiée le 23&nbsp;oct.</span>
     </a></li>
     <li data-cherche="pierre delmas expert-comptable p.delmas@example.fr"><a href="/admin/fiche/pierre-delmas" class="carte carte-lien grid grid-cols-[64px_minmax(0,1fr)] lg:grid-cols-[64px_minmax(0,1.5fr)_11rem_minmax(0,1.3fr)_9rem] gap-x-3.5 lg:gap-x-5 gap-y-1 items-center rounded-[18px] bg-white p-3">
       <img src="https://randomuser.me/api/portraits/men/59.jpg" alt="" width="128" height="128" class="arche w-[64px] h-[78px] row-span-3 lg:row-span-1 object-cover" style="object-position:50% 22%">
       <span class="min-w-0"><span class="ff block text-[20px] leading-tight text-teal-900">Pierre Delmas</span><span class="block text-[16px] text-neutre-800">Expert-comptable</span></span>
       <span><span class="inline-flex items-center gap-1.5 rounded-full bg-sable-200 px-2.5 py-0.5 text-[16px] font-semibold text-teal-950"><svg class="w-4 h-4 shrink-0" aria-hidden="true"><use href="#i-horloge"/></svg>En attente</span></span>
-      <span class="min-w-0 text-[16px] text-neutre-800 break-words">p.delmas@example.fr</span>
+      <span class="min-w-0 text-[16px] text-neutre-800 break-words">p<wbr>.delmas<wbr>@example<wbr>.fr</span>
       <span class="max-lg:hidden text-[16px] text-neutre-700">Envoyée le 22&nbsp;oct.</span>
     </a></li>
     <li data-cherche="yanis belhadj developpeur web independant yanis@example.fr"><a href="/admin/fiche/yanis-belhadj" class="carte carte-lien grid grid-cols-[64px_minmax(0,1fr)] lg:grid-cols-[64px_minmax(0,1.5fr)_11rem_minmax(0,1.3fr)_9rem] gap-x-3.5 lg:gap-x-5 gap-y-1 items-center rounded-[18px] bg-white p-3">
       <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="" width="128" height="128" class="arche w-[64px] h-[78px] row-span-3 lg:row-span-1 object-cover" style="object-position:50% 22%">
       <span class="min-w-0"><span class="ff block text-[20px] leading-tight text-teal-900">Yanis Belhadj</span><span class="block text-[16px] text-neutre-800">Développeur web indépendant</span></span>
       <span><span class="inline-flex items-center gap-1.5 rounded-full bg-sauge-100 px-2.5 py-0.5 text-[16px] font-semibold text-teal-950"><svg class="w-4 h-4 shrink-0" aria-hidden="true"><use href="#i-coche"/></svg>En ligne</span></span>
-      <span class="min-w-0 text-[16px] text-neutre-800 break-words">yanis@example.fr</span>
+      <span class="min-w-0 text-[16px] text-neutre-800 break-words">yanis<wbr>@example<wbr>.fr</span>
       <span class="max-lg:hidden text-[16px] text-neutre-700">Modifiée le 21&nbsp;oct.</span>
     </a></li>
     <li data-cherche="julien marty electricien jmarty.elec@example.fr"><a href="/admin/fiche/julien-marty" class="carte carte-lien grid grid-cols-[64px_minmax(0,1fr)] lg:grid-cols-[64px_minmax(0,1.5fr)_11rem_minmax(0,1.3fr)_9rem] gap-x-3.5 lg:gap-x-5 gap-y-1 items-center rounded-[18px] bg-white p-3">
       <img src="https://randomuser.me/api/portraits/men/46.jpg" alt="" width="128" height="128" class="arche w-[64px] h-[78px] row-span-3 lg:row-span-1 object-cover" style="object-position:50% 22%">
       <span class="min-w-0"><span class="ff block text-[20px] leading-tight text-teal-900">Julien Marty</span><span class="block text-[16px] text-neutre-800">Électricien</span></span>
       <span><span class="inline-flex items-center gap-1.5 rounded-full bg-neutre-200 px-2.5 py-0.5 text-[16px] font-semibold text-neutre-900"><svg class="w-4 h-4 shrink-0" aria-hidden="true"><use href="#i-masque"/></svg>Masquée</span></span>
-      <span class="min-w-0 text-[16px] text-neutre-800 break-words">jmarty.elec@example.fr</span>
+      <span class="min-w-0 text-[16px] text-neutre-800 break-words">jmarty<wbr>.elec<wbr>@example<wbr>.fr</span>
       <span class="max-lg:hidden text-[16px] text-neutre-700">Masquée le 20&nbsp;oct.</span>
     </a></li>
     <li data-cherche="lea fontaine graphiste & illustratrice"><a href="/admin/fiche/lea-fontaine" class="carte carte-lien grid grid-cols-[64px_minmax(0,1fr)] lg:grid-cols-[64px_minmax(0,1.5fr)_11rem_minmax(0,1.3fr)_9rem] gap-x-3.5 lg:gap-x-5 gap-y-1 items-center rounded-[18px] bg-white p-3">
@@ -1345,8 +1664,8 @@ textarea.champ{ field-sizing: content; resize: vertical; }
   <div class="mt-3 flex items-center gap-4">
     <img src="https://randomuser.me/api/portraits/women/57.jpg" alt="Portrait de Nadia Berrada"
          width="128" height="128" class="arche w-[96px] h-[116px] shrink-0 object-cover" style="object-position:50% 22%">
-    <div class="min-w-0">
-      <h1 class="ff text-nom text-teal-900">Nadia Berrada</h1>
+    <div class="@container min-w-0 flex-1">
+      <h1 class="ff text-nom mots-entiers text-teal-900" style="--taille:var(--text-nom); --mot:7">Nadia Berrada</h1>
       <p class="mt-1 text-corps leading-snug text-neutre-800">Traiteur — cuisine maison</p>
       <p class="mt-2"><span class="inline-flex items-center gap-1.5 rounded-full bg-sauge-100 px-2.5 py-0.5 text-[16px] font-semibold text-teal-950"><svg class="w-4 h-4 shrink-0" aria-hidden="true"><use href="#i-coche"/></svg>En ligne</span></p>
     </div>
@@ -1383,7 +1702,7 @@ textarea.champ{ field-sizing: content; resize: vertical; }
       <span class="pastille w-11 h-11 mt-0.5 bg-white text-sauge-700" aria-hidden="true"><svg class="w-[22px] h-[22px]"><use href="#i-coche"/></svg></span>
       <div class="min-w-0">
         <p class="ff text-[22px] leading-tight text-teal-950">Fiche associée</p>
-        <p class="mt-1.5 text-[16px] leading-snug text-teal-950 break-words">au compte nadia.berrada@example.fr</p>
+        <p class="mt-1.5 text-[16px] leading-snug text-teal-950 break-words">au compte nadia<wbr>.berrada<wbr>@example<wbr>.fr</p>
         <p class="mt-1.5 text-[16px] leading-snug text-teal-950">Nadia peut la modifier depuis son espace, dès maintenant.</p>
       </div>
     </div>
@@ -1688,8 +2007,8 @@ textarea.champ{ field-sizing: content; resize: vertical; }
     <div class="mt-3 flex items-center gap-4">
       <img src="https://randomuser.me/api/portraits/women/90.jpg" alt="Portrait d'Inès Lacombe"
            width="128" height="128" class="arche w-[96px] h-[116px] shrink-0 object-cover" style="object-position:50% 22%">
-      <div class="min-w-0">
-        <h1 class="ff text-nom text-teal-900">Inès Lacombe</h1>
+      <div class="@container min-w-0 flex-1">
+        <h1 class="ff text-nom mots-entiers text-teal-900" style="--taille:var(--text-nom); --mot:7">Inès Lacombe</h1>
         <p class="mt-1 text-corps leading-snug text-neutre-800">Professeure de yoga</p>
         <p class="mt-2"><span class="inline-flex items-center gap-1.5 rounded-full bg-sauge-100 px-2.5 py-0.5 text-[16px] font-semibold text-teal-950"><svg class="w-4 h-4 shrink-0" aria-hidden="true"><use href="#i-coche"/></svg>En ligne</span></p>
       </div>
@@ -1719,8 +2038,8 @@ textarea.champ{ field-sizing: content; resize: vertical; }
     <div class="mt-3 flex items-center gap-4">
       <img src="https://randomuser.me/api/portraits/men/46.jpg" alt="Portrait de Julien Marty"
            width="128" height="128" class="arche w-[96px] h-[116px] shrink-0 object-cover" style="object-position:50% 22%">
-      <div class="min-w-0">
-        <h1 class="ff text-nom text-teal-900">Julien Marty</h1>
+      <div class="@container min-w-0 flex-1">
+        <h1 class="ff text-nom mots-entiers text-teal-900" style="--taille:var(--text-nom); --mot:6">Julien Marty</h1>
         <p class="mt-1 text-corps leading-snug text-neutre-800">Électricien</p>
         <p class="mt-2"><span class="inline-flex items-center gap-1.5 rounded-full bg-neutre-200 px-2.5 py-0.5 text-[16px] font-semibold text-neutre-900"><svg class="w-4 h-4 shrink-0" aria-hidden="true"><use href="#i-masque"/></svg>Masquée</span></p>
       </div>
@@ -1746,6 +2065,744 @@ textarea.champ{ field-sizing: content; resize: vertical; }
 </template>
 
 
+
+<!-- ═══ v2 · Sacha Morel (iel) : histoire, pages générées, un lieu posé sur le plan ═══ -->
+<template id="p-ligne-sacha">
+        <li>
+          <article class="carte rounded-[20px] bg-white overflow-hidden">
+            <div class="flex gap-4 p-4">
+              <img src="https://randomuser.me/api/portraits/women/79.jpg" alt="Portrait de Sacha Morel"
+                   width="128" height="128" class="arche w-[96px] h-[116px] shrink-0 object-cover" style="object-position:50% 22%">
+              <div class="min-w-0 flex-1">
+                <h3 class="ff text-[21px] leading-tight text-teal-900">
+                  <a href="/admin/fiche/sacha-morel" class="underline decoration-teal-300 underline-offset-4 hover:decoration-teal-600">Sacha Morel</a>
+                </h3>
+                <p class="mt-0.5 text-corps leading-snug text-neutre-800">Céramiste</p>
+                <p class="mt-1 text-[16px] text-neutre-700">Envoyée le 25&nbsp;oct.</p>
+                <ul class="mt-2 flex flex-wrap gap-1.5 list-none p-0 m-0">
+                  <li class="inline-flex items-center gap-1.5 rounded-full bg-sable-200 px-2.5 py-1 text-[16px] font-semibold text-teal-950">
+                    <svg class="w-4 h-4 shrink-0" aria-hidden="true"><use href="#i-signal"/></svg>Lieu à vérifier
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="flex gap-2.5 px-4 pb-4">
+              <button type="button" class="flex-1 inline-flex items-center justify-center gap-2 min-h-[48px] px-5 rounded-full text-corps font-semibold text-white bg-teal-700 hover:bg-teal-600">
+                <svg class="w-5 h-5" aria-hidden="true"><use href="#i-coche"/></svg>Publier
+              </button>
+              <button type="button" class="inline-flex items-center justify-center min-h-[48px] px-5 rounded-full text-corps font-semibold text-teal-700 bg-teal-50 hover:bg-teal-100">
+                Refuser…
+              </button>
+            </div>
+          </article>
+        </li>
+</template>
+
+<template id="p-signaux-sacha">
+  <section aria-labelledby="sig-sacha" class="mt-5 rounded-[22px] bg-sable-100 p-4">
+    <h2 id="sig-sacha" class="flex items-center gap-2 text-[16px] font-semibold uppercase tracking-[.14em] text-teal-950">
+      <svg class="w-[18px] h-[18px] shrink-0" aria-hidden="true"><use href="#i-signal"/></svg>À regarder
+    </h2>
+    <dl class="mt-2.5 m-0">
+      <dt class="text-corps font-semibold text-teal-950">Lieu à vérifier</dt>
+      <dd class="m-0 mt-0.5 text-[16px] leading-snug text-teal-950">Posé sur le plan par Sacha&nbsp;: «&nbsp;le terrain de petanque du jardin&nbsp;». À décider avant de publier.</dd>
+      <dd class="m-0"><a href="#lieu-pose" class="inline-flex items-center gap-1.5 min-h-[44px] text-[16px] font-semibold text-teal-800 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">Voir le lieu<svg class="w-4 h-4" aria-hidden="true"><use href="#i-chev"/></svg></a></dd>
+    </dl>
+  </section>
+</template>
+
+<template id="p-faits-sacha">
+  <dl class="mt-5 m-0 border-t border-neutre-300">
+    <div class="py-3 border-b border-neutre-300">
+      <dt class="text-[16px] font-semibold text-neutre-700">Compte</dt>
+      <dd class="m-0 text-corps text-neutre-900 break-words">sacha<wbr>.morel<wbr>@example<wbr>.fr</dd>
+    </div>
+    <div class="py-3 border-b border-neutre-300">
+      <dt class="text-[16px] font-semibold text-neutre-700">Adresse de la fiche</dt>
+      <dd class="m-0 text-corps text-neutre-900 break-words">cartoucherie<wbr>.fyi/<wbr>membre/<wbr>sacha-morel</dd>
+      <dd class="m-0 text-[16px] text-neutre-700">Figée dès la publication&nbsp;: c'est celle du QR code.</dd>
+    </div>
+    <div class="py-3 border-b border-neutre-300">
+      <dt class="text-[16px] font-semibold text-neutre-700">On écrit</dt>
+      <dd class="m-0 text-corps text-neutre-900">iel — «&nbsp;Ce qu'iel propose&nbsp;» · «&nbsp;Où lae trouver&nbsp;»</dd>
+    </div>
+    <div class="py-3 border-b border-neutre-300">
+      <dt class="text-[16px] font-semibold text-neutre-700">Accords</dt>
+      <dd class="m-0 flex items-start gap-1.5 text-corps text-neutre-900">
+        <svg class="w-[18px] h-[18px] mt-1 shrink-0 text-sauge-700" aria-hidden="true"><use href="#i-coche"/></svg>
+        Conditions, photo, droits sur la photo, 18&nbsp;ans ou plus
+      </dd>
+    </div>
+  </dl>
+</template>
+
+<!-- « Votre histoire » : les réponses en clair, puis les pages que le build en tirera (b-v2-diapos).
+     Une bande qui défile : une page et demie à l'écran, donc au plus deux filets orange. -->
+<template id="p-histoire-sacha">
+  <section id="histoire" aria-labelledby="t-histoire" class="mt-8">
+    <h2 id="t-histoire" class="ff text-[22px] text-teal-900">Votre histoire</h2>
+    <p class="mt-1 text-[16px] text-neutre-700">4 réponses sur 6. Chaque réponse est aussi le texte de sa page.</p>
+    <p class="mt-4 text-[16px] font-semibold text-neutre-800">Les 5 pages générées</p>
+    <ol class="mt-2 flex gap-3 overflow-x-auto pb-3 list-none p-0 m-0" aria-label="Les pages générées, dans l'ordre">
+      <li class="w-[216px] shrink-0 rounded-[10px] overflow-hidden" style="box-shadow: var(--shadow-carte)">
+        <div class="diapo diapo--maison diapo--couverture" role="img" aria-label="À la rencontre de Sacha Morel, Céramiste">
+          <div class="diapo__motif"></div>
+          <div class="diapo__corps">
+            <div class="diapo__tete">
+              <span class="diapo__marque"><svg aria-hidden="true"><use href="#i-ventouse"/></svg>Annuaire de la Cartoucherie</span>
+              <span class="diapo__page">1&nbsp;/&nbsp;5</span>
+            </div>
+            <img class="diapo__portrait" src="https://randomuser.me/api/portraits/women/79.jpg" alt="" width="128" height="128">
+            <p class="diapo__rencontre">À la rencontre de</p>
+            <p class="diapo__nom-grand">Sacha Morel</p>
+            <p class="diapo__metier">Céramiste</p>
+            <p class="diapo__pied">cartoucherie.fyi/membre/sacha-morel</p>
+          </div>
+        </div>
+      </li>
+      <li class="w-[216px] shrink-0 rounded-[10px] overflow-hidden" style="box-shadow: var(--shadow-carte)">
+        <div class="diapo diapo--maison" role="img" aria-label="Pourquoi entreprendre ? — J'ai appris le tour dans l'atelier de ma grand-mère, à Albi. Après huit ans de bureau, j'ai voulu des mains pleines de terre et des objets qui servent tous les jours.">
+          <div class="diapo__motif"></div>
+          <div class="diapo__corps">
+            <div class="diapo__tete">
+              <span class="diapo__marque"><svg aria-hidden="true"><use href="#i-ventouse"/></svg>Annuaire de la Cartoucherie</span>
+              <span class="diapo__page">2&nbsp;/&nbsp;5</span>
+            </div>
+            <div class="diapo__arche" style="--fond:var(--color-sable-100)">
+              <span class="diapo__medaillon"><svg aria-hidden="true"><use href="#l-autre"/></svg></span>
+              <p class="diapo__titre">Pourquoi entreprendre&nbsp;?</p>
+              <span class="diapo__filet"></span>
+              <p class="diapo__texte">J'ai appris le tour dans l'atelier de ma grand-mère, à Albi. Après huit ans de bureau, j'ai voulu des mains pleines de terre et des objets qui servent tous les jours.</p>
+              <p class="diapo__signature"><span class="diapo__nom">Sacha Morel</span><span>Céramiste · cartoucherie.fyi</span></p>
+            </div>
+          </div>
+        </div>
+      </li>
+      <li class="w-[216px] shrink-0 rounded-[10px] overflow-hidden" style="box-shadow: var(--shadow-carte)">
+        <div class="diapo diapo--maison" role="img" aria-label="Mon activité en bref — Bols, tasses et assiettes tournés à la main, en grès. Des cours d'initiation le samedi matin, quatre personnes au plus, débutants bienvenus.">
+          <div class="diapo__motif"></div>
+          <div class="diapo__corps">
+            <div class="diapo__tete">
+              <span class="diapo__marque"><svg aria-hidden="true"><use href="#i-ventouse"/></svg>Annuaire de la Cartoucherie</span>
+              <span class="diapo__page">3&nbsp;/&nbsp;5</span>
+            </div>
+            <div class="diapo__arche" style="--fond:#ffffff">
+              <span class="diapo__medaillon"><svg aria-hidden="true"><use href="#c-art"/></svg></span>
+              <p class="diapo__titre">Mon activité en bref</p>
+              <span class="diapo__filet"></span>
+              <p class="diapo__texte">Bols, tasses et assiettes tournés à la main, en grès. Des cours d'initiation le samedi matin, quatre personnes au plus, débutants bienvenus.</p>
+              <p class="diapo__signature"><span class="diapo__nom">Sacha Morel</span><span>Céramiste · cartoucherie.fyi</span></p>
+            </div>
+          </div>
+        </div>
+      </li>
+      <li class="w-[216px] shrink-0 rounded-[10px] overflow-hidden" style="box-shadow: var(--shadow-carte)">
+        <div class="diapo diapo--maison" role="img" aria-label="Mes lieux favoris — Véo Cartoucherie, le terrain de petanque du jardin. Un film, une partie de pétanque, et la semaine peut commencer.">
+          <div class="diapo__motif"></div>
+          <div class="diapo__corps">
+            <div class="diapo__tete">
+              <span class="diapo__marque"><svg aria-hidden="true"><use href="#i-ventouse"/></svg>Annuaire de la Cartoucherie</span>
+              <span class="diapo__page">4&nbsp;/&nbsp;5</span>
+            </div>
+            <div class="diapo__arche" style="--fond:var(--color-teal-50); --titre:6.2cqi">
+              <span class="diapo__medaillon"><svg aria-hidden="true"><use href="#i-carte"/></svg></span>
+              <p class="diapo__titre">Mes lieux favoris</p>
+              <span class="diapo__filet"></span>
+              <ul class="diapo__lieux">
+                <li class="diapo__lieu"><span class="diapo__lieu-icone"><svg aria-hidden="true"><use href="#l-culture"/></svg></span><span class="diapo__lieu-nom">Véo Cartoucherie<span class="diapo__lieu-type">Culture</span></span></li>
+                <li class="diapo__lieu"><span class="diapo__lieu-icone"><svg aria-hidden="true"><use href="#l-sport"/></svg></span><span class="diapo__lieu-nom">le terrain de petanque du jardin<span class="diapo__lieu-type">Sport</span></span></li>
+              </ul>
+              <p class="diapo__phrase">Un film, une partie de pétanque, et la semaine peut commencer.</p>
+              <p class="diapo__signature"><span class="diapo__nom">Sacha Morel</span><span>Céramiste · cartoucherie.fyi</span></p>
+            </div>
+          </div>
+        </div>
+      </li>
+      <li class="w-[216px] shrink-0 rounded-[10px] overflow-hidden" style="box-shadow: var(--shadow-carte)">
+        <div class="diapo diapo--maison diapo--motto" role="img" aria-label="Mon motto — La terre garde la trace de chaque geste.">
+          <div class="diapo__motif"></div>
+          <div class="diapo__corps">
+            <div class="diapo__tete">
+              <span class="diapo__marque"><svg aria-hidden="true"><use href="#i-ventouse"/></svg>Annuaire de la Cartoucherie</span>
+              <span class="diapo__page">5&nbsp;/&nbsp;5</span>
+            </div>
+            <div class="diapo__arche">
+              <span class="diapo__guillemet" aria-hidden="true">«</span>
+              <p class="diapo__motto">La terre garde la trace de chaque geste.</p>
+              <p class="diapo__signature"><span class="diapo__nom">Sacha Morel</span><span>Céramiste · cartoucherie.fyi</span></p>
+            </div>
+          </div>
+        </div>
+      </li>
+    </ol>
+    <p class="mt-1 text-[16px] text-neutre-700">Page 4&nbsp;: avec le lieu tel que Sacha l'a nommé. Renommé ou fusionné, la page suit.</p>
+    <dl class="mt-5 m-0 border-t border-neutre-300">
+      <div class="py-3 border-b border-neutre-300">
+        <dt class="text-[16px] font-semibold text-neutre-700">Pourquoi entreprendre&nbsp;?</dt>
+        <dd class="m-0 text-corps text-neutre-900">J'ai appris le tour dans l'atelier de ma grand-mère, à Albi. Après huit ans de bureau, j'ai voulu des mains pleines de terre et des objets qui servent tous les jours.</dd>
+      </div>
+      <div class="py-3 border-b border-neutre-300">
+        <dt class="text-[16px] font-semibold text-neutre-700">Mon activité en bref</dt>
+        <dd class="m-0 text-corps text-neutre-900">Bols, tasses et assiettes tournés à la main, en grès. Des cours d'initiation le samedi matin, quatre personnes au plus, débutants bienvenus.</dd>
+      </div>
+      <div class="py-3 border-b border-neutre-300">
+        <dt class="text-[16px] font-semibold text-neutre-700">Mes lieux favoris</dt>
+        <dd class="m-0 text-corps text-neutre-900">Un film, une partie de pétanque, et la semaine peut commencer.</dd>
+      </div>
+      <div class="py-3 border-b border-neutre-300">
+        <dt class="text-[16px] font-semibold text-neutre-700">Mon motto</dt>
+        <dd class="m-0 text-corps text-neutre-900">La terre garde la trace de chaque geste.</dd>
+      </div>
+      <div class="py-3 border-b border-neutre-300">
+        <dt class="text-[16px] font-semibold text-neutre-700">Mon déclic · Les entrepreneurs de la Cartoucherie &amp; moi</dt>
+        <dd class="m-0 text-corps italic text-neutre-700">Sans réponse&nbsp;: pas de page.</dd>
+      </div>
+    </dl>
+  </section>
+</template>
+
+<!-- le lieu posé, décidé dans la relecture : le plan au 1:1, le repère en pointillés (b-v2-carte-lieux),
+     et les quatre décisions. Panneau neutre-100 : le sable est déjà pris par « À regarder ». -->
+<template id="p-lieu-plan-sacha">
+  <div class="relative h-[180px] overflow-hidden rounded-[16px] bg-neutre-200" style="box-shadow: inset 0 0 0 1px var(--color-neutre-300)">
+    <svg class="absolute inset-0 w-full h-full" viewBox="88 418 320 180" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Plan du quartier, autour du lieu posé par Sacha"><use href="#plan-quartier" width="722" height="676"/></svg>
+    <span class="lieu-cible" style="left:50%; top:50%" aria-hidden="true"><span class="lieu lieu--pose"><svg class="w-[18px] h-[18px]"><use href="#l-sport"/></svg></span></span>
+  </div>
+</template>
+
+<template id="p-lieu-sacha">
+  <section id="lieu-pose" aria-labelledby="t-lieu-pose" class="mt-8 rounded-[22px] bg-neutre-100 p-4">
+    <h2 id="t-lieu-pose" class="flex items-center gap-2 text-[16px] font-semibold uppercase tracking-[.14em] text-teal-950">
+      <svg class="w-[18px] h-[18px] shrink-0" aria-hidden="true"><use href="#i-carte"/></svg>Lieu posé sur le plan
+    </h2>
+    <div class="mt-3"><div data-inclure="p-lieu-plan-sacha"></div></div>
+    <p class="mt-1.5 text-[15px] text-neutre-700">Plan&nbsp;: © les contributeurs OpenStreetMap</p>
+    <div class="mt-3 flex items-start gap-3">
+      <span class="lieu mt-0.5 shrink-0" aria-hidden="true"><svg class="w-[18px] h-[18px]"><use href="#l-sport"/></svg></span>
+      <div class="min-w-0">
+        <p class="ff text-[21px] leading-tight text-teal-900">le terrain de petanque du jardin</p>
+        <p class="text-[16px] text-neutre-700">Sport · nommé par Sacha</p>
+      </div>
+    </div>
+    <blockquote class="mt-3 mx-0 mb-0 border-l-[3px] border-neutre-400 pl-3 text-[16px] leading-snug text-teal-950">«&nbsp;Les parties du dimanche, entre voisins.&nbsp;»</blockquote>
+    <div class="mt-4 grid grid-cols-2 gap-2.5">
+      <button type="button" class="col-span-2 inline-flex items-center justify-center gap-2 min-h-[48px] px-5 rounded-full text-corps font-semibold text-white bg-teal-700 hover:bg-teal-600">
+        <svg class="w-5 h-5" aria-hidden="true"><use href="#i-coche"/></svg>Approuver le lieu
+      </button>
+      <a href="/admin/lieux/sacha-petanque#modifier" class="inline-flex items-center justify-center min-h-[48px] px-4 rounded-full text-corps font-semibold text-teal-700 bg-white hover:bg-teal-50">Modifier…</a>
+      <a href="/admin/lieux/sacha-petanque#fusionner" class="inline-flex items-center justify-center min-h-[48px] px-4 rounded-full text-corps font-semibold text-teal-700 bg-white hover:bg-teal-50">Fusionner…</a>
+      <a href="/admin/lieux/sacha-petanque#refuser" class="col-span-2 inline-flex items-center justify-center min-h-[48px] px-4 rounded-full text-corps font-semibold text-teal-700 bg-white hover:bg-teal-50">Refuser le lieu…</a>
+    </div>
+    <p class="mt-3 text-[16px] text-neutre-700">Pas décidé à «&nbsp;Publier&nbsp;»&nbsp;: approuvé avec la fiche.</p>
+  </section>
+</template>
+
+<!-- l'aperçu de Sacha : le même gabarit que celui de Pierre, accordé à « iel » par gender.ts -->
+<template id="p-apercu-sacha">
+  <figure id="apercu" class="ventouses ventouses--teal m-0 rounded-[24px] bg-neutre-100 p-3">
+    <figcaption class="flex items-center gap-2 px-1.5 pt-0.5 pb-3 text-[16px] font-semibold text-teal-800">
+      <svg class="w-5 h-5" aria-hidden="true"><use href="#i-oeil"/></svg>Ce que les voisins verront
+    </figcaption>
+    <div class="carte rounded-[20px] bg-white overflow-hidden">
+      <section aria-labelledby="as-nom">
+        <div class="ventouses relative bg-sable-200 pt-9 pb-11 rounded-b-[34px] overflow-hidden">
+          <div class="flex justify-center">
+            <img src="https://randomuser.me/api/portraits/women/79.jpg"
+                 alt="Portrait de Sacha Morel, céramiste à la Cartoucherie"
+                 width="128" height="128"
+                 class="arche block w-[148px] h-[176px] object-cover bg-white"
+                 style="object-position:50% 22%; box-shadow: 0 0 0 6px #fff, var(--shadow-carte)">
+          </div>
+        </div>
+        <div class="px-4 relative -mt-8">
+          <div class="@container carte rounded-[24px] bg-white p-5">
+            <h2 id="as-nom" class="ff text-grand mots-entiers text-teal-900" style="--mot:5">Sacha Morel</h2>
+            <p class="mt-1.5 text-[1.25rem] leading-snug mots-entiers text-neutre-800" style="--taille:1.25rem; --lettre:.56; --mot:9">Céramiste</p>
+            <p class="mt-3 flex flex-wrap gap-2">
+              <span class="chip inline-flex items-center gap-2 rounded-full px-3.5 py-2 min-h-[44px] text-[16px] font-semibold">
+                <svg class="w-[18px] h-[18px]" aria-hidden="true"><use href="#c-art"/></svg>Art &amp; culture
+              </span>
+            </p>
+            <p class="mt-4 text-[19px] leading-relaxed text-neutre-900">
+              Je tourne des bols et des tasses en grès, et j'apprends le tour à qui veut, le samedi matin.
+            </p>
+            <p class="mt-5 flex flex-wrap items-center gap-x-5 gap-y-2.5 text-[16px] text-neutre-700">
+              <span class="inline-flex items-center gap-1.5">
+                <svg class="w-[18px] h-[18px] text-teal-600" aria-hidden="true"><use href="#i-pin"/></svg>
+                À 430&nbsp;m de la Halle
+              </span>
+            </p>
+            <div class="mt-5 border-t border-neutre-200 pt-5">
+              <dl class="m-0 grid gap-x-8 gap-y-4">
+                <div class="flex min-w-0 flex-wrap items-start gap-x-3.5 gap-y-2">
+                  <span class="pastille pastille--teal mt-0.5 h-10 w-10 shrink-0 bg-teal-50 text-teal-700"><svg class="h-5 w-5" aria-hidden="true"><use href="#i-euro"/></svg></span>
+                  <div class="min-w-[min(12rem,100%)] flex-1">
+                    <dt class="text-base text-neutre-700">Tarifs</dt>
+                    <dd class="m-0 break-words text-corps font-semibold text-neutre-900">Initiation de 2&nbsp;h&nbsp;: 45&nbsp;€</dd>
+                  </div>
+                </div>
+                <div class="flex min-w-0 flex-wrap items-start gap-x-3.5 gap-y-2">
+                  <span class="pastille pastille--teal mt-0.5 h-10 w-10 shrink-0 bg-teal-50 text-teal-700"><svg class="h-5 w-5" aria-hidden="true"><use href="#i-horloge"/></svg></span>
+                  <div class="min-w-[min(12rem,100%)] flex-1">
+                    <dt class="text-base text-neutre-700">Horaires</dt>
+                    <dd class="m-0 break-words text-corps font-semibold text-neutre-900">Atelier ouvert le samedi, <span class="whitespace-nowrap">10&nbsp;h–18&nbsp;h</span></dd>
+                  </div>
+                </div>
+              </dl>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="px-4 py-8" aria-labelledby="ap-contact">
+        <h2 id="ap-contact" class="ff text-nom text-teal-900">Lae contacter</h2>
+        <div class="filet h-[3px] w-16 rounded-full mt-2.5 mb-5"></div>
+        <ul class="grid gap-2.5 list-none p-0 m-0">
+          <li><a href="mailto:sacha.morel@example.fr" class="carte carte-lien flex items-center gap-3.5 min-h-[64px] px-4 py-3 rounded-[16px] bg-white">
+            <span class="pastille pastille--teal w-10 h-10 bg-teal-50 text-teal-700 shrink-0"><svg class="w-5 h-5" aria-hidden="true"><use href="#i-mail"/></svg></span>
+            <span class="min-w-0">
+              <span class="block text-[16px] text-neutre-700">E-mail</span>
+              <span class="block text-corps font-semibold text-teal-800 break-words">sacha<wbr>.morel<wbr>@example<wbr>.fr</span>
+            </span>
+          </a></li>
+        </ul>
+      </section>
+
+      <section class="px-4 pb-8" aria-labelledby="ap-services">
+        <h2 id="ap-services" class="ff text-nom text-teal-900">Ce qu'iel propose</h2>
+        <div class="filet h-[3px] w-16 rounded-full mt-2.5 mb-5"></div>
+        <ul class="grid gap-3 list-none p-0 m-0">
+          <li class="flex items-center gap-3.5 rounded-[16px] bg-neutre-100 px-4 py-4 min-h-[64px]">
+            <span class="pastille w-9 h-9 bg-white text-sauge-700 shrink-0"><svg class="w-[18px] h-[18px]" aria-hidden="true"><use href="#c-art"/></svg></span>
+            <span class="text-corps font-semibold text-teal-900">Bols et tasses sur commande</span>
+          </li>
+          <li class="flex items-center gap-3.5 rounded-[16px] bg-neutre-100 px-4 py-4 min-h-[64px]">
+            <span class="pastille w-9 h-9 bg-white text-sauge-700 shrink-0"><svg class="w-[18px] h-[18px]" aria-hidden="true"><use href="#i-groupe"/></svg></span>
+            <span class="text-corps font-semibold text-teal-900">Cours d'initiation au tour</span>
+          </li>
+        </ul>
+      </section>
+
+      <section class="px-4 pb-8" aria-labelledby="ap-ou">
+        <h2 id="ap-ou" class="ff text-nom text-teal-900">Où lae trouver</h2>
+        <div class="filet h-[3px] w-16 rounded-full mt-2.5 mb-5"></div>
+        <div class="carte rounded-[20px] bg-white p-5 flex items-start gap-4">
+          <span class="pastille pastille--teal w-11 h-11 bg-teal-50 text-teal-700 shrink-0 mt-0.5"><svg class="w-5 h-5" aria-hidden="true"><use href="#i-pin"/></svg></span>
+          <div class="min-w-0">
+            <address class="not-italic text-[18px] leading-snug text-neutre-900 font-semibold">
+              5 allée du Bois Vert<br>31300 Toulouse
+            </address>
+            <p class="mt-2 text-[16px] text-neutre-700">À 430&nbsp;m de la Halle</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="px-4 pb-8" aria-labelledby="ap-avis">
+        <h2 id="ap-avis" class="ff text-nom text-teal-900">Avis du quartier</h2>
+        <div class="filet h-[3px] w-16 rounded-full mt-2.5 mb-5"></div>
+        <div class="rounded-[20px] bg-neutre-100 p-5">
+          <p class="text-corps text-neutre-900">
+            <strong class="font-semibold">Aucun avis pour l'instant.</strong> Sacha est inscrit·e
+            depuis peu&nbsp;; personne n'a encore écrit.
+          </p>
+        </div>
+      </section>
+
+      <div class="bg-white/95" style="box-shadow: 0 -4px 8px oklch(17.5% .03 202/.06), 0 -28px 64px -20px oklch(17.5% .03 202/.28)">
+        <div class="px-4 py-3 flex items-center gap-3">
+          <button type="button" aria-pressed="false" aria-label="Ajouter Sacha Morel à mes favoris"
+                  class="shrink-0 grid place-items-center w-11 h-11 rounded-full text-teal-700 bg-teal-50 hover:bg-teal-100">
+            <svg class="w-6 h-6" aria-hidden="true"><use href="#i-coeur"/></svg>
+          </button>
+          <a href="tel:+33639980052"
+             class="cta flex-1 inline-flex items-center justify-center gap-2 min-h-[54px] px-5 rounded-full text-[17px] font-bold tracking-tight whitespace-nowrap transition">
+            <svg class="w-5 h-5 shrink-0" aria-hidden="true"><use href="#i-tel"/></svg>
+            Appeler 06 39 98 00 52
+          </a>
+        </div>
+      </div>
+    </div>
+    <p class="px-1.5 pt-3 pb-0.5 text-[16px] text-neutre-700">Pas encore en ligne. «&nbsp;Lae contacter&nbsp;», «&nbsp;Ce qu'iel propose&nbsp;», «&nbsp;Où lae trouver&nbsp;», «&nbsp;inscrit·e&nbsp;»&nbsp;: les formes de gender.ts.</p>
+  </figure>
+</template>
+
+<template id="e-sacha">
+  <div data-inclure="p-entete"></div>
+  <main class="@container px-5 pt-3 pb-[112px]">
+    <a href="/admin" class="-ml-2 inline-flex items-center gap-1.5 min-h-[44px] px-2 rounded-full text-corps font-semibold text-teal-700 hover:bg-teal-50">
+      <svg class="w-5 h-5" aria-hidden="true"><use href="#i-retour"/></svg>À relire
+    </a>
+    <p class="mt-3 text-etiquette font-semibold uppercase text-teal-700">3 sur 4 · envoyée le 25&nbsp;oct.</p>
+    <h1 class="ff mt-1.5 text-nom mots-entiers text-teal-900" style="--taille:var(--text-nom); --mot:5">Sacha Morel</h1>
+    <div data-inclure="p-signaux-sacha"></div>
+    <div data-inclure="p-faits-sacha"></div>
+    <div data-inclure="p-histoire-sacha"></div>
+    <div data-inclure="p-lieu-sacha"></div>
+    <div class="mt-8"><div data-inclure="p-apercu-sacha"></div></div>
+  </main>
+  <div data-inclure="p-barre-decision"></div>
+</template>
+
+<template id="l-sacha">
+  <div data-inclure="p-entete"></div>
+  <div class="mx-auto max-w-[1160px] px-5 py-7 grid grid-cols-[300px_390px_minmax(0,1fr)] gap-7 items-start">
+    <div data-inclure="p-file-compacte-sacha"></div>
+    <div data-inclure="p-apercu-sacha"></div>
+    <aside class="@container min-w-0" aria-label="Décision">
+      <p class="text-etiquette font-semibold uppercase text-teal-700">3 sur 4 · envoyée le 25&nbsp;oct.</p>
+      <h2 class="ff mt-1.5 text-nom mots-entiers text-teal-900" style="--taille:var(--text-nom); --mot:5">Sacha Morel</h2>
+      <div data-inclure="p-signaux-sacha"></div>
+      <div data-inclure="p-faits-sacha"></div>
+      <div data-inclure="p-lieu-sacha"></div>
+      <div data-inclure="p-histoire-sacha"></div>
+      <div class="mt-6 flex gap-2.5">
+        <button type="button" class="flex-1 inline-flex items-center justify-center gap-2 min-h-[48px] px-5 rounded-full text-corps font-semibold text-white bg-teal-700 hover:bg-teal-600">
+          <svg class="w-5 h-5" aria-hidden="true"><use href="#i-coche"/></svg>Publier
+        </button>
+        <button type="button" class="inline-flex items-center justify-center min-h-[48px] px-5 rounded-full text-corps font-semibold text-teal-700 bg-teal-50 hover:bg-teal-100">
+          Refuser…
+        </button>
+      </div>
+    </aside>
+  </div>
+</template>
+<template id="p-lieu-ligne-yanis">
+<li>
+  <article class="carte rounded-[20px] bg-white overflow-hidden">
+    <div class="relative h-[120px] overflow-hidden bg-neutre-200">
+  <svg class="absolute inset-0 w-full h-full" viewBox="166 410 328 120" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Plan du quartier, autour du lieu posé"><use href="#plan-quartier" width="722" height="676"/></svg>
+  <span class="lieu-cible" style="left:50%; top:50%" aria-hidden="true"><span class="lieu lieu--pose"><svg class="w-[18px] h-[18px]"><use href="#l-autre"/></svg></span></span>
+</div>
+    <div class="p-4">
+      <h3 class="ff text-[21px] leading-tight text-teal-900"><a href="/admin/lieux/yanis" class="underline decoration-teal-300 underline-offset-4 hover:decoration-teal-600">Mon bureau</a></h3>
+      <p class="mt-0.5 text-[16px] text-neutre-700">Autre · posé le 23&nbsp;oct.</p>
+      <p class="mt-2 flex flex-wrap items-center gap-x-2 gap-y-1.5 text-[16px] text-neutre-800">Par <a href="/admin/fiche/yanis-belhadj" class="font-semibold text-teal-800 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">Yanis Belhadj</a> · fiche <span class="inline-flex items-center gap-1.5 rounded-full bg-sauge-100 px-2.5 py-0.5 text-[16px] font-semibold text-teal-950"><svg class="w-4 h-4 shrink-0" aria-hidden="true"><use href="#i-coche"/></svg>En ligne</span></p>
+      <blockquote class="mt-2 mx-0 mb-0 border-l-[3px] border-neutre-300 pl-3 text-[16px] leading-snug text-neutre-900">«&nbsp;Là où je code, au calme.&nbsp;»</blockquote>
+    </div>
+    <div class="flex flex-wrap gap-2.5 px-4 pb-4">
+      <button type="button" class="flex-1 inline-flex items-center justify-center gap-2 min-h-[48px] px-5 rounded-full text-corps font-semibold text-white bg-teal-700 hover:bg-teal-600"><svg class="w-5 h-5" aria-hidden="true"><use href="#i-coche"/></svg>Approuver</button>
+      <a href="/admin/lieux/yanis" class="inline-flex items-center justify-center min-h-[48px] px-5 rounded-full text-corps font-semibold text-teal-700 bg-teal-50 hover:bg-teal-100">Décider…</a>
+    </div>
+  </article>
+</li>
+</template>
+<template id="p-lieu-ligne-sacha">
+<li>
+  <article class="carte rounded-[20px] bg-white overflow-hidden">
+    <div class="relative h-[120px] overflow-hidden bg-neutre-200">
+  <svg class="absolute inset-0 w-full h-full" viewBox="84 448 328 120" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Plan du quartier, autour du lieu posé"><use href="#plan-quartier" width="722" height="676"/></svg>
+  <span class="lieu-cible" style="left:50%; top:50%" aria-hidden="true"><span class="lieu lieu--pose"><svg class="w-[18px] h-[18px]"><use href="#l-sport"/></svg></span></span>
+</div>
+    <div class="p-4">
+      <h3 class="ff text-[21px] leading-tight text-teal-900"><a href="/admin/lieux/sacha" class="underline decoration-teal-300 underline-offset-4 hover:decoration-teal-600">le terrain de petanque du jardin</a></h3>
+      <p class="mt-0.5 text-[16px] text-neutre-700">Sport · posé le 25&nbsp;oct.</p>
+      <p class="mt-2 flex flex-wrap items-center gap-x-2 gap-y-1.5 text-[16px] text-neutre-800">Par <a href="/admin/fiche/sacha-morel" class="font-semibold text-teal-800 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">Sacha Morel</a> · fiche <span class="inline-flex items-center gap-1.5 rounded-full bg-sable-200 px-2.5 py-0.5 text-[16px] font-semibold text-teal-950"><svg class="w-4 h-4 shrink-0" aria-hidden="true"><use href="#i-horloge"/></svg>En attente</span></p>
+      <blockquote class="mt-2 mx-0 mb-0 border-l-[3px] border-neutre-300 pl-3 text-[16px] leading-snug text-neutre-900">«&nbsp;Les parties du dimanche, entre voisins.&nbsp;»</blockquote>
+    </div>
+    <div class="flex flex-wrap gap-2.5 px-4 pb-4">
+      <a href="/admin/fiche/sacha-morel#lieu-pose" class="flex-1 inline-flex items-center justify-center min-h-[48px] px-5 rounded-full text-corps font-semibold text-teal-700 bg-teal-50 hover:bg-teal-100">Décider avec sa fiche<svg class="w-4 h-4 ml-1.5" aria-hidden="true"><use href="#i-chev"/></svg></a>
+    </div>
+  </article>
+</li>
+</template>
+<template id="p-lieu-ligne-camille">
+<li>
+  <article class="carte rounded-[20px] bg-white overflow-hidden">
+    <div class="relative h-[120px] overflow-hidden bg-neutre-200">
+  <svg class="absolute inset-0 w-full h-full" viewBox="68 306 328 120" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Plan du quartier, autour du lieu posé"><use href="#plan-quartier" width="722" height="676"/></svg>
+  <span class="lieu-cible" style="left:50%; top:50%" aria-hidden="true"><span class="lieu lieu--pose"><svg class="w-[18px] h-[18px]"><use href="#l-autre"/></svg></span></span>
+</div>
+    <div class="p-4">
+      <h3 class="ff text-[21px] leading-tight text-teal-900"><a href="/admin/lieux/camille" class="underline decoration-teal-300 underline-offset-4 hover:decoration-teal-600">Le marché du samedi</a></h3>
+      <p class="mt-0.5 text-[16px] text-neutre-700">Autre · posé le 26&nbsp;oct.</p>
+      <p class="mt-2 flex flex-wrap items-center gap-x-2 gap-y-1.5 text-[16px] text-neutre-800">Par <a href="/admin/fiche/camille-roussel" class="font-semibold text-teal-800 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">Camille Roussel</a> · fiche <span class="inline-flex items-center gap-1.5 rounded-full bg-sauge-100 px-2.5 py-0.5 text-[16px] font-semibold text-teal-950"><svg class="w-4 h-4 shrink-0" aria-hidden="true"><use href="#i-coche"/></svg>En ligne</span></p>
+      <blockquote class="mt-2 mx-0 mb-0 border-l-[3px] border-neutre-300 pl-3 text-[16px] leading-snug text-neutre-900">«&nbsp;Fruits, fleurs, et un bonjour à tout le monde.&nbsp;»</blockquote>
+      <ul class="mt-2.5 flex flex-wrap gap-1.5 list-none p-0 m-0"><li class="inline-flex items-center gap-1.5 rounded-full bg-sable-200 px-2.5 py-1 text-[16px] font-semibold text-teal-950"><svg class="w-4 h-4 shrink-0" aria-hidden="true"><use href="#i-signal"/></svg>Proche de : Le Marché des 500</li></ul>
+    </div>
+    <div class="flex flex-wrap gap-2.5 px-4 pb-4">
+      <button type="button" class="flex-1 inline-flex items-center justify-center gap-2 min-h-[48px] px-5 rounded-full text-corps font-semibold text-white bg-teal-700 hover:bg-teal-600"><svg class="w-5 h-5" aria-hidden="true"><use href="#i-coche"/></svg>Approuver</button>
+      <a href="/admin/lieux/camille" class="inline-flex items-center justify-center min-h-[48px] px-5 rounded-full text-corps font-semibold text-teal-700 bg-teal-50 hover:bg-teal-100">Décider…</a>
+    </div>
+  </article>
+</li>
+</template>
+<template id="p-lieu-tete-yanis">
+  <a href="/admin/lieux" class="-ml-2 inline-flex items-center gap-1.5 min-h-[44px] px-2 rounded-full text-corps font-semibold text-teal-700 hover:bg-teal-50">
+    <svg class="w-5 h-5" aria-hidden="true"><use href="#i-retour"/></svg>Lieux à vérifier
+  </a>
+  <div class="mt-3"><div class="relative h-[180px] rounded-[16px] overflow-hidden bg-neutre-200" style="box-shadow: inset 0 0 0 1px var(--color-neutre-300)">
+  <svg class="absolute inset-0 w-full h-full" viewBox="170 380 320 180" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Plan du quartier, autour du lieu posé"><use href="#plan-quartier" width="722" height="676"/></svg>
+  <span class="lieu-cible" style="left:50%; top:50%" aria-hidden="true"><span class="lieu lieu--pose"><svg class="w-[18px] h-[18px]"><use href="#l-autre"/></svg></span></span>
+</div></div>
+  <p class="mt-1.5 text-[15px] text-neutre-700">Plan&nbsp;: © les contributeurs OpenStreetMap</p>
+  <div class="mt-4 flex items-start gap-3">
+    <span class="lieu mt-1 shrink-0" aria-hidden="true"><svg class="w-[18px] h-[18px]"><use href="#l-autre"/></svg></span>
+    <div class="@container min-w-0 flex-1">
+      <h1 class="ff text-nom mots-entiers text-teal-900" style="--taille:var(--text-nom); --mot:6">Mon bureau</h1>
+      <p class="mt-1 text-[16px] text-neutre-700">Autre · posé le 23&nbsp;oct.</p>
+    </div>
+  </div>
+  <p class="mt-2 flex flex-wrap items-center gap-x-2 gap-y-1.5 text-[16px] text-neutre-800">Par <a href="/admin/fiche/yanis-belhadj" class="font-semibold text-teal-800 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">Yanis Belhadj</a> · fiche <span class="inline-flex items-center gap-1.5 rounded-full bg-sauge-100 px-2.5 py-0.5 text-[16px] font-semibold text-teal-950"><svg class="w-4 h-4 shrink-0" aria-hidden="true"><use href="#i-coche"/></svg>En ligne</span></p>
+  <blockquote class="mt-3 mx-0 mb-0 border-l-[3px] border-neutre-300 pl-3 text-[16px] leading-snug text-neutre-900">«&nbsp;Là où je code, au calme.&nbsp;»</blockquote>
+</template>
+<template id="p-lieu-tete-camille">
+  <a href="/admin/lieux" class="-ml-2 inline-flex items-center gap-1.5 min-h-[44px] px-2 rounded-full text-corps font-semibold text-teal-700 hover:bg-teal-50">
+    <svg class="w-5 h-5" aria-hidden="true"><use href="#i-retour"/></svg>Lieux à vérifier
+  </a>
+  <div class="mt-3"><div class="relative h-[180px] rounded-[16px] overflow-hidden bg-neutre-200" style="box-shadow: inset 0 0 0 1px var(--color-neutre-300)">
+  <svg class="absolute inset-0 w-full h-full" viewBox="72 276 320 180" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Plan du quartier, autour du lieu posé"><use href="#plan-quartier" width="722" height="676"/></svg>
+  <span class="lieu-cible" style="left:50%; top:50%" aria-hidden="true"><span class="lieu lieu--pose"><svg class="w-[18px] h-[18px]"><use href="#l-autre"/></svg></span></span>
+</div></div>
+  <p class="mt-1.5 text-[15px] text-neutre-700">Plan&nbsp;: © les contributeurs OpenStreetMap</p>
+  <div class="mt-4 flex items-start gap-3">
+    <span class="lieu mt-1 shrink-0" aria-hidden="true"><svg class="w-[18px] h-[18px]"><use href="#l-autre"/></svg></span>
+    <div class="@container min-w-0 flex-1">
+      <h1 class="ff text-nom mots-entiers text-teal-900" style="--taille:var(--text-nom); --mot:6">Le marché du samedi</h1>
+      <p class="mt-1 text-[16px] text-neutre-700">Autre · posé le 26&nbsp;oct.</p>
+    </div>
+  </div>
+  <p class="mt-2 flex flex-wrap items-center gap-x-2 gap-y-1.5 text-[16px] text-neutre-800">Par <a href="/admin/fiche/camille-roussel" class="font-semibold text-teal-800 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">Camille Roussel</a> · fiche <span class="inline-flex items-center gap-1.5 rounded-full bg-sauge-100 px-2.5 py-0.5 text-[16px] font-semibold text-teal-950"><svg class="w-4 h-4 shrink-0" aria-hidden="true"><use href="#i-coche"/></svg>En ligne</span></p>
+  <blockquote class="mt-3 mx-0 mb-0 border-l-[3px] border-neutre-300 pl-3 text-[16px] leading-snug text-neutre-900">«&nbsp;Fruits, fleurs, et un bonjour à tout le monde.&nbsp;»</blockquote>
+</template>
+<template id="p-lieu-tete-sacha">
+  <a href="/admin/lieux" class="-ml-2 inline-flex items-center gap-1.5 min-h-[44px] px-2 rounded-full text-corps font-semibold text-teal-700 hover:bg-teal-50">
+    <svg class="w-5 h-5" aria-hidden="true"><use href="#i-retour"/></svg>Lieux à vérifier
+  </a>
+  <div class="mt-3"><div class="relative h-[180px] overflow-hidden rounded-[16px] bg-neutre-200 cursor-crosshair" style="box-shadow: inset 0 0 0 1px var(--color-neutre-300)"
+       onclick="var r=this.getBoundingClientRect(),p=this.querySelector('[data-nouveau]');p.style.left=(event.clientX-r.left)+'px';p.style.top=(event.clientY-r.top)+'px'">
+  <svg class="absolute inset-0 w-full h-full" viewBox="88 418 320 180" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Plan du quartier : touchez pour déplacer le point"><use href="#plan-quartier" width="722" height="676"/></svg>
+  <span class="lieu-cible" style="left:50%; top:50%; opacity:.4" aria-hidden="true"><span class="lieu lieu--pose"><svg class="w-[18px] h-[18px]"><use href="#l-sport"/></svg></span></span>
+  <span data-nouveau class="lieu-cible" style="left:calc(50% + 52px); top:calc(50% - 22px)" aria-hidden="true"><span class="lieu lieu--choisi"><svg class="w-[18px] h-[18px]"><use href="#l-sport"/></svg></span></span>
+</div></div>
+  <p class="mt-1.5 text-[15px] text-neutre-700">Plan&nbsp;: © les contributeurs OpenStreetMap</p>
+  <div class="mt-4 flex items-start gap-3">
+    <span class="lieu mt-1 shrink-0" aria-hidden="true"><svg class="w-[18px] h-[18px]"><use href="#l-sport"/></svg></span>
+    <div class="@container min-w-0 flex-1">
+      <h1 class="ff text-nom mots-entiers text-teal-900" style="--taille:var(--text-nom); --mot:8">le terrain de petanque du jardin</h1>
+      <p class="mt-1 text-[16px] text-neutre-700">Sport · posé le 25&nbsp;oct.</p>
+    </div>
+  </div>
+  <p class="mt-2 flex flex-wrap items-center gap-x-2 gap-y-1.5 text-[16px] text-neutre-800">Par <a href="/admin/fiche/sacha-morel" class="font-semibold text-teal-800 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">Sacha Morel</a> · fiche <span class="inline-flex items-center gap-1.5 rounded-full bg-sable-200 px-2.5 py-0.5 text-[16px] font-semibold text-teal-950"><svg class="w-4 h-4 shrink-0" aria-hidden="true"><use href="#i-horloge"/></svg>En attente</span></p>
+  <blockquote class="mt-3 mx-0 mb-0 border-l-[3px] border-neutre-300 pl-3 text-[16px] leading-snug text-neutre-900">«&nbsp;Les parties du dimanche, entre voisins.&nbsp;»</blockquote>
+</template>
+<template id="p-lieu-actions-camille-fusion">
+  <div class="mt-5 grid grid-cols-2 gap-2.5">
+    <button type="button" class="col-span-2 inline-flex items-center justify-center gap-2 min-h-[48px] px-5 rounded-full text-corps font-semibold text-white bg-teal-700 hover:bg-teal-600"><svg class="w-5 h-5" aria-hidden="true"><use href="#i-coche"/></svg>Approuver le lieu</button>
+    <button type="button" aria-expanded="false" class="inline-flex items-center justify-center min-h-[48px] px-4 rounded-full text-corps font-semibold text-teal-700 bg-teal-50 hover:bg-teal-100">Modifier…</button>
+    <button type="button" aria-expanded="true" class="inline-flex items-center justify-center min-h-[48px] px-4 rounded-full text-corps font-semibold text-white bg-teal-800">Fusionner…</button>
+    <div class="col-span-2 grid"><button type="button" aria-expanded="false" class="inline-flex items-center justify-center min-h-[48px] px-4 rounded-full text-corps font-semibold text-teal-700 bg-teal-50 hover:bg-teal-100">Refuser…</button></div>
+  </div>
+</template>
+<template id="p-lieu-actions-yanis-refus">
+  <div class="mt-5 grid grid-cols-2 gap-2.5">
+    <button type="button" class="col-span-2 inline-flex items-center justify-center gap-2 min-h-[48px] px-5 rounded-full text-corps font-semibold text-white bg-teal-700 hover:bg-teal-600"><svg class="w-5 h-5" aria-hidden="true"><use href="#i-coche"/></svg>Approuver le lieu</button>
+    <button type="button" aria-expanded="false" class="inline-flex items-center justify-center min-h-[48px] px-4 rounded-full text-corps font-semibold text-teal-700 bg-teal-50 hover:bg-teal-100">Modifier…</button>
+    <button type="button" aria-expanded="false" class="inline-flex items-center justify-center min-h-[48px] px-4 rounded-full text-corps font-semibold text-teal-700 bg-teal-50 hover:bg-teal-100">Fusionner…</button>
+    <div class="col-span-2 grid"><button type="button" aria-expanded="true" class="inline-flex items-center justify-center min-h-[48px] px-4 rounded-full text-corps font-semibold text-white bg-teal-800">Refuser…</button></div>
+  </div>
+</template>
+<template id="p-lieu-actions-sacha-modifier">
+  <div class="mt-5 grid grid-cols-2 gap-2.5">
+    <button type="button" class="col-span-2 inline-flex items-center justify-center gap-2 min-h-[48px] px-5 rounded-full text-corps font-semibold text-white bg-teal-700 hover:bg-teal-600"><svg class="w-5 h-5" aria-hidden="true"><use href="#i-coche"/></svg>Approuver le lieu</button>
+    <button type="button" aria-expanded="true" class="inline-flex items-center justify-center min-h-[48px] px-4 rounded-full text-corps font-semibold text-white bg-teal-800">Modifier…</button>
+    <button type="button" aria-expanded="false" class="inline-flex items-center justify-center min-h-[48px] px-4 rounded-full text-corps font-semibold text-teal-700 bg-teal-50 hover:bg-teal-100">Fusionner…</button>
+    <div class="col-span-2 grid"><button type="button" aria-expanded="false" class="inline-flex items-center justify-center min-h-[48px] px-4 rounded-full text-corps font-semibold text-teal-700 bg-teal-50 hover:bg-teal-100">Refuser…</button></div>
+  </div>
+</template>
+
+<!-- ─── les panneaux de décision d'un lieu : le formulaire de « La file d'attente » (motif, paire d'actions) ─── -->
+<template id="p-lieu-fusion">
+  <form class="mt-4 rounded-[20px] bg-neutre-50 p-4" onsubmit="return false" style="box-shadow: inset 0 0 0 1px var(--color-neutre-200)">
+    <fieldset class="min-w-0 border-0 p-0 m-0">
+      <legend class="text-corps font-semibold text-teal-900">Fusionner avec un lieu du relevé</legend>
+      <p class="mt-1 text-[16px] text-neutre-700">Les plus proches du point.</p>
+      <div class="mt-3 grid gap-2.5">
+        <label class="choix flex items-center gap-3">
+          <input type="radio" name="fusion" value="osm-marche-500" class="rond" checked>
+          <span class="lieu shrink-0" aria-hidden="true"><svg class="w-[18px] h-[18px]"><use href="#l-restaurant"/></svg></span>
+          <span class="min-w-0"><span class="block text-corps font-semibold text-teal-900">Le Marché des 500</span><span class="block text-[16px] text-neutre-700">Restaurant · à 10&nbsp;m</span></span>
+        </label>
+        <label class="choix flex items-center gap-3">
+          <input type="radio" name="fusion" value="osm-les-500" class="rond">
+          <span class="lieu shrink-0" aria-hidden="true"><svg class="w-[18px] h-[18px]"><use href="#l-restaurant"/></svg></span>
+          <span class="min-w-0"><span class="block text-corps font-semibold text-teal-900">Les 500</span><span class="block text-[16px] text-neutre-700">Restaurant · à 20&nbsp;m</span></span>
+        </label>
+        <label class="choix flex items-center gap-3">
+          <input type="radio" name="fusion" value="osm-bar-500" class="rond">
+          <span class="lieu shrink-0" aria-hidden="true"><svg class="w-[18px] h-[18px]"><use href="#l-cafe"/></svg></span>
+          <span class="min-w-0"><span class="block text-corps font-semibold text-teal-900">Le Bar des 500</span><span class="block text-[16px] text-neutre-700">Café, bar · à 25&nbsp;m</span></span>
+        </label>
+      </div>
+    </fieldset>
+    <div class="mt-4">
+      <label for="fusion-q" class="block text-[16px] font-semibold text-neutre-800">Ou un autre lieu du relevé</label>
+      <div class="relative mt-1.5">
+        <svg class="w-5 h-5 absolute left-3.5 top-[16px] text-teal-600 pointer-events-none" aria-hidden="true"><use href="#i-loupe"/></svg>
+        <input id="fusion-q" type="search" autocomplete="off" class="champ w-full min-h-[52px] pl-11 pr-3.5 rounded-xl text-corps text-neutre-900">
+      </div>
+    </div>
+    <p class="mt-4 text-[16px] leading-snug text-neutre-800">Le point de Camille disparaît&nbsp;; son «&nbsp;pourquoi&nbsp;» passe au lieu choisi.</p>
+    <div class="mt-3 flex flex-wrap gap-2.5">
+      <button type="submit" class="flex-1 inline-flex items-center justify-center min-h-[48px] px-5 rounded-full text-corps font-semibold text-white bg-teal-700 hover:bg-teal-600">Fusionner</button>
+      <button type="button" class="inline-flex items-center justify-center min-h-[48px] px-5 rounded-full text-corps font-semibold text-teal-700 bg-teal-50 hover:bg-teal-100">Annuler</button>
+    </div>
+  </form>
+</template>
+
+<template id="p-lieu-refus">
+  <form class="mt-4 rounded-[20px] bg-neutre-50 p-4" onsubmit="return false" style="box-shadow: inset 0 0 0 1px var(--color-neutre-200)">
+    <label for="lieu-motif" class="block text-[16px] font-semibold text-neutre-800">Motif, envoyé à Yanis par e-mail</label>
+    <div class="mt-2 flex flex-wrap gap-2">
+      <button type="button" onclick="document.getElementById('lieu-motif').value = this.dataset.motif" data-motif="Un lieu favori doit être ouvert à tous : une adresse privée n'apparaît pas sur le plan."
+              class="inline-flex items-center min-h-[44px] px-3.5 rounded-full text-[16px] font-semibold text-teal-800 bg-white hover:bg-teal-50" style="box-shadow: inset 0 0 0 1.5px var(--color-teal-200)">Adresse privée</button>
+      <button type="button" onclick="document.getElementById('lieu-motif').value = this.dataset.motif" data-motif="Ce lieu est en dehors du quartier : le plan ne montre que la Cartoucherie."
+              class="inline-flex items-center min-h-[44px] px-3.5 rounded-full text-[16px] font-semibold text-teal-800 bg-white hover:bg-teal-50" style="box-shadow: inset 0 0 0 1.5px var(--color-teal-200)">Hors du quartier</button>
+      <button type="button" onclick="document.getElementById('lieu-motif').value = this.dataset.motif" data-motif="Je ne trouve pas ce lieu à cet endroit. Pouvez-vous le replacer sur le plan ?"
+              class="inline-flex items-center min-h-[44px] px-3.5 rounded-full text-[16px] font-semibold text-teal-800 bg-white hover:bg-teal-50" style="box-shadow: inset 0 0 0 1.5px var(--color-teal-200)">Introuvable</button>
+    </div>
+    <textarea id="lieu-motif" rows="3" class="champ mt-3 block w-full min-h-[104px] px-3.5 py-3 rounded-xl text-corps leading-relaxed text-neutre-900">Un lieu favori doit être ouvert à tous : une adresse privée n'apparaît pas sur le plan.</textarea>
+    <p class="mt-2 text-[16px] text-neutre-700">Le lieu quitte la fiche de Yanis&nbsp;; sa fiche reste en ligne.</p>
+    <div class="mt-3 flex flex-wrap gap-2.5">
+      <button type="submit" class="flex-1 inline-flex items-center justify-center min-h-[48px] px-5 rounded-full text-corps font-semibold text-white bg-teal-700 hover:bg-teal-600">Envoyer le refus</button>
+      <button type="button" class="inline-flex items-center justify-center min-h-[48px] px-5 rounded-full text-corps font-semibold text-teal-700 bg-teal-50 hover:bg-teal-100">Annuler</button>
+    </div>
+  </form>
+</template>
+
+<template id="p-lieu-modifier">
+  <form class="mt-4 rounded-[20px] bg-neutre-50 p-4" onsubmit="return false" style="box-shadow: inset 0 0 0 1px var(--color-neutre-200)">
+    <p class="text-corps font-semibold text-teal-900">Modifier le lieu</p>
+    <p class="mt-1 text-[16px] text-neutre-700">Le point&nbsp;: touchez le plan, plus haut.</p>
+    <div class="mt-4" data-etat="ok">
+      <label for="lieu-nom" class="block text-[16px] font-semibold text-neutre-800">Le nom du lieu</label>
+      <input id="lieu-nom" type="text" value="Terrain de pétanque du jardin" aria-describedby="lieu-nom-avant"
+             class="champ mt-1.5 w-full min-h-[52px] px-3.5 rounded-xl text-corps text-neutre-900">
+      <p id="lieu-nom-avant" class="mt-1.5 text-[16px] text-neutre-700">Sacha avait écrit «&nbsp;le terrain de petanque du jardin&nbsp;».</p>
+    </div>
+    <fieldset class="mt-5 min-w-0 border-0 p-0 m-0">
+      <legend class="block mb-2 text-[16px] font-semibold text-neutre-800">Son type</legend>
+      <div class="grid grid-cols-[repeat(auto-fill,minmax(min(9.5rem,100%),1fr))] gap-2">
+        <label class="choix flex items-center gap-2.5 min-h-[52px]! py-2! px-3!"><input type="radio" name="lieu-type" value="cafe" class="sr-only"><svg class="w-5 h-5 shrink-0 text-sauge-700" aria-hidden="true"><use href="#l-cafe"/></svg><span class="text-[16px] font-semibold text-teal-900">Café, bar</span></label>
+        <label class="choix flex items-center gap-2.5 min-h-[52px]! py-2! px-3!"><input type="radio" name="lieu-type" value="restaurant" class="sr-only"><svg class="w-5 h-5 shrink-0 text-sauge-700" aria-hidden="true"><use href="#l-restaurant"/></svg><span class="text-[16px] font-semibold text-teal-900">Restaurant</span></label>
+        <label class="choix flex items-center gap-2.5 min-h-[52px]! py-2! px-3!"><input type="radio" name="lieu-type" value="parc" class="sr-only"><svg class="w-5 h-5 shrink-0 text-sauge-700" aria-hidden="true"><use href="#l-parc"/></svg><span class="text-[16px] font-semibold text-teal-900">Parc, jardin</span></label>
+        <label class="choix flex items-center gap-2.5 min-h-[52px]! py-2! px-3!"><input type="radio" name="lieu-type" value="boutique" class="sr-only"><svg class="w-5 h-5 shrink-0 text-sauge-700" aria-hidden="true"><use href="#l-boutique"/></svg><span class="text-[16px] font-semibold text-teal-900">Boutique</span></label>
+        <label class="choix flex items-center gap-2.5 min-h-[52px]! py-2! px-3!"><input type="radio" name="lieu-type" value="sport" class="sr-only" checked><svg class="w-5 h-5 shrink-0 text-sauge-700" aria-hidden="true"><use href="#l-sport"/></svg><span class="text-[16px] font-semibold text-teal-900">Sport</span></label>
+        <label class="choix flex items-center gap-2.5 min-h-[52px]! py-2! px-3!"><input type="radio" name="lieu-type" value="culture" class="sr-only"><svg class="w-5 h-5 shrink-0 text-sauge-700" aria-hidden="true"><use href="#l-culture"/></svg><span class="text-[16px] font-semibold text-teal-900">Culture</span></label>
+        <label class="choix flex items-center gap-2.5 min-h-[52px]! py-2! px-3!"><input type="radio" name="lieu-type" value="autre" class="sr-only"><svg class="w-5 h-5 shrink-0 text-sauge-700" aria-hidden="true"><use href="#l-autre"/></svg><span class="text-[16px] font-semibold text-teal-900">Autre</span></label>
+      </div>
+    </fieldset>
+    <p class="mt-4 text-[16px] leading-snug text-neutre-800">Sacha verra le nouveau nom dans son espace et sur sa page «&nbsp;Mes lieux favoris&nbsp;».</p>
+    <div class="mt-3 flex flex-wrap gap-2.5">
+      <button type="submit" class="flex-1 inline-flex items-center justify-center gap-2 min-h-[48px] px-5 rounded-full text-corps font-semibold text-white bg-teal-700 hover:bg-teal-600"><svg class="w-5 h-5" aria-hidden="true"><use href="#i-coche"/></svg>Enregistrer et approuver</button>
+      <button type="button" class="inline-flex items-center justify-center min-h-[48px] px-5 rounded-full text-corps font-semibold text-teal-700 bg-teal-50 hover:bg-teal-100">Annuler</button>
+    </div>
+  </form>
+</template>
+
+<template id="p-lieux-osm">
+  <p class="mt-4 px-1 text-[16px] text-neutre-700">
+    <a href="https://www.openstreetmap.org/copyright" class="inline-flex items-center min-h-[44px] underline underline-offset-4 decoration-neutre-400 hover:decoration-neutre-700">© les contributeurs d'OpenStreetMap</a>
+  </p>
+</template>
+
+<!-- ─── 7a · la file des lieux : ils n'arrivent pas tous avec une fiche à relire ─── -->
+<template id="e-lieux">
+  <div data-inclure="p-entete"></div>
+  <main class="px-4 pt-6 pb-10">
+    <h1 class="ff px-1 text-nom text-teal-900">Lieux à vérifier</h1>
+    <p class="mt-1.5 px-1 text-[16px] text-neutre-700">3 lieux, le plus ancien en haut. Sur le plan une fois approuvés.</p>
+    <ul class="mt-4 grid gap-3 list-none p-0 m-0">
+      <div data-inclure="p-lieu-ligne-yanis"></div>
+      <div data-inclure="p-lieu-ligne-sacha"></div>
+      <div data-inclure="p-lieu-ligne-camille"></div>
+    </ul>
+    <div data-inclure="p-lieux-osm"></div>
+  </main>
+</template>
+
+<template id="e-lieu-fusion">
+  <div data-inclure="p-entete"></div>
+  <main class="mx-auto max-w-[1160px] px-5 pt-3 pb-12">
+    <div data-inclure="p-lieu-tete-camille"></div>
+    <div data-inclure="p-lieu-actions-camille-fusion"></div>
+    <div data-inclure="p-lieu-fusion"></div>
+  </main>
+</template>
+
+<template id="e-lieu-modifier">
+  <div data-inclure="p-entete"></div>
+  <main class="mx-auto max-w-[1160px] px-5 pt-3 pb-12">
+    <div data-inclure="p-lieu-tete-sacha"></div>
+    <div data-inclure="p-lieu-actions-sacha-modifier"></div>
+    <div data-inclure="p-lieu-modifier"></div>
+  </main>
+</template>
+
+<template id="e-lieu-refus">
+  <div data-inclure="p-entete"></div>
+  <main class="mx-auto max-w-[1160px] px-5 pt-3 pb-12">
+    <div data-inclure="p-lieu-tete-yanis"></div>
+    <div data-inclure="p-lieu-actions-yanis-refus"></div>
+    <div data-inclure="p-lieu-refus"></div>
+  </main>
+</template>
+
+<!-- ─── 7e · après « Fusionner » : le bandeau de 2e, côté lieux ─── -->
+<template id="e-lieux-ok">
+  <div data-inclure="p-entete"></div>
+  <main class="px-4 pt-5 pb-10">
+    <div role="status" class="flex items-start gap-4 rounded-[22px] bg-teal-50 p-5">
+      <span class="pastille pastille--teal w-11 h-11 mt-0.5 bg-white text-teal-600" aria-hidden="true"><svg class="respire w-[22px] h-[22px]"><use href="#i-ventouse"/></svg></span>
+      <div class="min-w-0">
+        <p class="ff text-[22px] leading-tight text-teal-950">Lieu fusionné</p>
+        <p class="mt-1.5 text-[16px] leading-snug text-teal-950">«&nbsp;Le marché du samedi&nbsp;» devient Le Marché des 500 sur la fiche de Camille. Sur le plan d'ici quelques minutes.</p>
+        <p class="mt-1.5 text-[16px] leading-snug text-teal-950">Camille est prévenue par e-mail.</p>
+      </div>
+    </div>
+    <h1 class="ff mt-7 px-1 text-nom text-teal-900">Lieux à vérifier</h1>
+    <p class="mt-1.5 px-1 text-[16px] text-neutre-700">2 lieux, le plus ancien en haut.</p>
+    <ul class="mt-4 grid gap-3 list-none p-0 m-0">
+      <div data-inclure="p-lieu-ligne-yanis"></div>
+      <div data-inclure="p-lieu-ligne-sacha"></div>
+    </ul>
+  </main>
+</template>
+
+<!-- ─── 7f · portable : la file, le lieu, la décision ─── -->
+<template id="p-lieux-compacte">
+  <nav aria-label="Lieux à vérifier" class="min-w-0">
+    <h1 class="ff text-[28px] leading-tight text-teal-900">Lieux à vérifier</h1>
+    <p class="mt-1 text-[16px] text-neutre-700">3 lieux, le plus ancien en haut.</p>
+    <ul class="mt-4 grid gap-2.5 list-none p-0 m-0">
+      <li><a href="/admin/lieux/yanis" class="carte carte-lien flex gap-3.5 rounded-[18px] bg-white p-3.5">
+        <span class="lieu lieu--pose shrink-0 mt-1.5 ml-1.5" aria-hidden="true"><svg class="w-[18px] h-[18px]"><use href="#l-autre"/></svg></span>
+        <span class="min-w-0 pl-1"><span class="ff block text-[19px] leading-tight text-teal-900">Mon bureau</span><span class="block text-[16px] text-neutre-700">Par Yanis Belhadj</span></span>
+      </a></li>
+      <li><a href="/admin/lieux/sacha" class="carte carte-lien flex gap-3.5 rounded-[18px] bg-white p-3.5">
+        <span class="lieu lieu--pose shrink-0 mt-1.5 ml-1.5" aria-hidden="true"><svg class="w-[18px] h-[18px]"><use href="#l-sport"/></svg></span>
+        <span class="min-w-0 pl-1"><span class="ff block text-[19px] leading-tight text-teal-900">le terrain de petanque du jardin</span><span class="block text-[16px] text-neutre-700">Par Sacha Morel · avec sa fiche</span></span>
+      </a></li>
+      <li><a href="/admin/lieux/camille" aria-current="true" class="flex gap-3.5 rounded-[18px] bg-teal-50 p-3.5" style="box-shadow: inset 0 0 0 2px var(--color-teal-600)">
+        <span class="lieu lieu--pose shrink-0 mt-1.5 ml-1.5" aria-hidden="true"><svg class="w-[18px] h-[18px]"><use href="#l-autre"/></svg></span>
+        <span class="min-w-0 pl-1"><span class="ff block text-[19px] leading-tight text-teal-900">Le marché du samedi</span><span class="block text-[16px] text-neutre-700">Par Camille Roussel</span>
+          <span class="mt-1.5 flex"><span class="inline-flex items-center gap-1.5 rounded-full bg-sable-200 px-2.5 py-0.5 text-[16px] font-semibold text-teal-950"><svg class="w-4 h-4 shrink-0" aria-hidden="true"><use href="#i-signal"/></svg>Proche de : Le Marché des 500</span></span></span>
+      </a></li>
+    </ul>
+  </nav>
+</template>
+
+<template id="l-lieux">
+  <div data-inclure="p-entete"></div>
+  <div class="mx-auto max-w-[1160px] px-5 py-7 grid grid-cols-[300px_minmax(0,1fr)_380px] gap-7 items-start">
+    <div data-inclure="p-lieux-compacte"></div>
+    <div class="min-w-0"><div data-inclure="p-lieu-tete-camille"></div></div>
+    <aside class="min-w-0" aria-label="Décision">
+      <div data-inclure="p-lieu-actions-camille-fusion"></div>
+      <div data-inclure="p-lieu-fusion"></div>
+    </aside>
+  </div>
+</template>
+
 <script>
 /* ── Les écrans : chaque <iframe data-ecran> reçoit les fondations de la page
    (polices, daisyUI, Tailwind, @theme, classes produit et v2) et le sprite, puis
@@ -1761,7 +2818,7 @@ textarea.champ{ field-sizing: content; resize: vertical; }
       return e.tagName !== 'STYLE' || e.id || e.type === 'text/tailwindcss';
     }
   ).map(function(e){ return e.outerHTML; }).join('\n');
-  var sprite = document.getElementById('src-sprite').outerHTML;
+  var sprite = document.getElementById('src-sprite').outerHTML + document.getElementById('src-plan').outerHTML;
 
   function deplier(html){
     return html.replace(/<div data-inclure="([^"]+)"><\/div>/g, function(m, id){
@@ -1775,6 +2832,7 @@ textarea.champ{ field-sizing: content; resize: vertical; }
     var onglet = d.querySelector('[data-onglet="' + (f.dataset.onglet || 'file') + '"]');
     if(onglet) onglet.setAttribute('aria-current', 'page');
     if(f.dataset.compte){ d.querySelectorAll('[data-compte-file]').forEach(function(s){ s.textContent = f.dataset.compte; }); }
+    if(f.dataset.lieux){ d.querySelectorAll('[data-compte-lieux]').forEach(function(s){ s.textContent = f.dataset.lieux; }); }
     if(f.dataset.recherche){
       var c = d.getElementById('cherche');
       if(c){ c.value = f.dataset.recherche; c.dispatchEvent(new Event('input')); }

@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Fiche v2</title>
-<meta name="description" content="Maquette v2 : la fiche membre avec l'enseigne, les tarifs, les horaires, le lien de réservation et les langues, remplis, vides et en partie.">
+<meta name="description" content="Maquette v2 : la fiche avec l'encadré pratique, le carrousel généré de « Votre histoire », les lieux favoris et l'accord « iel ».">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cg fill='none' stroke='%232a5f66' stroke-width='2.1'%3E%3Ccircle cx='16' cy='16' r='13.2'/%3E%3Ccircle cx='16' cy='16' r='7.4'/%3E%3Ccircle cx='16' cy='16' r='2.2' fill='%232a5f66' stroke='none'/%3E%3C/g%3E%3C/svg%3E">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -256,6 +256,17 @@ body{ font-family:var(--font-sans); font-size:17px; line-height:1.55; color:var(
 /* l'arche de la Halle : demi-cercle en haut, base droite */
 .arche{ border-radius:999px 999px 22px 22px; }
 
+/* les mots entiers : un titre ou un métier ne se coupe jamais au milieu
+   d'un mot, et n'est jamais tronqué. À 200 % de texte sur 360 px, la carte
+   de fiche n'a plus que 200 px utiles et « Lacombe » en 80 px en demande 352.
+   La taille suit donc le conteneur (container-type sur la carte) et le plus
+   long mot, dont le build écrit le nombre de lettres dans --mot. --lettre est
+   la chasse d'une lettre large, en em (0,68 pour Literata 600, 0,56 pour
+   Source Sans) ; --taille, la taille normale. À 100 %, rien ne change.
+   overflow-wrap reste un filet, pour un mot qui ne tiendrait même pas là. */
+.mots-entiers{ font-size:min(var(--taille, var(--text-grand)), calc(100cqi / (var(--lettre, 0.68) * var(--mot, 8))));
+               overflow-wrap:break-word; }
+
 /* la pastille de catégorie */
 .chip{ background:var(--color-sauge-100); color:var(--color-sauge-800); }
 
@@ -287,6 +298,112 @@ body{ font-family:var(--font-sans); font-size:17px; line-height:1.55; color:var(
 @media (prefers-reduced-motion: reduce){ *{ transition:none !important; animation:none !important; } }
 </style>
 
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     FONDATION 6 — les diapositives de « Votre histoire » (v2 spec §11).
+     1080 × 1350 au build (satori + sharp) ; ici, une boîte 4:5 mesurée en
+     cqi, pour qu'une diapositive se dessine à n'importe quelle largeur :
+     1 cqi = 10,8 px sur la vraie image. Pensée pour le sous-ensemble de
+     satori — flex, position absolue, dégradés, rayons, ombres, object-fit ;
+     ni grid, ni flou, ni mode de fusion, ni masque, ni pseudo-élément (le
+     halo et le croquis multiplié ne passent donc pas). Non vérifié dans
+     satori : le build doit résoudre var() et cqi en px, et convertir les
+     couleurs en hexadécimal si satori refuse oklch(). text-wrap:balance est
+     un bonus de navigateur, la mise en page tient sans lui.
+     ═══════════════════════════════════════════════════════════════════════ -->
+<style id="src-css-diapos">
+.diapo{ position:relative; display:flex; flex-direction:column; width:100%; aspect-ratio:4/5;
+        container-type:inline-size; overflow:hidden; text-align:left;
+        font-family:var(--font-sans); color:var(--color-teal-950); }
+.diapo__motif{ position:absolute; inset:0; --v: oklch(53% .09 196 / .34);
+  background-image:
+    radial-gradient(circle at 50% 50%, transparent 0 2.5cqi, var(--v) 2.5cqi 2.8cqi, transparent 2.8cqi),
+    radial-gradient(circle at 50% 50%, transparent 0 1.4cqi, var(--v) 1.4cqi 1.68cqi, transparent 1.68cqi),
+    radial-gradient(circle at 50% 50%, var(--v) 0 .52cqi, transparent .52cqi);
+  background-size:11.2cqi 11.2cqi; }
+.diapo__corps{ position:relative; display:flex; flex-direction:column; height:100%; padding:5.2cqi; }
+
+/* l'en-tête de série : la marque à gauche, la page à droite */
+.diapo__tete{ display:flex; align-items:center; justify-content:space-between; gap:3cqi;
+              font-size:2.5cqi; font-weight:600; letter-spacing:.14em; text-transform:uppercase; }
+.diapo__marque{ display:flex; align-items:center; gap:1.6cqi; }
+.diapo__marque svg{ width:4.6cqi; height:4.6cqi; flex:none; }
+.diapo__page{ font-variant-numeric:tabular-nums; letter-spacing:.08em; }
+
+/* l'arche : celle du portrait, à l'échelle de la page. Maison, elle porte le
+   texte sur un fond clair ; photo, elle cadre la photo. */
+.diapo__arche{ position:relative; display:flex; flex-direction:column; flex:1 1 0; min-height:0; margin-top:3.6cqi;
+               border-radius:44.8cqi 44.8cqi 3.4cqi 3.4cqi; padding:6.4cqi 7cqi 5cqi;
+               background:var(--fond, var(--color-sable-100)); }
+.diapo__medaillon{ align-self:center; display:flex; align-items:center; justify-content:center; flex:none;
+                   width:10cqi; height:10cqi; border-radius:50%; background:#fff; color:var(--color-teal-700);
+                   border:.35cqi solid var(--color-teal-300); }
+.diapo__medaillon svg{ width:5cqi; height:5cqi; }
+.diapo__titre{ margin:2.6cqi 0 0; font-family:var(--font-display); font-weight:600; font-size:var(--titre, 7.6cqi);
+               line-height:1.04; letter-spacing:-.02em; text-align:center; text-wrap:balance; }
+.diapo__filet{ align-self:center; flex:none; width:12cqi; height:.9cqi; border-radius:1cqi;
+               margin:3cqi 0 3.4cqi; background-image:var(--gradient-filet); }
+.diapo__texte{ margin:0; font-size:4.1cqi; line-height:1.36; }
+.diapo__signature{ display:flex; align-items:baseline; justify-content:space-between; gap:2cqi; flex-wrap:wrap;
+                   margin-top:auto; padding-top:2.6cqi; border-top:.25cqi solid oklch(19% .03 201 / .16);
+                   font-size:2.5cqi; color:var(--color-teal-800); }
+.diapo__nom{ font-family:var(--font-display); font-weight:600; font-size:3.4cqi; color:var(--color-teal-950); }
+
+/* maison : le teal et ses ventouses autour de l'arche */
+.diapo--maison{ background-color:var(--color-teal-900); }
+.diapo--maison .diapo__tete{ color:var(--color-sable-100); }
+.diapo--maison .diapo__marque svg{ color:var(--color-sable-300); }
+
+/* photo : le papier sable, la photo dans l'arche, le texte dessous */
+.diapo--photo{ background-color:var(--color-sable-100); }
+.diapo--photo .diapo__tete{ color:var(--color-teal-800); }
+.diapo--photo .diapo__marque svg{ color:var(--color-teal-600); }
+.diapo__photo{ flex:1 1 0; min-height:var(--photo-min, 24cqi); margin-top:3.6cqi; overflow:hidden;
+               border-radius:44.8cqi 44.8cqi 3.4cqi 3.4cqi; background:var(--color-sable-200); }
+.diapo__photo img{ display:block; width:100%; height:100%; object-fit:cover; }
+.diapo--photo .diapo__titre{ margin-top:3.6cqi; text-align:left; font-size:var(--titre, 6.2cqi); }
+.diapo--photo .diapo__filet{ align-self:flex-start; margin:2.4cqi 0 2.8cqi; }
+.diapo--photo .diapo__texte{ font-size:3.8cqi; }
+.diapo--photo .diapo__signature{ margin-top:3.2cqi; }
+
+/* la couverture : « À la rencontre de… », toujours tirée du portrait */
+.diapo--couverture .diapo__corps{ align-items:center; text-align:center; }
+.diapo--couverture .diapo__tete{ align-self:stretch; }
+.diapo__portrait{ display:block; flex:0 1 auto; min-height:34cqi; margin-top:6cqi; height:var(--portrait, 55cqi); width:auto; aspect-ratio:5/6;
+                  border-radius:999px 999px 3.4cqi 3.4cqi; object-fit:cover; object-position:50% 22%;
+                  background:#fff; box-shadow:0 0 0 1.4cqi #fff, 0 2cqi 5cqi oklch(19% .03 201 / .45); }
+.diapo__rencontre{ margin:6.4cqi 0 0; font-size:2.8cqi; font-weight:600; letter-spacing:.22em; text-transform:uppercase;
+                   color:var(--color-sable-200); }
+.diapo__nom-grand{ margin:1.4cqi 0 0; font-family:var(--font-display); font-weight:600; font-size:9.4cqi;
+                   line-height:1; letter-spacing:-.025em; color:#fff; text-wrap:balance; }
+.diapo__metier{ margin:2.6cqi 0 0; font-size:3.6cqi; line-height:1.25; color:var(--color-teal-100); }
+.diapo__pied{ margin-top:auto; font-size:2.5cqi; letter-spacing:.04em; color:var(--color-teal-200); }
+
+/* le motto : pas de fond dans l'arche, juste son contour, et la phrase */
+.diapo--motto .diapo__arche{ background:transparent; border:.45cqi solid var(--color-sable-300); }
+.diapo__guillemet{ margin:auto 0 -3cqi; font-family:var(--font-display); font-weight:600; font-size:18cqi; line-height:1;
+                   text-align:center; color:var(--color-sable-300); }
+.diapo__motto{ margin:0; font-family:var(--font-display); font-weight:600; font-size:6.4cqi; line-height:1.14;
+               letter-spacing:-.015em; text-align:center; color:#fff; text-wrap:balance; }
+.diapo--photo .diapo__motto{ color:var(--color-teal-950); text-align:left; font-size:5.4cqi; margin-top:3.6cqi; }
+.diapo--maison.diapo--motto .diapo__signature{ color:var(--color-teal-100); border-color:oklch(100% 0 0 / .2); }
+.diapo--maison.diapo--motto .diapo__nom{ color:#fff; }
+
+/* les lieux : l'icône du plan, le nom, le type */
+.diapo__lieux{ display:flex; flex-direction:column; gap:1.6cqi; margin:0; padding:0; list-style:none; }
+.diapo__lieu{ display:flex; align-items:center; gap:2.6cqi; }
+.diapo__lieu-icone{ display:flex; align-items:center; justify-content:center; flex:none; width:6.4cqi; height:6.4cqi;
+                    border-radius:2cqi; background:var(--color-sauge-700); color:#fff; }
+.diapo__lieu-icone svg{ width:4cqi; height:4cqi; }
+.diapo__lieu-nom{ font-family:var(--font-display); font-weight:600; font-size:3.4cqi; line-height:1.08; }
+.diapo__lieu-type{ display:block; margin-top:.5cqi; font-family:var(--font-sans); font-size:2.2cqi; font-weight:600;
+                   letter-spacing:.12em; text-transform:uppercase; color:var(--color-sauge-800); }
+.diapo__phrase{ margin:2.6cqi 0 0; font-size:3.4cqi; line-height:1.32; }
+
+/* Colly : accrochée au bord de l'arche, jamais près d'un visage.
+   400 × 473 à la source : 24 cqi = 259 px, sous ×1. */
+.diapo__colly{ position:absolute; width:24cqi; height:auto; right:-2.4cqi; top:10.5cqi; transform:rotate(14deg); }
+</style>
+
 <!-- Ce que la fiche ajoute à la page en ligne (src/styles/global.css), copié
      dans chaque cadre : la marge de sécurité de l'iPhone, et la coupure d'un
      mot de titre trop long à 200 % plutôt qu'un défilement de côté. -->
@@ -305,6 +422,13 @@ body{ font-family:var(--font-sans); font-size:17px; line-height:1.55; color:var(
   box-shadow: 0 0 0 8px var(--color-teal-950), var(--shadow-flottant); }
 .bureau{ overflow-x:auto; padding:8px; border-radius:22px; background:var(--color-teal-950); box-shadow:var(--shadow-flottant); }
 .bureau iframe{ width:1200px; height:900px; border-radius:14px; }
+/* sur un téléphone, le cadre devient l'écran : bord à bord, toujours 360 px de large */
+@media (max-width: 420px){
+  .planche{ margin-inline:-20px; }
+  .cadre{ width:100%; }
+  .cadre figcaption{ padding-inline:20px; }
+  .cadre iframe{ width:100%; margin:8px 0; border-radius:0; box-shadow:none; }
+}
 body.ecran .cadre iframe{ height:740px !important; }
 body.ecran .bureau iframe{ height:800px !important; }
 </style>
@@ -349,23 +473,28 @@ body.ecran .bureau iframe{ height:800px !important; }
 <symbol id="i-euro" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M17.8 6.6a7 7 0 1 0 0 10.8"/><path d="M4.4 10.2h8.8M4.4 13.8h8.8"/></symbol>
 <symbol id="i-agenda" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3.4" y="5" width="17.2" height="15.6" rx="2.6"/><path d="M3.4 9.8h17.2M8 3.4v3.2M16 3.4v3.2"/><path d="m9.2 15 2 2 3.8-3.8"/></symbol>
 <symbol id="i-langues" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3.4 5.6a2 2 0 0 1 2-2h8.4a2 2 0 0 1 2 2v5.2a2 2 0 0 1-2 2H9.2l-3.6 3v-3h-.2a2 2 0 0 1-2-2Z"/><path d="M15.8 8.6h2.8a2 2 0 0 1 2 2v5.2a2 2 0 0 1-2 2h-.2v3l-3.6-3h-3.6a2 2 0 0 1-2-2v-1"/></symbol>
+<!-- v2 · les diapositives et les lieux, du styleguide -->
+<symbol id="i-carte" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3.6 6.4 9 4.2l6 2.2 5.4-2.2v13.4L15 19.8l-6-2.2-5.4 2.2Z"/><path d="M9 4.2v13.4M15 6.4v13.4"/></symbol>
+<symbol id="i-ampoule" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9.4 17.6h5.2M10.2 20.6h3.6"/><path d="M8.6 14.6a6 6 0 1 1 6.8 0c-.6.5-.9 1.1-.9 1.9v1.1H9.5v-1.1c0-.8-.3-1.4-.9-1.9Z"/></symbol>
+<symbol id="l-cafe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4.8 9.4h11.4v4.4a5 5 0 0 1-5 5h-1.4a5 5 0 0 1-5-5Z"/><path d="M16.2 10.6h1.2a2.4 2.4 0 0 1 0 4.8h-1.6"/><path d="M8.4 3.6c-.9 1 .9 1.9 0 3M12.4 3.6c-.9 1 .9 1.9 0 3"/><path d="M3.6 21.2h14"/></symbol>
+<symbol id="l-restaurant" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6.6 3.4v6a2.4 2.4 0 0 0 4.8 0v-6M9 3.4v17.2"/><path d="M17.4 20.6V3.4c-2 1-3.2 3.8-3.2 7.4 0 1.4.9 2.4 2.2 2.4h1"/></symbol>
+<symbol id="l-parc" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.4c-2.8 0-4.9 2.1-4.9 4.7 0 .4 0 .7.1 1A3.7 3.7 0 0 0 8.1 16.4h7.8a3.7 3.7 0 0 0 .9-7.3c.1-.3.1-.6.1-1 0-2.6-2.1-4.7-4.9-4.7Z"/><path d="M12 11.4v9.4M12 14.2l-2.2-1.8M8.2 20.8h7.6"/></symbol>
+<symbol id="l-boutique" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5.2 8.2h13.6l-.9 11.4a1.8 1.8 0 0 1-1.8 1.6H7.9a1.8 1.8 0 0 1-1.8-1.6Z"/><path d="M9 10.6V6.8a3 3 0 0 1 6 0v3.8"/></symbol>
+<symbol id="l-sport" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6.8 7.4v9.2M17.2 7.4v9.2M3.8 9.8v4.4M20.2 9.8v4.4M6.8 12h10.4"/></symbol>
+<symbol id="l-culture" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4.8 5.4h14.4a1.4 1.4 0 0 1 1.4 1.4v2.4a2.8 2.8 0 0 0 0 5.6v2.4a1.4 1.4 0 0 1-1.4 1.4H4.8a1.4 1.4 0 0 1-1.4-1.4v-2.4a2.8 2.8 0 0 0 0-5.6V6.8a1.4 1.4 0 0 1 1.4-1.4Z"/><path d="M14.6 7.8v1.4M14.6 11.3v1.4M14.6 14.8v1.4"/></symbol>
+<symbol id="l-autre" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.6c.6 4.4 2.4 6.6 6.8 7.4-4.4.8-6.2 3-6.8 7.4-.6-4.4-2.4-6.6-6.8-7.4 4.4-.8 6.2-3 6.8-7.4Z"/></symbol>
 </defs></svg>
 
 <main class="mx-auto max-w-[1280px] px-5 py-8 sm:py-12">
 
   <header class="max-w-[72ch]">
     <p class="text-etiquette font-semibold uppercase text-teal-700">Maquette v2 · /membre/[slug]</p>
-    <h1 class="ff mt-1.5 text-grand text-teal-900">La fiche, avec les cinq nouveaux champs</h1>
+    <h1 class="ff mt-1.5 text-grand text-teal-900">La fiche v2</h1>
     <div class="filet h-[3px] w-16 rounded-full mt-3"></div>
     <p class="mt-4 text-chapo text-neutre-800">
-      Enseigne, tarifs, horaires, lien de réservation, langues. Tous facultatifs. La fiche part de
-      ce qui est en ligne aujourd'hui (<code class="font-mono text-[0.75em] text-teal-800">src/pages/membre/[slug].astro</code>),
-      pas de la maquette de 2026-09.
-    </p>
-    <p class="mt-4 text-corps text-neutre-800">
-      Ce que le visiteur se demande, dans l'ordre&nbsp;: <strong class="font-semibold text-neutre-900">peut-il m'aider,
-      combien, quand, comment le joindre.</strong> Les cinq champs répondent aux trois premières questions&nbsp;;
-      ils vont donc tous dans la carte d'identité, le premier écran, et nulle part ailleurs.
+      L'encadré pratique, le carrousel généré de «&nbsp;Votre histoire&nbsp;», les lieux favoris, l'accord «&nbsp;iel&nbsp;».
+      La fiche part de la page en ligne (<code class="font-mono text-[0.75em] text-teal-800">src/pages/membre/[slug].astro</code>)
+      et ne prend ses blocs qu'au <a class="text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600" href="../final/styleguide.html">styleguide</a>.
     </p>
     <p class="mt-5">
       <button type="button" id="bascule-ecran" aria-pressed="false"
@@ -377,95 +506,73 @@ body.ecran .bureau iframe{ height:800px !important; }
   </header>
 
   <section class="mt-10" aria-labelledby="t-planche">
-    <h2 id="t-planche" class="sr-only">Les trois états, à 360 px</h2>
+    <h2 id="t-planche" class="sr-only">Les cinq états, à 360 px</h2>
     <div class="planche">
       <figure class="cadre">
         <figcaption class="px-2 pb-3">
-          <span class="ff block text-[22px] leading-tight text-teal-900">1 · Les cinq remplis</span>
-          <span class="mt-1 block text-[16px] text-neutre-700">Camille Roussel, elle. Enseigne à côté du métier&nbsp;; sous un filet, «&nbsp;Parle aussi&nbsp;», «&nbsp;Tarifs&nbsp;», «&nbsp;Horaires&nbsp;», puis le bouton teal de réservation.</span>
+          <span class="ff block text-[22px] leading-tight text-teal-900">1 · Les cinq champs remplis</span>
+          <span class="mt-1 block text-[16px] text-neutre-700">Camille Roussel, elle. «&nbsp;Métier · enseigne&nbsp;», puis l'encadré pratique et «&nbsp;Réserver en ligne&nbsp;».</span>
         </figcaption>
         <iframe data-cas="cas-plein" title="Cas 1 : fiche de Camille Roussel, les cinq champs remplis, 360 pixels" loading="eager"></iframe>
       </figure>
       <figure class="cadre">
         <figcaption class="px-2 pb-3">
           <span class="ff block text-[22px] leading-tight text-teal-900">2 · Aucun des cinq</span>
-          <span class="mt-1 block text-[16px] text-neutre-700">La même fiche, champs vides. C'est, à l'octet près, la fiche en ligne aujourd'hui&nbsp;: pas de filet orphelin, pas de «&nbsp;Non communiqué&nbsp;».</span>
+          <span class="mt-1 block text-[16px] text-neutre-700">La même fiche, champs vides&nbsp;: la fiche en ligne aujourd'hui. Ni filet orphelin, ni «&nbsp;Non communiqué&nbsp;».</span>
         </figcaption>
         <iframe data-cas="cas-vide" title="Cas 2 : fiche de Camille Roussel, aucun nouveau champ, 360 pixels" loading="eager"></iframe>
       </figure>
       <figure class="cadre">
         <figcaption class="px-2 pb-3">
           <span class="ff block text-[22px] leading-tight text-teal-900">3 · En partie, au masculin, à 200&nbsp;%</span>
-          <span class="mt-1 block text-[16px] text-neutre-700">Julien Marty, il, se déplace. Enseigne de 77 signes, tarifs de 119 (limite&nbsp;: 120), une langue&nbsp;; ni horaires ni lien. <code class="font-mono text-[15px] text-teal-800">html{font-size:200%}</code>, comme <code class="font-mono text-[15px] text-teal-800">a11y.spec.ts</code>.</span>
+          <span class="mt-1 block text-[16px] text-neutre-700">Julien Marty, il, se déplace. Enseigne de 77 signes, tarifs de 119. Le nom, le métier et l'e-mail passent à la ligne entre deux mots, jamais dedans.</span>
         </figcaption>
         <iframe data-cas="cas-mixte" data-zoom="200%" title="Cas 3 : fiche de Julien Marty, champs en partie remplis, texte à 200 %, 360 pixels" loading="eager"></iframe>
+      </figure>
+      <figure class="cadre">
+        <figcaption class="px-2 pb-3">
+          <span class="ff block text-[22px] leading-tight text-teal-900">4 · Nouvelle voisine, carrousel généré</span>
+          <span class="mt-1 block text-[16px] text-neutre-700">Sophie Arnaud, elle, telle qu'elle a rempli le formulaire. Sous «&nbsp;Son portrait&nbsp;», la couverture et six pages, maison ou photo&nbsp;; la page 6, ses lieux, et le lien vers la carte. Pas encore d'avis&nbsp;: pas de note.</span>
+        </figcaption>
+        <iframe data-cas="cas-nouvelle" title="Cas 4 : fiche de Sophie Arnaud, nouvelle voisine, carrousel généré, 360 pixels" loading="eager"></iframe>
+      </figure>
+      <figure class="cadre">
+        <figcaption class="px-2 pb-3">
+          <span class="ff block text-[22px] leading-tight text-teal-900">5 · iel</span>
+          <span class="mt-1 block text-[16px] text-neutre-700">Le cas 1 avec <code class="font-mono text-[15px] text-teal-800">genre: n</code>&nbsp;: «&nbsp;Lae contacter&nbsp;», «&nbsp;Ce qu'iel propose&nbsp;», «&nbsp;Où lae trouver&nbsp;», «&nbsp;Lae voir sur la carte&nbsp;». La bio est écrite par la personne.</span>
+        </figcaption>
+        <iframe data-cas="cas-iel" title="Cas 5 : fiche de Camille Roussel, accord iel, 360 pixels" loading="eager"></iframe>
       </figure>
     </div>
   </section>
 
   <section class="mt-14" aria-labelledby="t-bureau">
-    <h2 id="t-bureau" class="ff text-nom text-teal-900">4 · Le cas 1 sur ordinateur</h2>
+    <h2 id="t-bureau" class="ff text-nom text-teal-900">6 · Le cas 4 sur ordinateur</h2>
     <div class="filet h-[3px] w-16 rounded-full mt-2.5 mb-3"></div>
     <p class="mb-5 text-corps text-neutre-800 max-w-[72ch]">
-      1200&nbsp;px. L'encadré passe sur trois colonnes, sous l'accroche, à gauche du QR code&nbsp;; le bouton
-      de réservation suit, à sa taille naturelle. La barre «&nbsp;Appeler&nbsp;» reste centrée en bas.
+      1200&nbsp;px. L'encadré passe sur trois colonnes quand sa colonne dépasse 36&nbsp;rem, à gauche du QR code.
+      Le carrousel garde 420&nbsp;px et gagne ses flèches.
     </p>
-    <div class="bureau"><iframe data-cas="cas-plein" title="Cas 1 sur ordinateur, 1200 pixels" loading="eager"></iframe></div>
+    <div class="bureau"><iframe data-cas="cas-nouvelle" title="Cas 4 sur ordinateur, 1200 pixels" loading="eager"></iframe></div>
   </section>
 
   <section class="mt-14 max-w-[80ch]" aria-labelledby="t-places">
-    <h2 id="t-places" class="ff text-nom text-teal-900">Où va chaque champ, et pourquoi</h2>
+    <h2 id="t-places" class="ff text-nom text-teal-900">Où va chaque chose, et pourquoi</h2>
     <div class="filet h-[3px] w-16 rounded-full mt-2.5 mb-5"></div>
     <ol class="grid gap-3 list-none p-0 m-0 text-corps text-neutre-800">
-      <li class="rounded-[16px] bg-neutre-100 p-4"><strong class="font-semibold text-neutre-900">Enseigne — à côté du métier.</strong>
-        «&nbsp;Sophrologue · Cabinet Souffle Clair&nbsp;», comme le dit le spec §11. Le nom de la personne reste le titre&nbsp;:
-        l'annuaire présente des voisins, pas des boutiques. L'enseigne est ce qui est écrit sur la vitrine ou le flyer
-        qu'on vient de scanner&nbsp;; elle confirme qu'on est au bon endroit. Elle passe à la ligne, jamais coupée.</li>
-      <li class="rounded-[16px] bg-neutre-100 p-4"><strong class="font-semibold text-neutre-900">Parle aussi — en tête de l'encadré.</strong>
-        C'est la première question («&nbsp;peut-il m'aider, <em>moi</em>&nbsp;?&nbsp;») pour qui lit mal le français&nbsp;:
-        elle passe avant le prix. Le français est implicite, il n'est jamais listé.</li>
-      <li class="rounded-[16px] bg-neutre-100 p-4"><strong class="font-semibold text-neutre-900">Tarifs, puis Horaires — dans la carte d'identité, pas près des services.</strong>
-        «&nbsp;Combien&nbsp;» et «&nbsp;quand&nbsp;» décident de l'appel. «&nbsp;Ce qu'elle propose&nbsp;» est à deux écrans plus bas,
-        sous le portrait, et le texte libre couvre souvent plusieurs services à la fois. Les deux lignes prennent toute
-        la largeur et passent à la ligne, jamais tronquées.</li>
-      <li class="rounded-[16px] bg-neutre-100 p-4"><strong class="font-semibold text-neutre-900">Lien de réservation — un bouton teal, juste après les horaires.</strong>
-        On lit «&nbsp;quand&nbsp;», on réserve. Teal plein, le bouton secondaire du styleguide&nbsp;: jamais orange, «&nbsp;Appeler&nbsp;»
-        reste la seule action orange de la page. Le site d'arrivée est écrit dessous&nbsp;: on sait qu'on quitte l'annuaire.</li>
-      <li class="rounded-[16px] bg-neutre-100 p-4"><strong class="font-semibold text-neutre-900">Champ vide — rien.</strong>
-        Chaque ligne de l'encadré n'existe que si son champ est rempli&nbsp;; l'encadré entier, filet compris, disparaît sans
-        aucun des quatre. La règle de la page en ligne («&nbsp;un champ nul ne rend rien&nbsp;») s'applique telle quelle.</li>
-      <li class="rounded-[16px] bg-neutre-100 p-4"><strong class="font-semibold text-neutre-900">Orange&nbsp;: un seul objet plein.</strong>
-        La barre «&nbsp;Appeler&nbsp;». S'y ajoutent, comme en ligne, le bout orange des filets dégradés (en-tête, titres de
-        section)&nbsp;: au plus trois par écran. Rien de nouveau n'est orange.</li>
+      <li class="rounded-[16px] bg-neutre-100 p-4"><strong class="font-semibold text-neutre-900">Enseigne, tarifs, horaires, réservation, langues — dans la carte d'identité.</strong>
+        Ils décident de l'appel&nbsp;: premier écran. Un champ vide ne rend rien.</li>
+      <li class="rounded-[16px] bg-neutre-100 p-4"><strong class="font-semibold text-neutre-900">Le carrousel — où il est en ligne, sous la bio.</strong>
+        <code class="font-mono text-[15px] text-teal-800">PortraitCarousel.astro</code> ne change pas&nbsp;: une nouvelle fiche y reçoit les pages générées au build, les six fiches d'origine gardent leurs diapositives. Le texte de chaque page est son alt.</li>
+      <li class="rounded-[16px] bg-neutre-100 p-4"><strong class="font-semibold text-neutre-900">Les lieux favoris — la page 6, et un lien sous le carrousel.</strong>
+        «&nbsp;Ses lieux favoris, sur la carte&nbsp;» ouvre <code class="font-mono text-[15px] text-teal-800">/carte</code>, calque «&nbsp;Lieux préférés&nbsp;» allumé. Pas de liste en plus sur la fiche&nbsp;: les «&nbsp;pourquoi&nbsp;» vivent sur le plan.</li>
+      <li class="rounded-[16px] bg-neutre-100 p-4"><strong class="font-semibold text-neutre-900">iel — les formes de <code class="font-mono text-[15px] text-teal-800">gender.ts</code>, rien d'autre.</strong>
+        Une fiche n'emploie que «&nbsp;elle&nbsp;» et «&nbsp;la&nbsp;». «&nbsp;voisin·e&nbsp;» et «&nbsp;inscrit·e&nbsp;» vivent dans les comptes (catégories, feuille d'un lieu sur <code class="font-mono text-[15px] text-teal-800">/carte</code>), pas ici.</li>
+      <li class="rounded-[16px] bg-neutre-100 p-4"><strong class="font-semibold text-neutre-900">Orange — trois objets par écran, au plus&nbsp;: le filet de l'en-tête, la barre «&nbsp;Appeler&nbsp;», le filet signature d'une page du carrousel.</strong>
+        Les titres de section n'ont donc plus de filet, sur toute la fiche&nbsp;: à 360&nbsp;px, deux ou trois titres tiennent dans un écran, et avec leurs filets on comptait jusqu'à cinq. La page en ligne a le même dépassement aujourd'hui.</li>
     </ol>
-  </section>
-
-  <section class="mt-14 max-w-[80ch]" aria-labelledby="t-styleguide">
-    <h2 id="t-styleguide" class="ff text-nom text-teal-900">À ajouter au styleguide</h2>
-    <div class="filet h-[3px] w-16 rounded-full mt-2.5 mb-5"></div>
-    <ul class="grid gap-3 list-none p-0 m-0 text-corps text-neutre-800">
-      <li class="rounded-[16px] bg-neutre-100 p-4"><strong class="font-semibold text-neutre-900">Un bloc «&nbsp;L'encadré pratique&nbsp;».</strong>
-        Une <code class="font-mono text-[15px] text-teal-800">&lt;dl&gt;</code> sous un filet neutre, chaque ligne une pastille teal,
-        l'étiquette en 1&nbsp;rem, la réponse en <code class="font-mono text-[15px] text-teal-800">text-corps</code>&nbsp;; puis le bouton
-        teal plein «&nbsp;Réserver en ligne&nbsp;» (pleine largeur sur téléphone) et son site. Trois spécimens&nbsp;: complet, partiel, absent.</li>
-      <li class="rounded-[16px] bg-neutre-100 p-4"><strong class="font-semibold text-neutre-900">Une variante de «&nbsp;L'en-tête de fiche&nbsp;».</strong>
-        La ligne «&nbsp;métier · enseigne&nbsp;», l'enseigne en gras. Sa taille passe de <code class="font-mono text-[15px] text-teal-800">text-[20px]</code>
-        à <code class="font-mono text-[15px] text-teal-800">text-[1.25rem]</code>&nbsp;: identique à 100&nbsp;%, mais elle grossit enfin à 200&nbsp;%.</li>
-      <li class="rounded-[16px] bg-neutre-100 p-4"><strong class="font-semibold text-neutre-900">Trois icônes&nbsp;:</strong>
-        <code class="font-mono text-[15px] text-teal-800">i-euro i-agenda i-langues</code>
-        <span class="inline-flex gap-2 align-middle text-teal-700">
-          <svg class="w-6 h-6" aria-hidden="true"><use href="#i-euro"/></svg>
-          <svg class="w-6 h-6" aria-hidden="true"><use href="#i-agenda"/></svg>
-          <svg class="w-6 h-6" aria-hidden="true"><use href="#i-langues"/></svg>
-        </span>.
-        <code class="font-mono text-[15px] text-teal-800">i-horloge</code> est déjà au styleguide v2, pas encore dans <code class="font-mono text-[15px] text-teal-800">IconSprite.astro</code>.</li>
-      <li class="rounded-[16px] bg-neutre-100 p-4"><strong class="font-semibold text-neutre-900">Aucun accord nouveau.</strong>
-        «&nbsp;Parle aussi&nbsp;», «&nbsp;Tarifs&nbsp;», «&nbsp;Horaires&nbsp;», «&nbsp;Réserver en ligne&nbsp;» sont neutres&nbsp;;
-        <code class="font-mono text-[15px] text-teal-800">gender.ts</code> ne change pas.</li>
-    </ul>
     <p class="mt-5 text-[16px] text-neutre-700">
-      Hors sujet mais visible ici&nbsp;: pas de carrousel, puisque les nouveaux voisins n'ont que leur portrait (décision 4 des champs v2).
-      Au cas 3, le nom coupé en «&nbsp;Julie|n&nbsp;» à 200&nbsp;% est le comportement de la page en ligne (<code class="font-mono text-[15px] text-teal-800">text-grand</code> + <code class="font-mono text-[15px] text-teal-800">break-words</code>), pas un effet des nouveaux champs&nbsp;: à traiter à part. Données fictives, numéros en 06&nbsp;39&nbsp;98&nbsp;00&nbsp;xx, sites en <code class="font-mono text-[15px] text-teal-800">example.fr</code>.
+      Blocs repris du styleguide&nbsp;: b-fiche, b-contact, b-v2-pratique, b-v2-diapos, b-v2-genre, b-pied. Personnes fictives, numéros en 06&nbsp;39&nbsp;98&nbsp;00&nbsp;xx&nbsp;; lieux réels, relevé OpenStreetMap.
     </p>
   </section>
 </main>
@@ -478,6 +585,10 @@ body.ecran .bureau iframe{ height:800px !important; }
      communs (en-tête, pied, QR) sont inclus par data-inclure.
      ═══════════════════════════════════════════════════════════════════════ -->
 
+<!-- Orange, au plus trois objets par écran : le filet de l'en-tête et la barre
+     « Appeler » sont toujours là, et le filet signature d'une page du carrousel
+     en est le troisième. Les titres de section de la fiche n'ont donc pas de
+     filet : le titre seul, comme l'en-tête d'étape du styleguide (b-v2-etape). -->
 <!-- l'en-tête · SiteHeader.astro, variante fiche -->
 <template id="t-entete">
 <a href="#contenu" class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:m-3 focus:rounded-field focus:bg-white focus:px-4 focus:py-3 focus:text-teal-800">Aller au contenu</a>
@@ -508,7 +619,7 @@ body.ecran .bureau iframe{ height:800px !important; }
 </svg>
 </template>
 
-<!-- le pied de page · SiteFooter.astro -->
+<!-- le pied de page · SiteFooter.astro, v2 (styleguide b-pied : « Espace entrepreneur » en cinquième lien) -->
 <template id="t-pied">
 <footer class="border-t border-neutre-200 bg-neutre-50">
   <div class="mx-auto max-w-[1160px] px-5 py-8 grid gap-8 sm:grid-cols-[1fr_auto]">
@@ -518,17 +629,20 @@ body.ecran .bureau iframe{ height:800px !important; }
         <span class="ff text-[20px] text-teal-900">Annuaire de la Cartoucherie</span>
       </p>
       <p class="mt-3 text-[16px] text-neutre-700">
-        Fait bénévolement par <a class="text-teal-700 underline underline-offset-4" href="#">Adrien Lemaire</a>
-        pour aider l'association <a class="text-teal-700 underline underline-offset-4" href="#">Les Entrepreneurs de la Cartoucherie</a>.
+        Fait bénévolement par <a class="text-teal-700 underline underline-offset-4" href="https://www.linkedin.com/in/adrienlemaire/">Adrien Lemaire</a>
+        pour aider l'association <a class="text-teal-700 underline underline-offset-4" href="https://www.instagram.com/entrepreneurs_cartoucherie_/">Les Entrepreneurs de la Cartoucherie</a>.
       </p>
-      <p class="mt-3 text-[16px] text-neutre-700">Halle de la Cartoucherie · Tram T1, arrêt Cartoucherie · 31300 Toulouse</p>
+      <p class="mt-3 text-[16px] text-neutre-700">
+        Halle de la Cartoucherie · Tram T1, arrêt Cartoucherie · 31300 Toulouse
+      </p>
     </div>
     <nav class="text-[16px]" aria-label="Liens de pied de page">
       <ul class="space-y-1 list-none p-0 m-0">
-        <li><a class="inline-flex items-center min-h-[44px] text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600" href="#">À propos</a></li>
-        <li><a class="inline-flex items-center min-h-[44px] text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600" href="#">Confidentialité</a></li>
-        <li><a class="inline-flex items-center min-h-[44px] text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600" href="#">Mentions légales</a></li>
-        <li><a class="inline-flex items-center min-h-[44px] text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600" href="#">Les avis, comment ça marche</a></li>
+        <li><a class="inline-flex items-center min-h-[44px] text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600" href="/a-propos">À propos</a></li>
+        <li><a class="inline-flex items-center min-h-[44px] text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600" href="/confidentialite">Confidentialité</a></li>
+        <li><a class="inline-flex items-center min-h-[44px] text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600" href="/mentions-legales">Mentions légales</a></li>
+        <li><a class="inline-flex items-center min-h-[44px] text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600" href="/avis">Les avis, comment ça marche</a></li>
+        <li><a class="inline-flex items-center min-h-[44px] text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600" href="/espace">Espace entrepreneur</a></li>
       </ul>
     </nav>
   </div>
@@ -568,10 +682,10 @@ body.ecran .bureau iframe{ height:800px !important; }
     </div>
     <div class="relative mx-auto -mt-8 max-w-[1160px] px-5">
       <div class="carte flex items-start justify-between gap-8 rounded-[24px] bg-white p-5 sm:p-7">
-        <div class="min-w-0">
-          <h1 id="nom-membre" class="ff break-words text-grand text-teal-900">Camille Roussel</h1>
+        <div class="@container min-w-0 flex-1">
+          <h1 id="nom-membre" class="ff text-grand mots-entiers text-teal-900" style="--mot:7">Camille Roussel</h1>
           <!-- v2 · l'enseigne, à côté du métier -->
-          <p class="mt-1.5 text-[1.25rem] leading-snug text-neutre-800 break-words">Sophrologue&nbsp;<span aria-hidden="true">·</span> <span class="font-semibold text-neutre-900">Cabinet Souffle Clair</span></p>
+          <p class="mt-1.5 text-[1.25rem] leading-snug mots-entiers text-neutre-800" style="--taille:1.25rem; --lettre:.56; --mot:11">Sophrologue&nbsp;<span aria-hidden="true">·</span> <span class="font-semibold text-neutre-900">Cabinet Souffle Clair</span></p>
           <p class="mt-3 flex flex-wrap gap-2">
             <a href="#" class="chip inline-flex min-h-[44px] items-center gap-2 rounded-selector px-3.5 text-[16px] font-semibold">
               <svg class="h-[18px] w-[18px]" aria-hidden="true"><use href="#c-sante"/></svg>Santé &amp; bien-être
@@ -591,7 +705,7 @@ body.ecran .bureau iframe{ height:800px !important; }
 
           <!-- v2 · l'encadré pratique : une ligne par champ rempli, rien si aucun -->
           <div class="mt-5 border-t border-neutre-200 pt-5">
-            <dl class="m-0 grid gap-x-8 gap-y-4 sm:grid-cols-3">
+            <dl class="m-0 grid gap-x-8 gap-y-4 @xl:grid-cols-3">
               <div class="flex min-w-0 flex-wrap items-start gap-x-3.5 gap-y-2">
                 <span class="pastille pastille--teal mt-0.5 h-10 w-10 shrink-0 bg-teal-50 text-teal-700"><svg class="h-5 w-5" aria-hidden="true"><use href="#i-langues"/></svg></span>
                 <div class="min-w-[min(12rem,100%)] flex-1">
@@ -616,11 +730,11 @@ body.ecran .bureau iframe{ height:800px !important; }
             </dl>
             <p class="mt-5 flex flex-wrap items-center gap-x-4 gap-y-1.5">
               <a href="https://rendez-vous.example.fr/souffle-clair"
-                 class="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-full bg-teal-700 px-5 py-2.5 text-center text-corps font-semibold text-white hover:bg-teal-600 sm:w-auto">
+                 class="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-full bg-teal-700 px-5 py-2.5 text-center text-corps font-semibold text-white hover:bg-teal-600 @xl:w-auto">
                 <svg class="h-5 w-5 shrink-0" aria-hidden="true"><use href="#i-agenda"/></svg>
                 Réserver en ligne
               </a>
-              <span class="break-words text-base text-neutre-700">sur rendez-vous.example.fr</span>
+              <span class="break-words text-base text-neutre-700">sur rendez-vous<wbr>.example<wbr>.fr</span>
             </p>
           </div>
         </div>
@@ -643,8 +757,7 @@ body.ecran .bureau iframe{ height:800px !important; }
   </section>
 
   <section class="mx-auto max-w-[1160px] px-5 py-8" aria-labelledby="t-contact">
-    <h2 id="t-contact" class="ff text-nom text-teal-900">La contacter</h2>
-    <div class="filet mt-2.5 mb-5 h-[3px] w-16 rounded-full"></div>
+    <h2 id="t-contact" class="ff mb-5 text-nom text-teal-900">La contacter</h2>
     <ul class="m-0 grid grid-cols-1 list-none gap-2.5 p-0 sm:grid-cols-2">
       <li>
         <details class="group carte h-full rounded-[16px] bg-white px-4 py-3">
@@ -658,42 +771,39 @@ body.ecran .bureau iframe{ height:800px !important; }
           <a href="tel:+33639980014" class="tnum ml-[3.375rem] inline-flex min-h-[44px] items-center text-corps font-semibold text-teal-800"><span>06 39 98 00 14</span></a>
         </details>
       </li>
-      <li><a href="mailto:camille.roussel@example.fr" class="carte carte-lien flex h-full min-h-[64px] items-center gap-3.5 rounded-[16px] bg-white px-4 py-3">
+      <li><a href="mailto:camille.roussel@example.fr" class="carte carte-lien flex h-full min-h-[64px] flex-wrap items-center gap-x-3.5 gap-y-2 rounded-[16px] bg-white px-4 py-3">
         <span class="pastille pastille--teal h-10 w-10 shrink-0 bg-teal-50 text-teal-700"><svg class="h-5 w-5" aria-hidden="true"><use href="#i-mail"/></svg></span>
-        <span class="min-w-0"><span class="block text-[16px] text-neutre-700">E-mail</span><span class="block break-words text-corps font-semibold text-teal-800">camille.roussel@example.fr</span></span>
+        <span class="min-w-[min(12rem,100%)] flex-1"><span class="block text-[16px] text-neutre-700">E-mail</span><span class="block break-words text-corps font-semibold text-teal-800">camille<wbr>.roussel<wbr>@example<wbr>.fr</span></span>
       </a></li>
-      <li><a href="https://souffle-clair.example.fr" class="carte carte-lien flex h-full min-h-[64px] items-center gap-3.5 rounded-[16px] bg-white px-4 py-3">
+      <li><a href="https://souffle-clair.example.fr" class="carte carte-lien flex h-full min-h-[64px] flex-wrap items-center gap-x-3.5 gap-y-2 rounded-[16px] bg-white px-4 py-3">
         <span class="pastille pastille--teal h-10 w-10 shrink-0 bg-teal-50 text-teal-700"><svg class="h-5 w-5" aria-hidden="true"><use href="#i-globe"/></svg></span>
-        <span class="min-w-0"><span class="block text-[16px] text-neutre-700">Son site</span><span class="block break-words text-corps font-semibold text-teal-800">souffle-clair.example.fr</span></span>
+        <span class="min-w-[min(12rem,100%)] flex-1"><span class="block text-[16px] text-neutre-700">Son site</span><span class="block break-words text-corps font-semibold text-teal-800">souffle-clair<wbr>.example<wbr>.fr</span></span>
       </a></li>
-      <li><a href="#" class="carte carte-lien flex h-full min-h-[64px] items-center gap-3.5 rounded-[16px] bg-white px-4 py-3">
+      <li><a href="#" class="carte carte-lien flex h-full min-h-[64px] flex-wrap items-center gap-x-3.5 gap-y-2 rounded-[16px] bg-white px-4 py-3">
         <span class="pastille pastille--teal h-10 w-10 shrink-0 bg-teal-50 text-teal-700"><svg class="h-5 w-5" aria-hidden="true"><use href="#i-insta"/></svg></span>
-        <span class="min-w-0"><span class="block text-[16px] text-neutre-700">Instagram</span><span class="block break-words text-corps font-semibold text-teal-800">@camille_sophro_ctch</span></span>
+        <span class="min-w-[min(12rem,100%)] flex-1"><span class="block text-[16px] text-neutre-700">Instagram</span><span class="block break-words text-corps font-semibold text-teal-800">@camille_<wbr>sophro_<wbr>ctch</span></span>
       </a></li>
     </ul>
   </section>
 
   <section class="bg-neutre-100" aria-labelledby="t-portrait">
     <div class="mx-auto max-w-[1160px] px-5 py-8">
-      <h2 id="t-portrait" class="ff text-nom text-teal-900">Son portrait</h2>
-      <div class="filet mt-2.5 mb-5 h-[3px] w-16 rounded-full"></div>
+      <h2 id="t-portrait" class="ff mb-5 text-nom text-teal-900">Son portrait</h2>
       <p class="max-w-[62ch] text-[19px] leading-relaxed text-neutre-900">Installée à la Cartoucherie depuis 2022, j'accompagne adultes et adolescents sur le stress, le sommeil et la confiance en soi. Séances individuelles d'une heure, et un atelier collectif le samedi matin à la Halle.</p>
     </div>
   </section>
 
   <section class="mx-auto max-w-[1160px] px-5 py-8" aria-labelledby="t-services">
-    <h2 id="t-services" class="ff text-nom text-teal-900">Ce qu'elle propose</h2>
-    <div class="filet mt-2.5 mb-5 h-[3px] w-16 rounded-full"></div>
+    <h2 id="t-services" class="ff mb-5 text-nom text-teal-900">Ce qu'elle propose</h2>
     <ul class="m-0 grid grid-cols-1 list-none gap-3 p-0 sm:grid-cols-3">
-      <li class="flex min-h-[64px] items-center gap-3.5 rounded-[16px] bg-neutre-100 px-4 py-4"><span class="pastille h-9 w-9 shrink-0 bg-white text-sauge-700"><svg class="h-[18px] w-[18px]" aria-hidden="true"><use href="#c-sante"/></svg></span><span class="min-w-0 break-words text-corps font-semibold text-teal-900">Séance individuelle</span></li>
-      <li class="flex min-h-[64px] items-center gap-3.5 rounded-[16px] bg-neutre-100 px-4 py-4"><span class="pastille h-9 w-9 shrink-0 bg-white text-sauge-700"><svg class="h-[18px] w-[18px]" aria-hidden="true"><use href="#c-sante"/></svg></span><span class="min-w-0 break-words text-corps font-semibold text-teal-900">Atelier collectif</span></li>
-      <li class="flex min-h-[64px] items-center gap-3.5 rounded-[16px] bg-neutre-100 px-4 py-4"><span class="pastille h-9 w-9 shrink-0 bg-white text-sauge-700"><svg class="h-[18px] w-[18px]" aria-hidden="true"><use href="#c-sante"/></svg></span><span class="min-w-0 break-words text-corps font-semibold text-teal-900">Visio</span></li>
+      <li class="@container flex min-h-[64px] flex-wrap items-center gap-x-3.5 gap-y-2 rounded-[16px] bg-neutre-100 px-4 py-4"><span class="pastille h-9 w-9 shrink-0 bg-white text-sauge-700"><svg class="h-[18px] w-[18px]" aria-hidden="true"><use href="#c-sante"/></svg></span><span class="min-w-[min(12rem,100%)] flex-1 mots-entiers text-corps font-semibold text-teal-900" style="--taille:var(--text-corps); --lettre:.56; --mot:12">Séance individuelle</span></li>
+      <li class="@container flex min-h-[64px] flex-wrap items-center gap-x-3.5 gap-y-2 rounded-[16px] bg-neutre-100 px-4 py-4"><span class="pastille h-9 w-9 shrink-0 bg-white text-sauge-700"><svg class="h-[18px] w-[18px]" aria-hidden="true"><use href="#c-sante"/></svg></span><span class="min-w-[min(12rem,100%)] flex-1 mots-entiers text-corps font-semibold text-teal-900" style="--taille:var(--text-corps); --lettre:.56; --mot:9">Atelier collectif</span></li>
+      <li class="@container flex min-h-[64px] flex-wrap items-center gap-x-3.5 gap-y-2 rounded-[16px] bg-neutre-100 px-4 py-4"><span class="pastille h-9 w-9 shrink-0 bg-white text-sauge-700"><svg class="h-[18px] w-[18px]" aria-hidden="true"><use href="#c-sante"/></svg></span><span class="min-w-[min(12rem,100%)] flex-1 mots-entiers text-corps font-semibold text-teal-900" style="--taille:var(--text-corps); --lettre:.56; --mot:5">Visio</span></li>
     </ul>
   </section>
 
   <section class="mx-auto max-w-[1160px] px-5 pb-8" aria-labelledby="t-ou">
-    <h2 id="t-ou" class="ff text-nom text-teal-900">Où la trouver</h2>
-    <div class="filet mt-2.5 mb-5 h-[3px] w-16 rounded-full"></div>
+    <h2 id="t-ou" class="ff mb-5 text-nom text-teal-900">Où la trouver</h2>
     <div class="carte flex items-start gap-4 rounded-[20px] bg-white p-5">
       <span class="pastille pastille--teal mt-0.5 h-[44px] w-[44px] shrink-0 bg-teal-50 text-teal-700"><svg class="h-5 w-5" aria-hidden="true"><use href="#i-pin"/></svg></span>
       <div class="min-w-0">
@@ -709,11 +819,10 @@ body.ecran .bureau iframe{ height:800px !important; }
 
   <section id="avis" class="bg-neutre-100" aria-labelledby="reviews-title">
     <div class="mx-auto max-w-[1160px] px-5 py-8">
-      <div class="flex flex-wrap items-center gap-x-1">
+      <div class="flex flex-wrap items-center gap-x-1 mb-4">
         <h2 id="reviews-title" class="ff text-nom text-teal-900">Avis du quartier</h2>
         <div data-inclure="t-avis-aide"></div>
       </div>
-      <div class="filet mt-2.5 mb-4 h-[3px] w-16 rounded-full"></div>
       <div data-reviews-slot><p class="text-corps text-neutre-700">12 avis du quartier</p></div>
       <a href="#" class="mt-4 inline-flex min-h-12 items-center gap-2 text-corps font-semibold text-teal-800 underline">
         <svg class="h-5 w-5" aria-hidden="true"><use href="#i-etoile"/></svg>Voir ses avis sur Google
@@ -754,9 +863,9 @@ body.ecran .bureau iframe{ height:800px !important; }
     </div>
     <div class="relative mx-auto -mt-8 max-w-[1160px] px-5">
       <div class="carte flex items-start justify-between gap-8 rounded-[24px] bg-white p-5 sm:p-7">
-        <div class="min-w-0">
-          <h1 id="nom-membre" class="ff break-words text-grand text-teal-900">Julien Marty</h1>
-          <p class="mt-1.5 text-[1.25rem] leading-snug text-neutre-800 break-words">Électricien&nbsp;<span aria-hidden="true">·</span> <span class="font-semibold text-neutre-900">Marty Électricité Générale — dépannage, mise aux normes et bornes de recharge</span></p>
+        <div class="@container min-w-0 flex-1">
+          <h1 id="nom-membre" class="ff text-grand mots-entiers text-teal-900" style="--mot:6">Julien Marty</h1>
+          <p class="mt-1.5 text-[1.25rem] leading-snug mots-entiers text-neutre-800" style="--taille:1.25rem; --lettre:.56; --mot:11">Électricien&nbsp;<span aria-hidden="true">·</span> <span class="font-semibold text-neutre-900">Marty Électricité Générale — dépannage, mise aux normes et bornes de recharge</span></p>
           <p class="mt-3 flex flex-wrap gap-2">
             <a href="#" class="chip inline-flex min-h-[44px] items-center gap-2 rounded-selector px-3.5 text-[16px] font-semibold">
               <svg class="h-[18px] w-[18px]" aria-hidden="true"><use href="#c-artisanat"/></svg>Artisanat &amp; travaux
@@ -776,7 +885,7 @@ body.ecran .bureau iframe{ height:800px !important; }
           </p>
 
           <div class="mt-5 border-t border-neutre-200 pt-5">
-            <dl class="m-0 grid gap-x-8 gap-y-4 sm:grid-cols-3">
+            <dl class="m-0 grid gap-x-8 gap-y-4 @xl:grid-cols-3">
               <div class="flex min-w-0 flex-wrap items-start gap-x-3.5 gap-y-2">
                 <span class="pastille pastille--teal mt-0.5 h-10 w-10 shrink-0 bg-teal-50 text-teal-700"><svg class="h-5 w-5" aria-hidden="true"><use href="#i-langues"/></svg></span>
                 <div class="min-w-[min(12rem,100%)] flex-1">
@@ -813,8 +922,7 @@ body.ecran .bureau iframe{ height:800px !important; }
   </section>
 
   <section class="mx-auto max-w-[1160px] px-5 py-8" aria-labelledby="t-contact">
-    <h2 id="t-contact" class="ff text-nom text-teal-900">Le contacter</h2>
-    <div class="filet mt-2.5 mb-5 h-[3px] w-16 rounded-full"></div>
+    <h2 id="t-contact" class="ff mb-5 text-nom text-teal-900">Le contacter</h2>
     <ul class="m-0 grid grid-cols-1 list-none gap-2.5 p-0 sm:grid-cols-2">
       <li>
         <details class="group carte h-full rounded-[16px] bg-white px-4 py-3">
@@ -828,34 +936,31 @@ body.ecran .bureau iframe{ height:800px !important; }
           <a href="tel:+33639980037" class="tnum ml-[3.375rem] inline-flex min-h-[44px] items-center text-corps font-semibold text-teal-800"><span>06 39 98 00 37</span></a>
         </details>
       </li>
-      <li><a href="mailto:jmarty.elec@example.fr" class="carte carte-lien flex h-full min-h-[64px] items-center gap-3.5 rounded-[16px] bg-white px-4 py-3">
+      <li><a href="mailto:jmarty.elec@example.fr" class="carte carte-lien flex h-full min-h-[64px] flex-wrap items-center gap-x-3.5 gap-y-2 rounded-[16px] bg-white px-4 py-3">
         <span class="pastille pastille--teal h-10 w-10 shrink-0 bg-teal-50 text-teal-700"><svg class="h-5 w-5" aria-hidden="true"><use href="#i-mail"/></svg></span>
-        <span class="min-w-0"><span class="block text-[16px] text-neutre-700">E-mail</span><span class="block break-words text-corps font-semibold text-teal-800">jmarty.elec@example.fr</span></span>
+        <span class="min-w-[min(12rem,100%)] flex-1"><span class="block text-[16px] text-neutre-700">E-mail</span><span class="block break-words text-corps font-semibold text-teal-800">jmarty<wbr>.elec<wbr>@example<wbr>.fr</span></span>
       </a></li>
     </ul>
   </section>
 
   <section class="bg-neutre-100" aria-labelledby="t-portrait">
     <div class="mx-auto max-w-[1160px] px-5 py-8">
-      <h2 id="t-portrait" class="ff text-nom text-teal-900">Son portrait</h2>
-      <div class="filet mt-2.5 mb-5 h-[3px] w-16 rounded-full"></div>
+      <h2 id="t-portrait" class="ff mb-5 text-nom text-teal-900">Son portrait</h2>
       <p class="max-w-[62ch] text-[19px] leading-relaxed text-neutre-900">Artisan électricien, je travaille dans un rayon de deux kilomètres autour de la Cartoucherie. Dépannage sous 48 h, et beaucoup de bornes de recharge dans les parkings des résidences.</p>
     </div>
   </section>
 
   <section class="mx-auto max-w-[1160px] px-5 py-8" aria-labelledby="t-services">
-    <h2 id="t-services" class="ff text-nom text-teal-900">Ce qu'il propose</h2>
-    <div class="filet mt-2.5 mb-5 h-[3px] w-16 rounded-full"></div>
+    <h2 id="t-services" class="ff mb-5 text-nom text-teal-900">Ce qu'il propose</h2>
     <ul class="m-0 grid grid-cols-1 list-none gap-3 p-0 sm:grid-cols-3">
-      <li class="flex min-h-[64px] items-center gap-3.5 rounded-[16px] bg-neutre-100 px-4 py-4"><span class="pastille h-9 w-9 shrink-0 bg-white text-sauge-700"><svg class="h-[18px] w-[18px]" aria-hidden="true"><use href="#c-artisanat"/></svg></span><span class="min-w-0 break-words text-corps font-semibold text-teal-900">Dépannage</span></li>
-      <li class="flex min-h-[64px] items-center gap-3.5 rounded-[16px] bg-neutre-100 px-4 py-4"><span class="pastille h-9 w-9 shrink-0 bg-white text-sauge-700"><svg class="h-[18px] w-[18px]" aria-hidden="true"><use href="#c-artisanat"/></svg></span><span class="min-w-0 break-words text-corps font-semibold text-teal-900">Mise aux normes</span></li>
-      <li class="flex min-h-[64px] items-center gap-3.5 rounded-[16px] bg-neutre-100 px-4 py-4"><span class="pastille h-9 w-9 shrink-0 bg-white text-sauge-700"><svg class="h-[18px] w-[18px]" aria-hidden="true"><use href="#c-artisanat"/></svg></span><span class="min-w-0 break-words text-corps font-semibold text-teal-900">Borne de recharge</span></li>
+      <li class="@container flex min-h-[64px] flex-wrap items-center gap-x-3.5 gap-y-2 rounded-[16px] bg-neutre-100 px-4 py-4"><span class="pastille h-9 w-9 shrink-0 bg-white text-sauge-700"><svg class="h-[18px] w-[18px]" aria-hidden="true"><use href="#c-artisanat"/></svg></span><span class="min-w-[min(12rem,100%)] flex-1 mots-entiers text-corps font-semibold text-teal-900" style="--taille:var(--text-corps); --lettre:.56; --mot:9">Dépannage</span></li>
+      <li class="@container flex min-h-[64px] flex-wrap items-center gap-x-3.5 gap-y-2 rounded-[16px] bg-neutre-100 px-4 py-4"><span class="pastille h-9 w-9 shrink-0 bg-white text-sauge-700"><svg class="h-[18px] w-[18px]" aria-hidden="true"><use href="#c-artisanat"/></svg></span><span class="min-w-[min(12rem,100%)] flex-1 mots-entiers text-corps font-semibold text-teal-900" style="--taille:var(--text-corps); --lettre:.56; --mot:6">Mise aux normes</span></li>
+      <li class="@container flex min-h-[64px] flex-wrap items-center gap-x-3.5 gap-y-2 rounded-[16px] bg-neutre-100 px-4 py-4"><span class="pastille h-9 w-9 shrink-0 bg-white text-sauge-700"><svg class="h-[18px] w-[18px]" aria-hidden="true"><use href="#c-artisanat"/></svg></span><span class="min-w-[min(12rem,100%)] flex-1 mots-entiers text-corps font-semibold text-teal-900" style="--taille:var(--text-corps); --lettre:.56; --mot:8">Borne de recharge</span></li>
     </ul>
   </section>
 
   <section class="mx-auto max-w-[1160px] px-5 pb-8" aria-labelledby="t-ou">
-    <h2 id="t-ou" class="ff text-nom text-teal-900">Où le trouver</h2>
-    <div class="filet mt-2.5 mb-5 h-[3px] w-16 rounded-full"></div>
+    <h2 id="t-ou" class="ff mb-5 text-nom text-teal-900">Où le trouver</h2>
     <div class="carte flex items-start gap-4 rounded-[20px] bg-white p-5">
       <span class="pastille pastille--teal mt-0.5 h-[44px] w-[44px] shrink-0 bg-teal-50 text-teal-700"><svg class="h-5 w-5" aria-hidden="true"><use href="#i-pin"/></svg></span>
       <div class="min-w-0">
@@ -866,11 +971,10 @@ body.ecran .bureau iframe{ height:800px !important; }
 
   <section id="avis" class="bg-neutre-100" aria-labelledby="reviews-title">
     <div class="mx-auto max-w-[1160px] px-5 py-8">
-      <div class="flex flex-wrap items-center gap-x-1">
+      <div class="flex flex-wrap items-center gap-x-1 mb-4">
         <h2 id="reviews-title" class="ff text-nom text-teal-900">Avis du quartier</h2>
         <div data-inclure="t-avis-aide"></div>
       </div>
-      <div class="filet mt-2.5 mb-4 h-[3px] w-16 rounded-full"></div>
       <div data-reviews-slot><p class="text-corps text-neutre-700">11 avis du quartier</p></div>
     </div>
   </section>
@@ -890,6 +994,342 @@ body.ecran .bureau iframe{ height:800px !important; }
 </template>
 
 
+<!-- ╔═══ CAS 4 · Sophie Arnaud, elle, nouvelle voisine, carrousel généré ══╗
+     Les valeurs sont celles qu'elle saisit dans formulaire.html. Les pages
+     du carrousel sont les spécimens de b-v2-diapos, tels quels : au build,
+     chacune est une image 1080 × 1350 dont la réponse est le texte alt. -->
+<template id="cas-nouvelle">
+<div data-inclure="t-entete"></div>
+<main id="contenu">
+
+  <section aria-labelledby="nom-membre">
+    <div class="ventouses relative overflow-hidden rounded-b-[34px] bg-sable-200 pt-9 pb-11">
+      <div class="flex justify-center">
+        <img src="https://randomuser.me/api/portraits/women/26.jpg" alt="Portrait de Sophie Arnaud" width="128" height="128"
+             class="arche block h-[176px] w-[148px] bg-white object-cover"
+             style="object-position:50% 22%; box-shadow: 0 0 0 6px #fff, var(--shadow-carte)">
+      </div>
+    </div>
+    <div class="relative mx-auto -mt-8 max-w-[1160px] px-5">
+      <div class="carte flex items-start justify-between gap-8 rounded-[24px] bg-white p-5 sm:p-7">
+        <div class="@container min-w-0 flex-1">
+          <h1 id="nom-membre" class="ff text-grand mots-entiers text-teal-900" style="--mot:6">Sophie Arnaud</h1>
+          <p class="mt-1.5 text-[1.25rem] leading-snug mots-entiers text-neutre-800" style="--taille:1.25rem; --lettre:.56; --mot:11">Naturopathe&nbsp;<span aria-hidden="true">·</span> <span class="font-semibold text-neutre-900">Cabinet du Bois Vert</span></p>
+          <p class="mt-3 flex flex-wrap gap-2">
+            <a href="#" class="chip inline-flex min-h-[44px] items-center gap-2 rounded-selector px-3.5 text-[16px] font-semibold">
+              <svg class="h-[18px] w-[18px]" aria-hidden="true"><use href="#c-sante"/></svg>Santé &amp; bien-être
+            </a>
+          </p>
+          <p class="mt-4 max-w-[56ch] text-[19px] leading-relaxed text-neutre-900">J'aide les adultes fatigués à retrouver de l'énergie&nbsp;: alimentation, digestion, sommeil, stress. Bilan complet à la première séance, puis un suivi simple chaque mois, à votre rythme, au cabinet ou en visio.</p>
+          <!-- nouvelle fiche : 0 avis, donc pas de note (« 0,0 » se lirait comme une mauvaise note) -->
+          <p class="mt-5 flex flex-wrap items-center gap-x-5 gap-y-2.5 text-[16px] text-neutre-700">
+            <span class="inline-flex items-center gap-1.5">
+              <svg class="h-[18px] w-[18px] text-teal-600" aria-hidden="true"><use href="#i-pin"/></svg>À 450 m de la Halle
+            </span>
+            <button type="button" popovertarget="qr" class="inline-flex min-h-[44px] items-center text-teal-700 underline decoration-teal-300 underline-offset-4 sm:hidden">QR code</button>
+          </p>
+
+          <div class="mt-5 border-t border-neutre-200 pt-5">
+            <dl class="m-0 grid gap-x-8 gap-y-4 @xl:grid-cols-3">
+              <div class="flex min-w-0 flex-wrap items-start gap-x-3.5 gap-y-2">
+                <span class="pastille pastille--teal mt-0.5 h-10 w-10 shrink-0 bg-teal-50 text-teal-700"><svg class="h-5 w-5" aria-hidden="true"><use href="#i-langues"/></svg></span>
+                <div class="min-w-[min(12rem,100%)] flex-1">
+                  <dt class="text-base text-neutre-700">Parle aussi</dt>
+                  <dd class="m-0 break-words text-corps font-semibold text-neutre-900">anglais et espagnol</dd>
+                </div>
+              </div>
+              <div class="flex min-w-0 flex-wrap items-start gap-x-3.5 gap-y-2">
+                <span class="pastille pastille--teal mt-0.5 h-10 w-10 shrink-0 bg-teal-50 text-teal-700"><svg class="h-5 w-5" aria-hidden="true"><use href="#i-euro"/></svg></span>
+                <div class="min-w-[min(12rem,100%)] flex-1">
+                  <dt class="text-base text-neutre-700">Tarifs</dt>
+                  <dd class="m-0 break-words text-corps font-semibold text-neutre-900">Bilan d'1&nbsp;h&nbsp;30&nbsp;: 70&nbsp;€ · suivi&nbsp;: 50&nbsp;€</dd>
+                </div>
+              </div>
+              <div class="flex min-w-0 flex-wrap items-start gap-x-3.5 gap-y-2">
+                <span class="pastille pastille--teal mt-0.5 h-10 w-10 shrink-0 bg-teal-50 text-teal-700"><svg class="h-5 w-5" aria-hidden="true"><use href="#i-horloge"/></svg></span>
+                <div class="min-w-[min(12rem,100%)] flex-1">
+                  <dt class="text-base text-neutre-700">Horaires</dt>
+                  <dd class="m-0 break-words text-corps font-semibold text-neutre-900">Du mardi au samedi, 9&nbsp;h&nbsp;–&nbsp;18&nbsp;h</dd>
+                </div>
+              </div>
+            </dl>
+            <p class="mt-5 flex flex-wrap items-center gap-x-4 gap-y-1.5">
+              <a href="https://calendly.com/sophie-arnaud-naturo"
+                 class="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-full bg-teal-700 px-5 py-2.5 text-center text-corps font-semibold text-white hover:bg-teal-600 @xl:w-auto">
+                <svg class="h-5 w-5 shrink-0" aria-hidden="true"><use href="#i-agenda"/></svg>
+                Réserver en ligne
+              </a>
+              <span class="break-words text-base text-neutre-700">sur calendly<wbr>.com</span>
+            </p>
+          </div>
+        </div>
+        <div class="hidden shrink-0 sm:block">
+          <div class="flex flex-col items-center gap-1">
+            <div class="w-[136px] rounded-[12px] bg-white p-2" style="box-shadow: inset 0 0 0 1px var(--color-neutre-300)" role="img" aria-label="QR code vers la fiche de Sophie Arnaud"><div data-inclure="t-qr"></div></div>
+            <a href="#" class="inline-flex min-h-[44px] items-center gap-1.5 text-[16px] font-semibold text-teal-700 underline decoration-teal-300 underline-offset-4 hover:decoration-teal-600">
+              <svg class="size-[18px]" aria-hidden="true"><use href="#i-dl"/></svg>Télécharger
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="qr" popover class="m-auto rounded-[24px] bg-white p-6 pt-12 shadow-[var(--shadow-flottant)] backdrop:bg-teal-950/50">
+      <div class="w-[240px] rounded-[12px] bg-white p-2" style="box-shadow: inset 0 0 0 1px var(--color-neutre-300)" role="img" aria-label="QR code vers la fiche de Sophie Arnaud"><div data-inclure="t-qr"></div></div>
+      <button type="button" popovertarget="qr" popovertargetaction="hide" aria-label="Fermer" class="absolute top-2 right-2 flex size-11 items-center justify-center rounded-full text-teal-900">
+        <svg class="size-5" aria-hidden="true"><use href="#i-fermer"/></svg>
+      </button>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-[1160px] px-5 py-8" aria-labelledby="t-contact">
+    <h2 id="t-contact" class="ff mb-5 text-nom text-teal-900">La contacter</h2>
+    <ul class="m-0 grid grid-cols-1 list-none gap-2.5 p-0 sm:grid-cols-2">
+      <li>
+        <details class="group carte h-full rounded-[16px] bg-white px-4 py-3">
+          <summary class="flex min-h-[40px] cursor-pointer list-none items-center gap-3.5 [&::-webkit-details-marker]:hidden">
+            <span class="pastille pastille--teal h-10 w-10 shrink-0 bg-teal-50 text-teal-700"><svg class="h-5 w-5" aria-hidden="true"><use href="#i-tel"/></svg></span>
+            <span class="min-w-0">
+              <span class="block text-[16px] text-neutre-700">Téléphone</span>
+              <span class="block text-corps font-semibold text-teal-800 underline decoration-teal-300 underline-offset-4 group-open:hidden">Voir le numéro</span>
+            </span>
+          </summary>
+          <a href="tel:+33639980026" class="tnum ml-[3.375rem] inline-flex min-h-[44px] items-center text-corps font-semibold text-teal-800"><span>06 39 98 00 26</span></a>
+        </details>
+      </li>
+      <li><a href="mailto:sophie.arnaud@example.fr" class="carte carte-lien flex h-full min-h-[64px] flex-wrap items-center gap-x-3.5 gap-y-2 rounded-[16px] bg-white px-4 py-3">
+        <span class="pastille pastille--teal h-10 w-10 shrink-0 bg-teal-50 text-teal-700"><svg class="h-5 w-5" aria-hidden="true"><use href="#i-mail"/></svg></span>
+        <span class="min-w-[min(12rem,100%)] flex-1"><span class="block text-[16px] text-neutre-700">E-mail</span><span class="block break-words text-corps font-semibold text-teal-800">sophie<wbr>.arnaud<wbr>@example<wbr>.fr</span></span>
+      </a></li>
+      <li><a href="https://sophiearnaud-naturo.fr" class="carte carte-lien flex h-full min-h-[64px] flex-wrap items-center gap-x-3.5 gap-y-2 rounded-[16px] bg-white px-4 py-3">
+        <span class="pastille pastille--teal h-10 w-10 shrink-0 bg-teal-50 text-teal-700"><svg class="h-5 w-5" aria-hidden="true"><use href="#i-globe"/></svg></span>
+        <span class="min-w-[min(12rem,100%)] flex-1"><span class="block text-[16px] text-neutre-700">Son site</span><span class="block break-words text-corps font-semibold text-teal-800">sophiearnaud-naturo<wbr>.fr</span></span>
+      </a></li>
+      <li><a href="https://instagram.com/sophie.naturo" class="carte carte-lien flex h-full min-h-[64px] flex-wrap items-center gap-x-3.5 gap-y-2 rounded-[16px] bg-white px-4 py-3">
+        <span class="pastille pastille--teal h-10 w-10 shrink-0 bg-teal-50 text-teal-700"><svg class="h-5 w-5" aria-hidden="true"><use href="#i-insta"/></svg></span>
+        <span class="min-w-[min(12rem,100%)] flex-1"><span class="block text-[16px] text-neutre-700">Instagram</span><span class="block break-words text-corps font-semibold text-teal-800">@sophie<wbr>.naturo</span></span>
+      </a></li>
+    </ul>
+  </section>
+
+  <section class="bg-neutre-100" aria-labelledby="t-portrait">
+    <div class="mx-auto max-w-[1160px] px-5 py-8">
+      <h2 id="t-portrait" class="ff mb-5 text-nom text-teal-900">Son portrait</h2>
+      <p class="max-w-[62ch] text-[19px] leading-relaxed text-neutre-900">Installée allée du Bois Vert depuis 2021, j'accompagne surtout des adultes fatigués, des femmes en période de transition et des étudiants en fin d'année. La première séance dure une heure et demie&nbsp;: on fait le point sur l'alimentation, le sommeil, la digestion et le stress, sans jugement. Je vous remets ensuite un programme simple, adapté à votre quotidien et à votre budget. Le suivi se fait chaque mois, au cabinet ou en visio, et vous pouvez m'écrire entre deux séances.</p>
+
+      <!-- v2 · le carrousel généré : PortraitCarousel.astro, inchangé ; seules
+           les images changent (les pages de b-v2-diapos au lieu des diapositives
+           faites à la main). Glisser, ou les flèches à partir de 640 px ;
+           toucher une page l'ouvre en plein écran, comme en ligne. -->
+      <div class="mt-6 max-w-[420px]" data-carousel>
+        <div class="relative" data-frame>
+          <ul class="carte flex snap-x snap-mandatory overflow-x-auto rounded-[16px] bg-white [scrollbar-width:none] focus-visible:outline-2 focus-visible:outline-teal-700"
+              tabindex="0" aria-label="Sa présentation en images" data-track
+              onscroll="var c=this.closest('[data-carousel]'),i=Math.round(this.scrollLeft/this.clientWidth),n=this.children.length;c.querySelectorAll('[data-dot]').forEach(function(d,j){d.toggleAttribute('data-on',i===j)});c.querySelector('[data-prev]').disabled=i===0;c.querySelector('[data-next]').disabled=i===n-1">
+            <li class="w-full shrink-0 snap-center">
+              <div class="diapo diapo--maison diapo--couverture" role="img" aria-label="À la rencontre de Sophie Arnaud, Naturopathe · Cabinet du Bois Vert">
+                <div class="diapo__motif"></div>
+                <div class="diapo__corps">
+                  <div class="diapo__tete">
+                    <span class="diapo__marque"><svg aria-hidden="true"><use href="#i-ventouse"/></svg>Annuaire de la Cartoucherie</span>
+                    <span class="diapo__page">1&nbsp;/&nbsp;7</span>
+                  </div>
+                  <img class="diapo__portrait" style="--portrait:42cqi" src="https://randomuser.me/api/portraits/women/26.jpg" alt="" width="128" height="128">
+                  <p class="diapo__rencontre">À la rencontre de</p>
+                  <p class="diapo__nom-grand">Sophie Arnaud</p>
+                  <p class="diapo__metier">Naturopathe · Cabinet du Bois Vert</p>
+                  <p class="diapo__pied">cartoucherie.fyi/membre/sophie-arnaud</p>
+                </div>
+              </div>
+            </li>
+            <li class="w-full shrink-0 snap-center">
+              <div class="diapo diapo--photo" role="img" aria-label="Pourquoi entreprendre ? — Pendant douze ans, j'ai travaillé en pharmacie hospitalière. J'aimais soigner, mais je n'avais jamais le temps d'écouter vraiment. En 2021, j'ai repris mes études de naturopathie pour accompagner autrement : prendre une heure, comprendre le rythme de chacun, et construire un suivi qui lui ressemble.">
+                <div class="diapo__corps">
+                  <div class="diapo__tete">
+                    <span class="diapo__marque"><svg aria-hidden="true"><use href="#i-ventouse"/></svg>Annuaire de la Cartoucherie</span>
+                    <span class="diapo__page">2&nbsp;/&nbsp;7</span>
+                  </div>
+                  <div class="diapo__photo"><img src="https://picsum.photos/id/225/768/960" alt="" width="768" height="960"></div>
+                  <p class="diapo__titre">Pourquoi entreprendre&nbsp;?</p>
+                  <span class="diapo__filet"></span>
+                  <p class="diapo__texte">Pendant douze ans, j'ai travaillé en pharmacie hospitalière. J'aimais soigner, mais je n'avais jamais le temps d'écouter vraiment. En 2021, j'ai repris mes études de naturopathie pour accompagner autrement&nbsp;: prendre une heure, comprendre le rythme de chacun, et construire un suivi qui lui ressemble.</p>
+                  <p class="diapo__signature"><span class="diapo__nom">Sophie Arnaud</span><span>Naturopathe · cartoucherie.fyi</span></p>
+                </div>
+              </div>
+            </li>
+            <li class="w-full shrink-0 snap-center">
+              <div class="diapo diapo--maison" role="img" aria-label="Mon déclic — Une patiente m'a dit, un beau jour : « Vous êtes la première à me demander comment vous dormez. » Ce soir-là, en rentrant à vélo le long du canal de Brienne, j'ai su que je voulais exercer à mon compte, près de chez moi, avec des voisins que je recroiserais au marché des Halles, chaque samedi matin.">
+                <div class="diapo__motif"></div>
+                <div class="diapo__corps">
+                  <div class="diapo__tete">
+                    <span class="diapo__marque"><svg aria-hidden="true"><use href="#i-ventouse"/></svg>Annuaire de la Cartoucherie</span>
+                    <span class="diapo__page">3&nbsp;/&nbsp;7</span>
+                  </div>
+                  <div class="diapo__arche" style="--fond:var(--color-sauge-100)">
+                    <span class="diapo__medaillon"><svg aria-hidden="true"><use href="#i-ampoule"/></svg></span>
+                    <p class="diapo__titre">Mon déclic</p>
+                    <span class="diapo__filet"></span>
+                    <p class="diapo__texte">Une patiente m'a dit, un beau jour&nbsp;: «&nbsp;Vous êtes la première à me demander comment vous dormez.&nbsp;» Ce soir-là, en rentrant à vélo le long du canal de Brienne, j'ai su que je voulais exercer à mon compte, près de chez moi, avec des voisins que je recroiserais au marché des Halles, chaque samedi matin.</p>
+                    <p class="diapo__signature"><span class="diapo__nom">Sophie Arnaud</span><span>Naturopathe · cartoucherie.fyi</span></p>
+                  </div>
+                </div>
+              </div>
+            </li>
+            <li class="w-full shrink-0 snap-center">
+              <div class="diapo diapo--photo" role="img" aria-label="Mon activité en bref — Je reçois au cabinet du Bois Vert, du mardi au samedi, des adultes et des étudiants. Un premier bilan d'une heure trente, puis un suivi mensuel : alimentation, sommeil, gestion du stress. Je travaille en lien avec les médecins du quartier, jamais à leur place. Atelier cuisine de saison, jeudis soir.">
+                <div class="diapo__corps">
+                  <div class="diapo__tete">
+                    <span class="diapo__marque"><svg aria-hidden="true"><use href="#i-ventouse"/></svg>Annuaire de la Cartoucherie</span>
+                    <span class="diapo__page">4&nbsp;/&nbsp;7</span>
+                  </div>
+                  <div class="diapo__photo"><img src="https://picsum.photos/id/292/768/960" alt="" width="768" height="960"></div>
+                  <p class="diapo__titre">Mon activité en bref</p>
+                  <span class="diapo__filet"></span>
+                  <p class="diapo__texte">Je reçois au cabinet du Bois Vert, du mardi au samedi, des adultes et des étudiants. Un premier bilan d'une heure trente, puis un suivi mensuel&nbsp;: alimentation, sommeil, gestion du stress. Je travaille en lien avec les médecins du quartier, jamais à leur place. Atelier cuisine de saison, jeudis soir.</p>
+                  <p class="diapo__signature"><span class="diapo__nom">Sophie Arnaud</span><span>Naturopathe · cartoucherie.fyi</span></p>
+                </div>
+              </div>
+            </li>
+            <li class="w-full shrink-0 snap-center">
+              <div class="diapo diapo--maison" role="img" aria-label="Les entrepreneurs de la Cartoucherie &amp; moi — Toute seule à mon compte, je craignais l'isolement. Le réseau m'a donné des collègues : on se recommande, on partage nos idées, on se dépanne. Je veux que la Cartoucherie devienne un quartier où l'on prend soin de soi sans traverser Toulouse, et où chaque commerçant connaît le prénom de ses voisins.">
+                <div class="diapo__motif"></div>
+                <div class="diapo__corps">
+                  <div class="diapo__tete">
+                    <span class="diapo__marque"><svg aria-hidden="true"><use href="#i-ventouse"/></svg>Annuaire de la Cartoucherie</span>
+                    <span class="diapo__page">5&nbsp;/&nbsp;7</span>
+                  </div>
+                  <div class="diapo__arche" style="--fond:var(--color-sable-200); --titre:5.8cqi">
+                    <span class="diapo__medaillon"><svg aria-hidden="true"><use href="#i-groupe"/></svg></span>
+                    <p class="diapo__titre">Les entrepreneurs de la Cartoucherie &amp; moi</p>
+                    <span class="diapo__filet"></span>
+                    <p class="diapo__texte">Toute seule à mon compte, je craignais l'isolement. Le réseau m'a donné des collègues&nbsp;: on se recommande, on partage nos idées, on se dépanne. Je veux que la Cartoucherie devienne un quartier où l'on prend soin de soi sans traverser Toulouse, et où chaque commerçant connaît le prénom de ses voisins.</p>
+                    <p class="diapo__signature"><span class="diapo__nom">Sophie Arnaud</span><span>Naturopathe · cartoucherie.fyi</span></p>
+                  </div>
+                </div>
+                <img class="diapo__colly" src="../_shared/colly/colly-couleur.png" alt="" width="400" height="473">
+              </div>
+            </li>
+            <li class="w-full shrink-0 snap-center">
+              <div class="diapo diapo--maison" role="img" aria-label="Mes lieux favoris — Les P'tits Tous, Le Bar des 500, Parc Pouvillon, L'autre rive cartoucherie, UCPA TOULOUSE Les Halles de la Cartoucherie - Fitness &amp; Squash. Le samedi, je fais mon marché aux Halles, je prends un café aux P'tits Tous, puis je lis au parc Pouvillon avant d'ouvrir le cabinet. Et le jeudi soir : squash.">
+                <div class="diapo__motif"></div>
+                <div class="diapo__corps">
+                  <div class="diapo__tete">
+                    <span class="diapo__marque"><svg aria-hidden="true"><use href="#i-ventouse"/></svg>Annuaire de la Cartoucherie</span>
+                    <span class="diapo__page">6&nbsp;/&nbsp;7</span>
+                  </div>
+                  <div class="diapo__arche" style="--fond:var(--color-teal-50); --titre:6.2cqi">
+                    <span class="diapo__medaillon"><svg aria-hidden="true"><use href="#i-carte"/></svg></span>
+                    <p class="diapo__titre">Mes lieux favoris</p>
+                    <span class="diapo__filet"></span>
+                    <ul class="diapo__lieux">
+                      <li class="diapo__lieu"><span class="diapo__lieu-icone"><svg aria-hidden="true"><use href="#l-cafe"/></svg></span><span class="diapo__lieu-nom">Les P'tits Tous<span class="diapo__lieu-type">Café, bar</span></span></li>
+                      <li class="diapo__lieu"><span class="diapo__lieu-icone"><svg aria-hidden="true"><use href="#l-cafe"/></svg></span><span class="diapo__lieu-nom">Le Bar des 500<span class="diapo__lieu-type">Café, bar</span></span></li>
+                      <li class="diapo__lieu"><span class="diapo__lieu-icone"><svg aria-hidden="true"><use href="#l-parc"/></svg></span><span class="diapo__lieu-nom">Parc Pouvillon<span class="diapo__lieu-type">Parc, jardin</span></span></li>
+                      <li class="diapo__lieu"><span class="diapo__lieu-icone"><svg aria-hidden="true"><use href="#l-boutique"/></svg></span><span class="diapo__lieu-nom">L'autre rive cartoucherie<span class="diapo__lieu-type">Boutique</span></span></li>
+                      <li class="diapo__lieu"><span class="diapo__lieu-icone"><svg aria-hidden="true"><use href="#l-sport"/></svg></span><span class="diapo__lieu-nom">UCPA TOULOUSE Les Halles de la Cartoucherie - Fitness &amp; Squash<span class="diapo__lieu-type">Sport</span></span></li>
+                    </ul>
+                    <p class="diapo__phrase">Le samedi, je fais mon marché aux Halles, je prends un café aux P'tits Tous, puis je lis au parc Pouvillon avant d'ouvrir le cabinet. Et le jeudi soir&nbsp;: squash.</p>
+                    <p class="diapo__signature"><span class="diapo__nom">Sophie Arnaud</span><span>Naturopathe · cartoucherie.fyi</span></p>
+                  </div>
+                </div>
+              </div>
+            </li>
+            <li class="w-full shrink-0 snap-center">
+              <div class="diapo diapo--photo diapo--motto" role="img" aria-label="Mon motto — Prendre soin de soi n'est pas un luxe : c'est la base de tout le reste, et ça commence très souvent par une bonne nuit !">
+                <div class="diapo__corps">
+                  <div class="diapo__tete">
+                    <span class="diapo__marque"><svg aria-hidden="true"><use href="#i-ventouse"/></svg>Annuaire de la Cartoucherie</span>
+                    <span class="diapo__page">7&nbsp;/&nbsp;7</span>
+                  </div>
+                  <div class="diapo__photo"><img src="https://picsum.photos/id/488/768/960" alt="" width="768" height="960"></div>
+                  <p class="diapo__motto">«&nbsp;Prendre soin de soi n'est pas un luxe&nbsp;: c'est la base de tout le reste, et ça commence très souvent par une bonne nuit&nbsp;!&nbsp;»</p>
+                  <p class="diapo__signature"><span class="diapo__nom">Sophie Arnaud</span><span>Naturopathe · cartoucherie.fyi</span></p>
+                </div>
+              </div>
+            </li>
+          </ul>
+          <button type="button" class="absolute top-1/2 flex size-11 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 text-teal-900 shadow-md disabled:opacity-0 max-sm:hidden left-2"
+                  aria-label="Image précédente" data-prev disabled
+                  onclick="var t=this.parentNode.querySelector('[data-track]');t.scrollBy({left:-t.clientWidth,behavior:'smooth'})">
+            <svg class="size-5 rotate-180" aria-hidden="true"><use href="#i-chev"/></svg>
+          </button>
+          <button type="button" class="absolute top-1/2 flex size-11 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 text-teal-900 shadow-md disabled:opacity-0 max-sm:hidden right-2"
+                  aria-label="Image suivante" data-next
+                  onclick="var t=this.parentNode.querySelector('[data-track]');t.scrollBy({left:t.clientWidth,behavior:'smooth'})">
+            <svg class="size-5" aria-hidden="true"><use href="#i-chev"/></svg>
+          </button>
+        </div>
+        <p class="mt-3 flex justify-center gap-1.5" aria-hidden="true">
+          <span class="size-2 rounded-full bg-neutre-300 data-on:bg-teal-700" data-dot data-on></span>
+          <span class="size-2 rounded-full bg-neutre-300 data-on:bg-teal-700" data-dot></span>
+          <span class="size-2 rounded-full bg-neutre-300 data-on:bg-teal-700" data-dot></span>
+          <span class="size-2 rounded-full bg-neutre-300 data-on:bg-teal-700" data-dot></span>
+          <span class="size-2 rounded-full bg-neutre-300 data-on:bg-teal-700" data-dot></span>
+          <span class="size-2 rounded-full bg-neutre-300 data-on:bg-teal-700" data-dot></span>
+          <span class="size-2 rounded-full bg-neutre-300 data-on:bg-teal-700" data-dot></span>
+        </p>
+      </div>
+
+      <!-- v2 · les lieux favoris : la page 6 les montre, ce lien les pose sur le
+           plan, calque « Lieux préférés » allumé, ses lieux à elle choisis -->
+      <p class="mt-4">
+        <a href="/carte?lieux=sophie-arnaud#plan" class="inline-flex min-h-[44px] items-center gap-2 text-corps font-semibold text-teal-700 underline decoration-teal-300 underline-offset-4 hover:decoration-teal-600">
+          <svg class="h-5 w-5 shrink-0" aria-hidden="true"><use href="#i-carte"/></svg>Ses lieux favoris, sur la carte <svg class="h-4 w-4 shrink-0" aria-hidden="true"><use href="#i-chev"/></svg>
+        </a>
+      </p>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-[1160px] px-5 py-8" aria-labelledby="t-services">
+    <h2 id="t-services" class="ff mb-5 text-nom text-teal-900">Ce qu'elle propose</h2>
+    <ul class="m-0 grid grid-cols-1 list-none gap-3 p-0 sm:grid-cols-3">
+      <li class="@container flex min-h-[64px] flex-wrap items-center gap-x-3.5 gap-y-2 rounded-[16px] bg-neutre-100 px-4 py-4"><span class="pastille h-9 w-9 shrink-0 bg-white text-sauge-700"><svg class="h-[18px] w-[18px]" aria-hidden="true"><use href="#c-sante"/></svg></span><span class="min-w-[min(12rem,100%)] flex-1 mots-entiers text-corps font-semibold text-teal-900" style="--taille:var(--text-corps); --lettre:.56; --mot:14">Bilan naturopathique</span></li>
+      <li class="@container flex min-h-[64px] flex-wrap items-center gap-x-3.5 gap-y-2 rounded-[16px] bg-neutre-100 px-4 py-4"><span class="pastille h-9 w-9 shrink-0 bg-white text-sauge-700"><svg class="h-[18px] w-[18px]" aria-hidden="true"><use href="#c-sante"/></svg></span><span class="min-w-[min(12rem,100%)] flex-1 mots-entiers text-corps font-semibold text-teal-900" style="--taille:var(--text-corps); --lettre:.56; --mot:7">Suivi mensuel</span></li>
+      <li class="@container flex min-h-[64px] flex-wrap items-center gap-x-3.5 gap-y-2 rounded-[16px] bg-neutre-100 px-4 py-4"><span class="pastille h-9 w-9 shrink-0 bg-white text-sauge-700"><svg class="h-[18px] w-[18px]" aria-hidden="true"><use href="#c-sante"/></svg></span><span class="min-w-[min(12rem,100%)] flex-1 mots-entiers text-corps font-semibold text-teal-900" style="--taille:var(--text-corps); --lettre:.56; --mot:12">Consultation en visio</span></li>
+    </ul>
+  </section>
+
+  <section class="mx-auto max-w-[1160px] px-5 pb-8" aria-labelledby="t-ou">
+    <h2 id="t-ou" class="ff mb-5 text-nom text-teal-900">Où la trouver</h2>
+    <div class="carte flex items-start gap-4 rounded-[20px] bg-white p-5">
+      <span class="pastille pastille--teal mt-0.5 h-[44px] w-[44px] shrink-0 bg-teal-50 text-teal-700"><svg class="h-5 w-5" aria-hidden="true"><use href="#i-pin"/></svg></span>
+      <div class="min-w-0">
+        <address class="text-[18px] leading-snug font-semibold text-neutre-900 not-italic">8 allée du Bois Vert, 31300 Toulouse</address>
+        <p class="mt-2 text-[16px] text-neutre-700">À 450 m de la Halle</p>
+        <p class="mt-3 flex flex-wrap items-center gap-x-5">
+          <a href="#" class="inline-flex min-w-0 max-w-full min-h-[44px] items-center gap-2 text-corps font-semibold text-teal-700 underline decoration-teal-300 underline-offset-4 hover:decoration-teal-600">La voir sur la carte du quartier <svg class="h-4 w-4" aria-hidden="true"><use href="#i-chev"/></svg></a>
+          <a href="#" class="inline-flex min-h-[44px] items-center gap-2 text-[16px] font-semibold text-teal-700 underline decoration-teal-300 underline-offset-4 hover:decoration-teal-600">Ouvrir l'itinéraire <svg class="h-4 w-4" aria-hidden="true"><use href="#i-chev"/></svg></a>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section id="avis" class="bg-neutre-100" aria-labelledby="reviews-title">
+    <div class="mx-auto max-w-[1160px] px-5 py-8">
+      <div class="flex flex-wrap items-center gap-x-1 mb-4">
+        <h2 id="reviews-title" class="ff text-nom text-teal-900">Avis du quartier</h2>
+        <div data-inclure="t-avis-aide"></div>
+      </div>
+      <div data-reviews-slot><p class="text-corps text-neutre-700">Aucun avis pour l'instant.</p></div>
+      <a href="#" class="mt-4 inline-flex min-h-12 items-center gap-2 text-corps font-semibold text-teal-800 underline">
+        <svg class="h-5 w-5" aria-hidden="true"><use href="#i-etoile"/></svg>Voir ses avis sur Google
+      </a>
+    </div>
+  </section>
+
+  <p class="mx-auto max-w-[1160px] px-5 pb-8 text-[16px]">
+    <a href="#" class="inline-flex min-h-[44px] items-center gap-1.5 text-neutre-700 underline decoration-neutre-400 underline-offset-4 hover:text-teal-700 hover:decoration-teal-600">
+      <svg class="h-[18px] w-[18px]" aria-hidden="true"><use href="#i-alerte"/></svg>Cette fiche n'est pas correcte
+    </a>
+  </p>
+</main>
+<div data-inclure="t-pied"></div>
+<div class="fixed inset-x-0 bottom-0 z-40 border-t border-neutre-200 bg-white/95 px-4 pt-3 backdrop-blur-sm" style="padding-bottom: calc(0.75rem + var(--safe-bottom));">
+  <a href="tel:+33639980026" class="cta flex min-h-[52px] items-center justify-center gap-2 rounded-field px-5 font-semibold sm:mx-auto sm:max-w-sm">
+    <svg class="size-5" aria-hidden="true"><use href="#i-tel"/></svg>Appeler Sophie
+  </a>
+</div>
+</template>
+
 <script>
 /* Les cadres : chaque <iframe data-cas> reçoit en srcdoc les fondations de
    cette page (polices, daisyUI, Tailwind, les <style id="src-…">), le sprite,
@@ -907,18 +1347,30 @@ body.ecran .bureau iframe{ height:800px !important; }
   }
 
   /* le cas 2 est le cas 1 moins les cinq champs : l'enseigne et l'encadré */
+  /* le cas 5 est le cas 1 avec genre « n » : les formes de gender.ts
+     (styleguide b-v2-genre), et la bio, qu'elle ou iel écrit soi-même */
+  function ecrire(f, sel, texte){ f.querySelector(sel).firstChild.textContent = texte; }
   var CAS = {
-    'cas-plein': function(f){ return f; },
-    'cas-mixte': function(f){ return f; },
+    'cas-plein':    function(f){ return f; },
+    'cas-mixte':    function(f){ return f; },
+    'cas-nouvelle': function(f){ return f; },
     'cas-vide':  function(f){
       var enseigne = f.querySelector('#nom-membre + p');
       enseigne.textContent = 'Sophrologue';
-      enseigne.className = 'mt-1.5 text-[20px] text-neutre-800';
+      /* métier seul : la ligne garde ses classes et son --mot */
       f.querySelector('.border-t.pt-5').remove();
+      return f;
+    },
+    'cas-iel': function(f){
+      ecrire(f, '#t-contact', 'Lae contacter');
+      ecrire(f, '#t-services', 'Ce qu\'iel propose');
+      ecrire(f, '#t-ou', 'Où lae trouver');
+      ecrire(f, '#t-ou ~ .carte a', 'Lae voir sur la carte du quartier ');
+      ecrire(f, '#t-portrait ~ p', 'À la Cartoucherie depuis 2022, j\'accompagne adultes et adolescents sur le stress, le sommeil et la confiance en soi. Séances individuelles d\'une heure, et un atelier collectif le samedi matin à la Halle.');
       return f;
     }
   };
-  var source = { 'cas-vide': 'cas-plein' };
+  var source = { 'cas-vide': 'cas-plein', 'cas-iel': 'cas-plein' };
 
   function ajuster(f){
     var doc = f.contentDocument;
