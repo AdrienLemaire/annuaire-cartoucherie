@@ -414,6 +414,15 @@ textarea.champ{ field-sizing: content; resize: vertical; }
 /* « Placer sur la carte » : le repère posé, pas encore nommé */
 .lieu--pose{ background:#fff; color:var(--color-sauge-800);
        box-shadow: 0 0 0 2px var(--color-sauge-700), var(--shadow-flottant); outline:2px dashed var(--color-sauge-700); outline-offset:5px; }
+/* le groupe : des lieux à moins de 44 px l'un de l'autre. Le carré du lieu, un
+   peu plus grand, son nombre en blanc (6,9:1), et un second carré décalé
+   derrière lui pour dire « plusieurs ». Jamais orange. */
+.lieu--groupe{ width:34px; height:34px; font:700 17px/1 var(--font-sans); font-variant-numeric:tabular-nums;
+  box-shadow: 0 0 0 2px #fff, 5px -5px 0 0 var(--color-sauge-400), 5px -5px 0 2px #fff, var(--shadow-carte); }
+/* la marque de lieu : l'épingle d'un voisin dont l'activité est un lieu
+   préféré. Pas de second repère : un coin sauge sur son épingle. */
+.marque-lieu{ position:absolute; top:0; right:0; display:grid; place-items:center; width:18px; height:18px;
+  border-radius:6px; background:var(--color-sauge-700); color:#fff; box-shadow:0 0 0 2px #fff; }
 </style>
 
 <!-- ═══════════════════════════════════════════════════════════════════════════
@@ -827,13 +836,14 @@ textarea.champ{ field-sizing: content; resize: vertical; }
 <template id="p-entete">
   <header class="bg-white">
     <div class="mx-auto max-w-[1160px] px-5 pt-2 pb-3 lg:py-2 flex flex-wrap items-center justify-between gap-x-8 gap-y-2">
-      <a href="/" class="flex items-center gap-2.5 -ml-0.5 min-h-[44px]" aria-label="Annuaire de la Cartoucherie, accueil">
+      <a href="/" class="flex items-center gap-2.5 -ml-0.5 min-h-[44px] py-1">
         <svg class="w-8 h-8 text-teal-700 shrink-0" aria-hidden="true"><use href="#i-ventouse"/></svg>
         <span class="leading-none">
           <span class="block text-[11.5px] uppercase tracking-[.18em] text-neutre-700 font-semibold">Annuaire de</span>
           <span class="ff block text-[20px] text-teal-900 leading-tight">la Cartoucherie</span>
         </span>
-      </a>
+      <span class="sr-only">, Accueil</span>
+    </a>
       <p class="text-etiquette font-semibold uppercase text-sauge-800 lg:order-last">Admin</p>
       <nav aria-label="Administration" class="w-full lg:w-auto lg:flex-1 -ml-1">
         <ul class="flex flex-wrap gap-2 list-none p-0 m-0">
@@ -854,10 +864,10 @@ textarea.champ{ field-sizing: content; resize: vertical; }
 <template id="p-ligne-pierre">
         <li>
           <article class="carte rounded-[20px] bg-white overflow-hidden">
-            <div class="flex gap-4 p-4">
+            <div class="flex flex-wrap gap-4 p-4">
               <img src="https://randomuser.me/api/portraits/men/59.jpg" alt="Portrait de Pierre Delmas"
                    width="128" height="128" class="arche w-[96px] h-[116px] shrink-0 object-cover" style="object-position:50% 22%">
-              <div class="min-w-0 flex-1">
+              <div class="min-w-[min(10rem,100%)] flex-1">
                 <h3 class="ff text-[21px] leading-tight text-teal-900">
                   <a href="/admin/fiche/pierre-delmas" class="underline decoration-teal-300 underline-offset-4 hover:decoration-teal-600">Pierre Delmas</a>
                 </h3>
@@ -870,7 +880,7 @@ textarea.champ{ field-sizing: content; resize: vertical; }
                 </ul>
               </div>
             </div>
-            <div class="flex gap-2.5 px-4 pb-4">
+            <div class="flex flex-wrap gap-2.5 px-4 pb-4">
               <button type="button" class="flex-1 inline-flex items-center justify-center gap-2 min-h-[48px] px-5 rounded-full text-corps font-semibold text-white bg-teal-700 hover:bg-teal-600">
                 <svg class="w-5 h-5" aria-hidden="true"><use href="#i-coche"/></svg>Publier
               </button>
@@ -887,10 +897,10 @@ textarea.champ{ field-sizing: content; resize: vertical; }
 <template id="p-ligne-karim">
         <li>
           <article class="carte rounded-[20px] bg-white overflow-hidden">
-            <div class="flex gap-4 p-4">
+            <div class="flex flex-wrap gap-4 p-4">
               <img src="https://randomuser.me/api/portraits/men/83.jpg" alt="Portrait de Karim Ziani"
                    width="128" height="128" class="arche w-[96px] h-[116px] shrink-0 object-cover" style="object-position:50% 22%">
-              <div class="min-w-0 flex-1">
+              <div class="min-w-[min(10rem,100%)] flex-1">
                 <h3 class="ff text-[21px] leading-tight text-teal-900">
                   <a href="/admin/fiche/karim-ziani" class="underline decoration-teal-300 underline-offset-4 hover:decoration-teal-600">Karim Ziani</a>
                 </h3>
@@ -912,7 +922,7 @@ textarea.champ{ field-sizing: content; resize: vertical; }
               <figcaption class="mt-2.5 font-semibold">Aucune catégorie ne convient, écrit Karim&nbsp;:</figcaption>
               <blockquote class="mt-1 mx-0 mb-0">«&nbsp;Je fais surtout de la vidéo de mariage. Il manque une catégorie Événements.&nbsp;»</blockquote>
             </figure>
-            <div class="flex gap-2.5 px-4 pb-4">
+            <div class="flex flex-wrap gap-2.5 px-4 pb-4">
               <button type="button" class="flex-1 inline-flex items-center justify-center gap-2 min-h-[48px] px-5 rounded-full text-corps font-semibold text-white bg-teal-700 hover:bg-teal-600">
                 <svg class="w-5 h-5" aria-hidden="true"><use href="#i-coche"/></svg>Publier
               </button>
@@ -927,10 +937,10 @@ textarea.champ{ field-sizing: content; resize: vertical; }
 <template id="p-ligne-amandine">
         <li>
           <article class="carte rounded-[20px] bg-white overflow-hidden">
-            <div class="flex gap-4 p-4">
+            <div class="flex flex-wrap gap-4 p-4">
               <img src="https://randomuser.me/api/portraits/women/12.jpg" alt="Portrait d'Amandine Rey"
                    width="128" height="128" class="arche w-[96px] h-[116px] shrink-0 object-cover" style="object-position:50% 22%">
-              <div class="min-w-0 flex-1">
+              <div class="min-w-[min(10rem,100%)] flex-1">
                 <h3 class="ff text-[21px] leading-tight text-teal-900">
                   <a href="/admin/fiche/amandine-rey" class="underline decoration-teal-300 underline-offset-4 hover:decoration-teal-600">Amandine Rey</a>
                 </h3>
@@ -938,7 +948,7 @@ textarea.champ{ field-sizing: content; resize: vertical; }
                 <p class="mt-1 text-[16px] text-neutre-700">Envoyée le 26&nbsp;oct.</p>
               </div>
             </div>
-            <div class="flex gap-2.5 px-4 pb-4">
+            <div class="flex flex-wrap gap-2.5 px-4 pb-4">
               <button type="button" class="flex-1 inline-flex items-center justify-center gap-2 min-h-[48px] px-5 rounded-full text-corps font-semibold text-white bg-teal-700 hover:bg-teal-600">
                 <svg class="w-5 h-5" aria-hidden="true"><use href="#i-coche"/></svg>Publier
               </button>
@@ -956,7 +966,7 @@ textarea.champ{ field-sizing: content; resize: vertical; }
   <main class="px-4 pt-6 pb-10">
     <h1 class="ff px-1 text-nom text-teal-900">À relire</h1>
     <p class="mt-1.5 px-1 text-[16px] text-neutre-700">4 fiches, la plus ancienne en haut.</p>
-    <ul class="mt-4 grid gap-3 list-none p-0 m-0">
+    <ul class="mt-4 grid grid-cols-[minmax(0,1fr)] gap-3 list-none p-0 m-0">
       <div data-inclure="p-ligne-pierre"></div>
       <div data-inclure="p-ligne-karim"></div>
       <div data-inclure="p-ligne-sacha"></div>
@@ -980,7 +990,7 @@ textarea.champ{ field-sizing: content; resize: vertical; }
         </div>
         <p class="ff mt-6 text-[28px] leading-tight text-teal-950">Rien à relire.</p>
         <p class="mt-2 text-corps text-teal-950">La prochaine fiche envoyée arrivera ici, et par e-mail.</p>
-        <a href="/admin/fiches" class="mt-5 inline-flex items-center gap-2 min-h-[48px] px-5 rounded-full text-corps font-semibold text-white bg-teal-700 hover:bg-teal-600">
+        <a href="/admin/fiches" class="mt-5 inline-flex max-w-full items-center gap-2 min-h-[48px] px-5 rounded-full text-corps font-semibold text-white bg-teal-700 hover:bg-teal-600">
           Voir toutes les fiches<svg class="w-4 h-4" aria-hidden="true"><use href="#i-chev"/></svg>
         </a>
       </div>
@@ -1027,7 +1037,7 @@ textarea.champ{ field-sizing: content; resize: vertical; }
      blocs 14 à 18 de membre.html dans leur version téléphone. Pas d'en-tête de site,
      pas de pied de page ; la barre « Appeler » est posée à sa place, en bas. -->
 <template id="p-apercu-pierre">
-  <figure id="apercu" class="ventouses ventouses--teal m-0 rounded-[24px] bg-neutre-100 p-3">
+  <figure id="apercu" class="ventouses ventouses--teal m-0 rounded-[24px] bg-neutre-100 p-[12px]">
     <figcaption class="flex items-center gap-2 px-1.5 pt-0.5 pb-3 text-[16px] font-semibold text-teal-800">
       <svg class="w-5 h-5" aria-hidden="true"><use href="#i-oeil"/></svg>Ce que les voisins verront
     </figcaption>
@@ -1042,8 +1052,8 @@ textarea.champ{ field-sizing: content; resize: vertical; }
                  style="object-position:50% 22%; box-shadow: 0 0 0 6px #fff, var(--shadow-carte)">
           </div>
         </div>
-        <div class="px-4 relative -mt-8">
-          <div class="@container carte rounded-[24px] bg-white p-5">
+        <div class="px-[16px] relative -mt-8">
+          <div class="@container carte rounded-[24px] bg-white p-[20px]">
             <h2 id="ap-nom" class="ff text-grand mots-entiers text-teal-900" style="--mot:6">Pierre Delmas</h2>
             <p class="mt-1.5 text-[20px] text-neutre-800">Expert-comptable</p>
             <p class="mt-3 flex flex-wrap gap-2">
@@ -1084,30 +1094,30 @@ textarea.champ{ field-sizing: content; resize: vertical; }
         </div>
       </section>
 
-      <section class="px-4 py-8" aria-labelledby="ap-contact">
-        <h2 id="ap-contact" class="ff text-nom text-teal-900">Le contacter</h2>
+      <section class="@container px-[16px] py-8" aria-labelledby="ap-contact">
+        <h2 id="ap-contact" class="ff text-nom mots-entiers text-teal-900" style="--taille:var(--text-nom); --mot:9">Le contacter</h2>
         <div class="filet h-[3px] w-16 rounded-full mt-2.5 mb-5"></div>
-        <ul class="grid gap-2.5 list-none p-0 m-0">
-          <li><a href="mailto:p.delmas@example.fr" class="carte carte-lien flex items-center gap-3.5 min-h-[64px] px-4 py-3 rounded-[16px] bg-white">
+        <ul class="grid grid-cols-[minmax(0,1fr)] gap-2.5 list-none p-0 m-0">
+          <li><a href="mailto:p.delmas@example.fr" class="carte carte-lien flex flex-wrap items-center gap-x-3.5 gap-y-2 min-h-[64px] px-4 py-3 rounded-[16px] bg-white">
             <span class="pastille pastille--teal w-10 h-10 bg-teal-50 text-teal-700 shrink-0"><svg class="w-5 h-5" aria-hidden="true"><use href="#i-mail"/></svg></span>
-            <span class="min-w-0">
+            <span class="min-w-[min(12rem,100%)] flex-1">
               <span class="block text-[16px] text-neutre-700">E-mail</span>
               <span class="block text-corps font-semibold text-teal-800 break-words">p<wbr>.delmas<wbr>@example<wbr>.fr</span>
             </span>
           </a></li>
-          <li><a href="https://delmas-conseil.fr" class="carte carte-lien flex items-center gap-3.5 min-h-[64px] px-4 py-3 rounded-[16px] bg-white">
+          <li><a href="https://delmas-conseil.fr" class="carte carte-lien flex flex-wrap items-center gap-x-3.5 gap-y-2 min-h-[64px] px-4 py-3 rounded-[16px] bg-white">
             <span class="pastille pastille--teal w-10 h-10 bg-teal-50 text-teal-700 shrink-0"><svg class="w-5 h-5" aria-hidden="true"><use href="#i-globe"/></svg></span>
-            <span class="min-w-0">
+            <span class="min-w-[min(12rem,100%)] flex-1">
               <span class="block text-[16px] text-neutre-700">Son site</span>
-              <span class="block text-corps font-semibold text-teal-800 break-words">delmas-conseil.fr</span>
+              <span class="block text-corps font-semibold text-teal-800 break-words">delmas-conseil<wbr>.fr</span>
             </span>
           </a></li>
         </ul>
       </section>
 
-      <section class="bg-neutre-100" aria-labelledby="ap-portrait">
-        <div class="px-4 py-8">
-          <h2 id="ap-portrait" class="ff text-nom text-teal-900">Son portrait</h2>
+      <section class="@container bg-neutre-100" aria-labelledby="ap-portrait">
+        <div class="@container px-[16px] py-8">
+          <h2 id="ap-portrait" class="ff text-nom mots-entiers text-teal-900" style="--taille:var(--text-nom); --mot:8">Son portrait</h2>
           <div class="filet h-[3px] w-16 rounded-full mt-2.5 mb-5"></div>
           <p class="text-[19px] leading-relaxed text-neutre-900">
             Je travaille surtout avec des micro-entreprises et des associations. Premier rendez-vous
@@ -1116,31 +1126,31 @@ textarea.champ{ field-sizing: content; resize: vertical; }
         </div>
       </section>
 
-      <section class="px-4 py-8" aria-labelledby="ap-services">
-        <h2 id="ap-services" class="ff text-nom text-teal-900">Ce qu'il propose</h2>
+      <section class="@container px-[16px] py-8" aria-labelledby="ap-services">
+        <h2 id="ap-services" class="ff text-nom mots-entiers text-teal-900" style="--taille:var(--text-nom); --mot:7">Ce qu'il propose</h2>
         <div class="filet h-[3px] w-16 rounded-full mt-2.5 mb-5"></div>
-        <ul class="grid gap-3 list-none p-0 m-0">
-          <li class="flex items-center gap-3.5 rounded-[16px] bg-neutre-100 px-4 py-4 min-h-[64px]">
+        <ul class="grid grid-cols-[minmax(0,1fr)] gap-3 list-none p-0 m-0">
+          <li class="@container flex flex-wrap items-center gap-x-3.5 gap-y-2 rounded-[16px] bg-neutre-100 px-4 py-4 min-h-[64px]">
             <span class="pastille w-9 h-9 bg-white text-sauge-700 shrink-0"><svg class="w-[18px] h-[18px]" aria-hidden="true"><use href="#c-conseil"/></svg></span>
             <span class="text-corps font-semibold text-teal-900">Comptabilité</span>
           </li>
-          <li class="flex items-center gap-3.5 rounded-[16px] bg-neutre-100 px-4 py-4 min-h-[64px]">
+          <li class="@container flex flex-wrap items-center gap-x-3.5 gap-y-2 rounded-[16px] bg-neutre-100 px-4 py-4 min-h-[64px]">
             <span class="pastille w-9 h-9 bg-white text-sauge-700 shrink-0"><svg class="w-[18px] h-[18px]" aria-hidden="true"><use href="#i-plume"/></svg></span>
             <span class="text-corps font-semibold text-teal-900">Création d'entreprise</span>
           </li>
-          <li class="flex items-center gap-3.5 rounded-[16px] bg-neutre-100 px-4 py-4 min-h-[64px]">
+          <li class="@container flex flex-wrap items-center gap-x-3.5 gap-y-2 rounded-[16px] bg-neutre-100 px-4 py-4 min-h-[64px]">
             <span class="pastille w-9 h-9 bg-white text-sauge-700 shrink-0"><svg class="w-[18px] h-[18px]" aria-hidden="true"><use href="#i-groupe"/></svg></span>
             <span class="text-corps font-semibold text-teal-900">Conseil associatif</span>
           </li>
         </ul>
       </section>
 
-      <section class="px-4 pb-8" aria-labelledby="ap-ou">
-        <h2 id="ap-ou" class="ff text-nom text-teal-900">Où le trouver</h2>
+      <section class="@container px-[16px] pb-8" aria-labelledby="ap-ou">
+        <h2 id="ap-ou" class="ff text-nom mots-entiers text-teal-900" style="--taille:var(--text-nom); --mot:7">Où le trouver</h2>
         <div class="filet h-[3px] w-16 rounded-full mt-2.5 mb-5"></div>
-        <div class="carte rounded-[20px] bg-white p-5 flex items-start gap-4">
+        <div class="carte rounded-[20px] bg-white p-[20px] flex flex-wrap items-start gap-x-4 gap-y-3">
           <span class="pastille pastille--teal w-11 h-11 bg-teal-50 text-teal-700 shrink-0 mt-0.5"><svg class="w-5 h-5" aria-hidden="true"><use href="#i-pin"/></svg></span>
-          <div class="min-w-0">
+          <div class="min-w-[min(12rem,100%)] flex-1">
             <address class="not-italic text-[18px] leading-snug text-neutre-900 font-semibold">
               40 avenue de Lombez<br>31300 Toulouse
             </address>
@@ -1155,15 +1165,15 @@ textarea.champ{ field-sizing: content; resize: vertical; }
         </div>
       </section>
 
-      <section class="px-4 pb-8" aria-labelledby="ap-avis">
-        <h2 id="ap-avis" class="ff text-nom text-teal-900">Avis du quartier</h2>
+      <section class="@container px-[16px] pb-8" aria-labelledby="ap-avis">
+        <h2 id="ap-avis" class="ff text-nom mots-entiers text-teal-900" style="--taille:var(--text-nom); --mot:8">Avis du quartier</h2>
         <div class="filet h-[3px] w-16 rounded-full mt-2.5 mb-5"></div>
-        <div class="rounded-[20px] bg-neutre-100 p-5">
+        <div class="rounded-[20px] bg-neutre-100 p-[20px]">
           <p class="text-corps text-neutre-900">
             <strong class="font-semibold">Aucun avis pour l'instant.</strong> Pierre est inscrit
             depuis peu&nbsp;; personne n'a encore écrit.
           </p>
-          <button type="button" class="mt-4 inline-flex items-center gap-2 min-h-[48px] px-5 rounded-full text-corps font-semibold text-white bg-teal-700 hover:bg-teal-600">
+          <button type="button" class="mt-4 inline-flex max-w-full items-center gap-2 min-h-[48px] px-5 rounded-full text-corps font-semibold text-white bg-teal-700 hover:bg-teal-600">
             <svg class="w-[18px] h-[18px]" aria-hidden="true"><use href="#i-plume"/></svg>
             Être le premier
           </button>
@@ -1172,13 +1182,13 @@ textarea.champ{ field-sizing: content; resize: vertical; }
 
       <!-- la barre d'appel, ici dans le flux : chez le voisin, elle est collée en bas de l'écran -->
       <div class="bg-white/95" style="box-shadow: 0 -4px 8px oklch(17.5% .03 202/.06), 0 -28px 64px -20px oklch(17.5% .03 202/.28)">
-        <div class="px-4 py-3 flex items-center gap-3">
+        <div class="px-[16px] py-3 flex flex-wrap items-center gap-3">
           <button type="button" aria-pressed="false" aria-label="Ajouter Pierre Delmas à mes favoris"
                   class="shrink-0 grid place-items-center w-11 h-11 rounded-full text-teal-700 bg-teal-50 hover:bg-teal-100">
             <svg class="w-6 h-6" aria-hidden="true"><use href="#i-coeur"/></svg>
           </button>
           <a href="tel:+33639980011"
-             class="cta flex-1 inline-flex items-center justify-center gap-2 min-h-[54px] px-5 rounded-full text-[17px] font-bold tracking-tight whitespace-nowrap transition">
+             class="cta flex-1 inline-flex items-center justify-center gap-2 min-w-0 min-h-[54px] px-[20px] rounded-full text-center text-[17px] font-bold tracking-tight transition">
             <svg class="w-5 h-5 shrink-0" aria-hidden="true"><use href="#i-tel"/></svg>
             Appeler 06 39 98 00 11
           </a>
@@ -1193,7 +1203,7 @@ textarea.champ{ field-sizing: content; resize: vertical; }
 <template id="p-barre-decision">
   <div class="fixed bottom-0 inset-x-0 z-40 bg-white/95 backdrop-blur-sm"
        style="box-shadow: 0 -4px 8px oklch(17.5% .03 202/.06), 0 -28px 64px -20px oklch(17.5% .03 202/.28)">
-    <div class="mx-auto max-w-[640px] px-4 py-3 flex items-center gap-3">
+    <div class="mx-auto max-w-[640px] px-4 py-3 flex flex-wrap items-center gap-3">
       <button type="button" class="inline-flex items-center justify-center min-h-[54px] px-5 rounded-full text-corps font-semibold text-teal-700 bg-teal-50 hover:bg-teal-100">
         Refuser…
       </button>
@@ -1258,7 +1268,7 @@ textarea.champ{ field-sizing: content; resize: vertical; }
           Écrivez le motif&nbsp;: Pierre le recevra tel quel.
         </p>
       </div>
-      <div class="mt-3 flex gap-2.5">
+      <div class="mt-3 flex flex-wrap gap-2.5">
         <button type="submit" class="flex-1 inline-flex items-center justify-center min-h-[48px] px-5 rounded-full text-corps font-semibold text-white bg-teal-700 hover:bg-teal-600">
           Envoyer le refus
         </button>
@@ -1275,9 +1285,9 @@ textarea.champ{ field-sizing: content; resize: vertical; }
 <template id="e-refus-ok">
   <div data-inclure="p-entete"></div>
   <main class="px-4 pt-5 pb-10">
-    <div role="status" class="flex items-start gap-4 rounded-[22px] bg-teal-50 p-5">
+    <div role="status" class="flex flex-wrap items-start gap-x-4 gap-y-3 rounded-[22px] bg-teal-50 p-5">
       <span class="pastille pastille--teal w-11 h-11 mt-0.5 bg-white text-teal-700" aria-hidden="true"><svg class="w-[22px] h-[22px]"><use href="#i-mail"/></svg></span>
-      <div class="min-w-0">
+      <div class="@container min-w-[min(12rem,100%)] flex-1">
         <p class="ff text-[22px] leading-tight text-teal-950">Refus envoyé à Pierre</p>
         <blockquote class="mt-2 mx-0 mb-0 border-l-[3px] border-teal-300 pl-3 text-[16px] leading-snug text-teal-950">
           «&nbsp;Votre adresse est en dehors du quartier&nbsp;: l'annuaire ne présente que des voisins de la Cartoucherie.&nbsp;»
@@ -1287,7 +1297,7 @@ textarea.champ{ field-sizing: content; resize: vertical; }
     </div>
     <h1 class="ff mt-7 px-1 text-nom text-teal-900">À relire</h1>
     <p class="mt-1.5 px-1 text-[16px] text-neutre-700">3 fiches, la plus ancienne en haut.</p>
-    <ul class="mt-4 grid gap-3 list-none p-0 m-0">
+    <ul class="mt-4 grid grid-cols-[minmax(0,1fr)] gap-3 list-none p-0 m-0">
       <div data-inclure="p-ligne-karim"></div>
       <div data-inclure="p-ligne-sacha"></div>
       <div data-inclure="p-ligne-amandine"></div>
@@ -1299,9 +1309,9 @@ textarea.champ{ field-sizing: content; resize: vertical; }
 <template id="e-publie-ok">
   <div data-inclure="p-entete"></div>
   <main class="px-4 pt-5 pb-10">
-    <div role="status" class="flex items-start gap-4 rounded-[22px] bg-teal-50 p-5">
+    <div role="status" class="flex flex-wrap items-start gap-x-4 gap-y-3 rounded-[22px] bg-teal-50 p-5">
       <span class="pastille pastille--teal w-11 h-11 mt-0.5 bg-white text-teal-600" aria-hidden="true"><svg class="respire w-[22px] h-[22px]"><use href="#i-ventouse"/></svg></span>
-      <div class="min-w-0">
+      <div class="@container min-w-[min(12rem,100%)] flex-1">
         <p class="ff text-[22px] leading-tight text-teal-950">Fiche de Karim publiée</p>
         <p class="mt-1.5 text-[16px] leading-snug text-teal-950">Mise en ligne en cours&nbsp;: visible d'ici quelques minutes à cette adresse.</p>
         <p class="mt-1.5 text-[16px] font-semibold leading-snug text-teal-950 break-words">cartoucherie<wbr>.fyi/<wbr>membre/<wbr>karim-ziani</p>
@@ -1310,7 +1320,7 @@ textarea.champ{ field-sizing: content; resize: vertical; }
     </div>
     <h1 class="ff mt-7 px-1 text-nom text-teal-900">À relire</h1>
     <p class="mt-1.5 px-1 text-[16px] text-neutre-700">2 fiches, la plus ancienne en haut.</p>
-    <ul class="mt-4 grid gap-3 list-none p-0 m-0">
+    <ul class="mt-4 grid grid-cols-[minmax(0,1fr)] gap-3 list-none p-0 m-0">
       <div data-inclure="p-ligne-sacha"></div>
       <div data-inclure="p-ligne-amandine"></div>
     </ul>
@@ -1322,7 +1332,7 @@ textarea.champ{ field-sizing: content; resize: vertical; }
   <nav aria-label="File d'attente" class="min-w-0">
     <h1 class="ff text-[28px] leading-tight text-teal-900">À relire</h1>
     <p class="mt-1 text-[16px] text-neutre-700">4 fiches, la plus ancienne en haut.</p>
-    <ul class="mt-4 grid gap-2.5 list-none p-0 m-0">
+    <ul class="mt-4 grid grid-cols-[minmax(0,1fr)] gap-2.5 list-none p-0 m-0">
       <li><a href="/admin/fiche/pierre-delmas" aria-current="true" class="flex gap-3 rounded-[18px] bg-teal-50 p-3" style="box-shadow: inset 0 0 0 2px var(--color-teal-600)">
         <img src="https://randomuser.me/api/portraits/men/59.jpg" alt="" width="128" height="128" class="arche w-[64px] h-[78px] shrink-0 object-cover" style="object-position:50% 22%">
         <span class="min-w-0">
@@ -1373,7 +1383,7 @@ textarea.champ{ field-sizing: content; resize: vertical; }
   <nav aria-label="File d'attente" class="min-w-0">
     <h1 class="ff text-[28px] leading-tight text-teal-900">À relire</h1>
     <p class="mt-1 text-[16px] text-neutre-700">4 fiches, la plus ancienne en haut.</p>
-    <ul class="mt-4 grid gap-2.5 list-none p-0 m-0">
+    <ul class="mt-4 grid grid-cols-[minmax(0,1fr)] gap-2.5 list-none p-0 m-0">
       <li><a href="/admin/fiche/pierre-delmas" class="carte carte-lien flex gap-3 rounded-[18px] bg-white p-3">
         <img src="https://randomuser.me/api/portraits/men/59.jpg" alt="" width="128" height="128" class="arche w-[64px] h-[78px] shrink-0 object-cover" style="object-position:50% 22%">
         <span class="min-w-0">
@@ -1435,7 +1445,7 @@ textarea.champ{ field-sizing: content; resize: vertical; }
     <div data-inclure="p-apercu-pierre"></div>
     <aside class="@container sticky top-6 min-w-0" aria-label="Décision">
       <div data-inclure="p-decision-tete"></div>
-      <div class="mt-5 flex gap-2.5">
+      <div class="mt-5 flex flex-wrap gap-2.5">
         <button type="button" class="flex-1 inline-flex items-center justify-center gap-2 min-h-[48px] px-5 rounded-full text-corps font-semibold text-white bg-teal-700 hover:bg-teal-600">
           <svg class="w-5 h-5" aria-hidden="true"><use href="#i-coche"/></svg>Publier
         </button>
@@ -1468,7 +1478,7 @@ textarea.champ{ field-sizing: content; resize: vertical; }
                   class="inline-flex items-center min-h-[44px] px-3.5 rounded-full text-[16px] font-semibold text-teal-800 bg-white hover:bg-teal-50" style="box-shadow: inset 0 0 0 1.5px var(--color-teal-200)">Coordonnées</button>
         </div>
         <textarea id="v2-motif" rows="3" class="champ mt-3 block w-full min-h-[104px] px-3.5 py-3 rounded-xl text-corps leading-relaxed text-neutre-900">Votre adresse est en dehors du quartier : l'annuaire ne présente que des voisins de la Cartoucherie.</textarea>
-        <div class="mt-3 flex gap-2.5">
+        <div class="mt-3 flex flex-wrap gap-2.5">
           <button type="submit" class="flex-1 inline-flex items-center justify-center min-h-[48px] px-5 rounded-full text-corps font-semibold text-white bg-teal-700 hover:bg-teal-600">
             Envoyer le refus
           </button>
@@ -1492,9 +1502,9 @@ textarea.champ{ field-sizing: content; resize: vertical; }
 <!-- l'échec : le bandeau « Refusée » de l'espace, en alerte. Ne cite aucune fiche :
      le journal est public, et l'erreur n'y nomme qu'un numéro de ligne (spec §7). -->
 <template id="p-deploi-echec">
-  <div role="alert" class="flex items-start gap-4 rounded-[22px] bg-rouge-50 p-5" style="box-shadow: inset 0 0 0 1.5px var(--color-rouge-600)">
+  <div role="alert" class="flex flex-wrap items-start gap-x-4 gap-y-3 rounded-[22px] bg-rouge-50 p-5" style="box-shadow: inset 0 0 0 1.5px var(--color-rouge-600)">
     <span class="pastille pastille--rouge w-11 h-11 mt-0.5 bg-white text-rouge-700" aria-hidden="true"><svg class="w-[22px] h-[22px]"><use href="#i-alerte"/></svg></span>
-    <div class="min-w-0">
+    <div class="@container min-w-[min(12rem,100%)] flex-1">
       <p class="ff text-[22px] leading-tight text-teal-950">La mise en ligne a échoué</p>
       <p class="mt-1.5 text-[16px] leading-snug text-teal-950">Aujourd'hui à 15&nbsp;h&nbsp;10. Rien n'est perdu&nbsp;: les modifications sont enregistrées et partiront avec la prochaine. Le site reste celui de 14&nbsp;h&nbsp;32.</p>
       <div class="mt-3 flex flex-wrap items-center gap-x-5 gap-y-1">
@@ -1535,91 +1545,91 @@ textarea.champ{ field-sizing: content; resize: vertical; }
   <ul class="mt-2 grid gap-2.5 list-none p-0 m-0">
     <li data-cherche="amandine rey coiffeuse a domicile amandine.rey@example.fr"><a href="/admin/fiche/amandine-rey" class="carte carte-lien grid grid-cols-[64px_minmax(0,1fr)] lg:grid-cols-[64px_minmax(0,1.5fr)_11rem_minmax(0,1.3fr)_9rem] gap-x-3.5 lg:gap-x-5 gap-y-1 items-center rounded-[18px] bg-white p-3">
       <img src="https://randomuser.me/api/portraits/women/12.jpg" alt="" width="128" height="128" class="arche w-[64px] h-[78px] row-span-3 lg:row-span-1 object-cover" style="object-position:50% 22%">
-      <span class="min-w-0"><span class="ff block text-[20px] leading-tight text-teal-900">Amandine Rey</span><span class="block text-[16px] text-neutre-800">Coiffeuse à domicile</span></span>
+      <span class="@container min-w-0"><span class="ff block text-[20px] leading-tight mots-entiers text-teal-900" style="--taille:20px; --mot:8">Amandine Rey</span><span class="block text-[16px] text-neutre-800">Coiffeuse à domicile</span></span>
       <span><span class="inline-flex items-center gap-1.5 rounded-full bg-sable-200 px-2.5 py-0.5 text-[16px] font-semibold text-teal-950"><svg class="w-4 h-4 shrink-0" aria-hidden="true"><use href="#i-horloge"/></svg>En attente</span></span>
       <span class="min-w-0 text-[16px] text-neutre-800 break-words">amandine<wbr>.rey<wbr>@example<wbr>.fr</span>
       <span class="max-lg:hidden text-[16px] text-neutre-700">Envoyée le 26&nbsp;oct.</span>
     </a></li>
     <li data-cherche="ines lacombe professeure de yoga ines.lacombe@example.fr"><a href="/admin/fiche/ines-lacombe" class="carte carte-lien grid grid-cols-[64px_minmax(0,1fr)] lg:grid-cols-[64px_minmax(0,1.5fr)_11rem_minmax(0,1.3fr)_9rem] gap-x-3.5 lg:gap-x-5 gap-y-1 items-center rounded-[18px] bg-white p-3">
       <img src="https://randomuser.me/api/portraits/women/90.jpg" alt="" width="128" height="128" class="arche w-[64px] h-[78px] row-span-3 lg:row-span-1 object-cover" style="object-position:50% 22%">
-      <span class="min-w-0"><span class="ff block text-[20px] leading-tight text-teal-900">Inès Lacombe</span><span class="block text-[16px] text-neutre-800">Professeure de yoga</span></span>
+      <span class="@container min-w-0"><span class="ff block text-[20px] leading-tight mots-entiers text-teal-900" style="--taille:20px; --mot:7">Inès Lacombe</span><span class="block text-[16px] text-neutre-800">Professeure de yoga</span></span>
       <span><span class="inline-flex items-center gap-1.5 rounded-full bg-sauge-100 px-2.5 py-0.5 text-[16px] font-semibold text-teal-950"><svg class="w-4 h-4 shrink-0" aria-hidden="true"><use href="#i-coche"/></svg>En ligne</span></span>
       <span class="min-w-0 text-[16px] text-neutre-800 break-words">ines<wbr>.lacombe<wbr>@example<wbr>.fr</span>
       <span class="max-lg:hidden text-[16px] text-neutre-700">Modifiée le 26&nbsp;oct.</span>
     </a></li>
     <li data-cherche="sophie arnaud naturopathe sophie.arnaud@example.fr"><a href="/admin/fiche/sophie-arnaud" class="carte carte-lien grid grid-cols-[64px_minmax(0,1fr)] lg:grid-cols-[64px_minmax(0,1.5fr)_11rem_minmax(0,1.3fr)_9rem] gap-x-3.5 lg:gap-x-5 gap-y-1 items-center rounded-[18px] bg-white p-3">
       <img src="https://randomuser.me/api/portraits/women/26.jpg" alt="" width="128" height="128" class="arche w-[64px] h-[78px] row-span-3 lg:row-span-1 object-cover" style="object-position:50% 22%">
-      <span class="min-w-0"><span class="ff block text-[20px] leading-tight text-teal-900">Sophie Arnaud</span><span class="block text-[16px] text-neutre-800">Naturopathe</span></span>
+      <span class="@container min-w-0"><span class="ff block text-[20px] leading-tight mots-entiers text-teal-900" style="--taille:20px; --mot:6">Sophie Arnaud</span><span class="block text-[16px] text-neutre-800">Naturopathe</span></span>
       <span><span class="inline-flex items-center gap-1.5 rounded-full bg-rouge-50 px-2.5 py-0.5 text-[16px] font-semibold text-rouge-800" style="box-shadow: inset 0 0 0 1px var(--color-rouge-200)"><svg class="w-4 h-4 shrink-0" aria-hidden="true"><use href="#i-alerte"/></svg>Refusée</span></span>
       <span class="min-w-0 text-[16px] text-neutre-800 break-words">sophie<wbr>.arnaud<wbr>@example<wbr>.fr</span>
       <span class="max-lg:hidden text-[16px] text-neutre-700">Refusée le 25&nbsp;oct.</span>
     </a></li>
     <li data-cherche="karim ziani photographe karim.ziani@example.fr"><a href="/admin/fiche/karim-ziani" class="carte carte-lien grid grid-cols-[64px_minmax(0,1fr)] lg:grid-cols-[64px_minmax(0,1.5fr)_11rem_minmax(0,1.3fr)_9rem] gap-x-3.5 lg:gap-x-5 gap-y-1 items-center rounded-[18px] bg-white p-3">
       <img src="https://randomuser.me/api/portraits/men/83.jpg" alt="" width="128" height="128" class="arche w-[64px] h-[78px] row-span-3 lg:row-span-1 object-cover" style="object-position:50% 22%">
-      <span class="min-w-0"><span class="ff block text-[20px] leading-tight text-teal-900">Karim Ziani</span><span class="block text-[16px] text-neutre-800">Photographe</span></span>
+      <span class="@container min-w-0"><span class="ff block text-[20px] leading-tight mots-entiers text-teal-900" style="--taille:20px; --mot:5">Karim Ziani</span><span class="block text-[16px] text-neutre-800">Photographe</span></span>
       <span><span class="inline-flex items-center gap-1.5 rounded-full bg-sable-200 px-2.5 py-0.5 text-[16px] font-semibold text-teal-950"><svg class="w-4 h-4 shrink-0" aria-hidden="true"><use href="#i-horloge"/></svg>En attente</span></span>
       <span class="min-w-0 text-[16px] text-neutre-800 break-words">karim<wbr>.ziani<wbr>@example<wbr>.fr</span>
       <span class="max-lg:hidden text-[16px] text-neutre-700">Envoyée le 24&nbsp;oct.</span>
     </a></li>
     <li data-cherche="sacha morel ceramiste sacha.morel@example.fr"><a href="/admin/fiche/sacha-morel" class="carte carte-lien grid grid-cols-[64px_minmax(0,1fr)] lg:grid-cols-[64px_minmax(0,1.5fr)_11rem_minmax(0,1.3fr)_9rem] gap-x-3.5 lg:gap-x-5 gap-y-1 items-center rounded-[18px] bg-white p-3">
       <img src="https://randomuser.me/api/portraits/women/79.jpg" alt="" width="128" height="128" class="arche w-[64px] h-[78px] row-span-3 lg:row-span-1 object-cover" style="object-position:50% 22%">
-      <span class="min-w-0"><span class="ff block text-[20px] leading-tight text-teal-900">Sacha Morel</span><span class="block text-[16px] text-neutre-800">Céramiste</span></span>
+      <span class="@container min-w-0"><span class="ff block text-[20px] leading-tight mots-entiers text-teal-900" style="--taille:20px; --mot:5">Sacha Morel</span><span class="block text-[16px] text-neutre-800">Céramiste</span></span>
       <span><span class="inline-flex items-center gap-1.5 rounded-full bg-sable-200 px-2.5 py-0.5 text-[16px] font-semibold text-teal-950"><svg class="w-4 h-4 shrink-0" aria-hidden="true"><use href="#i-horloge"/></svg>En attente</span></span>
       <span class="min-w-0 text-[16px] text-neutre-800 break-words">sacha<wbr>.morel<wbr>@example<wbr>.fr</span>
       <span class="max-lg:hidden text-[16px] text-neutre-700">Envoyée le 25&nbsp;oct.</span>
     </a></li>
     <li data-cherche="camille roussel sophrologue camille.roussel@example.fr"><a href="/admin/fiche/camille-roussel" class="carte carte-lien grid grid-cols-[64px_minmax(0,1fr)] lg:grid-cols-[64px_minmax(0,1.5fr)_11rem_minmax(0,1.3fr)_9rem] gap-x-3.5 lg:gap-x-5 gap-y-1 items-center rounded-[18px] bg-white p-3">
       <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="" width="128" height="128" class="arche w-[64px] h-[78px] row-span-3 lg:row-span-1 object-cover" style="object-position:50% 22%">
-      <span class="min-w-0"><span class="ff block text-[20px] leading-tight text-teal-900">Camille Roussel</span><span class="block text-[16px] text-neutre-800">Sophrologue</span></span>
+      <span class="@container min-w-0"><span class="ff block text-[20px] leading-tight mots-entiers text-teal-900" style="--taille:20px; --mot:7">Camille Roussel</span><span class="block text-[16px] text-neutre-800">Sophrologue</span></span>
       <span><span class="inline-flex items-center gap-1.5 rounded-full bg-sauge-100 px-2.5 py-0.5 text-[16px] font-semibold text-teal-950"><svg class="w-4 h-4 shrink-0" aria-hidden="true"><use href="#i-coche"/></svg>En ligne</span></span>
       <span class="min-w-0 text-[16px] text-neutre-800 break-words">camille<wbr>.roussel<wbr>@example<wbr>.fr</span>
       <span class="max-lg:hidden text-[16px] text-neutre-700">Modifiée le 23&nbsp;oct.</span>
     </a></li>
     <li data-cherche="pierre delmas expert-comptable p.delmas@example.fr"><a href="/admin/fiche/pierre-delmas" class="carte carte-lien grid grid-cols-[64px_minmax(0,1fr)] lg:grid-cols-[64px_minmax(0,1.5fr)_11rem_minmax(0,1.3fr)_9rem] gap-x-3.5 lg:gap-x-5 gap-y-1 items-center rounded-[18px] bg-white p-3">
       <img src="https://randomuser.me/api/portraits/men/59.jpg" alt="" width="128" height="128" class="arche w-[64px] h-[78px] row-span-3 lg:row-span-1 object-cover" style="object-position:50% 22%">
-      <span class="min-w-0"><span class="ff block text-[20px] leading-tight text-teal-900">Pierre Delmas</span><span class="block text-[16px] text-neutre-800">Expert-comptable</span></span>
+      <span class="@container min-w-0"><span class="ff block text-[20px] leading-tight mots-entiers text-teal-900" style="--taille:20px; --mot:6">Pierre Delmas</span><span class="block text-[16px] text-neutre-800">Expert-comptable</span></span>
       <span><span class="inline-flex items-center gap-1.5 rounded-full bg-sable-200 px-2.5 py-0.5 text-[16px] font-semibold text-teal-950"><svg class="w-4 h-4 shrink-0" aria-hidden="true"><use href="#i-horloge"/></svg>En attente</span></span>
       <span class="min-w-0 text-[16px] text-neutre-800 break-words">p<wbr>.delmas<wbr>@example<wbr>.fr</span>
       <span class="max-lg:hidden text-[16px] text-neutre-700">Envoyée le 22&nbsp;oct.</span>
     </a></li>
     <li data-cherche="yanis belhadj developpeur web independant yanis@example.fr"><a href="/admin/fiche/yanis-belhadj" class="carte carte-lien grid grid-cols-[64px_minmax(0,1fr)] lg:grid-cols-[64px_minmax(0,1.5fr)_11rem_minmax(0,1.3fr)_9rem] gap-x-3.5 lg:gap-x-5 gap-y-1 items-center rounded-[18px] bg-white p-3">
       <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="" width="128" height="128" class="arche w-[64px] h-[78px] row-span-3 lg:row-span-1 object-cover" style="object-position:50% 22%">
-      <span class="min-w-0"><span class="ff block text-[20px] leading-tight text-teal-900">Yanis Belhadj</span><span class="block text-[16px] text-neutre-800">Développeur web indépendant</span></span>
+      <span class="@container min-w-0"><span class="ff block text-[20px] leading-tight mots-entiers text-teal-900" style="--taille:20px; --mot:7">Yanis Belhadj</span><span class="block text-[16px] text-neutre-800">Développeur web indépendant</span></span>
       <span><span class="inline-flex items-center gap-1.5 rounded-full bg-sauge-100 px-2.5 py-0.5 text-[16px] font-semibold text-teal-950"><svg class="w-4 h-4 shrink-0" aria-hidden="true"><use href="#i-coche"/></svg>En ligne</span></span>
       <span class="min-w-0 text-[16px] text-neutre-800 break-words">yanis<wbr>@example<wbr>.fr</span>
       <span class="max-lg:hidden text-[16px] text-neutre-700">Modifiée le 21&nbsp;oct.</span>
     </a></li>
     <li data-cherche="julien marty electricien jmarty.elec@example.fr"><a href="/admin/fiche/julien-marty" class="carte carte-lien grid grid-cols-[64px_minmax(0,1fr)] lg:grid-cols-[64px_minmax(0,1.5fr)_11rem_minmax(0,1.3fr)_9rem] gap-x-3.5 lg:gap-x-5 gap-y-1 items-center rounded-[18px] bg-white p-3">
       <img src="https://randomuser.me/api/portraits/men/46.jpg" alt="" width="128" height="128" class="arche w-[64px] h-[78px] row-span-3 lg:row-span-1 object-cover" style="object-position:50% 22%">
-      <span class="min-w-0"><span class="ff block text-[20px] leading-tight text-teal-900">Julien Marty</span><span class="block text-[16px] text-neutre-800">Électricien</span></span>
+      <span class="@container min-w-0"><span class="ff block text-[20px] leading-tight mots-entiers text-teal-900" style="--taille:20px; --mot:6">Julien Marty</span><span class="block text-[16px] text-neutre-800">Électricien</span></span>
       <span><span class="inline-flex items-center gap-1.5 rounded-full bg-neutre-200 px-2.5 py-0.5 text-[16px] font-semibold text-neutre-900"><svg class="w-4 h-4 shrink-0" aria-hidden="true"><use href="#i-masque"/></svg>Masquée</span></span>
       <span class="min-w-0 text-[16px] text-neutre-800 break-words">jmarty<wbr>.elec<wbr>@example<wbr>.fr</span>
       <span class="max-lg:hidden text-[16px] text-neutre-700">Masquée le 20&nbsp;oct.</span>
     </a></li>
     <li data-cherche="lea fontaine graphiste & illustratrice"><a href="/admin/fiche/lea-fontaine" class="carte carte-lien grid grid-cols-[64px_minmax(0,1fr)] lg:grid-cols-[64px_minmax(0,1.5fr)_11rem_minmax(0,1.3fr)_9rem] gap-x-3.5 lg:gap-x-5 gap-y-1 items-center rounded-[18px] bg-white p-3">
       <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="" width="128" height="128" class="arche w-[64px] h-[78px] row-span-3 lg:row-span-1 object-cover" style="object-position:50% 22%">
-      <span class="min-w-0"><span class="ff block text-[20px] leading-tight text-teal-900">Léa Fontaine</span><span class="block text-[16px] text-neutre-800">Graphiste &amp; illustratrice</span></span>
+      <span class="@container min-w-0"><span class="ff block text-[20px] leading-tight mots-entiers text-teal-900" style="--taille:20px; --mot:8">Léa Fontaine</span><span class="block text-[16px] text-neutre-800">Graphiste &amp; illustratrice</span></span>
       <span><span class="inline-flex items-center gap-1.5 rounded-full bg-sauge-100 px-2.5 py-0.5 text-[16px] font-semibold text-teal-950"><svg class="w-4 h-4 shrink-0" aria-hidden="true"><use href="#i-coche"/></svg>En ligne</span></span>
       <span class="min-w-0 text-[16px] italic text-neutre-700">Sans compte</span>
       <span class="max-lg:hidden text-[16px] text-neutre-700">Importée le 14&nbsp;oct.</span>
     </a></li>
     <li data-cherche="marc ollivier menuisier-ebeniste"><a href="/admin/fiche/marc-ollivier" class="carte carte-lien grid grid-cols-[64px_minmax(0,1fr)] lg:grid-cols-[64px_minmax(0,1.5fr)_11rem_minmax(0,1.3fr)_9rem] gap-x-3.5 lg:gap-x-5 gap-y-1 items-center rounded-[18px] bg-white p-3">
       <img src="https://randomuser.me/api/portraits/men/75.jpg" alt="" width="128" height="128" class="arche w-[64px] h-[78px] row-span-3 lg:row-span-1 object-cover" style="object-position:50% 22%">
-      <span class="min-w-0"><span class="ff block text-[20px] leading-tight text-teal-900">Marc Ollivier</span><span class="block text-[16px] text-neutre-800">Menuisier-ébéniste</span></span>
+      <span class="@container min-w-0"><span class="ff block text-[20px] leading-tight mots-entiers text-teal-900" style="--taille:20px; --mot:8">Marc Ollivier</span><span class="block text-[16px] text-neutre-800">Menuisier-ébéniste</span></span>
       <span><span class="inline-flex items-center gap-1.5 rounded-full bg-sauge-100 px-2.5 py-0.5 text-[16px] font-semibold text-teal-950"><svg class="w-4 h-4 shrink-0" aria-hidden="true"><use href="#i-coche"/></svg>En ligne</span></span>
       <span class="min-w-0 text-[16px] italic text-neutre-700">Sans compte</span>
       <span class="max-lg:hidden text-[16px] text-neutre-700">Importée le 14&nbsp;oct.</span>
     </a></li>
     <li data-cherche="nadia berrada traiteur cuisine maison"><a href="/admin/fiche/nadia-berrada" class="carte carte-lien grid grid-cols-[64px_minmax(0,1fr)] lg:grid-cols-[64px_minmax(0,1.5fr)_11rem_minmax(0,1.3fr)_9rem] gap-x-3.5 lg:gap-x-5 gap-y-1 items-center rounded-[18px] bg-white p-3">
       <img src="https://randomuser.me/api/portraits/women/57.jpg" alt="" width="128" height="128" class="arche w-[64px] h-[78px] row-span-3 lg:row-span-1 object-cover" style="object-position:50% 22%">
-      <span class="min-w-0"><span class="ff block text-[20px] leading-tight text-teal-900">Nadia Berrada</span><span class="block text-[16px] text-neutre-800">Traiteur — cuisine maison</span></span>
+      <span class="@container min-w-0"><span class="ff block text-[20px] leading-tight mots-entiers text-teal-900" style="--taille:20px; --mot:7">Nadia Berrada</span><span class="block text-[16px] text-neutre-800">Traiteur — cuisine maison</span></span>
       <span><span class="inline-flex items-center gap-1.5 rounded-full bg-sauge-100 px-2.5 py-0.5 text-[16px] font-semibold text-teal-950"><svg class="w-4 h-4 shrink-0" aria-hidden="true"><use href="#i-coche"/></svg>En ligne</span></span>
       <span class="min-w-0 text-[16px] italic text-neutre-700">Sans compte</span>
       <span class="max-lg:hidden text-[16px] text-neutre-700">Importée le 14&nbsp;oct.</span>
     </a></li>
     <li data-cherche="thomas vidal coach sportif"><a href="/admin/fiche/thomas-vidal" class="carte carte-lien grid grid-cols-[64px_minmax(0,1fr)] lg:grid-cols-[64px_minmax(0,1.5fr)_11rem_minmax(0,1.3fr)_9rem] gap-x-3.5 lg:gap-x-5 gap-y-1 items-center rounded-[18px] bg-white p-3">
       <img src="https://randomuser.me/api/portraits/men/11.jpg" alt="" width="128" height="128" class="arche w-[64px] h-[78px] row-span-3 lg:row-span-1 object-cover" style="object-position:50% 22%">
-      <span class="min-w-0"><span class="ff block text-[20px] leading-tight text-teal-900">Thomas Vidal</span><span class="block text-[16px] text-neutre-800">Coach sportif</span></span>
+      <span class="@container min-w-0"><span class="ff block text-[20px] leading-tight mots-entiers text-teal-900" style="--taille:20px; --mot:6">Thomas Vidal</span><span class="block text-[16px] text-neutre-800">Coach sportif</span></span>
       <span><span class="inline-flex items-center gap-1.5 rounded-full bg-sauge-100 px-2.5 py-0.5 text-[16px] font-semibold text-teal-950"><svg class="w-4 h-4 shrink-0" aria-hidden="true"><use href="#i-coche"/></svg>En ligne</span></span>
       <span class="min-w-0 text-[16px] italic text-neutre-700">Sans compte</span>
       <span class="max-lg:hidden text-[16px] text-neutre-700">Importée le 14&nbsp;oct.</span>
@@ -1666,7 +1676,7 @@ textarea.champ{ field-sizing: content; resize: vertical; }
          width="128" height="128" class="arche w-[96px] h-[116px] shrink-0 object-cover" style="object-position:50% 22%">
     <div class="@container min-w-0 flex-1">
       <h1 class="ff text-nom mots-entiers text-teal-900" style="--taille:var(--text-nom); --mot:7">Nadia Berrada</h1>
-      <p class="mt-1 text-corps leading-snug text-neutre-800">Traiteur — cuisine maison</p>
+      <p class="mt-1 text-corps leading-snug mots-entiers text-neutre-800" style="--taille:var(--text-corps); --lettre:.56; --mot:8">Traiteur — cuisine maison</p>
       <p class="mt-2"><span class="inline-flex items-center gap-1.5 rounded-full bg-sauge-100 px-2.5 py-0.5 text-[16px] font-semibold text-teal-950"><svg class="w-4 h-4 shrink-0" aria-hidden="true"><use href="#i-coche"/></svg>En ligne</span></p>
     </div>
   </div>
@@ -1687,7 +1697,7 @@ textarea.champ{ field-sizing: content; resize: vertical; }
       <label for="compte-mail" class="block text-[16px] font-semibold text-neutre-800">E-mail de connexion de Nadia</label>
       <input id="compte-mail" type="email" autocomplete="off" value="nadia.berrada@example.fr"
              class="champ mt-1.5 w-full min-h-[52px] px-3.5 rounded-xl text-corps text-neutre-900">
-      <button type="submit" class="mt-3 inline-flex items-center gap-2 min-h-[48px] px-5 rounded-full text-corps font-semibold text-white bg-teal-700 hover:bg-teal-600">
+      <button type="submit" class="mt-3 inline-flex max-w-full items-center gap-2 min-h-[48px] px-5 rounded-full text-corps font-semibold text-white bg-teal-700 hover:bg-teal-600">
         <svg class="w-5 h-5" aria-hidden="true"><use href="#i-lien"/></svg>Associer à un compte
       </button>
     </form>
@@ -1698,9 +1708,9 @@ textarea.champ{ field-sizing: content; resize: vertical; }
 <template id="p-compte-ok">
   <section aria-labelledby="t-compte">
     <h2 id="t-compte" class="ff text-[22px] text-teal-900">Compte</h2>
-    <div role="status" class="mt-3 flex items-start gap-4 rounded-[22px] bg-sauge-50 p-5" style="box-shadow: inset 0 0 0 1px var(--color-sauge-200)">
+    <div role="status" class="mt-3 flex flex-wrap items-start gap-x-4 gap-y-3 rounded-[22px] bg-sauge-50 p-5" style="box-shadow: inset 0 0 0 1px var(--color-sauge-200)">
       <span class="pastille w-11 h-11 mt-0.5 bg-white text-sauge-700" aria-hidden="true"><svg class="w-[22px] h-[22px]"><use href="#i-coche"/></svg></span>
-      <div class="min-w-0">
+      <div class="@container min-w-[min(12rem,100%)] flex-1">
         <p class="ff text-[22px] leading-tight text-teal-950">Fiche associée</p>
         <p class="mt-1.5 text-[16px] leading-snug text-teal-950 break-words">au compte nadia<wbr>.berrada<wbr>@example<wbr>.fr</p>
         <p class="mt-1.5 text-[16px] leading-snug text-teal-950">Nadia peut la modifier depuis son espace, dès maintenant.</p>
@@ -1719,13 +1729,13 @@ textarea.champ{ field-sizing: content; resize: vertical; }
       <input id="compte-mail" type="email" autocomplete="off" value="nadia.berrada@example.fr" aria-describedby="compte-sans"
              class="champ mt-1.5 w-full min-h-[52px] px-3.5 rounded-xl text-corps text-neutre-900">
     </form>
-    <div id="compte-sans" role="status" class="mt-3 flex items-start gap-4 rounded-[22px] bg-sable-100 p-5">
+    <div id="compte-sans" role="status" class="mt-3 flex flex-wrap items-start gap-x-4 gap-y-3 rounded-[22px] bg-sable-100 p-5">
       <span class="pastille pastille--sable w-11 h-11 mt-0.5 bg-white text-sable-800" aria-hidden="true"><svg class="w-[22px] h-[22px]"><use href="#i-horloge"/></svg></span>
-      <div class="min-w-0">
+      <div class="@container min-w-[min(12rem,100%)] flex-1">
         <p class="ff text-[22px] leading-tight text-teal-950">Pas encore de compte à cette adresse</p>
         <p class="mt-1.5 text-[16px] leading-snug text-teal-950">Nadia doit se connecter une fois avec cette adresse. Associez ensuite.</p>
-        <button type="button" class="mt-4 inline-flex items-center gap-2 min-h-[48px] px-5 rounded-full text-corps font-semibold text-white bg-teal-700 hover:bg-teal-600">
-          <svg class="w-5 h-5" aria-hidden="true"><use href="#i-mail"/></svg>Envoyer l'invitation
+        <button type="button" class="mt-4 inline-flex max-w-full items-center gap-2 min-h-[48px] px-5 rounded-full text-corps font-semibold text-white bg-teal-700 hover:bg-teal-600">
+          <svg class="w-5 h-5" aria-hidden="true"><use href="#i-mail"/></svg>Inviter Nadia
         </button>
       </div>
     </div>
@@ -1777,9 +1787,9 @@ textarea.champ{ field-sizing: content; resize: vertical; }
 <template id="p-diapo-1">
   <li class="carte rounded-[18px] bg-white p-3 grid grid-cols-[88px_minmax(0,1fr)] lg:grid-cols-[132px_minmax(0,1fr)] gap-x-3.5 gap-y-3">
     <div class="lg:row-span-2"><div data-inclure="p-d1"></div></div>
-    <div class="flex flex-col justify-between gap-2">
-      <p class="text-etiquette font-semibold uppercase text-teal-700">1 sur 4</p>
-      <div class="flex gap-1.5">
+    <div class="@container min-w-0 flex flex-col justify-between gap-2">
+      <p class="text-etiquette font-semibold uppercase text-teal-700 mots-entiers" style="--taille:var(--text-etiquette); --lettre:.8; --mot:8">1 sur 4</p>
+      <div class="flex flex-wrap gap-1.5">
         <button type="button" aria-label="Descendre la diapositive 1" class="grid place-items-center w-11 h-11 rounded-full text-teal-700 bg-teal-50 hover:bg-teal-100"><svg class="w-5 h-5" aria-hidden="true"><use href="#i-bas"/></svg></button>
         <button type="button" aria-label="Supprimer la diapositive 1" class="ml-auto grid place-items-center w-11 h-11 rounded-full text-teal-700 bg-teal-50 hover:bg-teal-100"><svg class="w-5 h-5" aria-hidden="true"><use href="#i-corbeille"/></svg></button>
       </div>
@@ -1794,9 +1804,9 @@ textarea.champ{ field-sizing: content; resize: vertical; }
 <template id="p-diapo-2">
   <li class="carte rounded-[18px] bg-white p-3 grid grid-cols-[88px_minmax(0,1fr)] lg:grid-cols-[132px_minmax(0,1fr)] gap-x-3.5 gap-y-3">
     <div class="lg:row-span-2"><div data-inclure="p-d2"></div></div>
-    <div class="flex flex-col justify-between gap-2">
-      <p class="text-etiquette font-semibold uppercase text-teal-700">2 sur 4</p>
-      <div class="flex gap-1.5">
+    <div class="@container min-w-0 flex flex-col justify-between gap-2">
+      <p class="text-etiquette font-semibold uppercase text-teal-700 mots-entiers" style="--taille:var(--text-etiquette); --lettre:.8; --mot:8">2 sur 4</p>
+      <div class="flex flex-wrap gap-1.5">
         <button type="button" aria-label="Monter la diapositive 2" class="grid place-items-center w-11 h-11 rounded-full text-teal-700 bg-teal-50 hover:bg-teal-100"><svg class="w-5 h-5" aria-hidden="true"><use href="#i-haut"/></svg></button>
         <button type="button" aria-label="Descendre la diapositive 2" class="grid place-items-center w-11 h-11 rounded-full text-teal-700 bg-teal-50 hover:bg-teal-100"><svg class="w-5 h-5" aria-hidden="true"><use href="#i-bas"/></svg></button>
         <button type="button" aria-label="Supprimer la diapositive 2" class="ml-auto grid place-items-center w-11 h-11 rounded-full text-teal-700 bg-teal-50 hover:bg-teal-100"><svg class="w-5 h-5" aria-hidden="true"><use href="#i-corbeille"/></svg></button>
@@ -1812,9 +1822,9 @@ textarea.champ{ field-sizing: content; resize: vertical; }
 <template id="p-diapo-3">
   <li class="carte rounded-[18px] bg-white p-3 grid grid-cols-[88px_minmax(0,1fr)] lg:grid-cols-[132px_minmax(0,1fr)] gap-x-3.5 gap-y-3">
     <div class="lg:row-span-2"><div data-inclure="p-d3"></div></div>
-    <div class="flex flex-col justify-between gap-2">
-      <p class="text-etiquette font-semibold uppercase text-teal-700">3 sur 4</p>
-      <div class="flex gap-1.5">
+    <div class="@container min-w-0 flex flex-col justify-between gap-2">
+      <p class="text-etiquette font-semibold uppercase text-teal-700 mots-entiers" style="--taille:var(--text-etiquette); --lettre:.8; --mot:8">3 sur 4</p>
+      <div class="flex flex-wrap gap-1.5">
         <button type="button" aria-label="Monter la diapositive 3" class="grid place-items-center w-11 h-11 rounded-full text-teal-700 bg-teal-50 hover:bg-teal-100"><svg class="w-5 h-5" aria-hidden="true"><use href="#i-haut"/></svg></button>
         <button type="button" aria-label="Descendre la diapositive 3" class="grid place-items-center w-11 h-11 rounded-full text-teal-700 bg-teal-50 hover:bg-teal-100"><svg class="w-5 h-5" aria-hidden="true"><use href="#i-bas"/></svg></button>
         <button type="button" aria-label="Supprimer la diapositive 3" class="ml-auto grid place-items-center w-11 h-11 rounded-full text-teal-700 bg-teal-50 hover:bg-teal-100"><svg class="w-5 h-5" aria-hidden="true"><use href="#i-corbeille"/></svg></button>
@@ -1831,9 +1841,9 @@ textarea.champ{ field-sizing: content; resize: vertical; }
 <template id="p-diapo-4-erreur">
   <li class="carte rounded-[18px] bg-white p-3 grid grid-cols-[88px_minmax(0,1fr)] lg:grid-cols-[132px_minmax(0,1fr)] gap-x-3.5 gap-y-3">
     <div class="lg:row-span-2"><div data-inclure="p-d4"></div></div>
-    <div class="flex flex-col justify-between gap-2">
-      <p class="text-etiquette font-semibold uppercase text-teal-700">4 sur 4 · nouvelle</p>
-      <div class="flex gap-1.5">
+    <div class="@container min-w-0 flex flex-col justify-between gap-2">
+      <p class="text-etiquette font-semibold uppercase text-teal-700 mots-entiers" style="--taille:var(--text-etiquette); --lettre:.8; --mot:8">4 sur 4 · nouvelle</p>
+      <div class="flex flex-wrap gap-1.5">
         <button type="button" aria-label="Monter la diapositive 4" class="grid place-items-center w-11 h-11 rounded-full text-teal-700 bg-teal-50 hover:bg-teal-100"><svg class="w-5 h-5" aria-hidden="true"><use href="#i-haut"/></svg></button>
         <button type="button" aria-label="Supprimer la diapositive 4" class="ml-auto grid place-items-center w-11 h-11 rounded-full text-teal-700 bg-teal-50 hover:bg-teal-100"><svg class="w-5 h-5" aria-hidden="true"><use href="#i-corbeille"/></svg></button>
       </div>
@@ -1871,7 +1881,7 @@ textarea.champ{ field-sizing: content; resize: vertical; }
 <template id="p-diapos-erreur">
   <section aria-labelledby="t-diapos">
     <div data-inclure="p-diapos-tete"></div>
-    <ol class="mt-4 grid gap-3 list-none p-0 m-0">
+    <ol class="mt-4 grid grid-cols-[minmax(0,1fr)] gap-3 list-none p-0 m-0">
       <div data-inclure="p-diapo-1"></div>
       <div data-inclure="p-diapo-2"></div>
       <div data-inclure="p-diapo-3"></div>
@@ -1883,7 +1893,7 @@ textarea.champ{ field-sizing: content; resize: vertical; }
         <svg class="w-[18px] h-[18px] shrink-0 mt-0.5" aria-hidden="true"><use href="#i-alerte"/></svg>
         Il manque le texte de la diapositive&nbsp;4.
       </p>
-      <button type="button" class="mt-3 inline-flex items-center gap-2 min-h-[48px] px-5 rounded-full text-corps font-semibold text-white bg-teal-700 hover:bg-teal-600">
+      <button type="button" class="mt-3 inline-flex max-w-full items-center gap-2 min-h-[48px] px-5 rounded-full text-corps font-semibold text-white bg-teal-700 hover:bg-teal-600">
         Enregistrer les diapositives
       </button>
     </div>
@@ -1897,12 +1907,12 @@ textarea.champ{ field-sizing: content; resize: vertical; }
     <p role="status" class="mt-3 inline-flex items-center gap-1.5 text-[16px] text-sauge-800">
       <svg class="w-[18px] h-[18px]" aria-hidden="true"><use href="#i-coche"/></svg>«&nbsp;Commandes&nbsp;» est passée en premier.
     </p>
-    <ol class="mt-3 grid gap-3 list-none p-0 m-0">
+    <ol class="mt-3 grid grid-cols-[minmax(0,1fr)] gap-3 list-none p-0 m-0">
       <li class="carte rounded-[18px] bg-white p-3 grid grid-cols-[88px_minmax(0,1fr)] gap-x-3.5 gap-y-3" style="box-shadow: var(--shadow-carte), inset 0 0 0 2px var(--color-teal-600)">
         <div><div data-inclure="p-d3"></div></div>
-        <div class="flex flex-col justify-between gap-2">
-          <p class="text-etiquette font-semibold uppercase text-teal-700">1 sur 3</p>
-          <div class="flex gap-1.5">
+        <div class="@container min-w-0 flex flex-col justify-between gap-2">
+          <p class="text-etiquette font-semibold uppercase text-teal-700 mots-entiers" style="--taille:var(--text-etiquette); --lettre:.8; --mot:8">1 sur 3</p>
+          <div class="flex flex-wrap gap-1.5">
             <button type="button" aria-label="Descendre la diapositive 1" class="grid place-items-center w-11 h-11 rounded-full text-teal-700 bg-teal-50 hover:bg-teal-100"><svg class="w-5 h-5" aria-hidden="true"><use href="#i-bas"/></svg></button>
             <button type="button" aria-label="Supprimer la diapositive 1" class="ml-auto grid place-items-center w-11 h-11 rounded-full text-teal-700 bg-teal-50 hover:bg-teal-100"><svg class="w-5 h-5" aria-hidden="true"><use href="#i-corbeille"/></svg></button>
           </div>
@@ -1910,15 +1920,15 @@ textarea.champ{ field-sizing: content; resize: vertical; }
       </li>
       <!-- la suppression se confirme sur place : le panneau rouge avertit, le bouton reste teal plein (trois boutons, pas quatre) -->
       <li class="rounded-[18px] bg-rouge-50 p-4" style="box-shadow: inset 0 0 0 1.5px var(--color-rouge-600)">
-        <div class="flex items-start gap-3.5">
+        <div class="flex flex-wrap items-start gap-3.5">
           <div class="w-[56px] shrink-0"><div data-inclure="p-d1"></div></div>
-          <div class="min-w-0">
+          <div class="min-w-[min(10rem,100%)] flex-1">
             <p class="text-corps font-semibold text-teal-950">Supprimer la diapositive&nbsp;2&nbsp;?</p>
             <p class="mt-1 text-[16px] leading-snug text-teal-950">Elle quittera la fiche à la prochaine mise en ligne.</p>
           </div>
         </div>
-        <div class="mt-3 flex gap-2.5">
-          <button type="button" class="flex-1 inline-flex items-center justify-center gap-2 min-h-[48px] px-5 rounded-full text-corps font-semibold text-white bg-teal-700 hover:bg-teal-600">
+        <div class="mt-3 flex flex-wrap gap-2.5">
+          <button type="button" class="flex-1 inline-flex items-center justify-center gap-2 min-h-[48px] px-[16px] rounded-full text-corps font-semibold text-white bg-teal-700 hover:bg-teal-600">
             <svg class="w-5 h-5" aria-hidden="true"><use href="#i-corbeille"/></svg>Supprimer
           </button>
           <button type="button" class="inline-flex items-center justify-center min-h-[48px] px-5 rounded-full text-corps font-semibold text-teal-700 bg-white hover:bg-teal-50">
@@ -1928,9 +1938,9 @@ textarea.champ{ field-sizing: content; resize: vertical; }
       </li>
       <li class="carte rounded-[18px] bg-white p-3 grid grid-cols-[88px_minmax(0,1fr)] gap-x-3.5 gap-y-3">
         <div><div data-inclure="p-d2"></div></div>
-        <div class="flex flex-col justify-between gap-2">
-          <p class="text-etiquette font-semibold uppercase text-teal-700">3 sur 3</p>
-          <div class="flex gap-1.5">
+        <div class="@container min-w-0 flex flex-col justify-between gap-2">
+          <p class="text-etiquette font-semibold uppercase text-teal-700 mots-entiers" style="--taille:var(--text-etiquette); --lettre:.8; --mot:8">3 sur 3</p>
+          <div class="flex flex-wrap gap-1.5">
             <button type="button" aria-label="Monter la diapositive 3" class="grid place-items-center w-11 h-11 rounded-full text-teal-700 bg-teal-50 hover:bg-teal-100"><svg class="w-5 h-5" aria-hidden="true"><use href="#i-haut"/></svg></button>
             <button type="button" aria-label="Supprimer la diapositive 3" class="ml-auto grid place-items-center w-11 h-11 rounded-full text-teal-700 bg-teal-50 hover:bg-teal-100"><svg class="w-5 h-5" aria-hidden="true"><use href="#i-corbeille"/></svg></button>
           </div>
@@ -1952,7 +1962,7 @@ textarea.champ{ field-sizing: content; resize: vertical; }
   <div data-inclure="p-entete"></div>
   <main class="mx-auto max-w-[1160px] px-5 pt-3 pb-12">
     <div data-inclure="p-nadia-identite"></div>
-    <div class="mt-8 grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)] lg:gap-12 lg:items-start">
+    <div class="mt-8 grid grid-cols-[minmax(0,1fr)] gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)] lg:gap-12 lg:items-start">
       <div data-inclure="p-compte-vide"></div>
       <div data-inclure="p-diapos-erreur"></div>
     </div>
@@ -1962,7 +1972,7 @@ textarea.champ{ field-sizing: content; resize: vertical; }
   <div data-inclure="p-entete"></div>
   <main class="mx-auto max-w-[1160px] px-5 pt-3 pb-12">
     <div data-inclure="p-nadia-identite"></div>
-    <div class="mt-8 grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)] lg:gap-12 lg:items-start">
+    <div class="mt-8 grid grid-cols-[minmax(0,1fr)] gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)] lg:gap-12 lg:items-start">
       <div data-inclure="p-compte-ok"></div>
       <div data-inclure="p-diapos-erreur"></div>
     </div>
@@ -1972,7 +1982,7 @@ textarea.champ{ field-sizing: content; resize: vertical; }
   <div data-inclure="p-entete"></div>
   <main class="mx-auto max-w-[1160px] px-5 pt-3 pb-12">
     <div data-inclure="p-nadia-identite"></div>
-    <div class="mt-8 grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)] lg:gap-12 lg:items-start">
+    <div class="mt-8 grid grid-cols-[minmax(0,1fr)] gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)] lg:gap-12 lg:items-start">
       <div data-inclure="p-compte-sans"></div>
       <div data-inclure="p-diapos-erreur"></div>
     </div>
@@ -1982,7 +1992,7 @@ textarea.champ{ field-sizing: content; resize: vertical; }
   <div data-inclure="p-entete"></div>
   <main class="mx-auto max-w-[1160px] px-5 pt-3 pb-12">
     <div data-inclure="p-nadia-identite"></div>
-    <div class="mt-8 grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)] lg:gap-12 lg:items-start">
+    <div class="mt-8 grid grid-cols-[minmax(0,1fr)] gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)] lg:gap-12 lg:items-start">
       <div data-inclure="p-compte-ok"></div>
       <div data-inclure="p-diapos-erreur"></div>
     </div>
@@ -1992,7 +2002,7 @@ textarea.champ{ field-sizing: content; resize: vertical; }
   <div data-inclure="p-entete"></div>
   <main class="mx-auto max-w-[1160px] px-5 pt-3 pb-12">
     <div data-inclure="p-nadia-identite"></div>
-    <div class="mt-8 grid gap-10">
+    <div class="mt-8 grid grid-cols-[minmax(0,1fr)] gap-10">
       <div data-inclure="p-compte-ok"></div>
       <div data-inclure="p-diapos-edition"></div>
     </div>
@@ -2009,7 +2019,7 @@ textarea.champ{ field-sizing: content; resize: vertical; }
            width="128" height="128" class="arche w-[96px] h-[116px] shrink-0 object-cover" style="object-position:50% 22%">
       <div class="@container min-w-0 flex-1">
         <h1 class="ff text-nom mots-entiers text-teal-900" style="--taille:var(--text-nom); --mot:7">Inès Lacombe</h1>
-        <p class="mt-1 text-corps leading-snug text-neutre-800">Professeure de yoga</p>
+        <p class="mt-1 text-corps leading-snug mots-entiers text-neutre-800" style="--taille:var(--text-corps); --lettre:.56; --mot:11">Professeure de yoga</p>
         <p class="mt-2"><span class="inline-flex items-center gap-1.5 rounded-full bg-sauge-100 px-2.5 py-0.5 text-[16px] font-semibold text-teal-950"><svg class="w-4 h-4 shrink-0" aria-hidden="true"><use href="#i-coche"/></svg>En ligne</span></p>
       </div>
     </div>
@@ -2018,7 +2028,7 @@ textarea.champ{ field-sizing: content; resize: vertical; }
       <label for="masque-motif" class="mt-3 block text-[16px] font-semibold text-neutre-800">Motif, envoyé à Inès par e-mail</label>
       <textarea id="masque-motif" rows="4" class="champ mt-1.5 block w-full min-h-[104px] px-3.5 py-3 rounded-xl text-corps leading-relaxed text-neutre-900">Un voisin signale que les cours du mardi à la Halle n'ont plus lieu. Je masque votre fiche le temps que vous la mettiez à jour.</textarea>
       <p class="mt-2 text-[16px] text-neutre-700">Elle quitte l'annuaire à la prochaine mise en ligne. Inès la retrouve dans son espace.</p>
-      <div class="mt-3 flex gap-2.5">
+      <div class="mt-3 flex flex-wrap gap-2.5">
         <button type="submit" class="flex-1 inline-flex items-center justify-center gap-2 min-h-[48px] px-5 rounded-full text-corps font-semibold text-white bg-teal-700 hover:bg-teal-600">
           Masquer la fiche
         </button>
@@ -2040,13 +2050,13 @@ textarea.champ{ field-sizing: content; resize: vertical; }
            width="128" height="128" class="arche w-[96px] h-[116px] shrink-0 object-cover" style="object-position:50% 22%">
       <div class="@container min-w-0 flex-1">
         <h1 class="ff text-nom mots-entiers text-teal-900" style="--taille:var(--text-nom); --mot:6">Julien Marty</h1>
-        <p class="mt-1 text-corps leading-snug text-neutre-800">Électricien</p>
+        <p class="mt-1 text-corps leading-snug mots-entiers text-neutre-800" style="--taille:var(--text-corps); --lettre:.56; --mot:11">Électricien</p>
         <p class="mt-2"><span class="inline-flex items-center gap-1.5 rounded-full bg-neutre-200 px-2.5 py-0.5 text-[16px] font-semibold text-neutre-900"><svg class="w-4 h-4 shrink-0" aria-hidden="true"><use href="#i-masque"/></svg>Masquée</span></p>
       </div>
     </div>
-    <div role="status" class="mt-5 flex items-start gap-4 rounded-[22px] bg-neutre-100 p-5">
+    <div role="status" class="mt-5 flex flex-wrap items-start gap-x-4 gap-y-3 rounded-[22px] bg-neutre-100 p-5">
       <span class="pastille pastille--teal w-11 h-11 mt-0.5 bg-white text-neutre-800" aria-hidden="true"><svg class="w-[22px] h-[22px]"><use href="#i-masque"/></svg></span>
-      <div class="min-w-0">
+      <div class="@container min-w-[min(12rem,100%)] flex-1">
         <p class="ff text-[22px] leading-tight text-teal-950">Masquée depuis le 20&nbsp;oct.</p>
         <blockquote class="mt-2 mx-0 mb-0 border-l-[3px] border-neutre-400 pl-3 text-[16px] leading-snug text-teal-950">
           «&nbsp;Votre numéro ne répond plus. Je masque la fiche le temps que vous le corrigiez.&nbsp;»
@@ -2056,7 +2066,7 @@ textarea.champ{ field-sizing: content; resize: vertical; }
           <svg class="w-[18px] h-[18px] mt-0.5 shrink-0 text-sauge-700" aria-hidden="true"><use href="#i-coche"/></svg>
           Julien a changé son numéro le 26&nbsp;oct.
         </p>
-        <button type="button" class="mt-4 inline-flex items-center gap-2 min-h-[48px] px-5 rounded-full text-corps font-semibold text-white bg-teal-700 hover:bg-teal-600">
+        <button type="button" class="mt-4 inline-flex max-w-full items-center gap-2 min-h-[48px] px-5 rounded-full text-corps font-semibold text-white bg-teal-700 hover:bg-teal-600">
           <svg class="w-5 h-5" aria-hidden="true"><use href="#i-oeil"/></svg>Remettre en ligne
         </button>
       </div>
@@ -2070,10 +2080,10 @@ textarea.champ{ field-sizing: content; resize: vertical; }
 <template id="p-ligne-sacha">
         <li>
           <article class="carte rounded-[20px] bg-white overflow-hidden">
-            <div class="flex gap-4 p-4">
+            <div class="flex flex-wrap gap-4 p-4">
               <img src="https://randomuser.me/api/portraits/women/79.jpg" alt="Portrait de Sacha Morel"
                    width="128" height="128" class="arche w-[96px] h-[116px] shrink-0 object-cover" style="object-position:50% 22%">
-              <div class="min-w-0 flex-1">
+              <div class="min-w-[min(10rem,100%)] flex-1">
                 <h3 class="ff text-[21px] leading-tight text-teal-900">
                   <a href="/admin/fiche/sacha-morel" class="underline decoration-teal-300 underline-offset-4 hover:decoration-teal-600">Sacha Morel</a>
                 </h3>
@@ -2086,7 +2096,7 @@ textarea.champ{ field-sizing: content; resize: vertical; }
                 </ul>
               </div>
             </div>
-            <div class="flex gap-2.5 px-4 pb-4">
+            <div class="flex flex-wrap gap-2.5 px-4 pb-4">
               <button type="button" class="flex-1 inline-flex items-center justify-center gap-2 min-h-[48px] px-5 rounded-full text-corps font-semibold text-white bg-teal-700 hover:bg-teal-600">
                 <svg class="w-5 h-5" aria-hidden="true"><use href="#i-coche"/></svg>Publier
               </button>
@@ -2124,7 +2134,7 @@ textarea.champ{ field-sizing: content; resize: vertical; }
     </div>
     <div class="py-3 border-b border-neutre-300">
       <dt class="text-[16px] font-semibold text-neutre-700">On écrit</dt>
-      <dd class="m-0 text-corps text-neutre-900">iel — «&nbsp;Ce qu'iel propose&nbsp;» · «&nbsp;Où lae trouver&nbsp;»</dd>
+      <dd class="@container m-0 text-corps text-neutre-900"><span class="block mots-entiers" style="--taille:var(--text-corps); --lettre:.56; --mot:7">iel — «&nbsp;Ce qu'iel propose&nbsp;» · «&nbsp;Où lae trouver&nbsp;»</span></dd>
     </div>
     <div class="py-3 border-b border-neutre-300">
       <dt class="text-[16px] font-semibold text-neutre-700">Accords</dt>
@@ -2239,19 +2249,19 @@ textarea.champ{ field-sizing: content; resize: vertical; }
     <dl class="mt-5 m-0 border-t border-neutre-300">
       <div class="py-3 border-b border-neutre-300">
         <dt class="text-[16px] font-semibold text-neutre-700">Pourquoi entreprendre&nbsp;?</dt>
-        <dd class="m-0 text-corps text-neutre-900">J'ai appris le tour dans l'atelier de ma grand-mère, à Albi. Après huit ans de bureau, j'ai voulu des mains pleines de terre et des objets qui servent tous les jours.</dd>
+        <dd class="@container m-0 text-corps text-neutre-900"><span class="block mots-entiers" style="--taille:var(--text-corps); --lettre:.56; --mot:9">J'ai appris le tour dans l'atelier de ma grand-mère, à Albi. Après huit ans de bureau, j'ai voulu des mains pleines de terre et des objets qui servent tous les jours.</span></dd>
       </div>
       <div class="py-3 border-b border-neutre-300">
         <dt class="text-[16px] font-semibold text-neutre-700">Mon activité en bref</dt>
-        <dd class="m-0 text-corps text-neutre-900">Bols, tasses et assiettes tournés à la main, en grès. Des cours d'initiation le samedi matin, quatre personnes au plus, débutants bienvenus.</dd>
+        <dd class="@container m-0 text-corps text-neutre-900"><span class="block mots-entiers" style="--taille:var(--text-corps); --lettre:.56; --mot:12">Bols, tasses et assiettes tournés à la main, en grès. Des cours d'initiation le samedi matin, quatre personnes au plus, débutants bienvenus.</span></dd>
       </div>
       <div class="py-3 border-b border-neutre-300">
         <dt class="text-[16px] font-semibold text-neutre-700">Mes lieux favoris</dt>
-        <dd class="m-0 text-corps text-neutre-900">Un film, une partie de pétanque, et la semaine peut commencer.</dd>
+        <dd class="@container m-0 text-corps text-neutre-900"><span class="block mots-entiers" style="--taille:var(--text-corps); --lettre:.56; --mot:10">Un film, une partie de pétanque, et la semaine peut commencer.</span></dd>
       </div>
       <div class="py-3 border-b border-neutre-300">
         <dt class="text-[16px] font-semibold text-neutre-700">Mon motto</dt>
-        <dd class="m-0 text-corps text-neutre-900">La terre garde la trace de chaque geste.</dd>
+        <dd class="@container m-0 text-corps text-neutre-900"><span class="block mots-entiers" style="--taille:var(--text-corps); --lettre:.56; --mot:6">La terre garde la trace de chaque geste.</span></dd>
       </div>
       <div class="py-3 border-b border-neutre-300">
         <dt class="text-[16px] font-semibold text-neutre-700">Mon déclic · Les entrepreneurs de la Cartoucherie &amp; moi</dt>
@@ -2299,7 +2309,7 @@ textarea.champ{ field-sizing: content; resize: vertical; }
 
 <!-- l'aperçu de Sacha : le même gabarit que celui de Pierre, accordé à « iel » par gender.ts -->
 <template id="p-apercu-sacha">
-  <figure id="apercu" class="ventouses ventouses--teal m-0 rounded-[24px] bg-neutre-100 p-3">
+  <figure id="apercu" class="ventouses ventouses--teal m-0 rounded-[24px] bg-neutre-100 p-[12px]">
     <figcaption class="flex items-center gap-2 px-1.5 pt-0.5 pb-3 text-[16px] font-semibold text-teal-800">
       <svg class="w-5 h-5" aria-hidden="true"><use href="#i-oeil"/></svg>Ce que les voisins verront
     </figcaption>
@@ -2314,8 +2324,8 @@ textarea.champ{ field-sizing: content; resize: vertical; }
                  style="object-position:50% 22%; box-shadow: 0 0 0 6px #fff, var(--shadow-carte)">
           </div>
         </div>
-        <div class="px-4 relative -mt-8">
-          <div class="@container carte rounded-[24px] bg-white p-5">
+        <div class="px-[16px] relative -mt-8">
+          <div class="@container carte rounded-[24px] bg-white p-[20px]">
             <h2 id="as-nom" class="ff text-grand mots-entiers text-teal-900" style="--mot:5">Sacha Morel</h2>
             <p class="mt-1.5 text-[1.25rem] leading-snug mots-entiers text-neutre-800" style="--taille:1.25rem; --lettre:.56; --mot:9">Céramiste</p>
             <p class="mt-3 flex flex-wrap gap-2">
@@ -2354,13 +2364,13 @@ textarea.champ{ field-sizing: content; resize: vertical; }
         </div>
       </section>
 
-      <section class="px-4 py-8" aria-labelledby="ap-contact">
-        <h2 id="ap-contact" class="ff text-nom text-teal-900">Lae contacter</h2>
+      <section class="@container px-[16px] py-8" aria-labelledby="ap-contact">
+        <h2 id="ap-contact" class="ff text-nom mots-entiers text-teal-900" style="--taille:var(--text-nom); --mot:9">Lae contacter</h2>
         <div class="filet h-[3px] w-16 rounded-full mt-2.5 mb-5"></div>
-        <ul class="grid gap-2.5 list-none p-0 m-0">
-          <li><a href="mailto:sacha.morel@example.fr" class="carte carte-lien flex items-center gap-3.5 min-h-[64px] px-4 py-3 rounded-[16px] bg-white">
+        <ul class="grid grid-cols-[minmax(0,1fr)] gap-2.5 list-none p-0 m-0">
+          <li><a href="mailto:sacha.morel@example.fr" class="carte carte-lien flex flex-wrap items-center gap-x-3.5 gap-y-2 min-h-[64px] px-4 py-3 rounded-[16px] bg-white">
             <span class="pastille pastille--teal w-10 h-10 bg-teal-50 text-teal-700 shrink-0"><svg class="w-5 h-5" aria-hidden="true"><use href="#i-mail"/></svg></span>
-            <span class="min-w-0">
+            <span class="min-w-[min(12rem,100%)] flex-1">
               <span class="block text-[16px] text-neutre-700">E-mail</span>
               <span class="block text-corps font-semibold text-teal-800 break-words">sacha<wbr>.morel<wbr>@example<wbr>.fr</span>
             </span>
@@ -2368,27 +2378,27 @@ textarea.champ{ field-sizing: content; resize: vertical; }
         </ul>
       </section>
 
-      <section class="px-4 pb-8" aria-labelledby="ap-services">
-        <h2 id="ap-services" class="ff text-nom text-teal-900">Ce qu'iel propose</h2>
+      <section class="@container px-[16px] pb-8" aria-labelledby="ap-services">
+        <h2 id="ap-services" class="ff text-nom mots-entiers text-teal-900" style="--taille:var(--text-nom); --mot:7">Ce qu'iel propose</h2>
         <div class="filet h-[3px] w-16 rounded-full mt-2.5 mb-5"></div>
-        <ul class="grid gap-3 list-none p-0 m-0">
-          <li class="flex items-center gap-3.5 rounded-[16px] bg-neutre-100 px-4 py-4 min-h-[64px]">
+        <ul class="grid grid-cols-[minmax(0,1fr)] gap-3 list-none p-0 m-0">
+          <li class="@container flex flex-wrap items-center gap-x-3.5 gap-y-2 rounded-[16px] bg-neutre-100 px-4 py-4 min-h-[64px]">
             <span class="pastille w-9 h-9 bg-white text-sauge-700 shrink-0"><svg class="w-[18px] h-[18px]" aria-hidden="true"><use href="#c-art"/></svg></span>
             <span class="text-corps font-semibold text-teal-900">Bols et tasses sur commande</span>
           </li>
-          <li class="flex items-center gap-3.5 rounded-[16px] bg-neutre-100 px-4 py-4 min-h-[64px]">
+          <li class="@container flex flex-wrap items-center gap-x-3.5 gap-y-2 rounded-[16px] bg-neutre-100 px-4 py-4 min-h-[64px]">
             <span class="pastille w-9 h-9 bg-white text-sauge-700 shrink-0"><svg class="w-[18px] h-[18px]" aria-hidden="true"><use href="#i-groupe"/></svg></span>
             <span class="text-corps font-semibold text-teal-900">Cours d'initiation au tour</span>
           </li>
         </ul>
       </section>
 
-      <section class="px-4 pb-8" aria-labelledby="ap-ou">
-        <h2 id="ap-ou" class="ff text-nom text-teal-900">Où lae trouver</h2>
+      <section class="@container px-[16px] pb-8" aria-labelledby="ap-ou">
+        <h2 id="ap-ou" class="ff text-nom mots-entiers text-teal-900" style="--taille:var(--text-nom); --mot:7">Où lae trouver</h2>
         <div class="filet h-[3px] w-16 rounded-full mt-2.5 mb-5"></div>
-        <div class="carte rounded-[20px] bg-white p-5 flex items-start gap-4">
+        <div class="carte rounded-[20px] bg-white p-[20px] flex flex-wrap items-start gap-x-4 gap-y-3">
           <span class="pastille pastille--teal w-11 h-11 bg-teal-50 text-teal-700 shrink-0 mt-0.5"><svg class="w-5 h-5" aria-hidden="true"><use href="#i-pin"/></svg></span>
-          <div class="min-w-0">
+          <div class="min-w-[min(12rem,100%)] flex-1">
             <address class="not-italic text-[18px] leading-snug text-neutre-900 font-semibold">
               5 allée du Bois Vert<br>31300 Toulouse
             </address>
@@ -2397,10 +2407,10 @@ textarea.champ{ field-sizing: content; resize: vertical; }
         </div>
       </section>
 
-      <section class="px-4 pb-8" aria-labelledby="ap-avis">
-        <h2 id="ap-avis" class="ff text-nom text-teal-900">Avis du quartier</h2>
+      <section class="@container px-[16px] pb-8" aria-labelledby="ap-avis">
+        <h2 id="ap-avis" class="ff text-nom mots-entiers text-teal-900" style="--taille:var(--text-nom); --mot:8">Avis du quartier</h2>
         <div class="filet h-[3px] w-16 rounded-full mt-2.5 mb-5"></div>
-        <div class="rounded-[20px] bg-neutre-100 p-5">
+        <div class="rounded-[20px] bg-neutre-100 p-[20px]">
           <p class="text-corps text-neutre-900">
             <strong class="font-semibold">Aucun avis pour l'instant.</strong> Sacha est inscrit·e
             depuis peu&nbsp;; personne n'a encore écrit.
@@ -2409,13 +2419,13 @@ textarea.champ{ field-sizing: content; resize: vertical; }
       </section>
 
       <div class="bg-white/95" style="box-shadow: 0 -4px 8px oklch(17.5% .03 202/.06), 0 -28px 64px -20px oklch(17.5% .03 202/.28)">
-        <div class="px-4 py-3 flex items-center gap-3">
+        <div class="px-[16px] py-3 flex flex-wrap items-center gap-3">
           <button type="button" aria-pressed="false" aria-label="Ajouter Sacha Morel à mes favoris"
                   class="shrink-0 grid place-items-center w-11 h-11 rounded-full text-teal-700 bg-teal-50 hover:bg-teal-100">
             <svg class="w-6 h-6" aria-hidden="true"><use href="#i-coeur"/></svg>
           </button>
           <a href="tel:+33639980052"
-             class="cta flex-1 inline-flex items-center justify-center gap-2 min-h-[54px] px-5 rounded-full text-[17px] font-bold tracking-tight whitespace-nowrap transition">
+             class="cta flex-1 inline-flex items-center justify-center gap-2 min-w-0 min-h-[54px] px-[20px] rounded-full text-center text-[17px] font-bold tracking-tight transition">
             <svg class="w-5 h-5 shrink-0" aria-hidden="true"><use href="#i-tel"/></svg>
             Appeler 06 39 98 00 52
           </a>
@@ -2711,7 +2721,7 @@ textarea.champ{ field-sizing: content; resize: vertical; }
   <main class="px-4 pt-6 pb-10">
     <h1 class="ff px-1 text-nom text-teal-900">Lieux à vérifier</h1>
     <p class="mt-1.5 px-1 text-[16px] text-neutre-700">3 lieux, le plus ancien en haut. Sur le plan une fois approuvés.</p>
-    <ul class="mt-4 grid gap-3 list-none p-0 m-0">
+    <ul class="mt-4 grid grid-cols-[minmax(0,1fr)] gap-3 list-none p-0 m-0">
       <div data-inclure="p-lieu-ligne-yanis"></div>
       <div data-inclure="p-lieu-ligne-sacha"></div>
       <div data-inclure="p-lieu-ligne-camille"></div>
@@ -2751,9 +2761,9 @@ textarea.champ{ field-sizing: content; resize: vertical; }
 <template id="e-lieux-ok">
   <div data-inclure="p-entete"></div>
   <main class="px-4 pt-5 pb-10">
-    <div role="status" class="flex items-start gap-4 rounded-[22px] bg-teal-50 p-5">
+    <div role="status" class="flex flex-wrap items-start gap-x-4 gap-y-3 rounded-[22px] bg-teal-50 p-5">
       <span class="pastille pastille--teal w-11 h-11 mt-0.5 bg-white text-teal-600" aria-hidden="true"><svg class="respire w-[22px] h-[22px]"><use href="#i-ventouse"/></svg></span>
-      <div class="min-w-0">
+      <div class="@container min-w-[min(12rem,100%)] flex-1">
         <p class="ff text-[22px] leading-tight text-teal-950">Lieu fusionné</p>
         <p class="mt-1.5 text-[16px] leading-snug text-teal-950">«&nbsp;Le marché du samedi&nbsp;» devient Le Marché des 500 sur la fiche de Camille. Sur le plan d'ici quelques minutes.</p>
         <p class="mt-1.5 text-[16px] leading-snug text-teal-950">Camille est prévenue par e-mail.</p>
@@ -2761,7 +2771,7 @@ textarea.champ{ field-sizing: content; resize: vertical; }
     </div>
     <h1 class="ff mt-7 px-1 text-nom text-teal-900">Lieux à vérifier</h1>
     <p class="mt-1.5 px-1 text-[16px] text-neutre-700">2 lieux, le plus ancien en haut.</p>
-    <ul class="mt-4 grid gap-3 list-none p-0 m-0">
+    <ul class="mt-4 grid grid-cols-[minmax(0,1fr)] gap-3 list-none p-0 m-0">
       <div data-inclure="p-lieu-ligne-yanis"></div>
       <div data-inclure="p-lieu-ligne-sacha"></div>
     </ul>
@@ -2773,7 +2783,7 @@ textarea.champ{ field-sizing: content; resize: vertical; }
   <nav aria-label="Lieux à vérifier" class="min-w-0">
     <h1 class="ff text-[28px] leading-tight text-teal-900">Lieux à vérifier</h1>
     <p class="mt-1 text-[16px] text-neutre-700">3 lieux, le plus ancien en haut.</p>
-    <ul class="mt-4 grid gap-2.5 list-none p-0 m-0">
+    <ul class="mt-4 grid grid-cols-[minmax(0,1fr)] gap-2.5 list-none p-0 m-0">
       <li><a href="/admin/lieux/yanis" class="carte carte-lien flex gap-3.5 rounded-[18px] bg-white p-3.5">
         <span class="lieu lieu--pose shrink-0 mt-1.5 ml-1.5" aria-hidden="true"><svg class="w-[18px] h-[18px]"><use href="#l-autre"/></svg></span>
         <span class="min-w-0 pl-1"><span class="ff block text-[19px] leading-tight text-teal-900">Mon bureau</span><span class="block text-[16px] text-neutre-700">Par Yanis Belhadj</span></span>

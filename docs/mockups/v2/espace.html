@@ -413,6 +413,15 @@ textarea.champ{ field-sizing: content; resize: vertical; }
 /* « Placer sur la carte » : le repère posé, pas encore nommé */
 .lieu--pose{ background:#fff; color:var(--color-sauge-800);
        box-shadow: 0 0 0 2px var(--color-sauge-700), var(--shadow-flottant); outline:2px dashed var(--color-sauge-700); outline-offset:5px; }
+/* le groupe : des lieux à moins de 44 px l'un de l'autre. Le carré du lieu, un
+   peu plus grand, son nombre en blanc (6,9:1), et un second carré décalé
+   derrière lui pour dire « plusieurs ». Jamais orange. */
+.lieu--groupe{ width:34px; height:34px; font:700 17px/1 var(--font-sans); font-variant-numeric:tabular-nums;
+  box-shadow: 0 0 0 2px #fff, 5px -5px 0 0 var(--color-sauge-400), 5px -5px 0 2px #fff, var(--shadow-carte); }
+/* la marque de lieu : l'épingle d'un voisin dont l'activité est un lieu
+   préféré. Pas de second repère : un coin sauge sur son épingle. */
+.marque-lieu{ position:absolute; top:0; right:0; display:grid; place-items:center; width:18px; height:18px;
+  border-radius:6px; background:var(--color-sauge-700); color:#fff; box-shadow:0 0 0 2px #fff; }
 </style>
 
 <!-- ═══════════════════════════════════════════════════════════════════════════
@@ -680,14 +689,15 @@ textarea.champ{ field-sizing: content; resize: vertical; }
       <figcaption class="legende"><span class="tnum">1</span> En attente — l'espace de Julien</figcaption>
       <div class="ecran">
         <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-sm">
-          <div class="mx-auto max-w-[1160px] px-5 h-16 flex items-center justify-between gap-3">
-            <a href="../final/index.html" class="flex items-center gap-2.5 -ml-0.5" aria-label="Annuaire de la Cartoucherie, accueil">
+          <div class="mx-auto max-w-[1160px] px-5 min-h-16 flex flex-wrap items-center justify-between gap-3">
+            <a href="../final/index.html" class="flex items-center gap-2.5 -ml-0.5 min-h-[44px] py-1">
               <svg class="w-8 h-8 text-teal-700 shrink-0" aria-hidden="true"><use href="#i-ventouse"/></svg>
               <span class="leading-none">
                 <span class="block text-[11.5px] uppercase tracking-[.18em] text-neutre-700 font-semibold">Annuaire de</span>
                 <span class="ff block text-[20px] text-teal-900 leading-tight">la Cartoucherie</span>
               </span>
-            </a>
+            <span class="sr-only">, Accueil</span>
+          </a>
             <a href="../final/index.html" class="inline-flex items-center gap-2 min-h-[44px] px-3.5 rounded-full text-etiquette tracking-normal font-semibold text-teal-700 hover:bg-teal-50">
               <svg class="w-5 h-5" aria-hidden="true"><use href="#i-retour"/></svg>
               <span>Annuaire</span><span class="sr-only">— retour à la liste des voisins</span>
@@ -696,19 +706,19 @@ textarea.champ{ field-sizing: content; resize: vertical; }
           <div class="filet h-[3px]"></div>
         </header>
 
-        <div class="px-5 pt-7 pb-10">
+        <div class="@container px-5 pt-7 pb-10">
           <p class="text-etiquette font-semibold uppercase text-sauge-800">Mon espace</p>
-          <h1 class="ff mt-1.5 text-nom text-teal-900">Votre fiche</h1>
+          <h1 class="ff mt-1.5 text-nom mots-entiers text-teal-900" style="--taille:var(--text-nom); --mot:5">Votre fiche</h1>
 
-          <div role="status" class="mt-5 flex items-start gap-4 rounded-[22px] bg-sable-100 p-5">
+          <div role="status" class="mt-5 flex flex-wrap items-start gap-x-4 gap-y-3 rounded-[22px] bg-sable-100 p-5">
             <span class="pastille pastille--sable w-11 h-11 mt-0.5 bg-white text-sable-800" aria-hidden="true"><svg class="w-[22px] h-[22px]"><use href="#i-horloge"/></svg></span>
-            <div class="min-w-0">
+            <div class="@container min-w-[min(12rem,100%)] flex-1">
               <p class="ff text-[22px] leading-tight text-teal-950">En attente de validation</p>
               <p class="mt-1.5 text-[16px] leading-snug text-teal-950">Envoyée le 24 octobre. Adrien la relit et vous écrit par e-mail.</p>
             </div>
           </div>
 
-          <figure class="ventouses ventouses--teal mt-6 m-0 rounded-[24px] bg-neutre-100 p-3">
+          <figure class="ventouses ventouses--teal mt-6 m-0 rounded-[24px] bg-neutre-100 p-[12px]">
             <figcaption class="flex items-center gap-2 px-1.5 pt-0.5 pb-3 text-[16px] font-semibold text-teal-800">
               <svg class="w-5 h-5" aria-hidden="true"><use href="#i-oeil"/></svg>Ce que vos voisins verront
             </figcaption>
@@ -745,7 +755,7 @@ textarea.champ{ field-sizing: content; resize: vertical; }
 
           <hr class="mt-9 border-0 border-t border-neutre-300">
           <div class="flex flex-wrap items-center justify-between gap-x-6">
-<a href="#etat-5" class="mt-2 inline-flex items-center gap-2 min-h-[44px] text-[16px] font-semibold text-rouge-700 underline underline-offset-4 decoration-rouge-300 hover:decoration-rouge-600">
+<a href="#etat-5" class="mt-2 inline-flex max-w-full items-center gap-2 min-h-[44px] text-[16px] font-semibold text-rouge-700 underline underline-offset-4 decoration-rouge-300 hover:decoration-rouge-600">
             <svg class="w-5 h-5" aria-hidden="true"><use href="#i-corbeille"/></svg>Supprimer ma fiche
           </a>
 <a href="#etat-6" class="mt-2 inline-flex items-center min-h-[44px] text-[16px] font-semibold text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">Se déconnecter</a>
@@ -778,14 +788,15 @@ textarea.champ{ field-sizing: content; resize: vertical; }
       <figcaption class="legende"><span class="tnum">2a</span> Refusée — le motif cité</figcaption>
       <div class="ecran">
         <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-sm">
-          <div class="mx-auto max-w-[1160px] px-5 h-16 flex items-center justify-between gap-3">
-            <a href="../final/index.html" class="flex items-center gap-2.5 -ml-0.5" aria-label="Annuaire de la Cartoucherie, accueil">
+          <div class="mx-auto max-w-[1160px] px-5 min-h-16 flex flex-wrap items-center justify-between gap-3">
+            <a href="../final/index.html" class="flex items-center gap-2.5 -ml-0.5 min-h-[44px] py-1">
               <svg class="w-8 h-8 text-teal-700 shrink-0" aria-hidden="true"><use href="#i-ventouse"/></svg>
               <span class="leading-none">
                 <span class="block text-[11.5px] uppercase tracking-[.18em] text-neutre-700 font-semibold">Annuaire de</span>
                 <span class="ff block text-[20px] text-teal-900 leading-tight">la Cartoucherie</span>
               </span>
-            </a>
+            <span class="sr-only">, Accueil</span>
+          </a>
             <a href="../final/index.html" class="inline-flex items-center gap-2 min-h-[44px] px-3.5 rounded-full text-etiquette tracking-normal font-semibold text-teal-700 hover:bg-teal-50">
               <svg class="w-5 h-5" aria-hidden="true"><use href="#i-retour"/></svg>
               <span>Annuaire</span><span class="sr-only">— retour à la liste des voisins</span>
@@ -794,25 +805,25 @@ textarea.champ{ field-sizing: content; resize: vertical; }
           <div class="filet h-[3px]"></div>
         </header>
 
-        <div class="px-5 pt-7 pb-10">
+        <div class="@container px-5 pt-7 pb-10">
           <p class="text-etiquette font-semibold uppercase text-sauge-800">Mon espace</p>
-          <h1 class="ff mt-1.5 text-nom text-teal-900">Votre fiche</h1>
+          <h1 class="ff mt-1.5 text-nom mots-entiers text-teal-900" style="--taille:var(--text-nom); --mot:5">Votre fiche</h1>
 
-          <div role="status" class="mt-5 flex items-start gap-4 rounded-[22px] bg-rouge-50 p-5">
+          <div role="status" class="mt-5 flex flex-wrap items-start gap-x-4 gap-y-3 rounded-[22px] bg-rouge-50 p-5">
             <span class="pastille pastille--rouge w-11 h-11 mt-0.5 bg-white text-rouge-700" aria-hidden="true"><svg class="w-[22px] h-[22px]"><use href="#i-alerte"/></svg></span>
-            <div class="min-w-0">
+            <div class="@container min-w-[min(12rem,100%)] flex-1">
               <p class="ff text-[22px] leading-tight text-teal-950">Refusée&nbsp;: à corriger</p>
               <blockquote class="mt-2 mx-0 mb-0 border-l-[3px] border-rouge-300 pl-3 text-[16px] leading-snug text-teal-950">
                 «&nbsp;La photo ne convient pas&nbsp;: il en faut une de vous seul, de face, bien nette.&nbsp;»
                 <span class="mt-1 block text-neutre-700">— Adrien, le 25 octobre</span>
               </blockquote>
-              <a href="#ecran-2b" class="mt-4 inline-flex items-center gap-2 min-h-[48px] px-5 rounded-full text-corps font-semibold text-white bg-teal-700 hover:bg-teal-600">
+              <a href="#ecran-2b" class="mt-4 inline-flex max-w-full items-center gap-2 min-h-[48px] px-5 rounded-full text-corps font-semibold text-white bg-teal-700 hover:bg-teal-600">
                 Corriger ma fiche<svg class="w-4 h-4" aria-hidden="true"><use href="#i-chev"/></svg>
               </a>
             </div>
           </div>
 
-          <figure class="ventouses ventouses--teal mt-6 m-0 rounded-[24px] bg-neutre-100 p-3">
+          <figure class="ventouses ventouses--teal mt-6 m-0 rounded-[24px] bg-neutre-100 p-[12px]">
             <figcaption class="flex items-center gap-2 px-1.5 pt-0.5 pb-3 text-[16px] font-semibold text-teal-800">
               <svg class="w-5 h-5" aria-hidden="true"><use href="#i-oeil"/></svg>Ce que vos voisins verront
             </figcaption>
@@ -839,7 +850,7 @@ textarea.champ{ field-sizing: content; resize: vertical; }
 
           <hr class="mt-9 border-0 border-t border-neutre-300">
           <div class="flex flex-wrap items-center justify-between gap-x-6">
-<a href="#etat-5" class="mt-2 inline-flex items-center gap-2 min-h-[44px] text-[16px] font-semibold text-rouge-700 underline underline-offset-4 decoration-rouge-300 hover:decoration-rouge-600">
+<a href="#etat-5" class="mt-2 inline-flex max-w-full items-center gap-2 min-h-[44px] text-[16px] font-semibold text-rouge-700 underline underline-offset-4 decoration-rouge-300 hover:decoration-rouge-600">
             <svg class="w-5 h-5" aria-hidden="true"><use href="#i-corbeille"/></svg>Supprimer ma fiche
           </a>
 <a href="#etat-6" class="mt-2 inline-flex items-center min-h-[44px] text-[16px] font-semibold text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">Se déconnecter</a>
@@ -852,9 +863,9 @@ textarea.champ{ field-sizing: content; resize: vertical; }
     <figure class="cadre" id="ecran-2b">
       <figcaption class="legende"><span class="tnum">2b</span> «&nbsp;Corriger ma fiche&nbsp;» — l'étape en cause</figcaption>
       <div class="ecran">
-        <form class="pb-[96px]" onsubmit="return false">
-          <header class="px-5 pt-2 pb-2 bg-white">
-            <div class="-mx-2 flex items-center justify-between gap-3">
+        <form class="pb-[150px]" onsubmit="return false">
+          <header class="@container px-5 pt-2 pb-2 bg-white">
+            <div class="-mx-2 flex flex-wrap items-center justify-between gap-x-3">
               <a href="#etat-2" class="inline-flex items-center gap-1.5 min-h-[44px] px-2 rounded-full text-corps font-semibold text-teal-700 hover:bg-teal-50">
                 <svg class="w-5 h-5" aria-hidden="true"><use href="#i-retour"/></svg>Retour
               </a>
@@ -874,7 +885,7 @@ textarea.champ{ field-sizing: content; resize: vertical; }
               <span class="w-2.5 h-2.5 shrink-0 rounded-full bg-teal-700"></span><span class="h-[2px] flex-1 bg-teal-700"></span>
               <span class="w-2.5 h-2.5 shrink-0 rounded-full bg-teal-700"></span>
             </div>
-            <h1 class="ff mt-6 text-nom text-teal-900">Une photo de vous</h1>
+            <h1 class="ff mt-6 text-nom mots-entiers text-teal-900" style="--taille:var(--text-nom); --mot:5">Une photo de vous</h1>
           </header>
 
           <div class="px-5">
@@ -930,7 +941,7 @@ textarea.champ{ field-sizing: content; resize: vertical; }
 
           <div class="fixed bottom-0 inset-x-0 z-40 bg-white/95 backdrop-blur-sm"
                style="box-shadow: 0 -4px 8px oklch(17.5% .03 202/.06), 0 -28px 64px -20px oklch(17.5% .03 202/.28)">
-            <div class="mx-auto max-w-[640px] px-4 py-3 flex items-center gap-3">
+            <div class="mx-auto max-w-[640px] px-4 py-3 flex flex-wrap items-center gap-3">
               <a href="#etat-2" class="inline-flex items-center justify-center min-h-[54px] px-5 rounded-full text-corps font-semibold text-teal-700 bg-teal-50 hover:bg-teal-100">
                 Plus tard
               </a>
@@ -954,18 +965,18 @@ textarea.champ{ field-sizing: content; resize: vertical; }
               <svg class="w-5 h-5" aria-hidden="true"><use href="#i-retour"/></svg>Retour
             </a>
           </div>
-          <div class="px-5 pt-4 pb-2">
-            <h1 class="ff text-nom text-teal-900">Vérifiez votre fiche</h1>
+          <div class="@container px-5 pt-4 pb-2">
+            <h1 class="ff text-nom mots-entiers text-teal-900" style="--taille:var(--text-nom); --mot:8">Vérifiez votre fiche</h1>
             <h2 class="ff mt-7 text-[22px] text-teal-900">Vous</h2>
             <dl class="mt-2 m-0 border-t border-neutre-300">
               <div class="grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 py-3 border-b border-neutre-300">
                 <dt class="text-[16px] font-semibold text-neutre-700">Nom</dt>
-                <dd class="col-start-1 m-0 text-corps text-neutre-900">Julien Marty</dd>
+                <dd class="@container col-start-1 m-0 text-corps text-neutre-900"><span class="block mots-entiers" style="--taille:var(--text-corps); --lettre:.56; --mot:6">Julien Marty</span></dd>
                 <dd class="col-start-2 row-start-1 row-span-2 m-0"><a href="#etape-1" class="inline-flex items-center min-h-[44px] text-[16px] font-semibold text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">Modifier<span class="sr-only"> le nom</span></a></dd>
               </div>
               <div class="grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 py-3 border-b border-neutre-300">
                 <dt class="text-[16px] font-semibold text-neutre-700">On écrit</dt>
-                <dd class="col-start-1 m-0 text-corps text-neutre-900">il — «&nbsp;Ce qu'il propose&nbsp;»</dd>
+                <dd class="@container col-start-1 m-0 text-corps text-neutre-900"><span class="block mots-entiers" style="--taille:var(--text-corps); --lettre:.56; --mot:7">il — «&nbsp;Ce qu'il propose&nbsp;»</span></dd>
                 <dd class="col-start-2 row-start-1 row-span-2 m-0"><a href="#etape-1" class="inline-flex items-center min-h-[44px] text-[16px] font-semibold text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">Modifier<span class="sr-only"> l'accord</span></a></dd>
               </div>
               <div class="grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 py-3 border-b border-neutre-300">
@@ -978,7 +989,7 @@ textarea.champ{ field-sizing: content; resize: vertical; }
             <dl class="mt-2 m-0 border-t border-neutre-300">
               <div class="grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 py-3 border-b border-neutre-300">
                 <dt class="text-[16px] font-semibold text-neutre-700">Métier</dt>
-                <dd class="col-start-1 m-0 text-corps text-neutre-900">Électricien</dd>
+                <dd class="@container col-start-1 m-0 text-corps text-neutre-900"><span class="block mots-entiers" style="--taille:var(--text-corps); --lettre:.56; --mot:11">Électricien</span></dd>
                 <dd class="col-start-2 row-start-1 row-span-2 m-0"><a href="#etape-3" class="inline-flex items-center min-h-[44px] text-[16px] font-semibold text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">Modifier<span class="sr-only"> le métier</span></a></dd>
               </div>
               <div class="grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 py-3 border-b border-neutre-300">
@@ -991,12 +1002,12 @@ textarea.champ{ field-sizing: content; resize: vertical; }
             <dl class="mt-2 m-0 border-t border-neutre-300">
               <div class="grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 py-3 border-b border-neutre-300">
                 <dt class="text-[16px] font-semibold text-neutre-700">Où intervenez-vous</dt>
-                <dd class="col-start-1 m-0 text-corps text-neutre-900">Dans tout le quartier<span class="block text-[16px] text-neutre-700">Se déplace · pas d'adresse affichée</span></dd>
+                <dd class="@container col-start-1 m-0 text-corps text-neutre-900"><span class="block mots-entiers" style="--taille:var(--text-corps); --lettre:.56; --mot:10">Dans tout le quartier<span class="block text-[16px] text-neutre-700">Se déplace · pas d'adresse affichée</span></span></dd>
                 <dd class="col-start-2 row-start-1 row-span-2 m-0"><a href="#etape-8" class="inline-flex items-center min-h-[44px] text-[16px] font-semibold text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">Modifier<span class="sr-only"> la zone</span></a></dd>
               </div>
               <div class="grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 py-3 border-b border-neutre-300">
                 <dt class="text-[16px] font-semibold text-neutre-700">Téléphone</dt>
-                <dd class="col-start-1 m-0 text-corps tnum text-neutre-900">06 39 98 00 41</dd>
+                <dd class="@container col-start-1 m-0 text-corps tnum text-neutre-900"><span class="block mots-entiers" style="--taille:var(--text-corps); --lettre:.56; --mot:2">06 39 98 00 41</span></dd>
                 <dd class="col-start-2 row-start-1 row-span-2 m-0"><a href="#etape-9" class="inline-flex items-center min-h-[44px] text-[16px] font-semibold text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">Modifier<span class="sr-only"> le téléphone</span></a></dd>
               </div>
             </dl>
@@ -1060,14 +1071,15 @@ textarea.champ{ field-sizing: content; resize: vertical; }
       <figcaption class="legende"><span class="tnum">3</span> En ligne — l'espace de Camille</figcaption>
       <div class="ecran">
         <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-sm">
-          <div class="mx-auto max-w-[1160px] px-5 h-16 flex items-center justify-between gap-3">
-            <a href="../final/index.html" class="flex items-center gap-2.5 -ml-0.5" aria-label="Annuaire de la Cartoucherie, accueil">
+          <div class="mx-auto max-w-[1160px] px-5 min-h-16 flex flex-wrap items-center justify-between gap-3">
+            <a href="../final/index.html" class="flex items-center gap-2.5 -ml-0.5 min-h-[44px] py-1">
               <svg class="w-8 h-8 text-teal-700 shrink-0" aria-hidden="true"><use href="#i-ventouse"/></svg>
               <span class="leading-none">
                 <span class="block text-[11.5px] uppercase tracking-[.18em] text-neutre-700 font-semibold">Annuaire de</span>
                 <span class="ff block text-[20px] text-teal-900 leading-tight">la Cartoucherie</span>
               </span>
-            </a>
+            <span class="sr-only">, Accueil</span>
+          </a>
             <a href="../final/index.html" class="inline-flex items-center gap-2 min-h-[44px] px-3.5 rounded-full text-etiquette tracking-normal font-semibold text-teal-700 hover:bg-teal-50">
               <svg class="w-5 h-5" aria-hidden="true"><use href="#i-retour"/></svg>
               <span>Annuaire</span><span class="sr-only">— retour à la liste des voisins</span>
@@ -1076,37 +1088,37 @@ textarea.champ{ field-sizing: content; resize: vertical; }
           <div class="filet h-[3px]"></div>
         </header>
 
-        <div class="px-5 pt-7 pb-10">
+        <div class="@container px-5 pt-7 pb-10">
           <p class="text-etiquette font-semibold uppercase text-sauge-800">Mon espace</p>
-          <h1 class="ff mt-1.5 text-nom text-teal-900">Votre fiche</h1>
+          <h1 class="ff mt-1.5 text-nom mots-entiers text-teal-900" style="--taille:var(--text-nom); --mot:5">Votre fiche</h1>
 
-          <div role="status" class="mt-5 flex items-start gap-4 rounded-[22px] bg-sauge-50 p-5" style="box-shadow: inset 0 0 0 1px var(--color-sauge-200)">
+          <div role="status" class="mt-5 flex flex-wrap items-start gap-x-4 gap-y-3 rounded-[22px] bg-sauge-50 p-5" style="box-shadow: inset 0 0 0 1px var(--color-sauge-200)">
             <span class="pastille w-11 h-11 mt-0.5 bg-white text-sauge-700" aria-hidden="true"><svg class="w-[22px] h-[22px]"><use href="#i-coche"/></svg></span>
-            <div class="@container min-w-0 flex-1">
+            <div class="@container min-w-[min(12rem,100%)] flex-1">
               <p class="ff text-[22px] leading-tight text-teal-950">En ligne</p>
               <!-- l'adresse en mots entiers : à 200 %, la colonne n'a plus que 80 px -->
               <p class="mt-1.5 leading-snug text-teal-950 mots-entiers" style="--taille:16px; --lettre:.56; --mot:12">cartoucherie<wbr>.fyi/<wbr>membre/<wbr>camille-roussel</p>
-              <a href="../final/membre.html" class="mt-2 inline-flex items-center gap-1.5 min-h-[44px] text-corps font-semibold text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">
+              <a href="../final/membre.html" class="mt-2 inline-flex max-w-full items-center gap-1.5 min-h-[44px] text-corps font-semibold text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">
                 Voir ma fiche<svg class="w-4 h-4" aria-hidden="true"><use href="#i-chev"/></svg>
               </a>
             </div>
           </div>
 
-          <figure class="ventouses ventouses--teal mt-6 m-0 rounded-[24px] bg-neutre-100 p-3">
+          <figure class="ventouses ventouses--teal mt-6 m-0 rounded-[24px] bg-neutre-100 p-[12px]">
             <figcaption class="flex items-center gap-2 px-1.5 pt-0.5 pb-3 text-[16px] font-semibold text-teal-800">
               <svg class="w-5 h-5" aria-hidden="true"><use href="#i-oeil"/></svg>Ce que vos voisins voient
             </figcaption>
             <ul class="list-none m-0 p-0">
               <li>
-                <article class="carte carte-lien relative flex min-h-[152px] rounded-[20px] bg-white overflow-hidden">
+                <article class="carte carte-lien relative flex flex-wrap min-h-[152px] rounded-[20px] bg-white overflow-hidden">
                   <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Portrait de Camille Roussel"
                        width="128" height="128" loading="lazy"
                        class="w-[116px] shrink-0 self-stretch object-cover" style="object-position:50% 25%">
-                  <div class="flex-1 min-w-0 py-4 pl-4 pr-1 flex flex-col justify-center gap-1">
+                  <div class="@container flex-1 min-w-[min(7.5rem,100%)] py-4 pl-4 pr-1 flex flex-col justify-center gap-1">
                     <h3 class="ff text-[20px] leading-tight text-teal-900">
                       <a href="../final/membre.html" class="before:absolute before:inset-0 before:content-['']">Camille Roussel</a>
                     </h3>
-                    <p class="text-corps text-neutre-800 leading-snug">Sophrologue</p>
+                    <p class="text-corps text-neutre-800 leading-snug mots-entiers" style="--taille:var(--text-corps); --lettre:.56; --mot:11">Sophrologue</p>
                     <p class="flex flex-wrap items-center gap-x-3 gap-y-1 text-[16px] text-neutre-700 mt-0.5">
                       <span class="inline-flex items-center gap-1"><svg class="w-4 h-4 text-teal-600" aria-hidden="true"><use href="#i-pin"/></svg>120 m</span>
                     </p>
@@ -1129,8 +1141,8 @@ textarea.champ{ field-sizing: content; resize: vertical; }
                          style="object-position:50% 22%; box-shadow: 0 0 0 6px #fff, var(--shadow-carte)">
                   </div>
                 </div>
-                <div class="px-5 relative -mt-8">
-                  <div class="@container carte rounded-[24px] bg-white p-5">
+                <div class="px-[16px] relative -mt-8">
+                  <div class="@container carte rounded-[24px] bg-white p-[20px]">
                     <p class="ff text-grand mots-entiers text-teal-900" style="--mot:7">Camille Roussel</p>
                     <p class="mt-1.5 text-[1.25rem] leading-snug mots-entiers text-neutre-800" style="--taille:1.25rem; --lettre:.56; --mot:11">Sophrologue</p>
                     <p class="mt-3 flex flex-wrap gap-2">
@@ -1154,19 +1166,19 @@ textarea.champ{ field-sizing: content; resize: vertical; }
           </figure>
 
           <aside data-rappel aria-labelledby="rappel-3" class="relative mt-6 rounded-[22px] bg-teal-50 p-5 pr-12">
-            <div class="flex items-start gap-4">
+            <div class="flex flex-wrap items-start gap-x-4 gap-y-3">
               <div class="w-[72px] h-[72px] shrink-0 rounded-full bg-white overflow-hidden grid place-items-center"
                    style="box-shadow: inset 0 0 0 1.5px var(--color-teal-200)">
                 <img src="../_shared/colly/colly-joyeux.png" alt="" width="260" height="260" class="croquis w-[88px] h-auto">
               </div>
-              <div class="min-w-0">
+              <div class="min-w-[min(12rem,100%)] flex-1">
                 <h2 id="rappel-3" class="ff text-[21px] leading-tight text-teal-950">Ajoutez votre fiche Google</h2>
                 <p class="mt-1.5 text-[16px] leading-snug text-teal-950">Vos voisins liront vos avis Google depuis votre fiche.</p>
+                <a href="#etape-9" class="mt-4 inline-flex max-w-full items-center gap-2 min-h-[48px] px-[16px] rounded-full text-corps font-semibold text-white bg-teal-700 hover:bg-teal-600">
+                  Ajouter le lien
+                </a>
               </div>
             </div>
-            <a href="#etape-9" class="mt-4 ml-[88px] inline-flex items-center gap-2 min-h-[48px] px-5 rounded-full text-corps font-semibold text-white bg-teal-700 hover:bg-teal-600">
-              Ajouter le lien
-            </a>
             <button type="button" aria-label="Masquer ce rappel" onclick="this.closest('[data-rappel]').hidden = true"
                     class="absolute top-2 right-2 grid place-items-center w-11 h-11 rounded-full text-teal-800 hover:bg-teal-100">
               <svg class="w-5 h-5" aria-hidden="true"><use href="#i-fermer"/></svg>
@@ -1179,12 +1191,12 @@ textarea.champ{ field-sizing: content; resize: vertical; }
           <dl class="mt-2 m-0 border-t border-neutre-300">
             <div class="grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 py-3 border-b border-neutre-300">
               <dt class="text-[16px] font-semibold text-neutre-700">Nom</dt>
-              <dd class="col-start-1 m-0 text-corps text-neutre-900">Camille Roussel</dd>
+              <dd class="@container col-start-1 m-0 text-corps text-neutre-900"><span class="block mots-entiers" style="--taille:var(--text-corps); --lettre:.56; --mot:7">Camille Roussel</span></dd>
               <dd class="col-start-2 row-start-1 row-span-2 m-0"><a href="#etape-1" class="inline-flex items-center min-h-[44px] text-[16px] font-semibold text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">Modifier<span class="sr-only"> le nom</span></a></dd>
             </div>
             <div class="grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 py-3 border-b border-neutre-300">
               <dt class="text-[16px] font-semibold text-neutre-700">On écrit</dt>
-              <dd class="col-start-1 m-0 text-corps text-neutre-900">elle — «&nbsp;Ce qu'elle propose&nbsp;»</dd>
+              <dd class="@container col-start-1 m-0 text-corps text-neutre-900"><span class="block mots-entiers" style="--taille:var(--text-corps); --lettre:.56; --mot:7">elle — «&nbsp;Ce qu'elle propose&nbsp;»</span></dd>
               <dd class="col-start-2 row-start-1 row-span-2 m-0"><a href="#etape-1" class="inline-flex items-center min-h-[44px] text-[16px] font-semibold text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">Modifier<span class="sr-only"> l'accord</span></a></dd>
             </div>
             <div class="grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 py-3 border-b border-neutre-300">
@@ -1197,7 +1209,7 @@ textarea.champ{ field-sizing: content; resize: vertical; }
           <dl class="mt-2 m-0 border-t border-neutre-300">
             <div class="grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 py-3 border-b border-neutre-300">
               <dt class="text-[16px] font-semibold text-neutre-700">Métier</dt>
-              <dd class="col-start-1 m-0 text-corps text-neutre-900">Sophrologue</dd>
+              <dd class="@container col-start-1 m-0 text-corps text-neutre-900"><span class="block mots-entiers" style="--taille:var(--text-corps); --lettre:.56; --mot:11">Sophrologue</span></dd>
               <dd class="col-start-2 row-start-1 row-span-2 m-0"><a href="#etape-3" class="inline-flex items-center min-h-[44px] text-[16px] font-semibold text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">Modifier<span class="sr-only"> le métier</span></a></dd>
             </div>
             <div class="grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 py-3 border-b border-neutre-300">
@@ -1207,7 +1219,7 @@ textarea.champ{ field-sizing: content; resize: vertical; }
             </div>
             <div class="grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 py-3 border-b border-neutre-300">
               <dt class="text-[16px] font-semibold text-neutre-700">Accroche et présentation</dt>
-              <dd class="col-start-1 m-0 text-corps text-neutre-900">Gestion du stress, sommeil et préparation aux examens, en cabinet ou en visio.</dd>
+              <dd class="@container col-start-1 m-0 text-corps text-neutre-900"><span class="block mots-entiers" style="--taille:var(--text-corps); --lettre:.56; --mot:11">Gestion du stress, sommeil et préparation aux examens, en cabinet ou en visio.</span></dd>
               <dd class="col-start-2 row-start-1 row-span-2 m-0"><a href="#ecran-4a" class="inline-flex items-center min-h-[44px] text-[16px] font-semibold text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">Modifier<span class="sr-only"> l'accroche et la présentation</span></a></dd>
             </div>
             <div class="grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 py-3 border-b border-neutre-300">
@@ -1217,7 +1229,7 @@ textarea.champ{ field-sizing: content; resize: vertical; }
             </div>
             <div class="grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 py-3 border-b border-neutre-300">
               <dt class="text-[16px] font-semibold text-neutre-700">Tarifs et horaires</dt>
-              <dd class="col-start-1 m-0 text-corps text-neutre-900">Séance d'1&nbsp;h&nbsp;: 55&nbsp;€<span class="block">Sur rendez-vous, du lundi au samedi</span></dd>
+              <dd class="@container col-start-1 m-0 text-corps text-neutre-900"><span class="block mots-entiers" style="--taille:var(--text-corps); --lettre:.56; --mot:6">Séance d'1&nbsp;h&nbsp;: 55&nbsp;€<span class="block">Sur rendez-vous, du lundi au samedi</span></span></dd>
               <dd class="col-start-2 row-start-1 row-span-2 m-0"><a href="#etape-7" class="inline-flex items-center min-h-[44px] text-[16px] font-semibold text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">Modifier<span class="sr-only"> les tarifs et horaires</span></a></dd>
             </div>
           </dl>
@@ -1225,7 +1237,7 @@ textarea.champ{ field-sizing: content; resize: vertical; }
           <dl class="mt-2 m-0 border-t border-neutre-300">
             <div class="grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 py-3 border-b border-neutre-300">
               <dt class="text-[16px] font-semibold text-neutre-700">Adresse</dt>
-              <dd class="col-start-1 m-0 text-corps text-neutre-900">14 rue Paul Mesplé, 31300 Toulouse<span class="block text-[16px] text-neutre-700">Sur le plan du quartier · à 120 m de la Halle</span></dd>
+              <dd class="@container col-start-1 m-0 text-corps text-neutre-900"><span class="block mots-entiers" style="--taille:var(--text-corps); --lettre:.56; --mot:11">14 rue Paul Mesplé, 31300 Toulouse<span class="block text-[16px] text-neutre-700">Sur le plan du quartier · à 120 m de la Halle</span></span></dd>
               <dd class="col-start-2 row-start-1 row-span-2 m-0"><a href="#etape-8" class="inline-flex items-center min-h-[44px] text-[16px] font-semibold text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">Modifier<span class="sr-only"> l'adresse</span></a></dd>
             </div>
             <div class="grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 py-3 border-b border-neutre-300">
@@ -1235,7 +1247,7 @@ textarea.champ{ field-sizing: content; resize: vertical; }
             </div>
             <div class="grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 py-3 border-b border-neutre-300">
               <dt class="text-[16px] font-semibold text-neutre-700">Fiche Google</dt>
-              <dd class="col-start-1 m-0 text-corps italic text-neutre-700">Non renseigné</dd>
+              <dd class="@container col-start-1 m-0 text-corps italic text-neutre-700"><span class="block mots-entiers" style="--taille:var(--text-corps); --lettre:.56; --mot:9">Non renseigné</span></dd>
               <dd class="col-start-2 row-start-1 row-span-2 m-0"><a href="#etape-9" class="inline-flex items-center min-h-[44px] text-[16px] font-semibold text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">Ajouter<span class="sr-only"> la fiche Google</span></a></dd>
             </div>
           </dl>
@@ -1245,27 +1257,27 @@ textarea.champ{ field-sizing: content; resize: vertical; }
           <dl class="mt-2 m-0 border-t border-neutre-300">
             <div class="grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 py-3 border-b border-neutre-300">
               <dt class="text-[16px] font-semibold text-neutre-700">Pourquoi entreprendre&nbsp;?</dt>
-              <dd class="col-start-1 m-0 text-corps text-neutre-900">Infirmière de nuit pendant dix ans, j'ai vu le stress abîmer le sommeil de tout le monde, le mien compris. J'ai voulu agir avant.</dd>
+              <dd class="@container col-start-1 m-0 text-corps text-neutre-900"><span class="block mots-entiers" style="--taille:var(--text-corps); --lettre:.56; --mot:10">Infirmière de nuit pendant dix ans, j'ai vu le stress abîmer le sommeil de tout le monde, le mien compris. J'ai voulu agir avant.</span></dd>
               <dd class="col-start-2 row-start-1 row-span-2 m-0"><a href="#ecran-4c" class="inline-flex items-center min-h-[44px] text-[16px] font-semibold text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">Modifier<span class="sr-only"> «&nbsp;Pourquoi entreprendre&nbsp;»</span></a></dd>
             </div>
             <div class="grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 py-3 border-b border-neutre-300">
               <dt class="text-[16px] font-semibold text-neutre-700">Mon déclic</dt>
-              <dd class="col-start-1 m-0 text-corps text-neutre-900">Une patiente a dormi six heures d'affilée après trois séances. Le lendemain, elle m'a apporté des chouquettes.</dd>
+              <dd class="@container col-start-1 m-0 text-corps text-neutre-900"><span class="block mots-entiers" style="--taille:var(--text-corps); --lettre:.56; --mot:12">Une patiente a dormi six heures d'affilée après trois séances. Le lendemain, elle m'a apporté des chouquettes.</span></dd>
               <dd class="col-start-2 row-start-1 row-span-2 m-0"><a href="#ecran-4c" class="inline-flex items-center min-h-[44px] text-[16px] font-semibold text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">Modifier<span class="sr-only"> «&nbsp;Mon déclic&nbsp;»</span></a></dd>
             </div>
             <div class="grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 py-3 border-b border-neutre-300">
               <dt class="text-[16px] font-semibold text-neutre-700">Mon activité en bref</dt>
-              <dd class="col-start-1 m-0 text-corps italic text-neutre-700">Non renseigné</dd>
+              <dd class="@container col-start-1 m-0 text-corps italic text-neutre-700"><span class="block mots-entiers" style="--taille:var(--text-corps); --lettre:.56; --mot:9">Non renseigné</span></dd>
               <dd class="col-start-2 row-start-1 row-span-2 m-0"><a href="#ecran-4c" class="inline-flex items-center min-h-[44px] text-[16px] font-semibold text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">Ajouter<span class="sr-only"> «&nbsp;Mon activité en bref&nbsp;»</span></a></dd>
             </div>
             <div class="grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 py-3 border-b border-neutre-300">
               <dt class="text-[16px] font-semibold text-neutre-700">Les entrepreneurs de la Cartoucherie &amp; moi</dt>
-              <dd class="col-start-1 m-0 text-corps italic text-neutre-700">Non renseigné</dd>
+              <dd class="@container col-start-1 m-0 text-corps italic text-neutre-700"><span class="block mots-entiers" style="--taille:var(--text-corps); --lettre:.56; --mot:9">Non renseigné</span></dd>
               <dd class="col-start-2 row-start-1 row-span-2 m-0"><a href="#ecran-4c" class="inline-flex items-center min-h-[44px] text-[16px] font-semibold text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">Ajouter<span class="sr-only"> «&nbsp;Les entrepreneurs de la Cartoucherie &amp; moi&nbsp;»</span></a></dd>
             </div>
             <div class="grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 py-3 border-b border-neutre-300">
               <dt class="text-[16px] font-semibold text-neutre-700">Mon motto</dt>
-              <dd class="col-start-1 m-0 text-corps text-neutre-900">Bien dormir, c'est déjà aller mieux.</dd>
+              <dd class="@container col-start-1 m-0 text-corps text-neutre-900"><span class="block mots-entiers" style="--taille:var(--text-corps); --lettre:.56; --mot:7">Bien dormir, c'est déjà aller mieux.</span></dd>
               <dd class="col-start-2 row-start-1 row-span-2 m-0"><a href="#ecran-4c" class="inline-flex items-center min-h-[44px] text-[16px] font-semibold text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">Modifier<span class="sr-only"> le motto</span></a></dd>
             </div>
           </dl>
@@ -1274,7 +1286,7 @@ textarea.champ{ field-sizing: content; resize: vertical; }
             <div class="grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 py-3 border-b border-neutre-300">
               <dt class="text-[16px] font-semibold text-neutre-700">Lieux · 3 sur 5</dt>
               <dd class="col-start-1 m-0 mt-2">
-                <ul class="grid gap-3 list-none p-0 m-0">
+                <ul class="grid grid-cols-[minmax(0,1fr)] gap-3 list-none p-0 m-0">
                   <li class="flex items-center gap-3"><span class="lieu shrink-0" aria-hidden="true"><svg class="w-[18px] h-[18px]"><use href="#l-cafe"/></svg></span><span class="min-w-0 text-corps text-neutre-900">Les P'tits Tous</span></li>
                   <li class="flex items-center gap-3"><span class="lieu shrink-0" aria-hidden="true"><svg class="w-[18px] h-[18px]"><use href="#l-parc"/></svg></span><span class="min-w-0 text-corps text-neutre-900">Parc Pouvillon</span></li>
                   <li class="flex items-start gap-3"><span class="lieu lieu--pose shrink-0 mt-0.5" aria-hidden="true"><svg class="w-[18px] h-[18px]"><use href="#l-autre"/></svg></span><span class="min-w-0 text-corps text-neutre-900">Le marché du samedi
@@ -1285,7 +1297,7 @@ textarea.champ{ field-sizing: content; resize: vertical; }
             </div>
             <div class="grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 py-3 border-b border-neutre-300">
               <dt class="text-[16px] font-semibold text-neutre-700">La phrase de la page</dt>
-              <dd class="col-start-1 m-0 text-corps text-neutre-900">Mes adresses pour souffler entre deux séances.</dd>
+              <dd class="@container col-start-1 m-0 text-corps text-neutre-900"><span class="block mots-entiers" style="--taille:var(--text-corps); --lettre:.56; --mot:8">Mes adresses pour souffler entre deux séances.</span></dd>
               <dd class="col-start-2 row-start-1 row-span-2 m-0"><a href="#ecran-4d" class="inline-flex items-center min-h-[44px] text-[16px] font-semibold text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">Modifier<span class="sr-only"> la phrase de la page des lieux</span></a></dd>
             </div>
           </dl>
@@ -1301,16 +1313,16 @@ textarea.champ{ field-sizing: content; resize: vertical; }
               </p>
               <p class="mt-2 text-[16px] text-neutre-700 break-words">cartoucherie<wbr>.fyi/<wbr>membre/<wbr>camille-roussel</p>
               <button type="button" data-qr="qr-camille"
-                      class="mt-4 inline-flex items-center gap-2 min-h-[48px] px-5 rounded-full text-corps font-semibold text-white bg-teal-700 hover:bg-teal-600">
-                <svg class="w-[18px] h-[18px]" aria-hidden="true"><use href="#i-dl"/></svg>
-                Télécharger le QR code
+                      class="@container mt-4 flex w-full items-center justify-center gap-2 min-h-[48px] px-[16px] text-center rounded-full text-corps font-semibold text-white bg-teal-700 hover:bg-teal-600">
+                <svg class="w-[18px] h-[18px] shrink-0" aria-hidden="true"><use href="#i-dl"/></svg>
+                <span class="mots-entiers" style="--taille:var(--text-corps); --lettre:.62; --mot:13">Télécharger le QR code</span>
               </button>
             </div>
           </div>
 
           <hr class="mt-10 border-0 border-t border-neutre-300">
           <div class="flex flex-wrap items-center justify-between gap-x-6">
-<a href="#etat-5" class="mt-2 inline-flex items-center gap-2 min-h-[44px] text-[16px] font-semibold text-rouge-700 underline underline-offset-4 decoration-rouge-300 hover:decoration-rouge-600">
+<a href="#etat-5" class="mt-2 inline-flex max-w-full items-center gap-2 min-h-[44px] text-[16px] font-semibold text-rouge-700 underline underline-offset-4 decoration-rouge-300 hover:decoration-rouge-600">
             <svg class="w-5 h-5" aria-hidden="true"><use href="#i-corbeille"/></svg>Supprimer ma fiche
           </a>
 <a href="#etat-6" class="mt-2 inline-flex items-center min-h-[44px] text-[16px] font-semibold text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">Se déconnecter</a>
@@ -1371,9 +1383,9 @@ textarea.champ{ field-sizing: content; resize: vertical; }
     <figure class="cadre" id="ecran-4a">
       <figcaption class="legende"><span class="tnum">4a</span> Modifier l'accroche — une seule étape</figcaption>
       <div class="ecran">
-        <form class="pb-[96px]" onsubmit="return false">
-          <header class="px-5 pt-2 pb-2 bg-white">
-            <div class="-mx-2 flex items-center justify-between gap-3">
+        <form class="pb-[150px]" onsubmit="return false">
+          <header class="@container px-5 pt-2 pb-2 bg-white">
+            <div class="-mx-2 flex flex-wrap items-center justify-between gap-x-3">
               <a href="#etat-3" class="inline-flex items-center gap-1.5 min-h-[44px] px-2 rounded-full text-corps font-semibold text-teal-700 hover:bg-teal-50">
                 <svg class="w-5 h-5" aria-hidden="true"><use href="#i-retour"/></svg>Mon espace
               </a>
@@ -1382,7 +1394,7 @@ textarea.champ{ field-sizing: content; resize: vertical; }
           </header>
           <div class="px-5" data-etat="ok">
             <div class="mt-4 flex items-start justify-between gap-3">
-              <h1 class="ff text-nom text-teal-900"><label for="m-accroche">En une phrase&nbsp;: ce que vous faites pour vos voisins</label></h1>
+              <h1 class="@container min-w-0 flex-1 ff text-nom text-teal-900"><label for="m-accroche" class="block mots-entiers" style="--taille:var(--text-nom); --mot:7">En une phrase&nbsp;: ce que vous faites pour vos voisins</label></h1>
               <button type="button" class="-mr-2 grid place-items-center w-11 h-11 shrink-0 rounded-full"
                       aria-expanded="false" aria-controls="m-accroche-aide" onclick="basculer(this)">
                 <span class="pastille pastille--teal w-7 h-7 bg-teal-50 ff text-[16px] text-teal-800" aria-hidden="true">?</span>
@@ -1397,14 +1409,14 @@ textarea.champ{ field-sizing: content; resize: vertical; }
                       class="champ mt-4 block w-full min-h-[104px] px-3.5 py-3 rounded-xl text-corps leading-relaxed text-neutre-900">J'aide adultes et ados à mieux dormir et à apprivoiser le stress, en cabinet ou en visio. Nouveau : un atelier le samedi matin à la Halle.</textarea>
             <p id="m-accroche-compte" class="compteur tnum mt-1.5 flex items-start justify-end gap-1.5 text-[16px]">138 / 160</p>
             <button type="button" aria-expanded="true" aria-controls="m-apercu" onclick="basculer(this)"
-                    class="mt-4 inline-flex items-center gap-2 min-h-[44px] px-4 rounded-full text-corps font-semibold text-teal-700 bg-teal-50 hover:bg-teal-100 aria-expanded:bg-teal-700 aria-expanded:text-white">
+                    class="mt-4 inline-flex max-w-full items-center gap-2 min-h-[44px] px-4 rounded-full text-corps font-semibold text-teal-700 bg-teal-50 hover:bg-teal-100 aria-expanded:bg-teal-700 aria-expanded:text-white">
               <svg class="w-5 h-5" aria-hidden="true"><use href="#i-oeil"/></svg>Aperçu
             </button>
-            <figure id="m-apercu" class="ventouses ventouses--teal mt-3 mx-0 mb-0 rounded-[24px] bg-neutre-100 p-3">
+            <figure id="m-apercu" class="ventouses ventouses--teal mt-3 mx-0 mb-0 rounded-[24px] bg-neutre-100 p-[12px]">
               <figcaption class="flex items-center gap-2 px-1.5 pt-0.5 pb-3 text-[16px] font-semibold text-teal-800">
                 <svg class="w-5 h-5" aria-hidden="true"><use href="#i-oeil"/></svg>Ce que vos voisins verront
               </figcaption>
-              <div class="@container carte rounded-[24px] bg-white p-5">
+              <div class="@container carte rounded-[24px] bg-white p-[20px]">
                 <p class="ff text-grand mots-entiers text-teal-900" style="--mot:7">Camille Roussel</p>
                 <p class="mt-1.5 text-[1.25rem] leading-snug mots-entiers text-neutre-800" style="--taille:1.25rem; --lettre:.56; --mot:11">Sophrologue</p>
                 <p class="mt-3 flex flex-wrap gap-2">
@@ -1420,7 +1432,7 @@ textarea.champ{ field-sizing: content; resize: vertical; }
           </div>
           <div class="fixed bottom-0 inset-x-0 z-40 bg-white/95 backdrop-blur-sm"
                style="box-shadow: 0 -4px 8px oklch(17.5% .03 202/.06), 0 -28px 64px -20px oklch(17.5% .03 202/.28)">
-            <div class="mx-auto max-w-[640px] px-4 py-3 flex items-center gap-3">
+            <div class="mx-auto max-w-[640px] px-4 py-3 flex flex-wrap items-center gap-3">
               <a href="#etat-3" class="inline-flex items-center justify-center min-h-[54px] px-5 rounded-full text-corps font-semibold text-teal-700 bg-teal-50 hover:bg-teal-100">
                 Annuler
               </a>
@@ -1439,14 +1451,15 @@ textarea.champ{ field-sizing: content; resize: vertical; }
       <figcaption class="legende"><span class="tnum">4b</span> Juste après «&nbsp;Enregistrer&nbsp;»</figcaption>
       <div class="ecran">
         <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-sm">
-          <div class="mx-auto max-w-[1160px] px-5 h-16 flex items-center justify-between gap-3">
-            <a href="../final/index.html" class="flex items-center gap-2.5 -ml-0.5" aria-label="Annuaire de la Cartoucherie, accueil">
+          <div class="mx-auto max-w-[1160px] px-5 min-h-16 flex flex-wrap items-center justify-between gap-3">
+            <a href="../final/index.html" class="flex items-center gap-2.5 -ml-0.5 min-h-[44px] py-1">
               <svg class="w-8 h-8 text-teal-700 shrink-0" aria-hidden="true"><use href="#i-ventouse"/></svg>
               <span class="leading-none">
                 <span class="block text-[11.5px] uppercase tracking-[.18em] text-neutre-700 font-semibold">Annuaire de</span>
                 <span class="ff block text-[20px] text-teal-900 leading-tight">la Cartoucherie</span>
               </span>
-            </a>
+            <span class="sr-only">, Accueil</span>
+          </a>
             <a href="../final/index.html" class="inline-flex items-center gap-2 min-h-[44px] px-3.5 rounded-full text-etiquette tracking-normal font-semibold text-teal-700 hover:bg-teal-50">
               <svg class="w-5 h-5" aria-hidden="true"><use href="#i-retour"/></svg>
               <span>Annuaire</span><span class="sr-only">— retour à la liste des voisins</span>
@@ -1455,19 +1468,19 @@ textarea.champ{ field-sizing: content; resize: vertical; }
           <div class="filet h-[3px]"></div>
         </header>
 
-        <div class="px-5 pt-7 pb-10">
+        <div class="@container px-5 pt-7 pb-10">
           <p class="text-etiquette font-semibold uppercase text-sauge-800">Mon espace</p>
-          <h1 class="ff mt-1.5 text-nom text-teal-900">Votre fiche</h1>
+          <h1 class="ff mt-1.5 text-nom mots-entiers text-teal-900" style="--taille:var(--text-nom); --mot:5">Votre fiche</h1>
 
-          <div role="status" class="mt-5 flex items-start gap-4 rounded-[22px] bg-teal-50 p-5">
+          <div role="status" class="mt-5 flex flex-wrap items-start gap-x-4 gap-y-3 rounded-[22px] bg-teal-50 p-5">
             <span class="pastille pastille--teal w-11 h-11 mt-0.5 bg-white text-teal-600" aria-hidden="true"><svg class="respire w-[22px] h-[22px]"><use href="#i-ventouse"/></svg></span>
-            <div class="min-w-0">
+            <div class="@container min-w-[min(12rem,100%)] flex-1">
               <p class="ff text-[22px] leading-tight text-teal-950">Mise en ligne en cours…</p>
               <p class="mt-1.5 text-[16px] leading-snug text-teal-950">Vos changements seront visibles d'ici quelques minutes.</p>
             </div>
           </div>
 
-          <figure class="ventouses ventouses--teal mt-6 m-0 rounded-[24px] bg-neutre-100 p-3">
+          <figure class="ventouses ventouses--teal mt-6 m-0 rounded-[24px] bg-neutre-100 p-[12px]">
             <figcaption class="flex items-center gap-2 px-1.5 pt-0.5 pb-3 text-[16px] font-semibold text-teal-800">
               <svg class="w-5 h-5" aria-hidden="true"><use href="#i-oeil"/></svg>Ce que vos voisins verront
             </figcaption>
@@ -1482,8 +1495,8 @@ textarea.champ{ field-sizing: content; resize: vertical; }
                          style="object-position:50% 22%; box-shadow: 0 0 0 6px #fff, var(--shadow-carte)">
                   </div>
                 </div>
-                <div class="px-5 relative -mt-8">
-                  <div class="@container carte rounded-[24px] bg-white p-5">
+                <div class="px-[16px] relative -mt-8">
+                  <div class="@container carte rounded-[24px] bg-white p-[20px]">
                     <p class="ff text-grand mots-entiers text-teal-900" style="--mot:7">Camille Roussel</p>
                     <p class="mt-1.5 text-[1.25rem] leading-snug mots-entiers text-neutre-800" style="--taille:1.25rem; --lettre:.56; --mot:11">Sophrologue</p>
                     <p class="mt-3 flex flex-wrap gap-2">
@@ -1515,9 +1528,9 @@ textarea.champ{ field-sizing: content; resize: vertical; }
     <figure class="cadre" id="ecran-4c">
       <figcaption class="legende"><span class="tnum">4c</span> Modifier «&nbsp;Mon déclic&nbsp;» — la page suit</figcaption>
       <div class="ecran">
-        <form class="pb-[96px]" onsubmit="return false">
-          <header class="px-5 pt-2 pb-2 bg-white">
-            <div class="-mx-2 flex items-center justify-between gap-3">
+        <form class="pb-[150px]" onsubmit="return false">
+          <header class="@container px-5 pt-2 pb-2 bg-white">
+            <div class="-mx-2 flex flex-wrap items-center justify-between gap-x-3">
               <a href="#etat-3" class="inline-flex items-center gap-1.5 min-h-[44px] px-2 rounded-full text-corps font-semibold text-teal-700 hover:bg-teal-50">
                 <svg class="w-5 h-5" aria-hidden="true"><use href="#i-retour"/></svg>Mon espace
               </a>
@@ -1541,7 +1554,7 @@ textarea.champ{ field-sizing: content; resize: vertical; }
               <span class="text-[16px] text-neutre-700">(facultatif)</span>
             </div>
 
-            <figure class="ventouses ventouses--teal mt-6 mx-0 mb-0 rounded-[24px] bg-neutre-100 p-3">
+            <figure class="ventouses ventouses--teal mt-6 mx-0 mb-0 rounded-[24px] bg-neutre-100 p-[12px]">
               <figcaption class="flex items-center gap-2 px-1.5 pt-0.5 pb-3 text-[16px] font-semibold text-teal-800">
                 <svg class="w-5 h-5" aria-hidden="true"><use href="#i-oeil"/></svg>Votre page 3 sur 5
               </figcaption>
@@ -1568,7 +1581,7 @@ textarea.champ{ field-sizing: content; resize: vertical; }
           </div>
           <div class="fixed bottom-0 inset-x-0 z-40 bg-white/95 backdrop-blur-sm"
                style="box-shadow: 0 -4px 8px oklch(17.5% .03 202/.06), 0 -28px 64px -20px oklch(17.5% .03 202/.28)">
-            <div class="mx-auto max-w-[640px] px-4 py-3 flex items-center gap-3">
+            <div class="mx-auto max-w-[640px] px-4 py-3 flex flex-wrap items-center gap-3">
               <a href="#etat-3" class="inline-flex items-center justify-center min-h-[54px] px-5 rounded-full text-corps font-semibold text-teal-700 bg-teal-50 hover:bg-teal-100">
                 Annuler
               </a>
@@ -1587,9 +1600,9 @@ textarea.champ{ field-sizing: content; resize: vertical; }
     <figure class="cadre" id="ecran-4d">
       <figcaption class="legende"><span class="tnum">4d</span> Mes lieux favoris — un lieu attend Adrien</figcaption>
       <div class="ecran">
-        <form class="pb-[96px]" onsubmit="return false">
-          <header class="px-5 pt-2 pb-2 bg-white">
-            <div class="-mx-2 flex items-center justify-between gap-3">
+        <form class="pb-[150px]" onsubmit="return false">
+          <header class="@container px-5 pt-2 pb-2 bg-white">
+            <div class="-mx-2 flex flex-wrap items-center justify-between gap-x-3">
               <a href="#etat-3" class="inline-flex items-center gap-1.5 min-h-[44px] px-2 rounded-full text-corps font-semibold text-teal-700 hover:bg-teal-50">
                 <svg class="w-5 h-5" aria-hidden="true"><use href="#i-retour"/></svg>Mon espace
               </a>
@@ -1598,13 +1611,13 @@ textarea.champ{ field-sizing: content; resize: vertical; }
           </header>
           <div class="px-5 pt-4">
             <fieldset class="min-w-0 border-0 p-0 m-0">
-              <legend class="ff text-[24px] leading-tight text-teal-900">Vos lieux favoris à la Cartoucherie</legend>
+              <legend class="ff mots-entiers leading-tight text-teal-900" style="--taille:24px; --mot:12">Vos lieux favoris à la Cartoucherie</legend>
               <p class="mt-1 text-[16px] text-neutre-700">3 sur 5</p>
-              <ul class="mt-4 grid gap-3 list-none p-0 m-0">
+              <ul class="mt-4 grid grid-cols-[minmax(0,1fr)] gap-3 list-none p-0 m-0">
                 <li class="rounded-[18px] bg-neutre-100 p-3.5">
-                  <div class="flex items-center gap-3">
+                  <div class="flex flex-wrap items-center gap-3">
                     <span class="lieu shrink-0" aria-hidden="true"><svg class="w-[18px] h-[18px]"><use href="#l-cafe"/></svg></span>
-                    <span class="min-w-0 flex-1"><span class="ff block text-[19px] leading-tight text-teal-900">Les P'tits Tous</span><span class="block text-[16px] text-neutre-700">Café, bar</span></span>
+                    <span class="min-w-[min(8rem,100%)] flex-1"><span class="ff block text-[19px] leading-tight text-teal-900">Les P'tits Tous</span><span class="block text-[16px] text-neutre-700">Café, bar</span></span>
                     <button type="button" aria-label="Retirer Les P'tits Tous" class="grid place-items-center w-11 h-11 shrink-0 rounded-full text-teal-700 hover:bg-white"><svg class="w-5 h-5" aria-hidden="true"><use href="#i-corbeille"/></svg></button>
                   </div>
                   <div class="mt-3" data-etat="ok">
@@ -1615,9 +1628,9 @@ textarea.champ{ field-sizing: content; resize: vertical; }
                   </div>
                 </li>
                 <li class="rounded-[18px] bg-neutre-100 p-3.5">
-                  <div class="flex items-center gap-3">
+                  <div class="flex flex-wrap items-center gap-3">
                     <span class="lieu shrink-0" aria-hidden="true"><svg class="w-[18px] h-[18px]"><use href="#l-parc"/></svg></span>
-                    <span class="min-w-0 flex-1"><span class="ff block text-[19px] leading-tight text-teal-900">Parc Pouvillon</span><span class="block text-[16px] text-neutre-700">Parc, jardin</span></span>
+                    <span class="min-w-[min(8rem,100%)] flex-1"><span class="ff block text-[19px] leading-tight text-teal-900">Parc Pouvillon</span><span class="block text-[16px] text-neutre-700">Parc, jardin</span></span>
                     <button type="button" aria-label="Retirer Parc Pouvillon" class="grid place-items-center w-11 h-11 shrink-0 rounded-full text-teal-700 hover:bg-white"><svg class="w-5 h-5" aria-hidden="true"><use href="#i-corbeille"/></svg></button>
                   </div>
                   <div class="mt-3" data-etat="ok">
@@ -1629,9 +1642,9 @@ textarea.champ{ field-sizing: content; resize: vertical; }
                 </li>
                 <!-- posé par Camille avec « Placer sur la carte » : le repère en pointillés, la pastille « En attente » -->
                 <li class="rounded-[18px] bg-neutre-100 p-3.5">
-                  <div class="flex items-center gap-3">
+                  <div class="flex flex-wrap items-center gap-3">
                     <span class="lieu lieu--pose shrink-0" aria-hidden="true"><svg class="w-[18px] h-[18px]"><use href="#l-autre"/></svg></span>
-                    <span class="min-w-0 flex-1 pl-1"><span class="ff block text-[19px] leading-tight text-teal-900">Le marché du samedi</span><span class="block text-[16px] text-neutre-700">Autre · posé sur le plan</span></span>
+                    <span class="min-w-[min(8rem,100%)] flex-1"><span class="ff block text-[19px] leading-tight text-teal-900">Le marché du samedi</span><span class="block text-[16px] text-neutre-700">Autre · posé sur le plan</span></span>
                     <button type="button" aria-label="Retirer Le marché du samedi" class="grid place-items-center w-11 h-11 shrink-0 rounded-full text-teal-700 hover:bg-white"><svg class="w-5 h-5" aria-hidden="true"><use href="#i-corbeille"/></svg></button>
                   </div>
                   <p class="mt-2.5 flex flex-wrap items-center gap-x-2.5 gap-y-1.5 text-[16px] text-neutre-700">
@@ -1646,7 +1659,7 @@ textarea.champ{ field-sizing: content; resize: vertical; }
                   </div>
                 </li>
               </ul>
-              <button type="button" class="mt-4 inline-flex items-center gap-2 min-h-[48px] px-5 rounded-full text-corps font-semibold text-teal-700 bg-teal-50 hover:bg-teal-100">
+              <button type="button" class="mt-4 inline-flex max-w-full items-center gap-2 min-h-[48px] px-5 rounded-full text-corps font-semibold text-teal-700 bg-teal-50 hover:bg-teal-100">
                 <svg class="w-5 h-5" aria-hidden="true"><use href="#i-plus"/></svg>Ajouter un lieu
               </button>
             </fieldset>
@@ -1658,7 +1671,7 @@ textarea.champ{ field-sizing: content; resize: vertical; }
               <p id="m-l-phrase-compte" class="compteur tnum mt-1.5 flex items-start justify-end gap-1.5 text-[16px]">46 / 160</p>
             </div>
 
-            <figure class="ventouses ventouses--teal mt-6 mx-0 mb-0 rounded-[24px] bg-neutre-100 p-3">
+            <figure class="ventouses ventouses--teal mt-6 mx-0 mb-0 rounded-[24px] bg-neutre-100 p-[12px]">
               <figcaption class="flex items-center gap-2 px-1.5 pt-0.5 pb-3 text-[16px] font-semibold text-teal-800">
                 <svg class="w-5 h-5" aria-hidden="true"><use href="#i-oeil"/></svg>Votre page 4 sur 5
               </figcaption>
@@ -1690,7 +1703,7 @@ textarea.champ{ field-sizing: content; resize: vertical; }
           </div>
           <div class="fixed bottom-0 inset-x-0 z-40 bg-white/95 backdrop-blur-sm"
                style="box-shadow: 0 -4px 8px oklch(17.5% .03 202/.06), 0 -28px 64px -20px oklch(17.5% .03 202/.28)">
-            <div class="mx-auto max-w-[640px] px-4 py-3 flex items-center gap-3">
+            <div class="mx-auto max-w-[640px] px-4 py-3 flex flex-wrap items-center gap-3">
               <a href="#etat-3" class="inline-flex items-center justify-center min-h-[54px] px-5 rounded-full text-corps font-semibold text-teal-700 bg-teal-50 hover:bg-teal-100">
                 Annuler
               </a>
@@ -1731,14 +1744,15 @@ textarea.champ{ field-sizing: content; resize: vertical; }
       <figcaption class="legende"><span class="tnum">5a</span> La confirmation</figcaption>
       <div class="ecran">
         <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-sm">
-          <div class="mx-auto max-w-[1160px] px-5 h-16 flex items-center justify-between gap-3">
-            <a href="../final/index.html" class="flex items-center gap-2.5 -ml-0.5" aria-label="Annuaire de la Cartoucherie, accueil">
+          <div class="mx-auto max-w-[1160px] px-5 min-h-16 flex flex-wrap items-center justify-between gap-3">
+            <a href="../final/index.html" class="flex items-center gap-2.5 -ml-0.5 min-h-[44px] py-1">
               <svg class="w-8 h-8 text-teal-700 shrink-0" aria-hidden="true"><use href="#i-ventouse"/></svg>
               <span class="leading-none">
                 <span class="block text-[11.5px] uppercase tracking-[.18em] text-neutre-700 font-semibold">Annuaire de</span>
                 <span class="ff block text-[20px] text-teal-900 leading-tight">la Cartoucherie</span>
               </span>
-            </a>
+            <span class="sr-only">, Accueil</span>
+          </a>
             <a href="../final/index.html" class="inline-flex items-center gap-2 min-h-[44px] px-3.5 rounded-full text-etiquette tracking-normal font-semibold text-teal-700 hover:bg-teal-50">
               <svg class="w-5 h-5" aria-hidden="true"><use href="#i-retour"/></svg>
               <span>Annuaire</span><span class="sr-only">— retour à la liste des voisins</span>
@@ -1747,7 +1761,7 @@ textarea.champ{ field-sizing: content; resize: vertical; }
           <div class="filet h-[3px]"></div>
         </header>
 
-        <form class="px-5 pt-2 pb-10" onsubmit="return false">
+        <form class="@container px-5 pt-2 pb-10" onsubmit="return false">
           <a href="#etat-3" class="-mx-2 inline-flex items-center gap-1.5 min-h-[44px] px-2 rounded-full text-corps font-semibold text-teal-700 hover:bg-teal-50">
             <svg class="w-5 h-5" aria-hidden="true"><use href="#i-retour"/></svg>Mon espace
           </a>
@@ -1761,14 +1775,14 @@ textarea.champ{ field-sizing: content; resize: vertical; }
             </div>
           </div>
 
-          <h1 class="ff mt-6 text-nom text-teal-900">Supprimer votre fiche&nbsp;?</h1>
+          <h1 class="ff mt-6 text-nom mots-entiers text-teal-900" style="--taille:var(--text-nom); --mot:9">Supprimer votre fiche&nbsp;?</h1>
 
           <div class="mt-5 rounded-[22px] bg-rouge-50 p-5">
-            <p class="flex items-start gap-2.5 text-corps font-semibold text-teal-950">
+            <p class="flex flex-wrap items-start gap-2.5 text-corps font-semibold text-teal-950">
               <span class="pastille pastille--rouge w-9 h-9 bg-white text-rouge-700" aria-hidden="true"><svg class="w-[18px] h-[18px]"><use href="#i-corbeille"/></svg></span>
               <span class="pt-1.5">Seront effacés&nbsp;:</span>
             </p>
-            <ul class="mt-3 grid gap-1.5 list-none p-0 m-0 text-corps leading-snug text-teal-950">
+            <ul class="mt-3 grid grid-cols-[minmax(0,1fr)] gap-1.5 list-none p-0 m-0 text-corps leading-snug text-teal-950">
               <li class="flex gap-2.5"><svg class="w-4 h-4 mt-1.5 shrink-0 text-rouge-700" aria-hidden="true"><use href="#i-fermer"/></svg>votre fiche et tous ses textes</li>
               <li class="flex gap-2.5"><svg class="w-4 h-4 mt-1.5 shrink-0 text-rouge-700" aria-hidden="true"><use href="#i-fermer"/></svg>votre photo et vos pages «&nbsp;Votre histoire&nbsp;»</li>
               <li class="flex gap-2.5"><svg class="w-4 h-4 mt-1.5 shrink-0 text-rouge-700" aria-hidden="true"><use href="#i-fermer"/></svg>votre point sur le plan du quartier</li>
@@ -1795,14 +1809,15 @@ textarea.champ{ field-sizing: content; resize: vertical; }
       <figcaption class="legende"><span class="tnum">5b</span> C'est fait</figcaption>
       <div class="ecran">
         <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-sm">
-          <div class="mx-auto max-w-[1160px] px-5 h-16 flex items-center justify-between gap-3">
-            <a href="../final/index.html" class="flex items-center gap-2.5 -ml-0.5" aria-label="Annuaire de la Cartoucherie, accueil">
+          <div class="mx-auto max-w-[1160px] px-5 min-h-16 flex flex-wrap items-center justify-between gap-3">
+            <a href="../final/index.html" class="flex items-center gap-2.5 -ml-0.5 min-h-[44px] py-1">
               <svg class="w-8 h-8 text-teal-700 shrink-0" aria-hidden="true"><use href="#i-ventouse"/></svg>
               <span class="leading-none">
                 <span class="block text-[11.5px] uppercase tracking-[.18em] text-neutre-700 font-semibold">Annuaire de</span>
                 <span class="ff block text-[20px] text-teal-900 leading-tight">la Cartoucherie</span>
               </span>
-            </a>
+            <span class="sr-only">, Accueil</span>
+          </a>
             <a href="../final/index.html" class="inline-flex items-center gap-2 min-h-[44px] px-3.5 rounded-full text-etiquette tracking-normal font-semibold text-teal-700 hover:bg-teal-50">
               <svg class="w-5 h-5" aria-hidden="true"><use href="#i-retour"/></svg>
               <span>Annuaire</span><span class="sr-only">— retour à la liste des voisins</span>
@@ -1811,9 +1826,9 @@ textarea.champ{ field-sizing: content; resize: vertical; }
           <div class="filet h-[3px]"></div>
         </header>
 
-        <div class="px-5 pt-10 pb-12">
+        <div class="@container px-5 pt-10 pb-12">
           <span class="pastille pastille--teal w-14 h-14 bg-white text-teal-700" aria-hidden="true"><svg class="w-7 h-7"><use href="#i-coche"/></svg></span>
-          <h1 class="ff mt-6 text-nom text-teal-900" tabindex="-1">Votre fiche est supprimée</h1>
+          <h1 class="ff mt-6 text-nom mots-entiers text-teal-900" tabindex="-1" style="--taille:var(--text-nom); --mot:9">Votre fiche est supprimée</h1>
           <p class="mt-3 text-corps text-neutre-900">Elle est effacée, avec votre photo et vos pages «&nbsp;Votre histoire&nbsp;». Elle quitte l'annuaire et le plan d'ici quelques minutes. Un e-mail vous le confirme.</p>
           <p class="mt-3 text-[16px] leading-snug text-neutre-700">Vous pourrez en créer une autre quand vous voudrez&nbsp;; Adrien la relira avant de la publier.</p>
           <div class="mt-7 flex flex-col items-start gap-3">
@@ -1851,14 +1866,15 @@ textarea.champ{ field-sizing: content; resize: vertical; }
       <figcaption class="legende"><span class="tnum">6a</span> Session expirée — se reconnecter</figcaption>
       <div class="ecran">
         <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-sm">
-          <div class="mx-auto max-w-[1160px] px-5 h-16 flex items-center justify-between gap-3">
-            <a href="../final/index.html" class="flex items-center gap-2.5 -ml-0.5" aria-label="Annuaire de la Cartoucherie, accueil">
+          <div class="mx-auto max-w-[1160px] px-5 min-h-16 flex flex-wrap items-center justify-between gap-3">
+            <a href="../final/index.html" class="flex items-center gap-2.5 -ml-0.5 min-h-[44px] py-1">
               <svg class="w-8 h-8 text-teal-700 shrink-0" aria-hidden="true"><use href="#i-ventouse"/></svg>
               <span class="leading-none">
                 <span class="block text-[11.5px] uppercase tracking-[.18em] text-neutre-700 font-semibold">Annuaire de</span>
                 <span class="ff block text-[20px] text-teal-900 leading-tight">la Cartoucherie</span>
               </span>
-            </a>
+            <span class="sr-only">, Accueil</span>
+          </a>
             <a href="../final/index.html" class="inline-flex items-center gap-2 min-h-[44px] px-3.5 rounded-full text-etiquette tracking-normal font-semibold text-teal-700 hover:bg-teal-50">
               <svg class="w-5 h-5" aria-hidden="true"><use href="#i-retour"/></svg>
               <span>Annuaire</span><span class="sr-only">— retour à la liste des voisins</span>
@@ -1867,17 +1883,17 @@ textarea.champ{ field-sizing: content; resize: vertical; }
           <div class="filet h-[3px]"></div>
         </header>
 
-        <form class="px-5 pt-6 pb-10" onsubmit="return false">
-          <div role="status" class="flex items-start gap-4 rounded-[22px] bg-teal-50 p-5">
+        <form class="@container px-5 pt-6 pb-10" onsubmit="return false">
+          <div role="status" class="flex flex-wrap items-start gap-x-4 gap-y-3 rounded-[22px] bg-teal-50 p-5">
             <span class="pastille pastille--teal w-11 h-11 mt-0.5 bg-white text-teal-700" aria-hidden="true"><svg class="w-[22px] h-[22px]"><use href="#i-horloge"/></svg></span>
-            <div class="min-w-0">
+            <div class="@container min-w-[min(12rem,100%)] flex-1">
               <p class="ff text-[22px] leading-tight text-teal-950">Session expirée</p>
               <p class="mt-1.5 text-[16px] leading-snug text-teal-950">Par sécurité, on redemande votre e-mail tous les 30 jours. Votre fiche n'a pas bougé.</p>
             </div>
           </div>
 
           <p class="mt-8 text-etiquette font-semibold uppercase text-sauge-800">Espace entrepreneur</p>
-          <h1 class="ff mt-1.5 text-nom text-teal-900">Connexion</h1>
+          <h1 class="ff mt-1.5 text-nom mots-entiers text-teal-900" style="--taille:var(--text-nom); --mot:9">Connexion</h1>
           <p class="mt-3 text-corps text-neutre-800">Sans mot de passe&nbsp;: on vous envoie un lien par e-mail.</p>
           <div class="mt-6" data-etat="ok">
             <label for="co-mail" class="block text-[16px] font-semibold text-neutre-800">Votre e-mail</label>
@@ -1929,14 +1945,15 @@ textarea.champ{ field-sizing: content; resize: vertical; }
       <figcaption class="legende"><span class="tnum">6b</span> Lien envoyé</figcaption>
       <div class="ecran">
         <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-sm">
-          <div class="mx-auto max-w-[1160px] px-5 h-16 flex items-center justify-between gap-3">
-            <a href="../final/index.html" class="flex items-center gap-2.5 -ml-0.5" aria-label="Annuaire de la Cartoucherie, accueil">
+          <div class="mx-auto max-w-[1160px] px-5 min-h-16 flex flex-wrap items-center justify-between gap-3">
+            <a href="../final/index.html" class="flex items-center gap-2.5 -ml-0.5 min-h-[44px] py-1">
               <svg class="w-8 h-8 text-teal-700 shrink-0" aria-hidden="true"><use href="#i-ventouse"/></svg>
               <span class="leading-none">
                 <span class="block text-[11.5px] uppercase tracking-[.18em] text-neutre-700 font-semibold">Annuaire de</span>
                 <span class="ff block text-[20px] text-teal-900 leading-tight">la Cartoucherie</span>
               </span>
-            </a>
+            <span class="sr-only">, Accueil</span>
+          </a>
             <a href="../final/index.html" class="inline-flex items-center gap-2 min-h-[44px] px-3.5 rounded-full text-etiquette tracking-normal font-semibold text-teal-700 hover:bg-teal-50">
               <svg class="w-5 h-5" aria-hidden="true"><use href="#i-retour"/></svg>
               <span>Annuaire</span><span class="sr-only">— retour à la liste des voisins</span>
@@ -1945,9 +1962,9 @@ textarea.champ{ field-sizing: content; resize: vertical; }
           <div class="filet h-[3px]"></div>
         </header>
 
-        <div class="px-5 pt-10 pb-10">
+        <div class="@container px-5 pt-10 pb-10">
           <span class="pastille pastille--teal w-16 h-16 bg-teal-50 text-teal-700" aria-hidden="true"><svg class="w-8 h-8"><use href="#i-mail"/></svg></span>
-          <h1 class="ff mt-6 text-nom text-teal-900">Regardez vos e-mails</h1>
+          <h1 class="ff mt-6 text-nom mots-entiers text-teal-900" style="--taille:var(--text-nom); --mot:8">Regardez vos e-mails</h1>
           <p class="mt-3 text-corps text-neutre-800">Lien envoyé à <strong class="font-semibold text-neutre-900 break-words">camille<wbr>.roussel<wbr>@example<wbr>.fr</strong>. Il sert une fois, pendant 15&nbsp;minutes.</p>
           <p class="mt-3 text-[16px] text-neutre-700">Rien reçu&nbsp;? Regardez dans les courriers indésirables.</p>
           <div class="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2">
@@ -1965,14 +1982,15 @@ textarea.champ{ field-sizing: content; resize: vertical; }
       <figcaption class="legende"><span class="tnum">6c</span> Le lien a expiré</figcaption>
       <div class="ecran">
         <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-sm">
-          <div class="mx-auto max-w-[1160px] px-5 h-16 flex items-center justify-between gap-3">
-            <a href="../final/index.html" class="flex items-center gap-2.5 -ml-0.5" aria-label="Annuaire de la Cartoucherie, accueil">
+          <div class="mx-auto max-w-[1160px] px-5 min-h-16 flex flex-wrap items-center justify-between gap-3">
+            <a href="../final/index.html" class="flex items-center gap-2.5 -ml-0.5 min-h-[44px] py-1">
               <svg class="w-8 h-8 text-teal-700 shrink-0" aria-hidden="true"><use href="#i-ventouse"/></svg>
               <span class="leading-none">
                 <span class="block text-[11.5px] uppercase tracking-[.18em] text-neutre-700 font-semibold">Annuaire de</span>
                 <span class="ff block text-[20px] text-teal-900 leading-tight">la Cartoucherie</span>
               </span>
-            </a>
+            <span class="sr-only">, Accueil</span>
+          </a>
             <a href="../final/index.html" class="inline-flex items-center gap-2 min-h-[44px] px-3.5 rounded-full text-etiquette tracking-normal font-semibold text-teal-700 hover:bg-teal-50">
               <svg class="w-5 h-5" aria-hidden="true"><use href="#i-retour"/></svg>
               <span>Annuaire</span><span class="sr-only">— retour à la liste des voisins</span>
@@ -1981,9 +1999,9 @@ textarea.champ{ field-sizing: content; resize: vertical; }
           <div class="filet h-[3px]"></div>
         </header>
 
-        <form class="px-5 pt-10 pb-10" onsubmit="return false">
+        <form class="@container px-5 pt-10 pb-10" onsubmit="return false">
           <span class="pastille pastille--sable w-16 h-16 bg-white text-sable-800" aria-hidden="true"><svg class="w-8 h-8"><use href="#i-horloge"/></svg></span>
-          <h1 class="ff mt-6 text-nom text-teal-900">Ce lien a expiré</h1>
+          <h1 class="ff mt-6 text-nom mots-entiers text-teal-900" style="--taille:var(--text-nom); --mot:6">Ce lien a expiré</h1>
           <p class="mt-3 text-corps text-neutre-800">Un lien sert une fois, pendant 15&nbsp;minutes. Votre brouillon, lui, est gardé&nbsp;: demandez un nouveau lien.</p>
           <div class="mt-6" data-etat="ok">
             <label for="co-mail-c" class="block text-[16px] font-semibold text-neutre-800">Votre e-mail</label>
@@ -2024,14 +2042,15 @@ textarea.champ{ field-sizing: content; resize: vertical; }
       <figcaption class="legende"><span class="tnum">3</span> En ligne — ordinateur, 1&nbsp;240&nbsp;px</figcaption>
       <div class="ecran ecran--large">
         <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-sm">
-          <div class="mx-auto max-w-[1160px] px-5 h-16 flex items-center justify-between gap-3">
-            <a href="../final/index.html" class="flex items-center gap-2.5 -ml-0.5" aria-label="Annuaire de la Cartoucherie, accueil">
+          <div class="mx-auto max-w-[1160px] px-5 min-h-16 flex flex-wrap items-center justify-between gap-3">
+            <a href="../final/index.html" class="flex items-center gap-2.5 -ml-0.5 min-h-[44px] py-1">
               <svg class="w-8 h-8 text-teal-700 shrink-0" aria-hidden="true"><use href="#i-ventouse"/></svg>
               <span class="leading-none">
                 <span class="block text-[11.5px] uppercase tracking-[.18em] text-neutre-700 font-semibold">Annuaire de</span>
                 <span class="ff block text-[20px] text-teal-900 leading-tight">la Cartoucherie</span>
               </span>
-            </a>
+            <span class="sr-only">, Accueil</span>
+          </a>
             <a href="../final/index.html" class="inline-flex items-center gap-2 min-h-[44px] px-3.5 rounded-full text-etiquette tracking-normal font-semibold text-teal-700 hover:bg-teal-50">
               <svg class="w-5 h-5" aria-hidden="true"><use href="#i-retour"/></svg>
               <span>Annuaire</span><span class="sr-only">— retour à la liste des voisins</span>
@@ -2047,32 +2066,32 @@ textarea.champ{ field-sizing: content; resize: vertical; }
             <h1 class="ff mt-1.5 text-grand text-teal-900">Votre fiche</h1>
 
             <div class="mt-6 grid grid-cols-2 gap-5 items-start">
-              <div role="status" class="flex items-start gap-4 rounded-[22px] bg-sauge-50 p-5" style="box-shadow: inset 0 0 0 1px var(--color-sauge-200)">
+              <div role="status" class="flex flex-wrap items-start gap-x-4 gap-y-3 rounded-[22px] bg-sauge-50 p-5" style="box-shadow: inset 0 0 0 1px var(--color-sauge-200)">
                 <span class="pastille w-11 h-11 mt-0.5 bg-white text-sauge-700" aria-hidden="true"><svg class="w-[22px] h-[22px]"><use href="#i-coche"/></svg></span>
-                <div class="@container min-w-0 flex-1">
+                <div class="@container min-w-[min(12rem,100%)] flex-1">
                   <p class="ff text-[22px] leading-tight text-teal-950">En ligne</p>
                   <!-- l'adresse en mots entiers : à 200 %, la colonne n'a plus que 80 px -->
                   <p class="mt-1.5 leading-snug text-teal-950 mots-entiers" style="--taille:16px; --lettre:.56; --mot:12">cartoucherie<wbr>.fyi/<wbr>membre/<wbr>camille-roussel</p>
-                  <a href="../final/membre.html" class="mt-2 inline-flex items-center gap-1.5 min-h-[44px] text-corps font-semibold text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">
+                  <a href="../final/membre.html" class="mt-2 inline-flex max-w-full items-center gap-1.5 min-h-[44px] text-corps font-semibold text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">
                     Voir ma fiche<svg class="w-4 h-4" aria-hidden="true"><use href="#i-chev"/></svg>
                   </a>
                 </div>
               </div>
 
               <aside data-rappel aria-labelledby="rappel-d" class="relative rounded-[22px] bg-teal-50 p-5 pr-12">
-                <div class="flex items-start gap-4">
+                <div class="flex flex-wrap items-start gap-x-4 gap-y-3">
                   <div class="w-[72px] h-[72px] shrink-0 rounded-full bg-white overflow-hidden grid place-items-center"
                        style="box-shadow: inset 0 0 0 1.5px var(--color-teal-200)">
                     <img src="../_shared/colly/colly-joyeux.png" alt="" width="260" height="260" class="croquis w-[88px] h-auto">
                   </div>
-                  <div class="min-w-0">
+                  <div class="min-w-[min(12rem,100%)] flex-1">
                     <h2 id="rappel-d" class="ff text-[21px] leading-tight text-teal-950">Ajoutez votre fiche Google</h2>
                     <p class="mt-1.5 text-[16px] leading-snug text-teal-950">Vos voisins liront vos avis Google depuis votre fiche.</p>
+                    <a href="#etape-9" class="mt-4 inline-flex max-w-full items-center gap-2 min-h-[48px] px-[16px] rounded-full text-corps font-semibold text-white bg-teal-700 hover:bg-teal-600">
+                      Ajouter le lien
+                    </a>
                   </div>
                 </div>
-                <a href="#etape-9" class="mt-4 ml-[88px] inline-flex items-center gap-2 min-h-[48px] px-5 rounded-full text-corps font-semibold text-white bg-teal-700 hover:bg-teal-600">
-                  Ajouter le lien
-                </a>
                 <button type="button" aria-label="Masquer ce rappel" onclick="this.closest('[data-rappel]').hidden = true"
                         class="absolute top-2 right-2 grid place-items-center w-11 h-11 rounded-full text-teal-800 hover:bg-teal-100">
                   <svg class="w-5 h-5" aria-hidden="true"><use href="#i-fermer"/></svg>
@@ -2088,12 +2107,12 @@ textarea.champ{ field-sizing: content; resize: vertical; }
                 <dl class="mt-2 m-0 border-t border-neutre-300">
                   <div class="grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 py-3 border-b border-neutre-300">
                     <dt class="text-[16px] font-semibold text-neutre-700">Nom</dt>
-                    <dd class="col-start-1 m-0 text-corps text-neutre-900">Camille Roussel</dd>
+                    <dd class="@container col-start-1 m-0 text-corps text-neutre-900"><span class="block mots-entiers" style="--taille:var(--text-corps); --lettre:.56; --mot:7">Camille Roussel</span></dd>
                     <dd class="col-start-2 row-start-1 row-span-2 m-0"><a href="#etape-1" class="inline-flex items-center min-h-[44px] text-[16px] font-semibold text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">Modifier<span class="sr-only"> le nom</span></a></dd>
                   </div>
                   <div class="grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 py-3 border-b border-neutre-300">
                     <dt class="text-[16px] font-semibold text-neutre-700">On écrit</dt>
-                    <dd class="col-start-1 m-0 text-corps text-neutre-900">elle — «&nbsp;Ce qu'elle propose&nbsp;»</dd>
+                    <dd class="@container col-start-1 m-0 text-corps text-neutre-900"><span class="block mots-entiers" style="--taille:var(--text-corps); --lettre:.56; --mot:7">elle — «&nbsp;Ce qu'elle propose&nbsp;»</span></dd>
                     <dd class="col-start-2 row-start-1 row-span-2 m-0"><a href="#etape-1" class="inline-flex items-center min-h-[44px] text-[16px] font-semibold text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">Modifier<span class="sr-only"> l'accord</span></a></dd>
                   </div>
                   <div class="grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 py-3 border-b border-neutre-300">
@@ -2106,7 +2125,7 @@ textarea.champ{ field-sizing: content; resize: vertical; }
                 <dl class="mt-2 m-0 border-t border-neutre-300">
                   <div class="grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 py-3 border-b border-neutre-300">
                     <dt class="text-[16px] font-semibold text-neutre-700">Adresse</dt>
-                    <dd class="col-start-1 m-0 text-corps text-neutre-900">14 rue Paul Mesplé, 31300 Toulouse<span class="block text-[16px] text-neutre-700">Sur le plan du quartier · à 120 m de la Halle</span></dd>
+                    <dd class="@container col-start-1 m-0 text-corps text-neutre-900"><span class="block mots-entiers" style="--taille:var(--text-corps); --lettre:.56; --mot:11">14 rue Paul Mesplé, 31300 Toulouse<span class="block text-[16px] text-neutre-700">Sur le plan du quartier · à 120 m de la Halle</span></span></dd>
                     <dd class="col-start-2 row-start-1 row-span-2 m-0"><a href="#etape-8" class="inline-flex items-center min-h-[44px] text-[16px] font-semibold text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">Modifier<span class="sr-only"> l'adresse</span></a></dd>
                   </div>
                   <div class="grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 py-3 border-b border-neutre-300">
@@ -2116,7 +2135,7 @@ textarea.champ{ field-sizing: content; resize: vertical; }
                   </div>
                   <div class="grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 py-3 border-b border-neutre-300">
                     <dt class="text-[16px] font-semibold text-neutre-700">Fiche Google</dt>
-                    <dd class="col-start-1 m-0 text-corps italic text-neutre-700">Non renseigné</dd>
+                    <dd class="@container col-start-1 m-0 text-corps italic text-neutre-700"><span class="block mots-entiers" style="--taille:var(--text-corps); --lettre:.56; --mot:9">Non renseigné</span></dd>
                     <dd class="col-start-2 row-start-1 row-span-2 m-0"><a href="#etape-9" class="inline-flex items-center min-h-[44px] text-[16px] font-semibold text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">Ajouter<span class="sr-only"> la fiche Google</span></a></dd>
                   </div>
                 </dl>
@@ -2126,7 +2145,7 @@ textarea.champ{ field-sizing: content; resize: vertical; }
                 <dl class="mt-2 m-0 border-t border-neutre-300">
                   <div class="grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 py-3 border-b border-neutre-300">
                     <dt class="text-[16px] font-semibold text-neutre-700">Métier</dt>
-                    <dd class="col-start-1 m-0 text-corps text-neutre-900">Sophrologue</dd>
+                    <dd class="@container col-start-1 m-0 text-corps text-neutre-900"><span class="block mots-entiers" style="--taille:var(--text-corps); --lettre:.56; --mot:11">Sophrologue</span></dd>
                     <dd class="col-start-2 row-start-1 row-span-2 m-0"><a href="#etape-3" class="inline-flex items-center min-h-[44px] text-[16px] font-semibold text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">Modifier<span class="sr-only"> le métier</span></a></dd>
                   </div>
                   <div class="grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 py-3 border-b border-neutre-300">
@@ -2136,7 +2155,7 @@ textarea.champ{ field-sizing: content; resize: vertical; }
                   </div>
                   <div class="grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 py-3 border-b border-neutre-300">
                     <dt class="text-[16px] font-semibold text-neutre-700">Accroche et présentation</dt>
-                    <dd class="col-start-1 m-0 text-corps text-neutre-900">Gestion du stress, sommeil et préparation aux examens, en cabinet ou en visio.</dd>
+                    <dd class="@container col-start-1 m-0 text-corps text-neutre-900"><span class="block mots-entiers" style="--taille:var(--text-corps); --lettre:.56; --mot:11">Gestion du stress, sommeil et préparation aux examens, en cabinet ou en visio.</span></dd>
                     <dd class="col-start-2 row-start-1 row-span-2 m-0"><a href="#ecran-4a" class="inline-flex items-center min-h-[44px] text-[16px] font-semibold text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">Modifier<span class="sr-only"> l'accroche et la présentation</span></a></dd>
                   </div>
                   <div class="grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 py-3 border-b border-neutre-300">
@@ -2146,7 +2165,7 @@ textarea.champ{ field-sizing: content; resize: vertical; }
                   </div>
                   <div class="grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 py-3 border-b border-neutre-300">
                     <dt class="text-[16px] font-semibold text-neutre-700">Tarifs et horaires</dt>
-                    <dd class="col-start-1 m-0 text-corps text-neutre-900">Séance d'1&nbsp;h&nbsp;: 55&nbsp;€<span class="block">Sur rendez-vous, du lundi au samedi</span></dd>
+                    <dd class="@container col-start-1 m-0 text-corps text-neutre-900"><span class="block mots-entiers" style="--taille:var(--text-corps); --lettre:.56; --mot:6">Séance d'1&nbsp;h&nbsp;: 55&nbsp;€<span class="block">Sur rendez-vous, du lundi au samedi</span></span></dd>
                     <dd class="col-start-2 row-start-1 row-span-2 m-0"><a href="#etape-7" class="inline-flex items-center min-h-[44px] text-[16px] font-semibold text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">Modifier<span class="sr-only"> les tarifs et horaires</span></a></dd>
                   </div>
                 </dl>
@@ -2160,27 +2179,27 @@ textarea.champ{ field-sizing: content; resize: vertical; }
             <dl class="mt-2 m-0 border-t border-neutre-300">
               <div class="grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 py-3 border-b border-neutre-300">
                 <dt class="text-[16px] font-semibold text-neutre-700">Pourquoi entreprendre&nbsp;?</dt>
-                <dd class="col-start-1 m-0 text-corps text-neutre-900">Infirmière de nuit pendant dix ans, j'ai vu le stress abîmer le sommeil de tout le monde, le mien compris. J'ai voulu agir avant.</dd>
+                <dd class="@container col-start-1 m-0 text-corps text-neutre-900"><span class="block mots-entiers" style="--taille:var(--text-corps); --lettre:.56; --mot:10">Infirmière de nuit pendant dix ans, j'ai vu le stress abîmer le sommeil de tout le monde, le mien compris. J'ai voulu agir avant.</span></dd>
                 <dd class="col-start-2 row-start-1 row-span-2 m-0"><a href="#ecran-4c" class="inline-flex items-center min-h-[44px] text-[16px] font-semibold text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">Modifier<span class="sr-only"> «&nbsp;Pourquoi entreprendre&nbsp;»</span></a></dd>
               </div>
               <div class="grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 py-3 border-b border-neutre-300">
                 <dt class="text-[16px] font-semibold text-neutre-700">Mon déclic</dt>
-                <dd class="col-start-1 m-0 text-corps text-neutre-900">Une patiente a dormi six heures d'affilée après trois séances. Le lendemain, elle m'a apporté des chouquettes.</dd>
+                <dd class="@container col-start-1 m-0 text-corps text-neutre-900"><span class="block mots-entiers" style="--taille:var(--text-corps); --lettre:.56; --mot:12">Une patiente a dormi six heures d'affilée après trois séances. Le lendemain, elle m'a apporté des chouquettes.</span></dd>
                 <dd class="col-start-2 row-start-1 row-span-2 m-0"><a href="#ecran-4c" class="inline-flex items-center min-h-[44px] text-[16px] font-semibold text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">Modifier<span class="sr-only"> «&nbsp;Mon déclic&nbsp;»</span></a></dd>
               </div>
               <div class="grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 py-3 border-b border-neutre-300">
                 <dt class="text-[16px] font-semibold text-neutre-700">Mon activité en bref</dt>
-                <dd class="col-start-1 m-0 text-corps italic text-neutre-700">Non renseigné</dd>
+                <dd class="@container col-start-1 m-0 text-corps italic text-neutre-700"><span class="block mots-entiers" style="--taille:var(--text-corps); --lettre:.56; --mot:9">Non renseigné</span></dd>
                 <dd class="col-start-2 row-start-1 row-span-2 m-0"><a href="#ecran-4c" class="inline-flex items-center min-h-[44px] text-[16px] font-semibold text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">Ajouter<span class="sr-only"> «&nbsp;Mon activité en bref&nbsp;»</span></a></dd>
               </div>
               <div class="grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 py-3 border-b border-neutre-300">
                 <dt class="text-[16px] font-semibold text-neutre-700">Les entrepreneurs de la Cartoucherie &amp; moi</dt>
-                <dd class="col-start-1 m-0 text-corps italic text-neutre-700">Non renseigné</dd>
+                <dd class="@container col-start-1 m-0 text-corps italic text-neutre-700"><span class="block mots-entiers" style="--taille:var(--text-corps); --lettre:.56; --mot:9">Non renseigné</span></dd>
                 <dd class="col-start-2 row-start-1 row-span-2 m-0"><a href="#ecran-4c" class="inline-flex items-center min-h-[44px] text-[16px] font-semibold text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">Ajouter<span class="sr-only"> «&nbsp;Les entrepreneurs de la Cartoucherie &amp; moi&nbsp;»</span></a></dd>
               </div>
               <div class="grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 py-3 border-b border-neutre-300">
                 <dt class="text-[16px] font-semibold text-neutre-700">Mon motto</dt>
-                <dd class="col-start-1 m-0 text-corps text-neutre-900">Bien dormir, c'est déjà aller mieux.</dd>
+                <dd class="@container col-start-1 m-0 text-corps text-neutre-900"><span class="block mots-entiers" style="--taille:var(--text-corps); --lettre:.56; --mot:7">Bien dormir, c'est déjà aller mieux.</span></dd>
                 <dd class="col-start-2 row-start-1 row-span-2 m-0"><a href="#ecran-4c" class="inline-flex items-center min-h-[44px] text-[16px] font-semibold text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">Modifier<span class="sr-only"> le motto</span></a></dd>
               </div>
             </dl>
@@ -2191,7 +2210,7 @@ textarea.champ{ field-sizing: content; resize: vertical; }
               <div class="grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 py-3 border-b border-neutre-300">
                 <dt class="text-[16px] font-semibold text-neutre-700">Lieux · 3 sur 5</dt>
                 <dd class="col-start-1 m-0 mt-2">
-                  <ul class="grid gap-3 list-none p-0 m-0">
+                  <ul class="grid grid-cols-[minmax(0,1fr)] gap-3 list-none p-0 m-0">
                     <li class="flex items-center gap-3"><span class="lieu shrink-0" aria-hidden="true"><svg class="w-[18px] h-[18px]"><use href="#l-cafe"/></svg></span><span class="min-w-0 text-corps text-neutre-900">Les P'tits Tous</span></li>
                     <li class="flex items-center gap-3"><span class="lieu shrink-0" aria-hidden="true"><svg class="w-[18px] h-[18px]"><use href="#l-parc"/></svg></span><span class="min-w-0 text-corps text-neutre-900">Parc Pouvillon</span></li>
                     <li class="flex items-start gap-3"><span class="lieu lieu--pose shrink-0 mt-0.5" aria-hidden="true"><svg class="w-[18px] h-[18px]"><use href="#l-autre"/></svg></span><span class="min-w-0 text-corps text-neutre-900">Le marché du samedi
@@ -2202,7 +2221,7 @@ textarea.champ{ field-sizing: content; resize: vertical; }
               </div>
               <div class="grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 py-3 border-b border-neutre-300">
                 <dt class="text-[16px] font-semibold text-neutre-700">La phrase de la page</dt>
-                <dd class="col-start-1 m-0 text-corps text-neutre-900">Mes adresses pour souffler entre deux séances.</dd>
+                <dd class="@container col-start-1 m-0 text-corps text-neutre-900"><span class="block mots-entiers" style="--taille:var(--text-corps); --lettre:.56; --mot:8">Mes adresses pour souffler entre deux séances.</span></dd>
                 <dd class="col-start-2 row-start-1 row-span-2 m-0"><a href="#ecran-4d" class="inline-flex items-center min-h-[44px] text-[16px] font-semibold text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">Modifier<span class="sr-only"> la phrase de la page des lieux</span></a></dd>
               </div>
             </dl>
@@ -2220,16 +2239,16 @@ textarea.champ{ field-sizing: content; resize: vertical; }
                 </p>
                 <p class="mt-2 text-[16px] text-neutre-700 break-words">cartoucherie<wbr>.fyi/<wbr>membre/<wbr>camille-roussel</p>
                 <button type="button" data-qr="qr-camille-d"
-                        class="mt-4 inline-flex items-center gap-2 min-h-[48px] px-5 rounded-full text-corps font-semibold text-white bg-teal-700 hover:bg-teal-600">
-                  <svg class="w-[18px] h-[18px]" aria-hidden="true"><use href="#i-dl"/></svg>
-                  Télécharger le QR code
+                        class="@container mt-4 flex w-full items-center justify-center gap-2 min-h-[48px] px-[16px] text-center rounded-full text-corps font-semibold text-white bg-teal-700 hover:bg-teal-600">
+                  <svg class="w-[18px] h-[18px] shrink-0" aria-hidden="true"><use href="#i-dl"/></svg>
+                  <span class="mots-entiers" style="--taille:var(--text-corps); --lettre:.62; --mot:13">Télécharger le QR code</span>
                 </button>
               </div>
             </div>
 
             <hr class="mt-12 border-0 border-t border-neutre-300">
             <div class="flex flex-wrap items-center justify-between gap-x-6">
-<a href="#etat-5" class="mt-2 inline-flex items-center gap-2 min-h-[44px] text-[16px] font-semibold text-rouge-700 underline underline-offset-4 decoration-rouge-300 hover:decoration-rouge-600">
+<a href="#etat-5" class="mt-2 inline-flex max-w-full items-center gap-2 min-h-[44px] text-[16px] font-semibold text-rouge-700 underline underline-offset-4 decoration-rouge-300 hover:decoration-rouge-600">
               <svg class="w-5 h-5" aria-hidden="true"><use href="#i-corbeille"/></svg>Supprimer ma fiche
             </a>
 <a href="#etat-6" class="mt-2 inline-flex items-center min-h-[44px] text-[16px] font-semibold text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">Se déconnecter</a>
@@ -2237,21 +2256,21 @@ textarea.champ{ field-sizing: content; resize: vertical; }
           </div>
 
           <!-- colonne droite : ce que le quartier voit, collée en haut -->
-          <figure class="ventouses ventouses--teal sticky top-24 m-0 rounded-[24px] bg-neutre-100 p-3">
+          <figure class="ventouses ventouses--teal sticky top-24 m-0 rounded-[24px] bg-neutre-100 p-[12px]">
             <figcaption class="flex items-center gap-2 px-1.5 pt-0.5 pb-3 text-[16px] font-semibold text-teal-800">
               <svg class="w-5 h-5" aria-hidden="true"><use href="#i-oeil"/></svg>Ce que vos voisins voient
             </figcaption>
             <ul class="list-none m-0 p-0">
               <li>
-                <article class="carte carte-lien relative flex min-h-[152px] rounded-[20px] bg-white overflow-hidden">
+                <article class="carte carte-lien relative flex flex-wrap min-h-[152px] rounded-[20px] bg-white overflow-hidden">
                   <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Portrait de Camille Roussel"
                        width="128" height="128" loading="lazy"
                        class="w-[116px] shrink-0 self-stretch object-cover" style="object-position:50% 25%">
-                  <div class="flex-1 min-w-0 py-4 pl-4 pr-1 flex flex-col justify-center gap-1">
+                  <div class="@container flex-1 min-w-[min(7.5rem,100%)] py-4 pl-4 pr-1 flex flex-col justify-center gap-1">
                     <h3 class="ff text-[20px] leading-tight text-teal-900">
                       <a href="../final/membre.html" class="before:absolute before:inset-0 before:content-['']">Camille Roussel</a>
                     </h3>
-                    <p class="text-corps text-neutre-800 leading-snug">Sophrologue</p>
+                    <p class="text-corps text-neutre-800 leading-snug mots-entiers" style="--taille:var(--text-corps); --lettre:.56; --mot:11">Sophrologue</p>
                     <p class="flex flex-wrap items-center gap-x-3 gap-y-1 text-[16px] text-neutre-700 mt-0.5">
                       <span class="inline-flex items-center gap-1"><svg class="w-4 h-4 text-teal-600" aria-hidden="true"><use href="#i-pin"/></svg>120 m</span>
                     </p>
@@ -2274,8 +2293,8 @@ textarea.champ{ field-sizing: content; resize: vertical; }
                          style="object-position:50% 22%; box-shadow: 0 0 0 6px #fff, var(--shadow-carte)">
                   </div>
                 </div>
-                <div class="px-5 relative -mt-8">
-                  <div class="@container carte rounded-[24px] bg-white p-5">
+                <div class="px-[16px] relative -mt-8">
+                  <div class="@container carte rounded-[24px] bg-white p-[20px]">
                     <p class="ff text-grand mots-entiers text-teal-900" style="--mot:7">Camille Roussel</p>
                     <p class="mt-1.5 text-[1.25rem] leading-snug mots-entiers text-neutre-800" style="--taille:1.25rem; --lettre:.56; --mot:11">Sophrologue</p>
                     <p class="mt-3 flex flex-wrap gap-2">
