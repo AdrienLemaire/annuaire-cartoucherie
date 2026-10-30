@@ -54,7 +54,8 @@ The spec put accounts, favourites, reviews and 200 profiles in v1. They did not 
 ## v2: self-service profiles (next)
 
 Spec: `docs/superpowers/specs/2026-10-26-v2-self-service-profiles.md`, with the field list in
-`2026-10-26-v2-profile-fields.md`. Entrepreneurs create an account and fill in their own
+`2026-10-26-v2-profile-fields.md`. Plans: `docs/superpowers/plans/2026-10-30-v2-plan-2-static.md`
+(the public site, no backend) then `2026-10-30-v2-plan-3-accounts.md` (accounts, form, publishing). Entrepreneurs create an account and fill in their own
 profile; Adrien approves new profiles, and later edits go live directly. No claiming flow: Adrien
 links the 6 existing profiles to their owners by hand.
 
@@ -65,5 +66,5 @@ links the 6 existing profiles to their owners by hand.
 | CPU test (spec §13 step 0): fits, with a hand-written sign-in | ✅ Done (2026-10-26)               |
 | Mockups: form, `/espace`, profile with new fields, `/admin`   | ✅ Approved (2026-10-30)           |
 | Live-site fixes: 200 % word breaks, ×1.4 portrait, underlines | ⏳ Not started                     |
-| Implementation plan                                           | ⏳ Not started                     |
+| Implementation plans 2 (static) and 3 (accounts)              | 📝 Draft, awaiting Adrien's review |
 | Build, migration of the 6 profiles to D1, invitations         | ⏳ Not started                     |
