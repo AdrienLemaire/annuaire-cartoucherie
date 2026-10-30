@@ -65,6 +65,10 @@ The visitor's experience does not change: the public site stays static, cookie-f
 | Photos and slides              | Stored in D1, not R2 (§6)                                                    |
 | Staging                        | Its own D1, fictional data only                                              |
 | Mockups                        | Approved before implementation, as in v1 (§12)                               |
+| Unreviewed place at approval   | The profile goes live; the place stays `pending`, hidden until reviewed      |
+| Refused place                  | Removed from the profile; the reason is emailed                              |
+| « Lieux préférés » layer       | Off by default; only overlapping places group into one marker                |
+| Section-heading underlines     | Removed: at most three orange objects per screen (live site too)             |
 
 ## 4. Who uses it
 
@@ -131,7 +135,7 @@ adopted: its CPU cost was never measured, and the Worker has a handful of querie
     database.
 - **`story_answers`**: `profile_id`, `question` (one of six), `text`, optional `image_id`.
 - **`places`**: `name`, `type`, `lat`, `lng`, `source` (`osm` with its id, or `member`),
-  `status` (`approved` | `pending`). **`profile_places`**: 1–5 per profile, `position`, `why`.
+  `status` (`approved` | `pending` | `refused`). **`profile_places`**: 1–5 per profile, `position`, `why`.
 - **`users`** (`email`, `role`: `member` | `admin`), **`sign_in_tokens`**, **`sessions`** (§8).
 
 Why D1 rather than R2: R2 is reported (third-party guides, to confirm on Cloudflare's billing
@@ -240,8 +244,10 @@ What this spec adds:
   (same phone or similar name).
 - **Profiles**: search, hide or unhide, link an owner by email, upload and order Sandra's
   slides with their alt text for the existing profiles.
-- **Places**: member-placed pins arrive with their profile; approve, rename, move or merge them
-  into an existing place.
+- **Places**: member-placed pins arrive with their profile and in their own « Lieux à vérifier »
+  queue, which also lists those of pending profiles; approve, rename, move, merge them into an
+  existing place, or refuse with a reason. Approving a profile never approves its places: an
+  unreviewed place stays `pending` and out of the export (map and slide) until decided.
 - The page is an empty static shell. Every `/api/admin/*` call checks the `admin` role in the
   Worker, so guessing the URL shows nothing.
 
@@ -256,7 +262,9 @@ What this spec adds:
   profile's carousel and downloadable for Instagram. The answer is the alt text. Build time is
   budgeted in the plan; slides are regenerated only when their profile changes.
 - **`/carte`**: a « Lieux préférés » layer. Each place shows its type icon; tapping it lists the
-  entrepreneurs who named it. Off by default if it crowds the members' pins (mockups decide).
+  entrepreneurs who named it, with their « pourquoi ». Off by default. Only places whose
+  markers overlap group into one numbered marker. A place that is a member's business is that
+  member's pin with a sauge corner; its panel shows their portrait.
 - **`src/lib/gender.ts`**: a third column for « iel » (fields doc §7).
 - **`surCarte: false`** must also leave out `data-lat` and `data-lng` from `/carte`'s HTML.
   Today the coordinates stay in the page.
