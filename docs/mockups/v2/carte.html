@@ -347,7 +347,7 @@ body{ font-family:var(--font-sans); font-size:17px; line-height:1.55; color:var(
 .lieu--pose{ background:#fff; color:var(--color-sauge-800);
        box-shadow: 0 0 0 2px var(--color-sauge-700), var(--shadow-flottant); outline:2px dashed var(--color-sauge-700); outline-offset:5px; }
 
-/* NOUVEAU · le groupe : des lieux à moins de 44 px l'un de l'autre. Le carré
+/* NOUVEAU · le groupe : des lieux dont les carrés se recouvrent. Le carré
    du lieu, un peu plus grand, son nombre en blanc (6,9:1), et un second carré
    décalé derrière lui pour dire « plusieurs ». Jamais orange. */
 .lieu--groupe{ width:34px; height:34px; font:700 17px/1 var(--font-sans); font-variant-numeric:tabular-nums;
@@ -449,7 +449,6 @@ body{ font-family:var(--font-sans); font-size:17px; line-height:1.55; color:var(
   <header class="max-w-[72ch]">
     <p class="text-etiquette font-semibold uppercase text-teal-700">Maquette v2 · /carte</p>
     <h1 class="ff mt-1.5 text-grand text-teal-900">La carte, avec les lieux préférés</h1>
-    <div class="filet h-[3px] w-16 rounded-full mt-3"></div>
     <p class="mt-4 text-chapo text-neutre-800">
       Un calque de plus sur la carte en ligne&nbsp;: les lieux que les voisins aiment. Éteint par défaut.
     </p>
@@ -472,16 +471,16 @@ body{ font-family:var(--font-sans); font-size:17px; line-height:1.55; color:var(
       <figure class="cadre">
         <figcaption class="px-2 pb-3">
           <span class="ff block text-[22px] leading-tight text-teal-900">2 · Calque allumé</span>
-          <span class="mt-1 block text-[16px] text-neutre-700">Carrés sauge des lieux à côté des épingles. Aux Halles, 10 lieux trop serrés&nbsp;: un groupe. Le coin sauge sur l'épingle d'Inès&nbsp;: son atelier est un lieu préféré.</span>
+          <span class="mt-1 block text-[16px] text-neutre-700">Carrés sauge des lieux à côté des épingles. Aux Halles, 9 carrés se recouvrent&nbsp;: un groupe. Le coin sauge sur l'épingle d'Inès&nbsp;: son atelier est un lieu préféré.</span>
         </figcaption>
         <iframe data-cas="f2" data-x="150" data-voir='[data-bascule]' data-marge="12" title="2 · Calque allumé, 360 pixels" loading="eager"></iframe>
       </figure>
       <figure class="cadre">
         <figcaption class="px-2 pb-3">
           <span class="ff block text-[22px] leading-tight text-teal-900">3 · Un lieu touché</span>
-          <span class="mt-1 block text-[16px] text-neutre-700">Il fonce et grossit, le reste recule. Sa feuille sous le plan&nbsp;: qui l'a nommé, et pourquoi. Amandine n'a rien dit&nbsp;: pas de citation.</span>
+          <span class="mt-1 block text-[16px] text-neutre-700">Il fonce et grossit, le reste recule. Sa feuille sous le plan&nbsp;: qui l'a nommé, et pourquoi. Léa n'a rien dit&nbsp;: pas de citation.</span>
         </figcaption>
-        <iframe data-cas="f3" data-x="21" data-voir='.lieu-cible[aria-pressed="true"]' data-marge="70" title="3 · Un lieu touché, 360 pixels" loading="eager"></iframe>
+        <iframe data-cas="f3" data-x="57" data-voir='.lieu-cible[aria-pressed="true"]' data-marge="70" title="3 · Un lieu touché, 360 pixels" loading="eager"></iframe>
       </figure>
       <figure class="cadre">
         <figcaption class="px-2 pb-3">
@@ -500,16 +499,16 @@ body{ font-family:var(--font-sans); font-size:17px; line-height:1.55; color:var(
       <figure class="cadre">
         <figcaption class="px-2 pb-3">
           <span class="ff block text-[22px] leading-tight text-teal-900">5 bis · Les lieux d'une voisine</span>
-          <span class="mt-1 block text-[16px] text-neutre-700"><code class="font-mono text-[15px] text-teal-800">/carte?lieux=sophie-arnaud#plan</code>, le lien de sa fiche. Ses cinq lieux seuls, son épingle choisie, leur liste sous le plan. Trois sont à moins de 44&nbsp;px&nbsp;: un groupe. Parc Pouvillon est plus à l'est.</span>
+          <span class="mt-1 block text-[16px] text-neutre-700"><code class="font-mono text-[15px] text-teal-800">/carte?lieux=sophie-arnaud#plan</code>, le lien de sa fiche. Ses cinq lieux seuls, son épingle choisie, leur liste sous le plan. Les P'tits Tous et L'autre rive cartoucherie se recouvrent&nbsp;: un groupe. Parc Pouvillon est plus à l'est.</span>
         </figcaption>
         <iframe data-cas="f8" data-x="40" data-voir='.bg-sauge-50' data-marge="10" title="5 bis · Les lieux d&#x27;une voisine, 360 pixels" loading="eager"></iframe>
       </figure>
       <figure class="cadre">
         <figcaption class="px-2 pb-3">
           <span class="ff block text-[22px] leading-tight text-teal-900">6 · Le groupe touché</span>
-          <span class="mt-1 block text-[16px] text-neutre-700">La feuille liste les 10 lieux du groupe, du plus nommé au moins nommé&nbsp;; chacun ouvre sa feuille, comme au cadre 3. Le Bar des 500 en fait partie.</span>
+          <span class="mt-1 block text-[16px] text-neutre-700">La feuille liste les 9 lieux du groupe, du plus nommé au moins nommé&nbsp;; chacun ouvre sa feuille, comme au cadre 3.</span>
         </figcaption>
-        <iframe data-cas="f6" data-x="33" data-voir='.lieu-cible[aria-pressed="true"]' data-marge="70" title="6 · Le groupe touché, 360 pixels" loading="eager"></iframe>
+        <iframe data-cas="f6" data-x="30" data-voir='.lieu-cible[aria-pressed="true"]' data-marge="70" title="6 · Le groupe touché, 360 pixels" loading="eager"></iframe>
       </figure>
       <figure class="cadre">
         <figcaption class="px-2 pb-3">
@@ -523,32 +522,31 @@ body{ font-family:var(--font-sans); font-size:17px; line-height:1.55; color:var(
           <span class="ff block text-[22px] leading-tight text-teal-900">3 bis · Le cadre 3 à 200&nbsp;%</span>
           <span class="mt-1 block text-[16px] text-neutre-700"><code class="font-mono text-[15px] text-teal-800">html{font-size:200%}</code>. Les noms passent à la ligne, aucun n'est coupé.</span>
         </figcaption>
-        <iframe data-cas="f3" data-x="21" data-voir='.lieu-cible[aria-pressed="true"]' data-marge="70" data-zoom="200%" title="3 bis · Le cadre 3 à 200 %, 360 pixels" loading="eager"></iframe>
+        <iframe data-cas="f3" data-x="57" data-voir='.lieu-cible[aria-pressed="true"]' data-marge="70" data-zoom="200%" title="3 bis · Le cadre 3 à 200 %, 360 pixels" loading="eager"></iframe>
       </figure>
     </div>
   </section>
 
   <section class="mt-14 max-w-[80ch]" aria-labelledby="t-groupe">
-    <h2 id="t-groupe" class="ff text-nom text-teal-900">Le groupe, la règle</h2>
-    <div class="filet h-[3px] w-16 rounded-full mt-2.5 mb-5"></div>
+    <h2 id="t-groupe" class="ff text-nom text-teal-900 mb-5">Le groupe, la règle</h2>
     <ol class="grid gap-3 list-none p-0 m-0 text-corps text-neutre-800">
-      <li class="rounded-[16px] bg-neutre-100 p-4"><strong class="font-semibold text-neutre-900">Moins de 44&nbsp;px, au 1:1 du plan (environ 75&nbsp;m)&nbsp;: un seul repère.</strong>
-        Deux lieux dont les cibles se chevauchent vont dans le même groupe, de proche en proche. Le groupe se pose au centre
-        de ses lieux et dit leur nombre. Un repère qu'on ne peut pas toucher seul n'existe pas.</li>
+      <li class="rounded-[16px] bg-neutre-100 p-4"><strong class="font-semibold text-neutre-900">Seuls les repères qui se recouvrent se groupent.</strong>
+        Deux carrés de 30&nbsp;px qui se chevauchent, au 1:1 du plan, deviennent un repère numéroté, et ceux qui chevauchent
+        l'un d'eux le rejoignent. Le groupe se pose au centre de ses lieux et dit leur nombre. Des cibles proches qui ne se
+        recouvrent pas restent séparées.</li>
       <li class="rounded-[16px] bg-neutre-100 p-4"><strong class="font-semibold text-neutre-900">Toucher le groupe liste ses lieux.</strong>
         Pas de zoom&nbsp;: le plan est au 1:1 et le reste. La feuille donne chaque lieu, son type, combien de voisins et leurs
         visages&nbsp;; une ligne ouvre la feuille du lieu.</li>
       <li class="rounded-[16px] bg-neutre-100 p-4"><strong class="font-semibold text-neutre-900">Seuls les lieux se groupent.</strong>
         Les épingles de voisins restent seules, comme en ligne. Calculé au build, à partir des mêmes positions&nbsp;: pas de
         script de plus.</li>
-      <li class="rounded-[16px] bg-teal-50 p-4"><strong class="font-semibold text-neutre-900">Sur ces données&nbsp;: 10 des 16 lieux nommés finissent dans le groupe des Halles.</strong>
-        6 gardent leur repère. Le Bar des 500, à 37&nbsp;px de L'autre rive, y entre de proche en proche.</li>
+      <li class="rounded-[16px] bg-teal-50 p-4"><strong class="font-semibold text-neutre-900">Sur ces données&nbsp;: 9 des 16 lieux nommés se recouvrent aux Halles et forment le groupe.</strong>
+        7 gardent leur repère, dont Le Bar des 500 (à 37&nbsp;px de L'autre rive, sans que leurs carrés se couvrent).</li>
     </ol>
   </section>
 
   <section class="mt-14 max-w-[80ch]" aria-labelledby="t-decider">
-    <h2 id="t-decider" class="ff text-nom text-teal-900">À décider</h2>
-    <div class="filet h-[3px] w-16 rounded-full mt-2.5 mb-5"></div>
+    <h2 id="t-decider" class="ff text-nom text-teal-900 mb-5">À décider</h2>
     <ul class="grid gap-3 list-none p-0 m-0 text-corps text-neutre-800">
       <li class="rounded-[16px] bg-neutre-100 p-4"><strong class="font-semibold text-neutre-900">Deux objets nouveaux à porter au styleguide</strong>&nbsp;:
         le groupe numéroté et le coin sauge sur l'épingle d'un voisin. Pas encore dans <code class="font-mono text-[15px] text-teal-800">b-v2-carte-lieux</code>.</li>
@@ -566,13 +564,10 @@ body{ font-family:var(--font-sans); font-size:17px; line-height:1.55; color:var(
       <li class="rounded-[16px] bg-neutre-100 p-4"><strong class="font-semibold text-neutre-900">Le filtre</strong>&nbsp;:
         une adresse <code class="font-mono text-[15px] text-teal-800">?lieu=</code>, atteinte depuis la diapositive
         «&nbsp;Mes lieux favoris&nbsp;» d'une fiche. Le bouton de la feuille n'y mène pas&nbsp;: la feuille liste déjà les mêmes voisins.</li>
-      <li class="rounded-[16px] bg-neutre-100 p-4"><strong class="font-semibold text-neutre-900">De proche en proche</strong>&nbsp;:
-        aux Halles, une trentaine de stands OpenStreetMap se touchent. Si les voisins en nomment beaucoup, ils feront un
-        seul groupe, long à lire. Accepté, ou un plafond&nbsp;?</li>
     </ul>
     <p class="mt-5 text-[16px] text-neutre-700">
-      Orange&nbsp;: le filet de l'en-tête, celui de «&nbsp;Classé depuis la Halle&nbsp;», et l'épingle choisie au cadre 4 — trois au plus.
-      Aucun lieu, aucun groupe n'est orange. Le spécimen du styleguide, Le Bar des 500, est entré dans le groupe des Halles&nbsp;: le cadre 3 montre La Cabane.
+      Orange&nbsp;: la ligne de l'en-tête et l'épingle choisie (cadres 4 et 5 bis)&nbsp;; plus de ligne sous les titres de section.
+      Aucun lieu, aucun groupe n'est orange. Le Bar des 500, au cadre 3, reprend le spécimen du styleguide.
     </p>
   </section>
 </main>
@@ -723,8 +718,7 @@ body{ font-family:var(--font-sans); font-size:17px; line-height:1.55; color:var(
 
     <div class="feuille relative mt-6 lg:mt-0">
 
-      <h2 id="t-proches" class="ff min-w-0 break-words text-nom text-teal-900">Classé depuis la Halle</h2>
-      <div class="filet h-[3px] w-16 rounded-full mt-2.5 mb-5"></div>
+      <h2 id="t-proches" class="ff min-w-0 break-words text-nom text-teal-900 mb-5">Classé depuis la Halle</h2>
       <ol data-sheet aria-labelledby="t-proches" class="flex flex-col gap-3 list-none p-0 m-0">
   <li>
     <article class="carte carte-lien rangee relative flex flex-wrap min-h-[124px] rounded-[20px] bg-white overflow-hidden" data-m="yanis-belhadj">
@@ -892,8 +886,7 @@ body{ font-family:var(--font-sans); font-size:17px; line-height:1.55; color:var(
   </div>
 <section class="mt-10 bg-neutre-100" aria-labelledby="t-chezvous">
   <div class="mx-auto max-w-[1160px] px-5 py-8">
-    <h2 id="t-chezvous" class="ff text-nom text-teal-900">Ils viennent chez vous</h2>
-    <div class="filet h-[3px] w-16 rounded-full mt-2.5 mb-4"></div>
+    <h2 id="t-chezvous" class="ff text-nom text-teal-900 mb-4">Ils viennent chez vous</h2>
     <ul class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4 list-none p-0 m-0">
         <li>
           <article class="carte carte-lien colly-fond relative flex flex-col items-center rounded-[20px] px-4 py-5 text-center h-full">
@@ -999,6 +992,9 @@ body{ font-family:var(--font-sans); font-size:17px; line-height:1.55; color:var(
             <span class="etiq etiq--d" aria-hidden="true">Marc Ollivier · 800 m</span>
           </a>
           <div>
+          <button type="button" class="lieu-cible z-20" aria-pressed="false" style="left:236.7px; top:380.4px" aria-label="Le Bar des 500, café, bar : lieu préféré de 3 voisins">
+            <span class="lieu"><svg class="w-[18px] h-[18px]" aria-hidden="true"><use href="#l-cafe"/></svg></span>
+          </button>
           <button type="button" class="lieu-cible z-20" aria-pressed="false" style="left:309.9px; top:350.8px" aria-label="Carthel, restaurant : lieu préféré d&#x27;1 voisin">
             <span class="lieu"><svg class="w-[18px] h-[18px]" aria-hidden="true"><use href="#l-restaurant"/></svg></span>
           </button>
@@ -1017,8 +1013,8 @@ body{ font-family:var(--font-sans); font-size:17px; line-height:1.55; color:var(
           <button type="button" class="lieu-cible z-20" aria-pressed="false" style="left:710.2px; top:444.1px" aria-label="Le Pastourel, boutique : lieu préféré d&#x27;1 voisin">
             <span class="lieu"><svg class="w-[18px] h-[18px]" aria-hidden="true"><use href="#l-boutique"/></svg></span>
           </button>
-          <button type="button" class="lieu-cible z-20" aria-pressed="false" style="left:212.9px; top:426.0px" aria-label="10 lieux préférés ici — les lister">
-            <span class="lieu lieu--groupe" aria-hidden="true">10</span>
+          <button type="button" class="lieu-cible z-20" aria-pressed="false" style="left:210.2px; top:431.1px" aria-label="9 lieux préférés ici — les lister">
+            <span class="lieu lieu--groupe" aria-hidden="true">9</span>
           </button>
           </div>
         </div>
@@ -1030,8 +1026,7 @@ body{ font-family:var(--font-sans); font-size:17px; line-height:1.55; color:var(
 
     <div class="feuille relative mt-6 lg:mt-0">
 
-      <h2 id="t-proches" class="ff min-w-0 break-words text-nom text-teal-900">Classé depuis la Halle</h2>
-      <div class="filet h-[3px] w-16 rounded-full mt-2.5 mb-5"></div>
+      <h2 id="t-proches" class="ff min-w-0 break-words text-nom text-teal-900 mb-5">Classé depuis la Halle</h2>
       <ol data-sheet aria-labelledby="t-proches" class="flex flex-col gap-3 list-none p-0 m-0">
   <li>
     <article class="carte carte-lien rangee relative flex flex-wrap min-h-[124px] rounded-[20px] bg-white overflow-hidden" data-m="yanis-belhadj">
@@ -1199,8 +1194,7 @@ body{ font-family:var(--font-sans); font-size:17px; line-height:1.55; color:var(
   </div>
 <section class="mt-10 bg-neutre-100" aria-labelledby="t-chezvous">
   <div class="mx-auto max-w-[1160px] px-5 py-8">
-    <h2 id="t-chezvous" class="ff text-nom text-teal-900">Ils viennent chez vous</h2>
-    <div class="filet h-[3px] w-16 rounded-full mt-2.5 mb-4"></div>
+    <h2 id="t-chezvous" class="ff text-nom text-teal-900 mb-4">Ils viennent chez vous</h2>
     <ul class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4 list-none p-0 m-0">
         <li>
           <article class="carte carte-lien colly-fond relative flex flex-col items-center rounded-[20px] px-4 py-5 text-center h-full">
@@ -1306,10 +1300,13 @@ body{ font-family:var(--font-sans); font-size:17px; line-height:1.55; color:var(
             <span class="etiq etiq--d" aria-hidden="true">Marc Ollivier · 800 m</span>
           </a>
           <div>
+          <button type="button" class="lieu-cible z-30" aria-pressed="true" style="left:236.7px; top:380.4px" aria-label="Le Bar des 500, café, bar : lieu préféré de 3 voisins">
+            <span class="lieu"><svg class="w-[18px] h-[18px]" aria-hidden="true"><use href="#l-cafe"/></svg></span>
+          </button>
           <button type="button" class="lieu-cible z-20" aria-pressed="false" style="left:309.9px; top:350.8px" aria-label="Carthel, restaurant : lieu préféré d&#x27;1 voisin">
             <span class="lieu"><svg class="w-[18px] h-[18px]" aria-hidden="true"><use href="#l-restaurant"/></svg></span>
           </button>
-          <button type="button" class="lieu-cible z-30" aria-pressed="true" style="left:200.9px; top:535.5px" aria-label="La Cabane, culture : lieu préféré de 2 voisines">
+          <button type="button" class="lieu-cible z-20" aria-pressed="false" style="left:200.9px; top:535.5px" aria-label="La Cabane, culture : lieu préféré de 2 voisines">
             <span class="lieu"><svg class="w-[18px] h-[18px]" aria-hidden="true"><use href="#l-culture"/></svg></span>
           </button>
           <button type="button" class="lieu-cible z-20" aria-pressed="false" style="left:114.2px; top:381.0px" aria-label="Jardin Jean Boudou, parc : lieu préféré de 2 voisins">
@@ -1324,8 +1321,8 @@ body{ font-family:var(--font-sans); font-size:17px; line-height:1.55; color:var(
           <button type="button" class="lieu-cible z-20" aria-pressed="false" style="left:710.2px; top:444.1px" aria-label="Le Pastourel, boutique : lieu préféré d&#x27;1 voisin">
             <span class="lieu"><svg class="w-[18px] h-[18px]" aria-hidden="true"><use href="#l-boutique"/></svg></span>
           </button>
-          <button type="button" class="lieu-cible z-20" aria-pressed="false" style="left:212.9px; top:426.0px" aria-label="10 lieux préférés ici — les lister">
-            <span class="lieu lieu--groupe" aria-hidden="true">10</span>
+          <button type="button" class="lieu-cible z-20" aria-pressed="false" style="left:210.2px; top:431.1px" aria-label="9 lieux préférés ici — les lister">
+            <span class="lieu lieu--groupe" aria-hidden="true">9</span>
           </button>
           </div>
         </div>
@@ -1339,12 +1336,12 @@ body{ font-family:var(--font-sans); font-size:17px; line-height:1.55; color:var(
     </div>
 
     <div class="feuille relative mt-6 lg:mt-0">
-        <section class="relative carte rounded-[22px] bg-white p-4 mb-6" aria-labelledby="f-la-cabane">
+        <section class="relative carte rounded-[22px] bg-white p-4 mb-6" aria-labelledby="f-le-bar-des-500">
           <div class="flex flex-wrap items-start gap-3 pr-11">
-            <span class="lieu mt-0.5 shrink-0" aria-hidden="true"><svg class="w-[18px] h-[18px]"><use href="#l-culture"/></svg></span>
+            <span class="lieu mt-0.5 shrink-0" aria-hidden="true"><svg class="w-[18px] h-[18px]"><use href="#l-cafe"/></svg></span>
             <div class="min-w-0 flex-1 basis-[7rem]">
-              <h3 id="f-la-cabane" class="ff text-[22px] leading-tight text-teal-900">La Cabane</h3>
-              <p class="text-[16px] text-neutre-700">Culture · lieu préféré de 2 voisines</p>
+              <h3 id="f-le-bar-des-500" class="ff text-[22px] leading-tight text-teal-900">Le Bar des 500</h3>
+              <p class="text-[16px] text-neutre-700">Café, bar · lieu préféré de 3 voisins</p>
             </div>
             <a href="#plan" aria-label="Fermer" class="absolute top-2.5 right-2.5 grid place-items-center w-11 h-11 rounded-full text-teal-800 hover:bg-teal-50">
               <svg class="w-5 h-5" aria-hidden="true"><use href="#i-fermer"/></svg>
@@ -1353,27 +1350,36 @@ body{ font-family:var(--font-sans); font-size:17px; line-height:1.55; color:var(
           <ul class="mt-4 grid gap-2.5 list-none p-0 m-0">
             <li>
               <a href="#" class="flex flex-wrap gap-3.5 rounded-[16px] bg-neutre-100 p-2.5 hover:bg-teal-50">
-                <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="" width="128" height="128" class="arche w-[74px] h-[88px] shrink-0 object-cover" style="object-position:50% 22%">
+                <img src="https://randomuser.me/api/portraits/women/26.jpg" alt="" width="128" height="128" class="arche w-[74px] h-[88px] shrink-0 object-cover" style="object-position:50% 22%">
                 <span class="min-w-0 flex-1 basis-[8rem] py-0.5">
-                  <span class="ff block text-[19px] leading-tight text-teal-900">Léa Fontaine</span>
-                  <span class="block text-[16px] text-neutre-800">Graphiste &amp; illustratrice</span>
-                  <span class="mt-1 block text-[16px] leading-snug text-neutre-900">«&nbsp;Des spectacles qu&#x27;on ne voit nulle part ailleurs.&nbsp;»</span>
+                  <span class="ff block text-[19px] leading-tight text-teal-900">Sophie Arnaud</span>
+                  <span class="block text-[16px] text-neutre-800">Naturopathe</span>
+                  <span class="mt-1 block text-[16px] leading-snug text-neutre-900">«&nbsp;Le café du samedi, après le marché&nbsp;: on y croise tout le quartier.&nbsp;»</span>
                 </span>
               </a>
             </li>
             <li>
               <a href="#" class="flex flex-wrap gap-3.5 rounded-[16px] bg-neutre-100 p-2.5 hover:bg-teal-50">
-                <img src="https://randomuser.me/api/portraits/women/12.jpg" alt="" width="128" height="128" class="arche w-[74px] h-[88px] shrink-0 object-cover" style="object-position:50% 22%">
+                <img src="https://randomuser.me/api/portraits/men/83.jpg" alt="" width="128" height="128" class="arche w-[74px] h-[88px] shrink-0 object-cover" style="object-position:50% 22%">
+                <span class="min-w-0 flex-1 basis-[8rem] py-0.5">
+                  <span class="ff block text-[19px] leading-tight text-teal-900">Karim Ziani</span>
+                  <span class="block text-[16px] text-neutre-800">Photographe</span>
+                  <span class="mt-1 block text-[16px] leading-snug text-neutre-900">«&nbsp;La terrasse au soleil, la plus belle lumière de fin d&#x27;après-midi.&nbsp;»</span>
+                </span>
+              </a>
+            </li>
+            <li>
+              <a href="#" class="flex flex-wrap gap-3.5 rounded-[16px] bg-neutre-100 p-2.5 hover:bg-teal-50">
+                <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="" width="128" height="128" class="arche w-[74px] h-[88px] shrink-0 object-cover" style="object-position:50% 22%">
                 <span class="min-w-0 flex-1 basis-[8rem] py-0.5 self-center">
-                  <span class="ff block text-[19px] leading-tight text-teal-900">Amandine Rey</span>
-                  <span class="block text-[16px] text-neutre-800">Coiffeuse à domicile</span>
+                  <span class="ff block text-[19px] leading-tight text-teal-900">Léa Fontaine</span>
+                  <span class="block text-[16px] text-neutre-800">Graphiste &amp; illustratrice</span>
                 </span>
               </a>
             </li>
           </ul>
         </section>
-      <h2 id="t-proches" class="ff min-w-0 break-words text-nom text-teal-900">Classé depuis la Halle</h2>
-      <div class="filet h-[3px] w-16 rounded-full mt-2.5 mb-5"></div>
+      <h2 id="t-proches" class="ff min-w-0 break-words text-nom text-teal-900 mb-5">Classé depuis la Halle</h2>
       <ol data-sheet aria-labelledby="t-proches" class="flex flex-col gap-3 list-none p-0 m-0">
   <li>
     <article class="carte carte-lien rangee relative flex flex-wrap min-h-[124px] rounded-[20px] bg-white overflow-hidden" data-m="yanis-belhadj">
@@ -1541,8 +1547,7 @@ body{ font-family:var(--font-sans); font-size:17px; line-height:1.55; color:var(
   </div>
 <section class="mt-10 bg-neutre-100" aria-labelledby="t-chezvous">
   <div class="mx-auto max-w-[1160px] px-5 py-8">
-    <h2 id="t-chezvous" class="ff text-nom text-teal-900">Ils viennent chez vous</h2>
-    <div class="filet h-[3px] w-16 rounded-full mt-2.5 mb-4"></div>
+    <h2 id="t-chezvous" class="ff text-nom text-teal-900 mb-4">Ils viennent chez vous</h2>
     <ul class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4 list-none p-0 m-0">
         <li>
           <article class="carte carte-lien colly-fond relative flex flex-col items-center rounded-[20px] px-4 py-5 text-center h-full">
@@ -1648,6 +1653,9 @@ body{ font-family:var(--font-sans); font-size:17px; line-height:1.55; color:var(
             <span class="etiq etiq--d" aria-hidden="true">Marc Ollivier · 800 m</span>
           </a>
           <div class="estompe-lieux">
+          <button type="button" class="lieu-cible z-20" aria-pressed="false" style="left:236.7px; top:380.4px" aria-label="Le Bar des 500, café, bar : lieu préféré de 3 voisins">
+            <span class="lieu"><svg class="w-[18px] h-[18px]" aria-hidden="true"><use href="#l-cafe"/></svg></span>
+          </button>
           <button type="button" class="lieu-cible z-20" aria-pressed="false" style="left:309.9px; top:350.8px" aria-label="Carthel, restaurant : lieu préféré d&#x27;1 voisin">
             <span class="lieu"><svg class="w-[18px] h-[18px]" aria-hidden="true"><use href="#l-restaurant"/></svg></span>
           </button>
@@ -1666,8 +1674,8 @@ body{ font-family:var(--font-sans); font-size:17px; line-height:1.55; color:var(
           <button type="button" class="lieu-cible z-20" aria-pressed="false" style="left:710.2px; top:444.1px" aria-label="Le Pastourel, boutique : lieu préféré d&#x27;1 voisin">
             <span class="lieu"><svg class="w-[18px] h-[18px]" aria-hidden="true"><use href="#l-boutique"/></svg></span>
           </button>
-          <button type="button" class="lieu-cible z-20" aria-pressed="false" style="left:212.9px; top:426.0px" aria-label="10 lieux préférés ici — les lister">
-            <span class="lieu lieu--groupe" aria-hidden="true">10</span>
+          <button type="button" class="lieu-cible z-20" aria-pressed="false" style="left:210.2px; top:431.1px" aria-label="9 lieux préférés ici — les lister">
+            <span class="lieu lieu--groupe" aria-hidden="true">9</span>
           </button>
           </div>
         </div>
@@ -1724,8 +1732,7 @@ body{ font-family:var(--font-sans); font-size:17px; line-height:1.55; color:var(
             </li>
           </ul>
         </section>
-      <h2 id="t-proches" class="ff min-w-0 break-words text-nom text-teal-900">Classé depuis la Halle</h2>
-      <div class="filet h-[3px] w-16 rounded-full mt-2.5 mb-5"></div>
+      <h2 id="t-proches" class="ff min-w-0 break-words text-nom text-teal-900 mb-5">Classé depuis la Halle</h2>
       <ol data-sheet aria-labelledby="t-proches" class="flex flex-col gap-3 list-none p-0 m-0">
   <li>
     <article class="carte carte-lien rangee relative flex flex-wrap min-h-[124px] rounded-[20px] bg-white overflow-hidden" data-m="yanis-belhadj">
@@ -1893,8 +1900,7 @@ body{ font-family:var(--font-sans); font-size:17px; line-height:1.55; color:var(
   </div>
 <section class="mt-10 bg-neutre-100" aria-labelledby="t-chezvous">
   <div class="mx-auto max-w-[1160px] px-5 py-8">
-    <h2 id="t-chezvous" class="ff text-nom text-teal-900">Ils viennent chez vous</h2>
-    <div class="filet h-[3px] w-16 rounded-full mt-2.5 mb-4"></div>
+    <h2 id="t-chezvous" class="ff text-nom text-teal-900 mb-4">Ils viennent chez vous</h2>
     <ul class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4 list-none p-0 m-0">
         <li>
           <article class="carte carte-lien colly-fond relative flex flex-col items-center rounded-[20px] px-4 py-5 text-center h-full">
@@ -1984,8 +1990,7 @@ body{ font-family:var(--font-sans); font-size:17px; line-height:1.55; color:var(
 
     <div class="feuille relative mt-6 lg:mt-0">
 
-      <h2 id="t-proches" class="ff min-w-0 break-words text-nom text-teal-900">Classé depuis la Halle</h2>
-      <div class="filet h-[3px] w-16 rounded-full mt-2.5 mb-5"></div>
+      <h2 id="t-proches" class="ff min-w-0 break-words text-nom text-teal-900 mb-5">Classé depuis la Halle</h2>
       <ol data-sheet aria-labelledby="t-proches" class="flex flex-col gap-3 list-none p-0 m-0">
   <li>
     <article class="carte carte-lien rangee relative flex flex-wrap min-h-[124px] rounded-[20px] bg-white overflow-hidden" data-m="thomas-vidal">
@@ -2109,8 +2114,11 @@ body{ font-family:var(--font-sans); font-size:17px; line-height:1.55; color:var(
             <span class="etiq etiq--d" aria-hidden="true">Marc Ollivier · 800 m</span>
           </a>
           <div>
-          <button type="button" class="lieu-cible z-30" aria-pressed="false" style="left:224.9px; top:402.1px" aria-label="3 de ses lieux ici — les lister">
-            <span class="lieu lieu--groupe lieu--choisi" aria-hidden="true">3</span>
+          <button type="button" class="lieu-cible z-30" aria-pressed="false" style="left:219.1px; top:412.9px" aria-label="2 de ses lieux ici — les lister">
+            <span class="lieu lieu--groupe lieu--choisi" aria-hidden="true">2</span>
+          </button>
+          <button type="button" class="lieu-cible z-30" aria-pressed="false" style="left:236.7px; top:380.4px" aria-label="Le Bar des 500, café, bar : lieu préféré d&#x27;1 voisine">
+            <span class="lieu lieu--choisi"><svg class="w-[18px] h-[18px]" aria-hidden="true"><use href="#l-cafe"/></svg></span>
           </button>
           <button type="button" class="lieu-cible z-30" aria-pressed="false" style="left:664.6px; top:350.1px" aria-label="Parc Pouvillon, parc, jardin : lieu préféré d&#x27;1 voisine">
             <span class="lieu lieu--choisi"><svg class="w-[18px] h-[18px]" aria-hidden="true"><use href="#l-parc"/></svg></span>
@@ -2176,8 +2184,7 @@ body{ font-family:var(--font-sans); font-size:17px; line-height:1.55; color:var(
             </li>
           </ul>
         </section>
-      <h2 id="t-proches" class="ff min-w-0 break-words text-nom text-teal-900">Classé depuis la Halle</h2>
-      <div class="filet h-[3px] w-16 rounded-full mt-2.5 mb-5"></div>
+      <h2 id="t-proches" class="ff min-w-0 break-words text-nom text-teal-900 mb-5">Classé depuis la Halle</h2>
       <ol data-sheet aria-labelledby="t-proches" class="flex flex-col gap-3 list-none p-0 m-0">
   <li>
     <article class="carte carte-lien rangee relative flex flex-wrap min-h-[124px] rounded-[20px] bg-white overflow-hidden" data-m="yanis-belhadj">
@@ -2345,8 +2352,7 @@ body{ font-family:var(--font-sans); font-size:17px; line-height:1.55; color:var(
   </div>
 <section class="mt-10 bg-neutre-100" aria-labelledby="t-chezvous">
   <div class="mx-auto max-w-[1160px] px-5 py-8">
-    <h2 id="t-chezvous" class="ff text-nom text-teal-900">Ils viennent chez vous</h2>
-    <div class="filet h-[3px] w-16 rounded-full mt-2.5 mb-4"></div>
+    <h2 id="t-chezvous" class="ff text-nom text-teal-900 mb-4">Ils viennent chez vous</h2>
     <ul class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4 list-none p-0 m-0">
         <li>
           <article class="carte carte-lien colly-fond relative flex flex-col items-center rounded-[20px] px-4 py-5 text-center h-full">
@@ -2452,6 +2458,9 @@ body{ font-family:var(--font-sans); font-size:17px; line-height:1.55; color:var(
             <span class="etiq etiq--d" aria-hidden="true">Marc Ollivier · 800 m</span>
           </a>
           <div>
+          <button type="button" class="lieu-cible z-20" aria-pressed="false" style="left:236.7px; top:380.4px" aria-label="Le Bar des 500, café, bar : lieu préféré de 3 voisins">
+            <span class="lieu"><svg class="w-[18px] h-[18px]" aria-hidden="true"><use href="#l-cafe"/></svg></span>
+          </button>
           <button type="button" class="lieu-cible z-20" aria-pressed="false" style="left:309.9px; top:350.8px" aria-label="Carthel, restaurant : lieu préféré d&#x27;1 voisin">
             <span class="lieu"><svg class="w-[18px] h-[18px]" aria-hidden="true"><use href="#l-restaurant"/></svg></span>
           </button>
@@ -2470,8 +2479,8 @@ body{ font-family:var(--font-sans); font-size:17px; line-height:1.55; color:var(
           <button type="button" class="lieu-cible z-20" aria-pressed="false" style="left:710.2px; top:444.1px" aria-label="Le Pastourel, boutique : lieu préféré d&#x27;1 voisin">
             <span class="lieu"><svg class="w-[18px] h-[18px]" aria-hidden="true"><use href="#l-boutique"/></svg></span>
           </button>
-          <button type="button" class="lieu-cible z-30" aria-pressed="true" style="left:212.9px; top:426.0px" aria-label="10 lieux préférés ici — les lister">
-            <span class="lieu lieu--groupe" aria-hidden="true">10</span>
+          <button type="button" class="lieu-cible z-30" aria-pressed="true" style="left:210.2px; top:431.1px" aria-label="9 lieux préférés ici — les lister">
+            <span class="lieu lieu--groupe" aria-hidden="true">9</span>
           </button>
           </div>
         </div>
@@ -2487,9 +2496,9 @@ body{ font-family:var(--font-sans); font-size:17px; line-height:1.55; color:var(
     <div class="feuille relative mt-6 lg:mt-0">
         <section class="relative carte rounded-[22px] bg-white p-4 mb-6" aria-labelledby="f-groupe">
           <div class="flex flex-wrap items-start gap-3 pr-11">
-            <span class="lieu lieu--groupe mt-0.5 shrink-0" aria-hidden="true">10</span>
+            <span class="lieu lieu--groupe mt-0.5 shrink-0" aria-hidden="true">9</span>
             <div class="min-w-0 flex-1 basis-[7rem]">
-              <h3 id="f-groupe" class="ff text-[22px] leading-tight text-teal-900">10 lieux ici</h3>
+              <h3 id="f-groupe" class="ff text-[22px] leading-tight text-teal-900">9 lieux ici</h3>
               <p class="text-[16px] text-neutre-700">Trop proches pour un repère chacun</p>
             </div>
             <a href="#plan" aria-label="Fermer" class="absolute top-2.5 right-2.5 grid place-items-center w-11 h-11 rounded-full text-teal-800 hover:bg-teal-50">
@@ -2497,15 +2506,6 @@ body{ font-family:var(--font-sans); font-size:17px; line-height:1.55; color:var(
             </a>
           </div>
           <ul class="mt-4 grid gap-2.5 list-none p-0 m-0">
-            <li>
-              <a href="#lieu-le-bar-des-500" class="flex items-start gap-3 rounded-[16px] bg-neutre-100 p-3 hover:bg-teal-50">
-                <span class="lieu mt-1 shrink-0" aria-hidden="true"><svg class="w-[18px] h-[18px]"><use href="#l-cafe"/></svg></span>
-                <span class="min-w-0 flex-1">
-                  <span class="ff block text-[19px] leading-tight text-teal-900">Le Bar des 500</span>
-                  <span class="mt-1 flex flex-wrap items-center gap-x-2.5 gap-y-1 text-[16px] text-neutre-700"><span class="flex pl-0.5" aria-hidden="true"><img src="https://randomuser.me/api/portraits/women/26.jpg" alt="" width="128" height="128" class="w-7 h-7 rounded-full object-cover -ml-1.5 first:ml-0" style="box-shadow:0 0 0 2px var(--color-neutre-100)"><img src="https://randomuser.me/api/portraits/men/83.jpg" alt="" width="128" height="128" class="w-7 h-7 rounded-full object-cover -ml-1.5 first:ml-0" style="box-shadow:0 0 0 2px var(--color-neutre-100)"><img src="https://randomuser.me/api/portraits/women/68.jpg" alt="" width="128" height="128" class="w-7 h-7 rounded-full object-cover -ml-1.5 first:ml-0" style="box-shadow:0 0 0 2px var(--color-neutre-100)"></span>Café, bar · 3 voisins</span>
-                </span>
-              </a>
-            </li>
             <li>
               <a href="#lieu-le-tout-rouge" class="flex items-start gap-3 rounded-[16px] bg-neutre-100 p-3 hover:bg-teal-50">
                 <span class="lieu mt-1 shrink-0" aria-hidden="true"><svg class="w-[18px] h-[18px]"><use href="#l-cafe"/></svg></span>
@@ -2589,8 +2589,7 @@ body{ font-family:var(--font-sans); font-size:17px; line-height:1.55; color:var(
             </li>
           </ul>
         </section>
-      <h2 id="t-proches" class="ff min-w-0 break-words text-nom text-teal-900">Classé depuis la Halle</h2>
-      <div class="filet h-[3px] w-16 rounded-full mt-2.5 mb-5"></div>
+      <h2 id="t-proches" class="ff min-w-0 break-words text-nom text-teal-900 mb-5">Classé depuis la Halle</h2>
       <ol data-sheet aria-labelledby="t-proches" class="flex flex-col gap-3 list-none p-0 m-0">
   <li>
     <article class="carte carte-lien rangee relative flex flex-wrap min-h-[124px] rounded-[20px] bg-white overflow-hidden" data-m="yanis-belhadj">
@@ -2758,8 +2757,7 @@ body{ font-family:var(--font-sans); font-size:17px; line-height:1.55; color:var(
   </div>
 <section class="mt-10 bg-neutre-100" aria-labelledby="t-chezvous">
   <div class="mx-auto max-w-[1160px] px-5 py-8">
-    <h2 id="t-chezvous" class="ff text-nom text-teal-900">Ils viennent chez vous</h2>
-    <div class="filet h-[3px] w-16 rounded-full mt-2.5 mb-4"></div>
+    <h2 id="t-chezvous" class="ff text-nom text-teal-900 mb-4">Ils viennent chez vous</h2>
     <ul class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4 list-none p-0 m-0">
         <li>
           <article class="carte carte-lien colly-fond relative flex flex-col items-center rounded-[20px] px-4 py-5 text-center h-full">
@@ -2879,8 +2877,7 @@ body{ font-family:var(--font-sans); font-size:17px; line-height:1.55; color:var(
 
     <div class="feuille relative mt-6 lg:mt-0">
 
-      <h2 id="t-proches" class="ff min-w-0 break-words text-nom text-teal-900">Classé depuis la Halle</h2>
-      <div class="filet h-[3px] w-16 rounded-full mt-2.5 mb-5"></div>
+      <h2 id="t-proches" class="ff min-w-0 break-words text-nom text-teal-900 mb-5">Classé depuis la Halle</h2>
       <ol data-sheet aria-labelledby="t-proches" class="flex flex-col gap-3 list-none p-0 m-0">
   <li>
     <article class="carte carte-lien rangee relative flex flex-wrap min-h-[124px] rounded-[20px] bg-white overflow-hidden" data-m="yanis-belhadj">
@@ -3048,8 +3045,7 @@ body{ font-family:var(--font-sans); font-size:17px; line-height:1.55; color:var(
   </div>
 <section class="mt-10 bg-neutre-100" aria-labelledby="t-chezvous">
   <div class="mx-auto max-w-[1160px] px-5 py-8">
-    <h2 id="t-chezvous" class="ff text-nom text-teal-900">Ils viennent chez vous</h2>
-    <div class="filet h-[3px] w-16 rounded-full mt-2.5 mb-4"></div>
+    <h2 id="t-chezvous" class="ff text-nom text-teal-900 mb-4">Ils viennent chez vous</h2>
     <ul class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4 list-none p-0 m-0">
         <li>
           <article class="carte carte-lien colly-fond relative flex flex-col items-center rounded-[20px] px-4 py-5 text-center h-full">
