@@ -539,9 +539,9 @@ body.ecran .bureau iframe{ height:800px !important; }
       <figure class="cadre">
         <figcaption class="px-2 pb-3">
           <span class="ff block text-[22px] leading-tight text-teal-900">5 · iel</span>
-          <span class="mt-1 block text-[16px] text-neutre-700">Le cas 1 avec <code class="font-mono text-[15px] text-teal-800">genre: n</code>&nbsp;: «&nbsp;Lae contacter&nbsp;», «&nbsp;Ce qu'iel propose&nbsp;», «&nbsp;Où lae trouver&nbsp;», «&nbsp;Lae voir sur la carte&nbsp;». La bio est écrite par la personne.</span>
+          <span class="mt-1 block text-[16px] text-neutre-700">Sacha Morel, iel, céramiste, comme dans admin.htmlSacha Morel, iel, céramiste, telle qu'admin.html l'a relue&nbsp;:nbsp;: «&nbsp;Lae contacter&nbsp;», «&nbsp;Ce qu'iel propose&nbsp;», «&nbsp;Où lae trouver&nbsp;», «&nbsp;Lae voir sur la carte&nbsp;», «&nbsp;inscrit·e&nbsp;». Cinq pages, toutes maison.</span>
         </figcaption>
-        <iframe data-cas="cas-iel" title="Cas 5 : fiche de Camille Roussel, accord iel, 360 pixels" loading="eager"></iframe>
+        <iframe data-cas="cas-iel" title="Cas 5 : fiche de Sacha Morel, accord iel, 360 pixels" loading="eager"></iframe>
       </figure>
     </div>
   </section>
@@ -567,7 +567,7 @@ body.ecran .bureau iframe{ height:800px !important; }
       <li class="rounded-[16px] bg-neutre-100 p-4"><strong class="font-semibold text-neutre-900">Les lieux favoris — la page 6, et un lien sous le carrousel.</strong>
         «&nbsp;Ses lieux favoris, sur la carte&nbsp;» ouvre <code class="font-mono text-[15px] text-teal-800">/carte</code>, calque «&nbsp;Lieux préférés&nbsp;» allumé. Pas de liste en plus sur la fiche&nbsp;: les «&nbsp;pourquoi&nbsp;» vivent sur le plan.</li>
       <li class="rounded-[16px] bg-neutre-100 p-4"><strong class="font-semibold text-neutre-900">iel — les formes de <code class="font-mono text-[15px] text-teal-800">gender.ts</code>, rien d'autre.</strong>
-        Une fiche n'emploie que «&nbsp;elle&nbsp;» et «&nbsp;la&nbsp;». «&nbsp;voisin·e&nbsp;» et «&nbsp;inscrit·e&nbsp;» vivent dans les comptes (catégories, feuille d'un lieu sur <code class="font-mono text-[15px] text-teal-800">/carte</code>), pas ici.</li>
+        Une fiche emploie «&nbsp;elle&nbsp;», «&nbsp;la&nbsp;» et, sans avis encore, «&nbsp;inscrite&nbsp;». «&nbsp;voisin·e&nbsp;» vit dans les comptes (catégories, feuille d'un lieu sur <code class="font-mono text-[15px] text-teal-800">/carte</code>), pas ici.</li>
       <li class="rounded-[16px] bg-neutre-100 p-4"><strong class="font-semibold text-neutre-900">Orange — trois objets par écran, au plus&nbsp;: le filet de l'en-tête, la barre «&nbsp;Appeler&nbsp;», le filet signature d'une page du carrousel.</strong>
         Les titres de section n'ont donc plus de filet, sur toute la fiche&nbsp;: à 360&nbsp;px, deux ou trois titres tiennent dans un écran, et avec leurs filets on comptait jusqu'à cinq. La page en ligne a le même dépassement aujourd'hui.</li>
     </ol>
@@ -1309,7 +1309,7 @@ body.ecran .bureau iframe{ height:800px !important; }
         <h2 id="reviews-title" class="ff text-nom text-teal-900">Avis du quartier</h2>
         <div data-inclure="t-avis-aide"></div>
       </div>
-      <div data-reviews-slot><p class="text-corps text-neutre-700">Aucun avis pour l'instant.</p></div>
+      <div data-reviews-slot><p class="text-corps text-neutre-700">Aucun avis pour l'instant. Sophie est inscrite depuis peu.</p></div>
       <a href="#" class="mt-4 inline-flex min-h-12 items-center gap-2 text-corps font-semibold text-teal-800 underline">
         <svg class="h-5 w-5" aria-hidden="true"><use href="#i-etoile"/></svg>Voir ses avis sur Google
       </a>
@@ -1326,6 +1326,281 @@ body.ecran .bureau iframe{ height:800px !important; }
 <div class="fixed inset-x-0 bottom-0 z-40 border-t border-neutre-200 bg-white/95 px-4 pt-3 backdrop-blur-sm" style="padding-bottom: calc(0.75rem + var(--safe-bottom));">
   <a href="tel:+33639980026" class="cta flex min-h-[52px] items-center justify-center gap-2 rounded-field px-5 font-semibold sm:mx-auto sm:max-w-sm">
     <svg class="size-5" aria-hidden="true"><use href="#i-tel"/></svg>Appeler Sophie
+  </a>
+</div>
+</template>
+
+
+<!-- ╔═══ CAS 5 · Sacha Morel, iel, céramiste ═════════════════════════════╗
+     Les données et les cinq pages générées sont celles d'admin.html. Les
+     accords viennent de gender.ts, colonne « n » (styleguide b-v2-genre). -->
+<template id="cas-iel">
+<div data-inclure="t-entete"></div>
+<main id="contenu">
+
+  <section aria-labelledby="nom-membre">
+    <div class="ventouses relative overflow-hidden rounded-b-[34px] bg-sable-200 pt-9 pb-11">
+      <div class="flex justify-center">
+        <img src="https://randomuser.me/api/portraits/women/79.jpg" alt="Portrait de Sacha Morel" width="128" height="128"
+             class="arche block h-[176px] w-[148px] bg-white object-cover"
+             style="object-position:50% 22%; box-shadow: 0 0 0 6px #fff, var(--shadow-carte)">
+      </div>
+    </div>
+    <div class="relative mx-auto -mt-8 max-w-[1160px] px-5">
+      <div class="carte flex items-start justify-between gap-8 rounded-[24px] bg-white p-5 sm:p-7">
+        <div class="@container min-w-0 flex-1">
+          <h1 id="nom-membre" class="ff text-grand mots-entiers text-teal-900" style="--mot:5">Sacha Morel</h1>
+          <p class="mt-1.5 text-[1.25rem] leading-snug mots-entiers text-neutre-800" style="--taille:1.25rem; --lettre:.56; --mot:9">Céramiste</p>
+          <p class="mt-3 flex flex-wrap gap-2">
+            <a href="#" class="chip inline-flex min-h-[44px] items-center gap-2 rounded-selector px-3.5 text-[16px] font-semibold">
+              <svg class="h-[18px] w-[18px]" aria-hidden="true"><use href="#c-art"/></svg>Art &amp; culture
+            </a>
+          </p>
+          <p class="mt-4 max-w-[56ch] text-[19px] leading-relaxed text-neutre-900">Je tourne des bols et des tasses en grès, et j'apprends le tour à qui veut, le samedi matin.</p>
+          <!-- nouvelle fiche : 0 avis, donc pas de note (« 0,0 » se lirait comme une mauvaise note) -->
+          <p class="mt-5 flex flex-wrap items-center gap-x-5 gap-y-2.5 text-[16px] text-neutre-700">
+            <span class="inline-flex items-center gap-1.5">
+              <svg class="h-[18px] w-[18px] text-teal-600" aria-hidden="true"><use href="#i-pin"/></svg>À 430&nbsp;m de la Halle
+            </span>
+            <button type="button" popovertarget="qr" class="inline-flex min-h-[44px] items-center text-teal-700 underline decoration-teal-300 underline-offset-4 sm:hidden">QR code</button>
+          </p>
+
+          <div class="mt-5 border-t border-neutre-200 pt-5">
+            <dl class="m-0 grid gap-x-8 gap-y-4 @xl:grid-cols-3">
+              <div class="flex min-w-0 flex-wrap items-start gap-x-3.5 gap-y-2">
+                <span class="pastille pastille--teal mt-0.5 h-10 w-10 shrink-0 bg-teal-50 text-teal-700"><svg class="h-5 w-5" aria-hidden="true"><use href="#i-euro"/></svg></span>
+                <div class="min-w-[min(12rem,100%)] flex-1">
+                  <dt class="text-base text-neutre-700">Tarifs</dt>
+                  <dd class="m-0 break-words text-corps font-semibold text-neutre-900">Initiation de 2&nbsp;h&nbsp;: 45&nbsp;€</dd>
+                </div>
+              </div>
+              <div class="flex min-w-0 flex-wrap items-start gap-x-3.5 gap-y-2">
+                <span class="pastille pastille--teal mt-0.5 h-10 w-10 shrink-0 bg-teal-50 text-teal-700"><svg class="h-5 w-5" aria-hidden="true"><use href="#i-horloge"/></svg></span>
+                <div class="min-w-[min(12rem,100%)] flex-1">
+                  <dt class="text-base text-neutre-700">Horaires</dt>
+                  <dd class="m-0 break-words text-corps font-semibold text-neutre-900">Atelier ouvert le samedi, <span class="whitespace-nowrap">10&nbsp;h–18&nbsp;h</span></dd>
+                </div>
+              </div>
+            </dl>
+          </div>
+        </div>
+        <div class="hidden shrink-0 sm:block">
+          <div class="flex flex-col items-center gap-1">
+            <div class="w-[136px] rounded-[12px] bg-white p-2" style="box-shadow: inset 0 0 0 1px var(--color-neutre-300)" role="img" aria-label="QR code vers la fiche de Sacha Morel"><div data-inclure="t-qr"></div></div>
+            <a href="#" class="inline-flex min-h-[44px] items-center gap-1.5 text-[16px] font-semibold text-teal-700 underline decoration-teal-300 underline-offset-4 hover:decoration-teal-600">
+              <svg class="size-[18px]" aria-hidden="true"><use href="#i-dl"/></svg>Télécharger
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="qr" popover class="m-auto rounded-[24px] bg-white p-6 pt-12 shadow-[var(--shadow-flottant)] backdrop:bg-teal-950/50">
+      <div class="w-[240px] rounded-[12px] bg-white p-2" style="box-shadow: inset 0 0 0 1px var(--color-neutre-300)" role="img" aria-label="QR code vers la fiche de Sacha Morel"><div data-inclure="t-qr"></div></div>
+      <button type="button" popovertarget="qr" popovertargetaction="hide" aria-label="Fermer" class="absolute top-2 right-2 flex size-11 items-center justify-center rounded-full text-teal-900">
+        <svg class="size-5" aria-hidden="true"><use href="#i-fermer"/></svg>
+      </button>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-[1160px] px-5 py-8" aria-labelledby="t-contact">
+    <h2 id="t-contact" class="ff mb-5 text-nom text-teal-900">Lae contacter</h2>
+    <ul class="m-0 grid grid-cols-1 list-none gap-2.5 p-0 sm:grid-cols-2">
+      <li>
+        <details class="group carte h-full rounded-[16px] bg-white px-4 py-3">
+          <summary class="flex min-h-[40px] cursor-pointer list-none items-center gap-3.5 [&::-webkit-details-marker]:hidden">
+            <span class="pastille pastille--teal h-10 w-10 shrink-0 bg-teal-50 text-teal-700"><svg class="h-5 w-5" aria-hidden="true"><use href="#i-tel"/></svg></span>
+            <span class="min-w-0">
+              <span class="block text-[16px] text-neutre-700">Téléphone</span>
+              <span class="block text-corps font-semibold text-teal-800 underline decoration-teal-300 underline-offset-4 group-open:hidden">Voir le numéro</span>
+            </span>
+          </summary>
+          <a href="tel:+33639980052" class="tnum ml-[3.375rem] inline-flex min-h-[44px] items-center text-corps font-semibold text-teal-800"><span>06 39 98 00 52</span></a>
+        </details>
+      </li>
+      <li><a href="mailto:sacha.morel@example.fr" class="carte carte-lien flex h-full min-h-[64px] flex-wrap items-center gap-x-3.5 gap-y-2 rounded-[16px] bg-white px-4 py-3">
+        <span class="pastille pastille--teal h-10 w-10 shrink-0 bg-teal-50 text-teal-700"><svg class="h-5 w-5" aria-hidden="true"><use href="#i-mail"/></svg></span>
+        <span class="min-w-[min(12rem,100%)] flex-1"><span class="block text-[16px] text-neutre-700">E-mail</span><span class="block break-words text-corps font-semibold text-teal-800">sacha<wbr>.morel<wbr>@example<wbr>.fr</span></span>
+      </a></li>
+    </ul>
+  </section>
+
+  <section class="bg-neutre-100" aria-labelledby="t-portrait">
+    <div class="mx-auto max-w-[1160px] px-5 py-8">
+      <h2 id="t-portrait" class="ff mb-5 text-nom text-teal-900">Son portrait</h2>
+      <p class="max-w-[62ch] text-[19px] leading-relaxed text-neutre-900">J'ai appris le tour à Albi, dans l'atelier de ma grand-mère. À la Cartoucherie, je tourne des bols, des tasses et des assiettes en grès, pour tous les jours. Le samedi matin, j'ouvre l'atelier à quatre débutants au plus.</p>
+
+      <!-- v2 · le carrousel généré : PortraitCarousel.astro, inchangé ; seules
+           les images changent (les pages de b-v2-diapos au lieu des diapositives
+           faites à la main). Glisser, ou les flèches à partir de 640 px ;
+           toucher une page l'ouvre en plein écran, comme en ligne. -->
+      <div class="mt-6 max-w-[420px]" data-carousel>
+        <div class="relative" data-frame>
+          <ul class="carte flex snap-x snap-mandatory overflow-x-auto rounded-[16px] bg-white [scrollbar-width:none] focus-visible:outline-2 focus-visible:outline-teal-700"
+              tabindex="0" aria-label="Sa présentation en images" data-track
+              onscroll="var c=this.closest('[data-carousel]'),i=Math.round(this.scrollLeft/this.clientWidth),n=this.children.length;c.querySelectorAll('[data-dot]').forEach(function(d,j){d.toggleAttribute('data-on',i===j)});c.querySelector('[data-prev]').disabled=i===0;c.querySelector('[data-next]').disabled=i===n-1">
+            <li class="w-full shrink-0 snap-center">
+              <div class="diapo diapo--maison diapo--couverture" role="img" aria-label="À la rencontre de Sacha Morel, Céramiste">
+                <div class="diapo__motif"></div>
+                <div class="diapo__corps">
+                  <div class="diapo__tete">
+                    <span class="diapo__marque"><svg aria-hidden="true"><use href="#i-ventouse"/></svg>Annuaire de la Cartoucherie</span>
+                    <span class="diapo__page">1&nbsp;/&nbsp;5</span>
+                  </div>
+                  <img class="diapo__portrait" style="--portrait:42cqi" src="https://randomuser.me/api/portraits/women/79.jpg" alt="" width="128" height="128">
+                  <p class="diapo__rencontre">À la rencontre de</p>
+                  <p class="diapo__nom-grand">Sacha Morel</p>
+                  <p class="diapo__metier">Céramiste</p>
+                  <p class="diapo__pied">cartoucherie.fyi/membre/sacha-morel</p>
+                </div>
+              </div>
+            </li>
+            <li class="w-full shrink-0 snap-center">
+              <div class="diapo diapo--maison" role="img" aria-label="Pourquoi entreprendre ? — J'ai appris le tour dans l'atelier de ma grand-mère, à Albi. Après huit ans de bureau, j'ai voulu des mains pleines de terre et des objets qui servent tous les jours.">
+                <div class="diapo__motif"></div>
+                <div class="diapo__corps">
+                  <div class="diapo__tete">
+                    <span class="diapo__marque"><svg aria-hidden="true"><use href="#i-ventouse"/></svg>Annuaire de la Cartoucherie</span>
+                    <span class="diapo__page">2&nbsp;/&nbsp;5</span>
+                  </div>
+                  <div class="diapo__arche" style="--fond:var(--color-sable-100)">
+                    <span class="diapo__medaillon"><svg aria-hidden="true"><use href="#l-autre"/></svg></span>
+                    <p class="diapo__titre">Pourquoi entreprendre&nbsp;?</p>
+                    <span class="diapo__filet"></span>
+                    <p class="diapo__texte">J'ai appris le tour dans l'atelier de ma grand-mère, à Albi. Après huit ans de bureau, j'ai voulu des mains pleines de terre et des objets qui servent tous les jours.</p>
+                    <p class="diapo__signature"><span class="diapo__nom">Sacha Morel</span><span>Céramiste · cartoucherie.fyi</span></p>
+                  </div>
+                </div>
+              </div>
+            </li>
+            <li class="w-full shrink-0 snap-center">
+              <div class="diapo diapo--maison" role="img" aria-label="Mon activité en bref — Bols, tasses et assiettes tournés à la main, en grès. Des cours d'initiation le samedi matin, quatre personnes au plus, débutants bienvenus.">
+                <div class="diapo__motif"></div>
+                <div class="diapo__corps">
+                  <div class="diapo__tete">
+                    <span class="diapo__marque"><svg aria-hidden="true"><use href="#i-ventouse"/></svg>Annuaire de la Cartoucherie</span>
+                    <span class="diapo__page">3&nbsp;/&nbsp;5</span>
+                  </div>
+                  <div class="diapo__arche" style="--fond:#ffffff">
+                    <span class="diapo__medaillon"><svg aria-hidden="true"><use href="#c-art"/></svg></span>
+                    <p class="diapo__titre">Mon activité en bref</p>
+                    <span class="diapo__filet"></span>
+                    <p class="diapo__texte">Bols, tasses et assiettes tournés à la main, en grès. Des cours d'initiation le samedi matin, quatre personnes au plus, débutants bienvenus.</p>
+                    <p class="diapo__signature"><span class="diapo__nom">Sacha Morel</span><span>Céramiste · cartoucherie.fyi</span></p>
+                  </div>
+                </div>
+              </div>
+            </li>
+            <li class="w-full shrink-0 snap-center">
+              <div class="diapo diapo--maison" role="img" aria-label="Mes lieux favoris — Véo Cartoucherie. Un film, une partie de pétanque, et la semaine peut commencer.">
+                <div class="diapo__motif"></div>
+                <div class="diapo__corps">
+                  <div class="diapo__tete">
+                    <span class="diapo__marque"><svg aria-hidden="true"><use href="#i-ventouse"/></svg>Annuaire de la Cartoucherie</span>
+                    <span class="diapo__page">4&nbsp;/&nbsp;5</span>
+                  </div>
+                  <div class="diapo__arche" style="--fond:var(--color-teal-50); --titre:6.2cqi">
+                    <span class="diapo__medaillon"><svg aria-hidden="true"><use href="#i-carte"/></svg></span>
+                    <p class="diapo__titre">Mes lieux favoris</p>
+                    <span class="diapo__filet"></span>
+                    <ul class="diapo__lieux">
+                      <li class="diapo__lieu"><span class="diapo__lieu-icone"><svg aria-hidden="true"><use href="#l-culture"/></svg></span><span class="diapo__lieu-nom">Véo Cartoucherie<span class="diapo__lieu-type">Culture</span></span></li>
+                    </ul>
+                    <p class="diapo__phrase">Un film, une partie de pétanque, et la semaine peut commencer.</p>
+                    <p class="diapo__signature"><span class="diapo__nom">Sacha Morel</span><span>Céramiste · cartoucherie.fyi</span></p>
+                  </div>
+                </div>
+              </div>
+            </li>
+            <li class="w-full shrink-0 snap-center">
+              <div class="diapo diapo--maison diapo--motto" role="img" aria-label="Mon motto — La terre garde la trace de chaque geste.">
+                <div class="diapo__motif"></div>
+                <div class="diapo__corps">
+                  <div class="diapo__tete">
+                    <span class="diapo__marque"><svg aria-hidden="true"><use href="#i-ventouse"/></svg>Annuaire de la Cartoucherie</span>
+                    <span class="diapo__page">5&nbsp;/&nbsp;5</span>
+                  </div>
+                  <div class="diapo__arche">
+                    <span class="diapo__guillemet" aria-hidden="true">«</span>
+                    <p class="diapo__motto">La terre garde la trace de chaque geste.</p>
+                    <p class="diapo__signature"><span class="diapo__nom">Sacha Morel</span><span>Céramiste · cartoucherie.fyi</span></p>
+                  </div>
+                </div>
+              </div>
+            </li>
+          </ul>
+          <button type="button" class="absolute top-1/2 flex size-11 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 text-teal-900 shadow-md disabled:opacity-0 max-sm:hidden left-2"
+                  aria-label="Image précédente" data-prev disabled
+                  onclick="var t=this.parentNode.querySelector('[data-track]');t.scrollBy({left:-t.clientWidth,behavior:'smooth'})">
+            <svg class="size-5 rotate-180" aria-hidden="true"><use href="#i-chev"/></svg>
+          </button>
+          <button type="button" class="absolute top-1/2 flex size-11 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 text-teal-900 shadow-md disabled:opacity-0 max-sm:hidden right-2"
+                  aria-label="Image suivante" data-next
+                  onclick="var t=this.parentNode.querySelector('[data-track]');t.scrollBy({left:t.clientWidth,behavior:'smooth'})">
+            <svg class="size-5" aria-hidden="true"><use href="#i-chev"/></svg>
+          </button>
+        </div>
+        <p class="mt-3 flex justify-center gap-1.5" aria-hidden="true">
+          <span class="size-2 rounded-full bg-neutre-300 data-on:bg-teal-700" data-dot data-on></span>
+          <span class="size-2 rounded-full bg-neutre-300 data-on:bg-teal-700" data-dot></span>
+          <span class="size-2 rounded-full bg-neutre-300 data-on:bg-teal-700" data-dot></span>
+          <span class="size-2 rounded-full bg-neutre-300 data-on:bg-teal-700" data-dot></span>
+          <span class="size-2 rounded-full bg-neutre-300 data-on:bg-teal-700" data-dot></span>
+        </p>
+      </div>
+
+      <!-- v2 · les lieux favoris : la page 6 les montre, ce lien les pose sur le
+           plan, calque « Lieux préférés » allumé, ses lieux choisis -->
+      <p class="mt-4">
+        <a href="/carte?lieux=sacha-morel#plan" class="inline-flex min-h-[44px] items-center gap-2 text-corps font-semibold text-teal-700 underline decoration-teal-300 underline-offset-4 hover:decoration-teal-600">
+          <svg class="h-5 w-5 shrink-0" aria-hidden="true"><use href="#i-carte"/></svg>Ses lieux favoris, sur la carte <svg class="h-4 w-4 shrink-0" aria-hidden="true"><use href="#i-chev"/></svg>
+        </a>
+      </p>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-[1160px] px-5 py-8" aria-labelledby="t-services">
+    <h2 id="t-services" class="ff mb-5 text-nom text-teal-900">Ce qu'iel propose</h2>
+    <ul class="m-0 grid grid-cols-1 list-none gap-3 p-0 sm:grid-cols-3">
+      <li class="@container flex min-h-[64px] flex-wrap items-center gap-x-3.5 gap-y-2 rounded-[16px] bg-neutre-100 px-4 py-4"><span class="pastille h-9 w-9 shrink-0 bg-white text-sauge-700"><svg class="h-[18px] w-[18px]" aria-hidden="true"><use href="#c-art"/></svg></span><span class="min-w-[min(12rem,100%)] flex-1 mots-entiers text-corps font-semibold text-teal-900" style="--taille:var(--text-corps); --lettre:.56; --mot:8">Bols et tasses sur commande</span></li>
+      <li class="@container flex min-h-[64px] flex-wrap items-center gap-x-3.5 gap-y-2 rounded-[16px] bg-neutre-100 px-4 py-4"><span class="pastille h-9 w-9 shrink-0 bg-white text-sauge-700"><svg class="h-[18px] w-[18px]" aria-hidden="true"><use href="#c-art"/></svg></span><span class="min-w-[min(12rem,100%)] flex-1 mots-entiers text-corps font-semibold text-teal-900" style="--taille:var(--text-corps); --lettre:.56; --mot:10">Cours d'initiation au tour</span></li>
+    </ul>
+  </section>
+
+  <section class="mx-auto max-w-[1160px] px-5 pb-8" aria-labelledby="t-ou">
+    <h2 id="t-ou" class="ff mb-5 text-nom text-teal-900">Où lae trouver</h2>
+    <div class="carte flex items-start gap-4 rounded-[20px] bg-white p-5">
+      <span class="pastille pastille--teal mt-0.5 h-[44px] w-[44px] shrink-0 bg-teal-50 text-teal-700"><svg class="h-5 w-5" aria-hidden="true"><use href="#i-pin"/></svg></span>
+      <div class="min-w-0">
+        <address class="text-[18px] leading-snug font-semibold text-neutre-900 not-italic">5 allée du Bois Vert, 31300 Toulouse</address>
+        <p class="mt-2 text-[16px] text-neutre-700">À 430&nbsp;m de la Halle</p>
+        <p class="mt-3 flex flex-wrap items-center gap-x-5">
+          <a href="#" class="inline-flex min-w-0 max-w-full min-h-[44px] items-center gap-2 text-corps font-semibold text-teal-700 underline decoration-teal-300 underline-offset-4 hover:decoration-teal-600">Lae voir sur la carte du quartier <svg class="h-4 w-4" aria-hidden="true"><use href="#i-chev"/></svg></a>
+          <a href="#" class="inline-flex min-h-[44px] items-center gap-2 text-[16px] font-semibold text-teal-700 underline decoration-teal-300 underline-offset-4 hover:decoration-teal-600">Ouvrir l'itinéraire <svg class="h-4 w-4" aria-hidden="true"><use href="#i-chev"/></svg></a>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section id="avis" class="bg-neutre-100" aria-labelledby="reviews-title">
+    <div class="mx-auto max-w-[1160px] px-5 py-8">
+      <div class="flex flex-wrap items-center gap-x-1 mb-4">
+        <h2 id="reviews-title" class="ff text-nom text-teal-900">Avis du quartier</h2>
+        <div data-inclure="t-avis-aide"></div>
+      </div>
+      <div data-reviews-slot><p class="text-corps text-neutre-700">Aucun avis pour l'instant. Sacha est inscrit·e depuis peu.</p></div>
+    </div>
+  </section>
+
+  <p class="mx-auto max-w-[1160px] px-5 pb-8 text-[16px]">
+    <a href="#" class="inline-flex min-h-[44px] items-center gap-1.5 text-neutre-700 underline decoration-neutre-400 underline-offset-4 hover:text-teal-700 hover:decoration-teal-600">
+      <svg class="h-[18px] w-[18px]" aria-hidden="true"><use href="#i-alerte"/></svg>Cette fiche n'est pas correcte
+    </a>
+  </p>
+</main>
+<div data-inclure="t-pied"></div>
+<div class="fixed inset-x-0 bottom-0 z-40 border-t border-neutre-200 bg-white/95 px-4 pt-3 backdrop-blur-sm" style="padding-bottom: calc(0.75rem + var(--safe-bottom));">
+  <a href="tel:+33639980052" class="cta flex min-h-[52px] items-center justify-center gap-2 rounded-field px-5 font-semibold sm:mx-auto sm:max-w-sm">
+    <svg class="size-5" aria-hidden="true"><use href="#i-tel"/></svg>Appeler Sacha
   </a>
 </div>
 </template>
@@ -1347,30 +1622,20 @@ body.ecran .bureau iframe{ height:800px !important; }
   }
 
   /* le cas 2 est le cas 1 moins les cinq champs : l'enseigne et l'encadré */
-  /* le cas 5 est le cas 1 avec genre « n » : les formes de gender.ts
-     (styleguide b-v2-genre), et la bio, qu'elle ou iel écrit soi-même */
-  function ecrire(f, sel, texte){ f.querySelector(sel).firstChild.textContent = texte; }
   var CAS = {
     'cas-plein':    function(f){ return f; },
     'cas-mixte':    function(f){ return f; },
     'cas-nouvelle': function(f){ return f; },
+    'cas-iel':      function(f){ return f; },
     'cas-vide':  function(f){
       var enseigne = f.querySelector('#nom-membre + p');
       enseigne.textContent = 'Sophrologue';
       /* métier seul : la ligne garde ses classes et son --mot */
       f.querySelector('.border-t.pt-5').remove();
       return f;
-    },
-    'cas-iel': function(f){
-      ecrire(f, '#t-contact', 'Lae contacter');
-      ecrire(f, '#t-services', 'Ce qu\'iel propose');
-      ecrire(f, '#t-ou', 'Où lae trouver');
-      ecrire(f, '#t-ou ~ .carte a', 'Lae voir sur la carte du quartier ');
-      ecrire(f, '#t-portrait ~ p', 'À la Cartoucherie depuis 2022, j\'accompagne adultes et adolescents sur le stress, le sommeil et la confiance en soi. Séances individuelles d\'une heure, et un atelier collectif le samedi matin à la Halle.');
-      return f;
     }
   };
-  var source = { 'cas-vide': 'cas-plein', 'cas-iel': 'cas-plein' };
+  var source = { 'cas-vide': 'cas-plein' };
 
   function ajuster(f){
     var doc = f.contentDocument;
