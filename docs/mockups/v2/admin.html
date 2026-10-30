@@ -786,10 +786,13 @@ textarea.champ{ field-sizing: content; resize: vertical; }
           <span class="block text-[16px] text-neutre-700">La série que le build tirera (bloc «&nbsp;Les diapositives&nbsp;»), en bande qui défile&nbsp;: au plus deux filets orange à l'écran. Dessous, chaque réponse en clair.</span></figcaption></figure>
       <figure class="cadre"><iframe data-ecran="e-sacha" data-defile="#lieu-pose" title="6c — le lieu posé, dans la relecture"></iframe>
         <figcaption><span class="num">6c</span> <span class="text-corps font-semibold text-teal-900">Le lieu, décidé dans la fiche.</span>
-          <span class="block text-[16px] text-neutre-700">Approuver, modifier (nom, type, point), fusionner, refuser&nbsp;: les mêmes panneaux qu'en 7. Pas décidé, il est approuvé avec la fiche.</span></figcaption></figure>
+          <span class="block text-[16px] text-neutre-700">Approuver, modifier (nom, type, point), fusionner, refuser&nbsp;: les mêmes panneaux qu'en 7. «&nbsp;Publier&nbsp;» ne décide pas du lieu&nbsp;: la barre le rappelle.</span></figcaption></figure>
       <figure class="cadre"><iframe data-ecran="e-sacha" data-defile="#ap-contact" title="6d — l'aperçu, accordé à iel"></iframe>
         <figcaption><span class="num">6d</span> <span class="text-corps font-semibold text-teal-900">«&nbsp;Lae contacter&nbsp;», «&nbsp;Ce qu'iel propose&nbsp;».</span>
           <span class="block text-[16px] text-neutre-700">Et «&nbsp;Où lae trouver&nbsp;», «&nbsp;inscrit·e&nbsp;» : la troisième colonne de <code class="font-mono text-[15px] text-teal-800">gender.ts</code>.</span></figcaption></figure>
+      <figure class="cadre"><iframe data-ecran="e-sacha-publiee" data-onglet="lieux" data-compte="3" title="6f — publiée, le lieu attend encore"></iframe>
+        <figcaption><span class="num">6f</span> <span class="text-corps font-semibold text-teal-900">Publiée sans décider du lieu.</span>
+          <span class="block text-[16px] text-neutre-700">La fiche part&nbsp;; le lieu reste dans «&nbsp;Lieux à vérifier&nbsp;», hors du plan et de la page 4, jusqu'à ce qu'Adrien en décide.</span></figcaption></figure>
     </div>
     <figure class="cadre cadre--large mt-10"><div class="boite-large"><iframe data-ecran="l-sacha" title="6e — la relecture de Sacha, sur portable"></iframe></div>
       <figcaption class="px-4 sm:px-0"><span class="num">6e · 1280</span> <span class="text-corps font-semibold text-teal-900">Sur portable.</span>
@@ -801,7 +804,7 @@ textarea.champ{ field-sizing: content; resize: vertical; }
     <div class="px-4 sm:px-0">
       <p class="num">7</p>
       <h2 id="s7" class="ff mt-1 text-nom text-teal-900">Les lieux à vérifier</h2>
-      <p class="mt-2 text-corps text-neutre-800 max-w-[72ch]">Une fiche en ligne se modifie sans Adrien&nbsp;; un lieu posé avec «&nbsp;Placer sur la carte&nbsp;», non. D'où cette file à elle&nbsp;: les lieux des fiches en ligne y attendent seuls, ceux d'une fiche en attente renvoient à sa relecture.</p>
+      <p class="mt-2 text-corps text-neutre-800 max-w-[72ch]">Une fiche en ligne se modifie sans Adrien&nbsp;; un lieu posé avec «&nbsp;Placer sur la carte&nbsp;», non. D'où cette file à elle, qui liste aussi les lieux des fiches en attente. Approuver une fiche n'approuve jamais ses lieux&nbsp;: un lieu non décidé reste ici, hors du plan et des pages, jusqu'à une décision.</p>
     </div>
     <div class="rangee mt-6">
       <figure class="cadre"><iframe data-ecran="e-lieux" data-onglet="lieux" title="7a — la file des lieux"></iframe>
@@ -1095,8 +1098,7 @@ textarea.champ{ field-sizing: content; resize: vertical; }
       </section>
 
       <section class="@container px-[16px] py-8" aria-labelledby="ap-contact">
-        <h2 id="ap-contact" class="ff text-nom mots-entiers text-teal-900" style="--taille:var(--text-nom); --mot:9">Le contacter</h2>
-        <div class="filet h-[3px] w-16 rounded-full mt-2.5 mb-5"></div>
+        <h2 id="ap-contact" class="ff text-nom mots-entiers text-teal-900 mb-5" style="--taille:var(--text-nom); --mot:9">Le contacter</h2>
         <ul class="grid grid-cols-[minmax(0,1fr)] gap-2.5 list-none p-0 m-0">
           <li><a href="mailto:p.delmas@example.fr" class="carte carte-lien flex flex-wrap items-center gap-x-3.5 gap-y-2 min-h-[64px] px-4 py-3 rounded-[16px] bg-white">
             <span class="pastille pastille--teal w-10 h-10 bg-teal-50 text-teal-700 shrink-0"><svg class="w-5 h-5" aria-hidden="true"><use href="#i-mail"/></svg></span>
@@ -1117,8 +1119,7 @@ textarea.champ{ field-sizing: content; resize: vertical; }
 
       <section class="@container bg-neutre-100" aria-labelledby="ap-portrait">
         <div class="@container px-[16px] py-8">
-          <h2 id="ap-portrait" class="ff text-nom mots-entiers text-teal-900" style="--taille:var(--text-nom); --mot:8">Son portrait</h2>
-          <div class="filet h-[3px] w-16 rounded-full mt-2.5 mb-5"></div>
+          <h2 id="ap-portrait" class="ff text-nom mots-entiers text-teal-900 mb-5" style="--taille:var(--text-nom); --mot:8">Son portrait</h2>
           <p class="text-[19px] leading-relaxed text-neutre-900">
             Je travaille surtout avec des micro-entreprises et des associations. Premier rendez-vous
             gratuit pour faire le point, souvent autour d'un café à la Halle.
@@ -1127,8 +1128,7 @@ textarea.champ{ field-sizing: content; resize: vertical; }
       </section>
 
       <section class="@container px-[16px] py-8" aria-labelledby="ap-services">
-        <h2 id="ap-services" class="ff text-nom mots-entiers text-teal-900" style="--taille:var(--text-nom); --mot:7">Ce qu'il propose</h2>
-        <div class="filet h-[3px] w-16 rounded-full mt-2.5 mb-5"></div>
+        <h2 id="ap-services" class="ff text-nom mots-entiers text-teal-900 mb-5" style="--taille:var(--text-nom); --mot:7">Ce qu'il propose</h2>
         <ul class="grid grid-cols-[minmax(0,1fr)] gap-3 list-none p-0 m-0">
           <li class="@container flex flex-wrap items-center gap-x-3.5 gap-y-2 rounded-[16px] bg-neutre-100 px-4 py-4 min-h-[64px]">
             <span class="pastille w-9 h-9 bg-white text-sauge-700 shrink-0"><svg class="w-[18px] h-[18px]" aria-hidden="true"><use href="#c-conseil"/></svg></span>
@@ -1146,8 +1146,7 @@ textarea.champ{ field-sizing: content; resize: vertical; }
       </section>
 
       <section class="@container px-[16px] pb-8" aria-labelledby="ap-ou">
-        <h2 id="ap-ou" class="ff text-nom mots-entiers text-teal-900" style="--taille:var(--text-nom); --mot:7">Où le trouver</h2>
-        <div class="filet h-[3px] w-16 rounded-full mt-2.5 mb-5"></div>
+        <h2 id="ap-ou" class="ff text-nom mots-entiers text-teal-900 mb-5" style="--taille:var(--text-nom); --mot:7">Où le trouver</h2>
         <div class="carte rounded-[20px] bg-white p-[20px] flex flex-wrap items-start gap-x-4 gap-y-3">
           <span class="pastille pastille--teal w-11 h-11 bg-teal-50 text-teal-700 shrink-0 mt-0.5"><svg class="w-5 h-5" aria-hidden="true"><use href="#i-pin"/></svg></span>
           <div class="min-w-[min(12rem,100%)] flex-1">
@@ -1166,8 +1165,7 @@ textarea.champ{ field-sizing: content; resize: vertical; }
       </section>
 
       <section class="@container px-[16px] pb-8" aria-labelledby="ap-avis">
-        <h2 id="ap-avis" class="ff text-nom mots-entiers text-teal-900" style="--taille:var(--text-nom); --mot:8">Avis du quartier</h2>
-        <div class="filet h-[3px] w-16 rounded-full mt-2.5 mb-5"></div>
+        <h2 id="ap-avis" class="ff text-nom mots-entiers text-teal-900 mb-5" style="--taille:var(--text-nom); --mot:8">Avis du quartier</h2>
         <div class="rounded-[20px] bg-neutre-100 p-[20px]">
           <p class="text-corps text-neutre-900">
             <strong class="font-semibold">Aucun avis pour l'instant.</strong> Pierre est inscrit
@@ -1204,6 +1202,22 @@ textarea.champ{ field-sizing: content; resize: vertical; }
   <div class="fixed bottom-0 inset-x-0 z-40 bg-white/95 backdrop-blur-sm"
        style="box-shadow: 0 -4px 8px oklch(17.5% .03 202/.06), 0 -28px 64px -20px oklch(17.5% .03 202/.28)">
     <div class="mx-auto max-w-[640px] px-4 py-3 flex flex-wrap items-center gap-3">
+      <button type="button" class="inline-flex items-center justify-center min-h-[54px] px-5 rounded-full text-corps font-semibold text-teal-700 bg-teal-50 hover:bg-teal-100">
+        Refuser…
+      </button>
+      <button type="button" class="flex-1 inline-flex items-center justify-center gap-2 min-h-[54px] px-6 rounded-full text-[18px] font-bold tracking-tight text-white bg-teal-700 hover:bg-teal-600">
+        <svg class="w-5 h-5" aria-hidden="true"><use href="#i-coche"/></svg>Publier
+      </button>
+    </div>
+  </div>
+</template>
+
+<!-- la barre de décision quand un lieu posé n'est pas encore décidé : « Publier » ne l'approuve pas -->
+<template id="p-barre-decision-lieu">
+  <div class="fixed bottom-0 inset-x-0 z-40 bg-white/95 backdrop-blur-sm"
+       style="box-shadow: 0 -4px 8px oklch(17.5% .03 202/.06), 0 -28px 64px -20px oklch(17.5% .03 202/.28)">
+    <div class="mx-auto max-w-[640px] px-4 pt-2.5 pb-3 flex flex-wrap items-center gap-3">
+      <p class="basis-full text-center text-[16px] text-neutre-700">Le lieu posé reste à vérifier.</p>
       <button type="button" class="inline-flex items-center justify-center min-h-[54px] px-5 rounded-full text-corps font-semibold text-teal-700 bg-teal-50 hover:bg-teal-100">
         Refuser…
       </button>
@@ -2207,7 +2221,7 @@ textarea.champ{ field-sizing: content; resize: vertical; }
         </div>
       </li>
       <li class="w-[216px] shrink-0 rounded-[10px] overflow-hidden" style="box-shadow: var(--shadow-carte)">
-        <div class="diapo diapo--maison" role="img" aria-label="Mes lieux favoris — Véo Cartoucherie, le terrain de petanque du jardin. Un film, une partie de pétanque, et la semaine peut commencer.">
+        <div class="diapo diapo--maison" role="img" aria-label="Mes lieux favoris — Véo Cartoucherie. Un film, une partie de pétanque, et la semaine peut commencer.">
           <div class="diapo__motif"></div>
           <div class="diapo__corps">
             <div class="diapo__tete">
@@ -2220,7 +2234,6 @@ textarea.champ{ field-sizing: content; resize: vertical; }
               <span class="diapo__filet"></span>
               <ul class="diapo__lieux">
                 <li class="diapo__lieu"><span class="diapo__lieu-icone"><svg aria-hidden="true"><use href="#l-culture"/></svg></span><span class="diapo__lieu-nom">Véo Cartoucherie<span class="diapo__lieu-type">Culture</span></span></li>
-                <li class="diapo__lieu"><span class="diapo__lieu-icone"><svg aria-hidden="true"><use href="#l-sport"/></svg></span><span class="diapo__lieu-nom">le terrain de petanque du jardin<span class="diapo__lieu-type">Sport</span></span></li>
               </ul>
               <p class="diapo__phrase">Un film, une partie de pétanque, et la semaine peut commencer.</p>
               <p class="diapo__signature"><span class="diapo__nom">Sacha Morel</span><span>Céramiste · cartoucherie.fyi</span></p>
@@ -2245,7 +2258,7 @@ textarea.champ{ field-sizing: content; resize: vertical; }
         </div>
       </li>
     </ol>
-    <p class="mt-1 text-[16px] text-neutre-700">Page 4&nbsp;: avec le lieu tel que Sacha l'a nommé. Renommé ou fusionné, la page suit.</p>
+    <p class="mt-1 text-[16px] text-neutre-700">Page 4&nbsp;: sans le lieu posé. Il y entre une fois approuvé.</p>
     <dl class="mt-5 m-0 border-t border-neutre-300">
       <div class="py-3 border-b border-neutre-300">
         <dt class="text-[16px] font-semibold text-neutre-700">Pourquoi entreprendre&nbsp;?</dt>
@@ -2303,7 +2316,7 @@ textarea.champ{ field-sizing: content; resize: vertical; }
       <a href="/admin/lieux/sacha-petanque#fusionner" class="inline-flex items-center justify-center flex-1 min-h-[48px] px-[16px] rounded-full text-corps font-semibold text-teal-700 bg-white hover:bg-teal-50">Fusionner…</a>
       <a href="/admin/lieux/sacha-petanque#refuser" class="basis-full inline-flex items-center justify-center flex-1 min-h-[48px] px-[16px] rounded-full text-corps font-semibold text-teal-700 bg-white hover:bg-teal-50">Refuser le lieu…</a>
     </div>
-    <p class="mt-3 text-[16px] text-neutre-700">Pas décidé à «&nbsp;Publier&nbsp;»&nbsp;: approuvé avec la fiche.</p>
+    <p class="mt-3 text-[16px] text-neutre-700">«&nbsp;Publier&nbsp;» ne décide pas du lieu&nbsp;: il reste en attente, hors du plan et de la page 4.</p>
   </section>
 </template>
 
@@ -2365,8 +2378,7 @@ textarea.champ{ field-sizing: content; resize: vertical; }
       </section>
 
       <section class="@container px-[16px] py-8" aria-labelledby="ap-contact">
-        <h2 id="ap-contact" class="ff text-nom mots-entiers text-teal-900" style="--taille:var(--text-nom); --mot:9">Lae contacter</h2>
-        <div class="filet h-[3px] w-16 rounded-full mt-2.5 mb-5"></div>
+        <h2 id="ap-contact" class="ff text-nom mots-entiers text-teal-900 mb-5" style="--taille:var(--text-nom); --mot:9">Lae contacter</h2>
         <ul class="grid grid-cols-[minmax(0,1fr)] gap-2.5 list-none p-0 m-0">
           <li><a href="mailto:sacha.morel@example.fr" class="carte carte-lien flex flex-wrap items-center gap-x-3.5 gap-y-2 min-h-[64px] px-4 py-3 rounded-[16px] bg-white">
             <span class="pastille pastille--teal w-10 h-10 bg-teal-50 text-teal-700 shrink-0"><svg class="w-5 h-5" aria-hidden="true"><use href="#i-mail"/></svg></span>
@@ -2379,8 +2391,7 @@ textarea.champ{ field-sizing: content; resize: vertical; }
       </section>
 
       <section class="@container px-[16px] pb-8" aria-labelledby="ap-services">
-        <h2 id="ap-services" class="ff text-nom mots-entiers text-teal-900" style="--taille:var(--text-nom); --mot:7">Ce qu'iel propose</h2>
-        <div class="filet h-[3px] w-16 rounded-full mt-2.5 mb-5"></div>
+        <h2 id="ap-services" class="ff text-nom mots-entiers text-teal-900 mb-5" style="--taille:var(--text-nom); --mot:7">Ce qu'iel propose</h2>
         <ul class="grid grid-cols-[minmax(0,1fr)] gap-3 list-none p-0 m-0">
           <li class="@container flex flex-wrap items-center gap-x-3.5 gap-y-2 rounded-[16px] bg-neutre-100 px-4 py-4 min-h-[64px]">
             <span class="pastille w-9 h-9 bg-white text-sauge-700 shrink-0"><svg class="w-[18px] h-[18px]" aria-hidden="true"><use href="#c-art"/></svg></span>
@@ -2394,8 +2405,7 @@ textarea.champ{ field-sizing: content; resize: vertical; }
       </section>
 
       <section class="@container px-[16px] pb-8" aria-labelledby="ap-ou">
-        <h2 id="ap-ou" class="ff text-nom mots-entiers text-teal-900" style="--taille:var(--text-nom); --mot:7">Où lae trouver</h2>
-        <div class="filet h-[3px] w-16 rounded-full mt-2.5 mb-5"></div>
+        <h2 id="ap-ou" class="ff text-nom mots-entiers text-teal-900 mb-5" style="--taille:var(--text-nom); --mot:7">Où lae trouver</h2>
         <div class="carte rounded-[20px] bg-white p-[20px] flex flex-wrap items-start gap-x-4 gap-y-3">
           <span class="pastille pastille--teal w-11 h-11 bg-teal-50 text-teal-700 shrink-0 mt-0.5"><svg class="w-5 h-5" aria-hidden="true"><use href="#i-pin"/></svg></span>
           <div class="min-w-[min(12rem,100%)] flex-1">
@@ -2408,8 +2418,7 @@ textarea.champ{ field-sizing: content; resize: vertical; }
       </section>
 
       <section class="@container px-[16px] pb-8" aria-labelledby="ap-avis">
-        <h2 id="ap-avis" class="ff text-nom mots-entiers text-teal-900" style="--taille:var(--text-nom); --mot:8">Avis du quartier</h2>
-        <div class="filet h-[3px] w-16 rounded-full mt-2.5 mb-5"></div>
+        <h2 id="ap-avis" class="ff text-nom mots-entiers text-teal-900 mb-5" style="--taille:var(--text-nom); --mot:8">Avis du quartier</h2>
         <div class="rounded-[20px] bg-neutre-100 p-[20px]">
           <p class="text-corps text-neutre-900">
             <strong class="font-semibold">Aucun avis pour l'instant.</strong> Sacha est inscrit·e
@@ -2450,7 +2459,29 @@ textarea.champ{ field-sizing: content; resize: vertical; }
     <div data-inclure="p-lieu-sacha"></div>
     <div class="mt-8"><div data-inclure="p-apercu-sacha"></div></div>
   </main>
-  <div data-inclure="p-barre-decision"></div>
+  <div data-inclure="p-barre-decision-lieu"></div>
+</template>
+
+<!-- ─── 6f · Sacha publiée : son lieu, pas encore décidé, reste dans « Lieux à vérifier » ─── -->
+<template id="e-sacha-publiee">
+  <div data-inclure="p-entete"></div>
+  <main class="px-4 pt-5 pb-10">
+    <div role="status" class="flex flex-wrap items-start gap-x-4 gap-y-3 rounded-[22px] bg-teal-50 p-5">
+      <span class="pastille pastille--teal w-11 h-11 mt-0.5 bg-white text-teal-600" aria-hidden="true"><svg class="respire w-[22px] h-[22px]"><use href="#i-ventouse"/></svg></span>
+      <div class="@container min-w-[min(12rem,100%)] flex-1">
+        <p class="ff text-[22px] leading-tight text-teal-950">Fiche de Sacha publiée</p>
+        <p class="mt-1.5 text-[16px] leading-snug text-teal-950">En ligne d'ici quelques minutes. Son lieu posé reste en attente&nbsp;: ni sur le plan, ni sur sa page 4.</p>
+        <p class="mt-1.5 text-[16px] leading-snug text-teal-950">Un e-mail part à Sacha.</p>
+      </div>
+    </div>
+    <h1 class="ff mt-7 px-1 text-nom text-teal-900">Lieux à vérifier</h1>
+    <p class="mt-1.5 px-1 text-[16px] text-neutre-700">3 lieux, le plus ancien en haut. Sur le plan une fois approuvés.</p>
+    <ul class="mt-4 grid grid-cols-[minmax(0,1fr)] gap-3 list-none p-0 m-0">
+      <div data-inclure="p-lieu-ligne-yanis"></div>
+      <div data-inclure="p-lieu-ligne-sacha-publiee"></div>
+      <div data-inclure="p-lieu-ligne-camille"></div>
+    </ul>
+  </main>
 </template>
 
 <template id="l-sacha">
@@ -2465,7 +2496,8 @@ textarea.champ{ field-sizing: content; resize: vertical; }
       <div data-inclure="p-faits-sacha"></div>
       <div data-inclure="p-lieu-sacha"></div>
       <div data-inclure="p-histoire-sacha"></div>
-      <div class="mt-6 flex flex-wrap gap-2.5">
+      <p class="mt-6 text-[16px] text-neutre-700">«&nbsp;Publier&nbsp;» ne décide pas du lieu&nbsp;: il reste à vérifier.</p>
+      <div class="mt-3 flex flex-wrap gap-2.5">
         <button type="button" class="flex-1 inline-flex items-center justify-center gap-2 min-h-[48px] px-[16px] rounded-full text-corps font-semibold text-white bg-teal-700 hover:bg-teal-600">
           <svg class="w-5 h-5" aria-hidden="true"><use href="#i-coche"/></svg>Publier
         </button>
@@ -2511,6 +2543,26 @@ textarea.champ{ field-sizing: content; resize: vertical; }
     </div>
     <div class="flex flex-wrap gap-2.5 px-4 pb-4">
       <a href="/admin/fiche/sacha-morel#lieu-pose" class="w-full inline-flex items-center justify-center gap-1.5 min-h-[48px] px-[16px] py-2 rounded-full text-center text-corps font-semibold text-teal-700 bg-teal-50 hover:bg-teal-100"><span class="min-w-0">Décider avec sa fiche</span><svg class="w-4 h-4 shrink-0" aria-hidden="true"><use href="#i-chev"/></svg></a>
+    </div>
+  </article>
+</li>
+</template>
+<template id="p-lieu-ligne-sacha-publiee">
+<li>
+  <article class="carte rounded-[20px] bg-white overflow-hidden">
+    <div class="relative h-[120px] overflow-hidden bg-neutre-200">
+  <svg class="absolute inset-0 w-full h-full" viewBox="84 448 328 120" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Plan du quartier, autour du lieu posé"><use href="#plan-quartier" width="722" height="676"/></svg>
+  <span class="lieu-cible" style="left:50%; top:50%" aria-hidden="true"><span class="lieu lieu--pose"><svg class="w-[18px] h-[18px]"><use href="#l-sport"/></svg></span></span>
+</div>
+    <div class="p-4">
+      <h3 class="ff text-[21px] leading-tight text-teal-900"><a href="/admin/lieux/sacha" class="underline decoration-teal-300 underline-offset-4 hover:decoration-teal-600">le terrain de petanque du jardin</a></h3>
+      <p class="mt-0.5 text-[16px] text-neutre-700">Sport · posé le 25&nbsp;oct.</p>
+      <p class="mt-2 flex flex-wrap items-center gap-x-2 gap-y-1.5 text-[16px] text-neutre-800">Par <a href="/admin/fiche/sacha-morel" class="font-semibold text-teal-800 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">Sacha Morel</a> · fiche <span class="inline-flex items-center gap-1.5 rounded-full bg-sauge-100 px-2.5 py-0.5 text-[16px] font-semibold text-teal-950"><svg class="w-4 h-4 shrink-0" aria-hidden="true"><use href="#i-coche"/></svg>En ligne</span></p>
+      <blockquote class="mt-2 mx-0 mb-0 border-l-[3px] border-neutre-300 pl-3 text-[16px] leading-snug text-neutre-900">«&nbsp;Les parties du dimanche, entre voisins.&nbsp;»</blockquote>
+    </div>
+    <div class="flex flex-wrap gap-2.5 px-4 pb-4">
+      <button type="button" class="flex-1 inline-flex items-center justify-center gap-2 min-h-[48px] px-[16px] rounded-full text-corps font-semibold text-white bg-teal-700 hover:bg-teal-600"><svg class="w-5 h-5" aria-hidden="true"><use href="#i-coche"/></svg>Approuver</button>
+      <a href="/admin/lieux/sacha" class="inline-flex items-center justify-center min-h-[48px] px-[16px] rounded-full text-corps font-semibold text-teal-700 bg-teal-50 hover:bg-teal-100">Décider…</a>
     </div>
   </article>
 </li>
