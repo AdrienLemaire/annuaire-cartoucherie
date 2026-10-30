@@ -82,7 +82,7 @@ scripts/
   sync-content.mjs          CHANGED  copies places.json and story photos; calls story-slides
   story-slides.mjs          NEW      renders « Votre histoire » slides with satori, cached by hash
   places-osm.mjs            NEW      Overpass → src/content/places-osm.json (run by hand, committed)
-  budgets.mjs               CHANGED  JS measured per page (Task 12)
+  budgets.mjs               CHANGED  JS measured per page (Task 11)
 src/
   content/
     schemas.ts              CHANGED  genre n, five fields, histoire, lieux, placeSchema
@@ -257,7 +257,7 @@ Fields doc §5: categories are not checked against `categories.json`; `services`
 **Files:** `src/content/schemas.ts`, `src/lib/gender.ts`, `src/lib/members.ts`, `tests/unit/gender.test.ts`, `tests/unit/members.test.ts`, `tests/unit/factory.ts`.
 
 - [ ] **Step 1: Failing tests** (`gender.test.ts`): `agree("n", "elle")` → « iel »; `"la"` → « lae »; `"voisine"` → « voisin·e »; `"inscrite"` → « inscrit·e ». (`members.test.ts`): `formatMemberCount(1, ["n"])` → « 1 voisin·e »; `formatMemberCount(2, ["f","n"])` → « 2 voisins »; `formatMemberCount(2, ["f","f"])` → « 2 voisines » (today's rule: feminine plural only when everyone is « f »; fields doc §7).
-- [ ] **Step 2: Implement:** `genderSchema = z.enum(["f", "h", "n"])`; a third column in `FORMS`. `groupGender` is unchanged in logic; check that a lone « n » takes its own column for count 1, and the plural rule otherwise. Watch the elision in `copy.ts`: « Ce qu'iel propose », « Lae contacter » — read every `agree()` caller and its sentence aloud with « n ».
+- [ ] **Step 2: Implement:** `genderSchema = z.enum(["f", "h", "n"])`; a third column in `FORMS`. The count rule changes in one place, `memberCountParts`: **a count of 1 takes that person's own gender** (« 1 voisin·e », « 1 voisine », « 1 voisin »); several people keep today's plural rule through `groupGender` (feminine plural only when everyone is « f », otherwise « voisins »). Watch the elision in `copy.ts`: « Ce qu'iel propose », « Lae contacter » — read every `agree()` caller and its sentence aloud with « n ».
 - [ ] **Step 3: The five fields** (fields doc §1), each `.nullable().default(null)`: `enseigne` (≤ 60), `tarifs` (≤ 120), `horaires` (≤ 120), `reservation` (`https://` URL), and `langues` (`z.array(z.string()).default([])`).
 - [ ] **Step 4: `histoire`** — six optional answers, hard limits from fields doc §7, plus an optional photo per answer:
 
@@ -274,7 +274,7 @@ export const storySchema = z.object({
   motto: answer(120).nullable().default(null),
 });
 // in memberSchema:
-histoire: storySchema.default({}),
+histoire: storySchema.prefault({}), // Zod 4: .default({}) would return {} unparsed, skipping the inner defaults
 lieux: z.array(z.object({ place: z.string().regex(SLUG), pourquoi: z.string().trim().max(80).nullable().default(null) })).max(5).default([]),
 ```
 
@@ -282,7 +282,7 @@ Keys are French, like every data key (v1 Global Constraints). The order of the s
 
 - [ ] **Step 5: `factory.ts`** gains the new defaults. **Green.**
 - [ ] **Step 6: Fixture** (`tests/fixtures/members.json`, fictional only):
-  - Add Sacha Morel exactly as `docs/mockups/_shared/members.json` has them (iel, céramiste), with the mockup's portrait (`women/79`) committed at 128×128 under `tests/fixtures/portraits/`, the same source and size as the twelve already there.
+  - Add Sacha Morel exactly as `docs/mockups/_shared/members.json` has them (iel, céramiste), with a 128×128 portrait under `tests/fixtures/portraits/`. Use the mockup's (`women/79`) only after checking it comes from the same source as the twelve already there (their origin is not recorded in the fixture commit: ask Adrien); never a photo of a real member.
   - Give Sophie Arnaud the full v2 profile from `docs/mockups/v2/membre.html`: enseigne, tarifs, horaires, réservation, langues, six answers, five places.
   - Give two other members partial data (some fields, some answers), so empty states render.
   - `tests/fixtures/histoire/`: two fictional story photos (abstract or object photos, 1080 px, no person).
@@ -329,11 +329,11 @@ The form's live preview (Plan 3) and the build must draw the same slide. Satori 
 
 **Files:** `scripts/story-slides.mjs`, `scripts/sync-content.mjs`, `src/lib/members.ts` (`slideSrc`), `.gitignore`, `.github/workflows/ci.yml`, `tests/unit/story-slides.test.ts`.
 
-Generated slides become ordinary carousel entries: `story-slides.mjs` writes `<slug>-<n>.png` into the carousel source and appends `{ fichier, texte }` to the member's `carrousel` (`texte` is the answer: the alt text). `PortraitCarousel.astro` and `sync-content`'s WebP pipeline stay unchanged. Members with a non-empty hand-made `carrousel` (the 6 existing profiles, Sandra's slides) keep theirs; generated slides are only for members without one (decision 4).
+Generated slides become ordinary carousel entries, **without touching the content source**: `story-slides.mjs` writes `<slug>-histoire-<n>.png` into a generated, git-ignored directory (`.cache/slides/out/`), and appends `{ fichier, texte }` to the member's `carrousel` in the generated `src/content/members.json` only (`texte` is the answer: the alt text). `sync-content`'s WebP step reads slides from both the content source and that directory. The committed fixture and the private checkout are never written to. `PortraitCarousel.astro` and `sync-content`'s WebP pipeline stay unchanged. Members with a non-empty hand-made `carrousel` (the 6 existing profiles, Sandra's slides) keep theirs; generated slides are only for members without one (decision 4).
 
 - [ ] **Step 1: Failing test:** the cache key of a slide is a hash of `(slideTree output, template version, font file hash, photo bytes hash)`. Changing one answer changes that slide's key and no other; changing nothing changes nothing. `slideKey` is a pure function in the script module, imported by the test.
 - [ ] **Step 2: Implement** `story-slides.mjs`: for each member and each answered question, `slideKey` → if `.cache/slides/<key>.png` exists, copy it; else render with satori + sharp and store it. Called by `sync-content` after it copies `members.json`. `.cache/` is git-ignored.
-- [ ] **Step 3: CI cache:** `actions/cache` on `.cache/slides` keyed on `hashFiles('src/lib/slide.ts', 'src/og/font.ts')` with a restore-keys prefix, in `verify` and `deploy`. Never upload the cache as an artifact (it holds real members' slides in the deploy job; caches are scoped to the repository and not publicly downloadable — confirm in GitHub's docs and cite it in the commit).
+- [ ] **Step 3: CI cache.** Cache entries are immutable once saved, so a fixed key would be saved once and never refreshed. Key: `slides-<environment>-${{ hashFiles('src/lib/slide.ts', 'src/og/font.ts') }}-${{ github.run_id }}`, `restore-keys: slides-<environment>-${{ hashFiles(…) }}-`. Before the cache is saved, `story-slides` **prunes every entry this build did not use**, so a deleted or hidden member's slides leave the cache at the next deploy. Separate prefixes for the fixture (`verify`) and each real environment (`deploy`, `content-deploy`). Assume the cache is readable by anyone able to run a workflow on the repository (pull requests can restore base-branch caches; check GitHub's cache access rules and cite them): it may only ever hold slides of currently published profiles, which are public on the site anyway. Never upload it as an artifact.
 - [ ] **Step 4: Verify:** a cold `npm run build`, then a warm one: the warm one renders zero slides (log the count). Build time for the fixture recorded in the task report, extrapolated with Task 8's numbers. `npm run budgets` green.
 - [ ] **Step 5: Verify on the profile:** `/membre/sophie-arnaud` shows the generated carousel; the slides' alt text is the answers; full screen works; `/membre/camille-roussel` (no answers) shows none.
 - [ ] **Step 6: Commit** `feat: generate story slides at build`.
@@ -353,7 +353,19 @@ Generated slides become ordinary carousel entries: `story-slides.mjs` writes `<s
 - [ ] **Step 6: Verify:** `npm run build`; ODbL attribution: wherever the map's « © les contributeurs d'OpenStreetMap » appears, it now also covers the places; check the wording against `docs/mockups/v2/carte.html`.
 - [ ] **Step 7: Commit** `feat: add the OpenStreetMap places snapshot`.
 
-### Task 11: The « Lieux préférés » layer on `/carte`
+### Task 11: Budgets per page
+
+Plan 3 adds real client JS to `/espace` and `/admin`. Today's budget sums every `.js` file in `dist/` against 40 KB, so it would fail for the wrong reason, or be raised for everyone.
+
+**Shape:** Verify.
+
+**Files:** `scripts/budgets.mjs`.
+
+- [ ] **Step 1:** Measure JS per page: for each `dist/**/*.html`, the gzip size of the module scripts it loads plus their static imports (follow `import "./x.js"` / `from "./x.js"` in the emitted chunks). Budgets: every public page ≤ 40 KB, any single file ≤ 25 KB as today; `/espace*` and `/admin*` get their own line, set in Plan 3 from a measurement, not guessed here.
+- [ ] **Step 2: Verify:** the numbers for public pages match today's run within rounding; Task 12's `places-layer.ts` will then be counted on `/carte` only.
+- [ ] **Step 3: Commit** `build: measure the JavaScript budget per page`.
+
+### Task 12: The « Lieux préférés » layer on `/carte`
 
 **Shape:** TDD for grouping; Verify for the layer.
 
@@ -375,18 +387,6 @@ Generated slides become ordinary carousel entries: `story-slides.mjs` writes `<s
 - [ ] **Step 5: e2e** (one test, the decision « the layer is off until asked »): `/carte` shows no place marker; after the switch, the fixture's places appear; `?lieux=sophie-arnaud` shows exactly her places.
 - [ ] **Step 6: Verify** every frame of `docs/mockups/v2/carte.html` against the built page at 360 and 1400 px, 100 % and 200 %. Lighthouse on `/carte` stays within `lighthouserc.json`.
 - [ ] **Step 7: Commit** `feat: add the favourite places layer to the map`.
-
-### Task 12: Budgets per page
-
-Plan 3 adds real client JS to `/espace` and `/admin`. Today's budget sums every `.js` file in `dist/` against 40 KB, so it would fail for the wrong reason, or be raised for everyone.
-
-**Shape:** Verify.
-
-**Files:** `scripts/budgets.mjs`.
-
-- [ ] **Step 1:** Measure JS per page: for each `dist/**/*.html`, the gzip size of the module scripts it loads plus their static imports (follow `import "./x.js"` / `from "./x.js"` in the emitted chunks). Budgets: every public page ≤ 40 KB, any single file ≤ 25 KB as today; `/espace*` and `/admin*` get their own line, set in Plan 3 from a measurement, not guessed here.
-- [ ] **Step 2: Verify:** the numbers for public pages match today's run within rounding; `places-layer.ts` is counted on `/carte` only.
-- [ ] **Step 3: Commit** `build: measure the JavaScript budget per page`.
 
 **Phase 1 done:** the full gate green; staging checked against `docs/mockups/v2/membre.html` and `carte.html` by Adrien on a real phone; Adrien's real-row build passes; deploy to production. The real profiles look exactly as before, minus the heading underlines and the 200 % breaks.
 

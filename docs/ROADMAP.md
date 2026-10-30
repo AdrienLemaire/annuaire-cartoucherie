@@ -65,6 +65,6 @@ links the 6 existing profiles to their owners by hand.
 | v2 spec                                                       | 📝 Draft, awaiting Adrien's review |
 | CPU test (spec §13 step 0): fits, with a hand-written sign-in | ✅ Done (2026-10-26)               |
 | Mockups: form, `/espace`, profile with new fields, `/admin`   | ✅ Approved (2026-10-30)           |
-| Live-site fixes: 200 % word breaks, ×1.4 portrait, underlines | ⏳ Not started                     |
+| Live-site fixes: Plan 2, Phase 0                              | ⏳ Not started                     |
 | Implementation plans 2 (static) and 3 (accounts)              | 📝 Draft, awaiting Adrien's review |
 | Build, migration of the 6 profiles to D1, invitations         | ⏳ Not started                     |

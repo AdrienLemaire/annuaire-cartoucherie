@@ -89,7 +89,7 @@ worker/
   places.ts                   NEW      member-placed places: create; admin: review
   admin.ts                    NEW      queue, approve, refuse, hide, link owner, slides, flags
   dispatch.ts                 NEW      workflow_dispatch of the content deploy
-  normalise.ts                NEW      phone, site, Instagram, LinkedIn, Google link
+  google-link.ts              NEW      resolves a maps.app.goo.gl share link (needs the network)
   tsconfig.json               NEW      Workers types from `wrangler types`
 src/
   content/schemas.ts          CHANGED  memberInputSchema and the step schemas, derived
@@ -142,7 +142,7 @@ Not code. Each item is a click-path or a command for Adrien; the agent prepares 
 
 **Shape:** TDD for the guard; Verify for the wiring.
 
-**Files:** `wrangler.toml`, `worker/index.ts`, `worker/http.ts`, `worker/tsconfig.json`, `package.json` (`cf-typegen`), `eslint.config.js` (a `worker/**` block: no `astro:*`, no DOM), `tests/unit/http.test.ts`.
+**Files:** `wrangler.toml`, `worker/index.ts`, `worker/http.ts`, `worker/tsconfig.json`, `package.json` (`cf-typegen`), `eslint.config.js` (a `worker/**` block: no `astro:*`, no DOM), `tests/unit/http.test.ts`. `npm run lint` gains `tsc -p worker`: the root `tsc --noEmit` does not type-check `worker/`.
 
 - [ ] **Step 1: `wrangler.toml`:** `main = "worker/index.ts"`; `[assets] run_worker_first = ["/api/*"]` (F1; no `binding`: the Worker never serves assets itself); `[[d1_databases]] binding = "DB"` and `[vars] SITE_URL`, `ENVIRONMENT` at top level **and again under `[env.staging]`** (F2: neither is inherited). Every comment in the file stays.
 - [ ] **Step 2: Failing tests** for `guardMutation(request, siteUrl)`: a `POST` with `Origin` = site and JSON content type passes; a missing or foreign `Origin` fails 403; `text/plain` or form-encoded fails 415; `GET` passes unguarded.
@@ -220,16 +220,17 @@ CREATE TABLE places (
 );
 CREATE TABLE profile_places (
   profile_id TEXT NOT NULL REFERENCES profiles (id) ON DELETE CASCADE,
-  place_id TEXT NOT NULL REFERENCES places (id) ON DELETE CASCADE,
+  place_id TEXT NOT NULL REFERENCES places (id) ON DELETE CASCADE, -- D1 enforces foreign keys
   position INTEGER NOT NULL,
   why TEXT CHECK (why IS NULL OR length(why) <= 80),
   PRIMARY KEY (profile_id, place_id)
 );
 ```
 
-Why the profile is one JSON column rather than one column per field: every field is validated by the same `memberInputSchema` the build uses, the form saves one step at a time, and the export writes JSON. Columns would restate the schema in SQL and drift from it. Story answers live in `data.histoire`, as in `memberSchema`; their photos in `images`. OSM places are not copied into D1: a `profile_places.place_id` starting with `osm-` refers to the committed snapshot, checked by the Worker against `lieux.json`.
+Why the profile is one JSON column rather than one column per field: every field is validated by the same `memberInputSchema` the build uses, the form saves one step at a time, and the export writes JSON. Columns would restate the schema in SQL and drift from it. Story answers live in `data.histoire`, as in `memberSchema`; their photos in `images`. OSM places **are** copied into D1: a second migration, `0002_osm_places.sql`, generated from `src/content/places-osm.json` by a script, inserts them as `source = 'osm'`, `status = 'approved'`. D1 enforces foreign keys, so a favourite must point at a real row; it also gives « merge into an existing place » a target. When the snapshot is regenerated, the next generated migration upserts it.
 
 - [ ] **Step 1:** Write the migration. `npx wrangler d1 migrations apply DB --local`.
+- [ ] **Step 1b: Remote migrations in the deploy.** The gated deploy runs `wrangler d1 migrations apply DB --remote` (with `--env staging` on staging) before `wrangler deploy`; the deploy token gains D1 Edit. Rule for every later migration: **backward-compatible with the Worker already running** (add columns and tables; never rename or drop in the same release), because the migration lands a minute before the new Worker does.
 - [ ] **Step 2: Verify:** `npx wrangler d1 execute DB --local --command "SELECT name FROM sqlite_master WHERE type='table'"` lists the seven tables; inserting a profile with `status = 'live'` fails.
 - [ ] **Step 3: Commit** `feat: add the v2 database schema`.
 
@@ -274,6 +275,15 @@ The measured design (v2 spec §8, §13 step 0): a 32-byte random token, stored a
 
 ## Phase 3 — The form
 
+### Task 5b: The launch switch
+
+Phases 3 and 4 reach production before the export and the migration exist (Phases 5 and 6). Until then, a real entrepreneur must not be able to submit a profile that cannot be published.
+
+**Shape:** Verify.
+
+- [ ] A Worker var `SIGN_UP_OPEN` (`"0"` in production, `"1"` on staging and locally). While `"0"`, `POST /api/sign-in` sends links only to existing `admin` users (still answering `{ sent: true }` to everyone), and the build hides the footer's « Espace entrepreneur » and the `/a-propos` call to action (a build env var of the same name). Flipped to `"1"` in Task 20, Step 5.
+- [ ] Commit `feat: keep sign-up closed until publishing works`.
+
 ### Task 6: The service worker and the app shells
 
 **Shape:** Verify.
@@ -292,7 +302,9 @@ The form saves a step at a time, but `memberSchema` describes a finished profile
 
 **Shape:** TDD.
 
-**Files:** `src/content/schemas.ts`, `worker/normalise.ts`, `tests/unit/schemas.test.ts`, `tests/unit/normalise.test.ts`.
+**Files:** `src/content/schemas.ts`, `src/lib/phone.ts` (phone), `src/lib/contact.ts` (site, Instagram, LinkedIn), `worker/google-link.ts`, `tests/unit/schemas.test.ts`, `tests/unit/phone.test.ts`, `tests/unit/contact.test.ts`.
+
+The normalisers are pure and live in `src/lib`, so the browser's preview shows the normalised phone (v2 spec §9) with the same code the Worker saves with. Only the Google short-link resolution needs the network and stays in `worker/`.
 
 - [ ] **Step 1: Derive, do not restate:**
 
@@ -324,7 +336,7 @@ export const stepSchema = (step: keyof typeof STEPS) =>
   memberInputSchema.pick(/* STEPS[step] as a mask */);
 ```
 
-Plus a `refine` on the whole input: at least one of `tel` or `email` (decision 2); `adresse` required when `workMode = "recoit"`.
+The whole-input rules — at least one of `tel` or `email` (decision 2), `adresse` required when `workMode = "recoit"` — go on a separate `submitSchema = memberInputSchema.superRefine(…)`. Never on the base: Zod 4 refuses `.pick()`/`.partial()` on a refined object, and a step must not fail for a field on another step.
 
 - [ ] **Step 2: Failing tests** (schemas): a step-1 draft with only a name parses as a draft and fails `memberInputSchema`; a complete fixture member, minus its derived fields, passes; neither phone nor e-mail fails with the error on `tel`.
 - [ ] **Step 3: Failing tests** (normalise), from fields doc §1: `+33 6 12 34 56 78`, `06.12.34.56.78`, `0612345678` → `06 12 34 56 78`; a foreign number refused; `https://www.Example.fr/` → `example.fr`; `@camille.r`, `instagram.com/camille.r/` → `camille.r`; a LinkedIn URL with `%C3%A9` decodes to « é » and passes the widened rule (v2 spec §16 decision: decode); `maps.app.goo.gl/…` is resolved by the Worker (one `fetch` with `redirect: "manual"`, accept only a `www.google.com/maps` target) — the resolution is tested with a stubbed fetch.
@@ -459,7 +471,7 @@ The form draws the card and the profile header from the draft (v2 spec §5). Ast
 - [ ] **Step 2: One queue for both deploys:** the `deploy` job gets job-level `concurrency: { group: deploy-<environment>, cancel-in-progress: false }`; `content-deploy.yml` uses the same group. One runs, at most one waits, and the waiting one is the newest (a burst of saves coalesces).
 - [ ] **Step 3: `content-deploy.yml`:** `on: workflow_dispatch: inputs: environment (staging | production)`; `environment: ${{ inputs.environment }}` (production-content needs no reviewer: use a separate GitHub Environment `production-content` holding the same secrets, without the reviewer rule, as v2 spec §7 names it); checkout `deployed/<environment>`; `npm ci`; `export-content` into `$RUNNER_TEMP/content`; restore the slide cache; `npm run build` with `CONTENT_DIR`; `forbidden-dist --real-content`; budgets; `contenu.spec.ts`; `wrangler deploy` (with `--env staging` for staging); the readiness wait and `deployed.spec.ts`. On failure: one step e-mails Adrien through Brevo (`curl`, the key from secrets, no member data).
 - [ ] **Step 4: Both deploys export from D1** once the migration is done: the gated deploy's « checkout cartoucherie-donnees » step is replaced by `export-content`, behind an environment variable `CONTENT_SOURCE` (`repository` | `d1`) so the switch is one variable per environment, flipped in Task 20.
-- [ ] **Step 5: `dispatch.ts`:** `POST https://api.github.com/repos/<owner>/<repo>/actions/workflows/content-deploy.yml/dispatches` with `{ ref: "main", inputs: { environment } }`, the fine-grained token (Actions: write; F5). Called after a published profile's save, an approval, a hide, a deletion, a place decision. A dispatch failure is logged (no member data) and does not fail the member's save.
+- [ ] **Step 5: `dispatch.ts`:** `POST https://api.github.com/repos/<owner>/<repo>/actions/workflows/content-deploy.yml/dispatches` with `{ ref: "deployed/<environment>", inputs: { environment } }` — the tag, never `main`, so the workflow file that runs with the no-reviewer secrets is the last approved one too. The fine-grained token: Actions: write (F5). Called after a published profile's save, an approval, a hide, a deletion, a place decision. A dispatch failure does not fail the member's save, but it e-mails Adrien (at most once a day, tracked in D1): an expired token would otherwise silently stop every edit from going live.
 - [ ] **Step 6: Verify on staging:** edit a published fixture profile; the workflow runs; the page changes; `/espace` goes from « Mise en ligne en cours… » to « En ligne ». Two saves 10 seconds apart produce at most two runs. A run started while a code deploy is running waits for it.
 - [ ] **Step 7: Commit** `ci: deploy member content without a code review`.
 
@@ -494,7 +506,7 @@ The form draws the card and the profile header from the draft (v2 spec §5). Ast
 - [ ] **Step 2: Rehearse on the fixture:** import `tests/fixtures` into local D1, export, build, diff (Task 16 Step 3).
 - [ ] **Step 3: Adrien, staging is untouched** (fictional only). Production: `CONTENT_DIR=../cartoucherie-donnees D1_WRITE_TOKEN=… node scripts/import-content.mjs --database <production id>`, then revoke the token.
 - [ ] **Step 4: Prove the switch** (v2 spec §13 step 3): build once from the private repository and once from the export, on Adrien's machine, and compare `dist/` page by page — same URL list, same visible text. The script reports « N pages identical » or the differing page numbers.
-- [ ] **Step 5:** Flip `CONTENT_SOURCE=d1` on the `production` and `production-content` environments; run a content deploy; check the 6 profiles on the live site; archive `cartoucherie-donnees` (read-only, kept as a backup).
+- [ ] **Step 5:** Flip `CONTENT_SOURCE=d1` on the `production` and `production-content` environments; run a content deploy; check the 6 profiles on the live site; archive `cartoucherie-donnees` (read-only, kept as a backup). Then open sign-up: `SIGN_UP_OPEN=1` in production (Task 5b).
 
 ### Task 21: Invitations
 
