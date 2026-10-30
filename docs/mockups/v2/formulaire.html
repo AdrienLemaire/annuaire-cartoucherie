@@ -407,6 +407,15 @@ textarea.champ{ field-sizing: content; resize: vertical; }
 /* « Placer sur la carte » : le repère posé, pas encore nommé */
 .lieu--pose{ background:#fff; color:var(--color-sauge-800);
        box-shadow: 0 0 0 2px var(--color-sauge-700), var(--shadow-flottant); outline:2px dashed var(--color-sauge-700); outline-offset:5px; }
+/* le groupe : des lieux à moins de 44 px l'un de l'autre. Le carré du lieu, un
+   peu plus grand, son nombre en blanc (6,9:1), et un second carré décalé
+   derrière lui pour dire « plusieurs ». Jamais orange. */
+.lieu--groupe{ width:34px; height:34px; font:700 17px/1 var(--font-sans); font-variant-numeric:tabular-nums;
+  box-shadow: 0 0 0 2px #fff, 5px -5px 0 0 var(--color-sauge-400), 5px -5px 0 2px #fff, var(--shadow-carte); }
+/* la marque de lieu : l'épingle d'un voisin dont l'activité est un lieu
+   préféré. Pas de second repère : un coin sauge sur son épingle. */
+.marque-lieu{ position:absolute; top:0; right:0; display:grid; place-items:center; width:18px; height:18px;
+  border-radius:6px; background:var(--color-sauge-700); color:#fff; box-shadow:0 0 0 2px #fff; }
 </style>
 <style id="src-css-diapos">
 .diapo{ position:relative; display:flex; flex-direction:column; width:100%; aspect-ratio:4/5;
@@ -641,7 +650,6 @@ textarea.champ{ field-sizing: content; resize: vertical; }
   <div class="max-w-[76ch]">
     <p class="text-etiquette font-semibold uppercase text-sauge-800">1 · Avant le formulaire</p>
     <h2 id="connexion-t" class="ff mt-1.5 text-nom text-teal-900">Se connecter</h2>
-    <div class="filet h-[3px] w-16 rounded-full mt-2.5"></div>
     <div class="mt-4 grid gap-3 text-corps text-neutre-800">
 <p>Un lien magique, pas de mot de passe. L'entrée n'est jamais sur le chemin du visiteur&nbsp;: elle
 vit sur <code class="font-mono text-[15px] text-teal-800">/a-propos</code> et dans le pied de page.</p></div>
@@ -892,7 +900,6 @@ vit sur <code class="font-mono text-[15px] text-teal-800">/a-propos</code> et da
   <div class="max-w-[76ch]">
     <p class="text-etiquette font-semibold uppercase text-sauge-800">2 · Le formulaire</p>
     <h2 id="etapes-t" class="ff mt-1.5 text-nom text-teal-900">Votre fiche, en neuf étapes</h2>
-    <div class="filet h-[3px] w-16 rounded-full mt-2.5"></div>
     <div class="mt-4 grid gap-3 text-corps text-neutre-800">
 <p><strong class="font-semibold text-neutre-900">L'ordre.</strong> 1&nbsp;Nom et métier · 2&nbsp;Où vous chercher · 3&nbsp;Photo ·
 4&nbsp;En une phrase · 5&nbsp;Ce que vous proposez · 6&nbsp;Où vous trouver · 7&nbsp;Vous joindre · 8&nbsp;Infos pratiques ·
@@ -908,8 +915,7 @@ Bois Vert</strong>&nbsp;»), donc on le demande au même endroit. <em>Tarifs, ho
 l'étape&nbsp;8, «&nbsp;Infos pratiques&nbsp;»&nbsp;: quatre champs facultatifs sur un seul écran, qu'on passe d'un geste. Sur la
 fiche, ils vivent dans la carte d'identité, sous l'accroche (<code class="font-mono text-[15px] text-teal-800">b-v2-pratique</code>,
 <code class="font-mono text-[15px] text-teal-800">v2/membre.html</code>), et l'aperçu de l'étape les montre là.</p>
-<p><strong class="font-semibold text-neutre-900">Une étape, un objet orange&nbsp;:</strong> «&nbsp;Continuer&nbsp;». Quand
-l'aperçu montre une section, son filet compte, et l'aperçu de l'étape&nbsp;7, qui contient aussi «&nbsp;Appeler&nbsp;», atteint trois, la limite.</p></div>
+<p><strong class="font-semibold text-neutre-900">Une étape, un objet orange&nbsp;:</strong> «&nbsp;Continuer&nbsp;». Les titres de section n'ont plus de filet&nbsp;; l'aperçu de l'étape&nbsp;7, qui contient «&nbsp;Appeler&nbsp;», en compte deux.</p></div>
   </div>
   <div class="rangee mt-8">
 
@@ -2010,15 +2016,13 @@ l'aperçu montre une section, son filet compte, et l'aperçu de l'étape&nbsp;7,
   </figcaption>
   <div class="rounded-[20px] bg-white overflow-hidden"><section class="bg-neutre-100" aria-labelledby="e5a-t-portrait">
   <div class="px-4 py-5">
-    <h2 id="e5a-t-portrait" class="ff text-nom text-teal-900">Son portrait</h2>
-<div class="filet h-[3px] w-16 rounded-full mt-2.5 mb-5"></div>
+    <h2 id="e5a-t-portrait" class="ff mb-5 text-nom text-teal-900">Son portrait</h2>
     <p class="text-[19px] leading-relaxed text-neutre-900">Installée allée du Bois Vert depuis 2021, j'accompagne surtout des adultes fatigués, des femmes en période de transition et des étudiants en fin d'année. La première séance dure une heure et demie : on fait le point sur l'alimentation, le sommeil, la digestion et le stress, sans jugement. Je vous remets ensuite un programme simple, adapté à votre quotidien et à votre budget. Le suivi se fait chaque mois, au cabinet ou en visio, et vous pouvez m'écrire entre deux séances.</p>
     <p class="mt-4 text-[16px] text-neutre-700">Texte écrit par Sophie elle-même.</p>
     
   </div>
 </section><section class="px-4 py-5" aria-labelledby="e5a-t-serv">
-  <h2 id="e5a-t-serv" class="ff text-nom text-teal-900">Ce qu'elle propose</h2>
-<div class="filet h-[3px] w-16 rounded-full mt-2.5 mb-5"></div>
+  <h2 id="e5a-t-serv" class="ff mb-5 text-nom text-teal-900">Ce qu'elle propose</h2>
   <ul class="grid gap-3 list-none p-0 m-0">
   <li class="flex items-center gap-3.5 rounded-[16px] bg-neutre-100 px-4 py-4 min-h-[64px]">
     <span class="pastille w-9 h-9 bg-white text-sauge-700 shrink-0"><svg class="w-[18px] h-[18px]" aria-hidden="true"><use href="#c-sante"/></svg></span>
@@ -2127,15 +2131,13 @@ l'aperçu montre une section, son filet compte, et l'aperçu de l'étape&nbsp;7,
   </figcaption>
   <div class="rounded-[20px] bg-white overflow-hidden"><section class="bg-neutre-100" aria-labelledby="e5b-t-portrait">
   <div class="px-4 py-5">
-    <h2 id="e5b-t-portrait" class="ff text-nom text-teal-900">Son portrait</h2>
-<div class="filet h-[3px] w-16 rounded-full mt-2.5 mb-5"></div>
+    <h2 id="e5b-t-portrait" class="ff mb-5 text-nom text-teal-900">Son portrait</h2>
     <p class="text-[19px] leading-relaxed text-neutre-900">Installée allée du Bois Vert depuis 2021, j'accompagne surtout des adultes fatigués, des femmes en période de transition et des étudiants en fin d'année. La première séance dure une heure et demie : on fait le point sur l'alimentation, le sommeil, la digestion et le stress, sans jugement. Je vous remets ensuite un programme simple, adapté à votre quotidien et à votre budget. Le suivi se fait chaque mois, au cabinet ou en visio, et vous pouvez m'écrire entre deux séances.</p>
     <p class="mt-4 text-[16px] text-neutre-700">Texte écrit par Sophie elle-même.</p>
     
   </div>
 </section><section class="px-4 py-5" aria-labelledby="e5b-t-serv">
-  <h2 id="e5b-t-serv" class="ff text-nom text-teal-900">Ce qu'elle propose</h2>
-<div class="filet h-[3px] w-16 rounded-full mt-2.5 mb-5"></div>
+  <h2 id="e5b-t-serv" class="ff mb-5 text-nom text-teal-900">Ce qu'elle propose</h2>
   <ul class="grid gap-3 list-none p-0 m-0">
   <li class="flex items-center gap-3.5 rounded-[16px] bg-neutre-100 px-4 py-4 min-h-[64px]">
     <span class="pastille w-9 h-9 bg-white text-sauge-700 shrink-0"><svg class="w-[18px] h-[18px]" aria-hidden="true"><use href="#c-sante"/></svg></span>
@@ -2668,8 +2670,7 @@ l'aperçu montre une section, son filet compte, et l'aperçu de l'étape&nbsp;7,
     <svg class="w-5 h-5" aria-hidden="true"><use href="#i-oeil"/></svg>Ce que vos voisins verront
   </figcaption>
   <div class="rounded-[20px] bg-white overflow-hidden"><section class="px-4 py-5" aria-labelledby="e7a-t-contact">
-  <h2 id="e7a-t-contact" class="ff text-nom text-teal-900">La contacter</h2>
-<div class="filet h-[3px] w-16 rounded-full mt-2.5 mb-5"></div>
+  <h2 id="e7a-t-contact" class="ff mb-5 text-nom text-teal-900">La contacter</h2>
   <ul class="grid gap-2.5 list-none p-0 m-0">
 <li><a href="#" class="carte carte-lien flex flex-wrap items-center gap-x-3.5 gap-y-2 min-h-[64px] px-4 py-3 rounded-[16px] bg-white">
   <span class="pastille pastille--teal w-10 h-10 bg-teal-50 text-teal-700 shrink-0"><svg class="w-5 h-5" aria-hidden="true"><use href="#i-mail"/></svg></span>
@@ -2719,7 +2720,7 @@ l'aperçu montre une section, son filet compte, et l'aperçu de l'étape&nbsp;7,
   </div></div>
   <figcaption class="mt-4 px-1">
     <p class="flex items-baseline gap-2.5"><span class="code tnum">7a</span><span class="ff text-[20px] leading-tight text-teal-900">7 · Vous joindre</span></p>
-    <p class="mt-1.5 text-[16px] leading-snug text-neutre-800">Téléphone et e-mail groupés sous «&nbsp;Au moins l'un des deux&nbsp;». «&nbsp;Même adresse que mon compte&nbsp;» remplit l'e-mail. On colle ce qu'on a&nbsp;: l'aperçu montre le numéro normalisé, le site sans <code class="font-mono text-[15px] text-teal-800">https://www.</code>, l'Instagram en <code class="font-mono text-[15px] text-teal-800">@</code>. Orange&nbsp;: «&nbsp;Appeler&nbsp;», le filet, «&nbsp;Continuer&nbsp;» — trois.</p>
+    <p class="mt-1.5 text-[16px] leading-snug text-neutre-800">Téléphone et e-mail groupés sous «&nbsp;Au moins l'un des deux&nbsp;». «&nbsp;Même adresse que mon compte&nbsp;» remplit l'e-mail. On colle ce qu'on a&nbsp;: l'aperçu montre le numéro normalisé, le site sans <code class="font-mono text-[15px] text-teal-800">https://www.</code>, l'Instagram en <code class="font-mono text-[15px] text-teal-800">@</code>. Orange&nbsp;: «&nbsp;Appeler&nbsp;» et «&nbsp;Continuer&nbsp;», deux.</p>
   </figcaption>
 </figure>
 <figure class="cadre m-0" id="f-7b">
@@ -2791,8 +2792,7 @@ l'aperçu montre une section, son filet compte, et l'aperçu de l'étape&nbsp;7,
     <svg class="w-5 h-5" aria-hidden="true"><use href="#i-oeil"/></svg>Ce que vos voisins verront
   </figcaption>
   <div class="rounded-[20px] bg-white overflow-hidden"><section class="px-4 py-5" aria-labelledby="e7b-t-contact">
-  <h2 id="e7b-t-contact" class="ff text-nom text-teal-900">La contacter</h2>
-<div class="filet h-[3px] w-16 rounded-full mt-2.5 mb-5"></div>
+  <h2 id="e7b-t-contact" class="ff mb-5 text-nom text-teal-900">La contacter</h2>
   <ul class="grid gap-2.5 list-none p-0 m-0">
 <li><a href="#" class="carte carte-lien flex flex-wrap items-center gap-x-3.5 gap-y-2 min-h-[64px] px-4 py-3 rounded-[16px] bg-white">
   <span class="pastille pastille--teal w-10 h-10 bg-teal-50 text-teal-700 shrink-0"><svg class="w-5 h-5" aria-hidden="true"><use href="#i-mail"/></svg></span>
@@ -2918,8 +2918,7 @@ l'aperçu montre une section, son filet compte, et l'aperçu de l'étape&nbsp;7,
     <svg class="w-5 h-5" aria-hidden="true"><use href="#i-oeil"/></svg>Ce que vos voisins verront
   </figcaption>
   <div class="rounded-[20px] bg-white overflow-hidden"><section class="px-4 py-5" aria-labelledby="e7c-t-contact">
-  <h2 id="e7c-t-contact" class="ff text-nom text-teal-900">La contacter</h2>
-<div class="filet h-[3px] w-16 rounded-full mt-2.5 mb-5"></div>
+  <h2 id="e7c-t-contact" class="ff mb-5 text-nom text-teal-900">La contacter</h2>
   <ul class="grid gap-2.5 list-none p-0 m-0">
 <li><a href="#" class="carte carte-lien flex flex-wrap items-center gap-x-3.5 gap-y-2 min-h-[64px] px-4 py-3 rounded-[16px] bg-white">
   <span class="pastille pastille--teal w-10 h-10 bg-teal-50 text-teal-700 shrink-0"><svg class="w-5 h-5" aria-hidden="true"><use href="#i-mail"/></svg></span>
@@ -3533,7 +3532,6 @@ l'aperçu montre une section, son filet compte, et l'aperçu de l'étape&nbsp;7,
   <div class="max-w-[76ch]">
     <p class="text-etiquette font-semibold uppercase text-sauge-800">3 · Facultatif</p>
     <h2 id="histoire-t" class="ff mt-1.5 text-nom text-teal-900">Votre histoire et vos lieux</h2>
-    <div class="filet h-[3px] w-16 rounded-full mt-2.5"></div>
     <div class="mt-4 grid gap-3 text-corps text-neutre-800">
 <p>Six questions facultatives, une par écran, après les étapes de la fiche&nbsp;: chacune devient une page du carrousel
 de la fiche, généré au build. L'aperçu montre la page mot pour mot pendant qu'on écrit (tapez&nbsp;: la page suit). Le titre
@@ -4437,13 +4435,12 @@ sept pages, la couverture comprise, d'où «&nbsp;Votre page 2 sur 7&nbsp;».</p
   <div class="max-w-[76ch]">
     <p class="text-etiquette font-semibold uppercase text-sauge-800">4 · Avant l'envoi</p>
     <h2 id="verifier-t" class="ff mt-1.5 text-nom text-teal-900">Vérifier et envoyer</h2>
-    <div class="filet h-[3px] w-16 rounded-full mt-2.5"></div>
     <div class="mt-4 grid gap-3 text-corps text-neutre-800">
 <p>La relecture reprend <em>toutes</em> les réponses, dans l'ordre des étapes, «&nbsp;Votre histoire&nbsp;» comprise&nbsp;;
 chaque «&nbsp;Modifier&nbsp;» ramène à l'étape (ici, au cadre). Puis la notice, les trois accords séparés, Turnstile, qui garde
 aussi l'envoi (spec v2 §8), et «&nbsp;Envoyer ma fiche&nbsp;».</p>
-<p>L'aperçu de la fiche entière s'ouvre en plein écran. La vraie fiche compte un filet par section&nbsp;; l'aperçu est
-donc montré en quatre écrans, chacun à trois objets orange au plus («&nbsp;Appeler&nbsp;» compris). Les cinq nouveaux champs
+<p>L'aperçu de la fiche entière s'ouvre en plein écran. Il est montré en quatre écrans&nbsp;; l'orange n'y est plus que le filet
+d'en-tête, «&nbsp;Appeler&nbsp;» et le filet des pages du carrousel — les titres de section n'en ont plus. Les cinq nouveaux champs
 sont dans la carte d'identité, comme sur <code class="font-mono text-[15px] text-teal-800">v2/membre.html</code>&nbsp;; le
 carrousel généré est dans «&nbsp;Son portrait&nbsp;», après le texte, comme sur la fiche en ligne.</p></div>
   </div>
@@ -4753,8 +4750,7 @@ carrousel généré est dans «&nbsp;Son portrait&nbsp;», après le texte, comm
     </div>
   </div>
 </section><section class="px-5 py-8" aria-labelledby="va-contact">
-  <h2 id="va-contact" class="ff text-nom text-teal-900">La contacter</h2>
-<div class="filet h-[3px] w-16 rounded-full mt-2.5 mb-5"></div>
+  <h2 id="va-contact" class="ff mb-5 text-nom text-teal-900">La contacter</h2>
   <ul class="grid gap-2.5 list-none p-0 m-0">
 <li><a href="#" class="carte carte-lien flex flex-wrap items-center gap-x-3.5 gap-y-2 min-h-[64px] px-4 py-3 rounded-[16px] bg-white">
   <span class="pastille pastille--teal w-10 h-10 bg-teal-50 text-teal-700 shrink-0"><svg class="w-5 h-5" aria-hidden="true"><use href="#i-mail"/></svg></span>
@@ -4794,7 +4790,7 @@ carrousel généré est dans «&nbsp;Son portrait&nbsp;», après le texte, comm
   </div></div>
   <figcaption class="mt-4 px-1">
     <p class="flex items-baseline gap-2.5"><span class="code tnum">va</span><span class="ff text-[20px] leading-tight text-teal-900">Aperçu · 1 / 4</span></p>
-    <p class="mt-1.5 text-[16px] leading-snug text-neutre-800">«&nbsp;Voir toute ma fiche&nbsp;». Le haut de la fiche telle qu'elle sera publiée. L'enseigne en gras à côté du métier&nbsp;; langues, tarifs, horaires et «&nbsp;Réserver en ligne&nbsp;» dans la carte d'identité, sous un filet gris. Orange&nbsp;: filet d'en-tête, filet «&nbsp;La contacter&nbsp;», «&nbsp;Appeler&nbsp;».</p>
+    <p class="mt-1.5 text-[16px] leading-snug text-neutre-800">«&nbsp;Voir toute ma fiche&nbsp;». Le haut de la fiche telle qu'elle sera publiée. L'enseigne en gras à côté du métier&nbsp;; langues, tarifs, horaires et «&nbsp;Réserver en ligne&nbsp;» dans la carte d'identité, sous un filet gris. Orange&nbsp;: filet d'en-tête, «&nbsp;Appeler&nbsp;».</p>
   </figcaption>
 </figure>
 <figure class="cadre m-0" id="f-vb">
@@ -4812,8 +4808,7 @@ carrousel généré est dans «&nbsp;Son portrait&nbsp;», après le texte, comm
 <div class="pb-[96px]">
 <section class="bg-neutre-100" aria-labelledby="vb-portrait">
   <div class="px-5 py-8">
-    <h2 id="vb-portrait" class="ff text-nom text-teal-900">Son portrait</h2>
-<div class="filet h-[3px] w-16 rounded-full mt-2.5 mb-5"></div>
+    <h2 id="vb-portrait" class="ff mb-5 text-nom text-teal-900">Son portrait</h2>
     <p class="text-[19px] leading-relaxed text-neutre-900">Installée allée du Bois Vert depuis 2021, j'accompagne surtout des adultes fatigués, des femmes en période de transition et des étudiants en fin d'année. La première séance dure une heure et demie : on fait le point sur l'alimentation, le sommeil, la digestion et le stress, sans jugement. Je vous remets ensuite un programme simple, adapté à votre quotidien et à votre budget. Le suivi se fait chaque mois, au cabinet ou en visio, et vous pouvez m'écrire entre deux séances.</p>
     <p class="mt-4 text-[16px] text-neutre-700">Texte écrit par Sophie elle-même.</p>
     <div class="mt-6 max-w-[420px]" data-carousel>
@@ -4950,7 +4945,7 @@ carrousel généré est dans «&nbsp;Son portrait&nbsp;», après le texte, comm
   </div></div>
   <figcaption class="mt-4 px-1">
     <p class="flex items-baseline gap-2.5"><span class="code tnum">vb</span><span class="ff text-[20px] leading-tight text-teal-900">Aperçu · 2 / 4 — le carrousel</span></p>
-    <p class="mt-1.5 text-[16px] leading-snug text-neutre-800">«&nbsp;Son portrait&nbsp;», puis le carrousel généré, sur sa couverture&nbsp;: «&nbsp;À la rencontre de Sophie Arnaud&nbsp;», tirée du portrait. On le fait glisser&nbsp;; un toucher l'ouvre en plein écran. La couverture n'a pas de filet&nbsp;: deux orange.</p>
+    <p class="mt-1.5 text-[16px] leading-snug text-neutre-800">«&nbsp;Son portrait&nbsp;», puis le carrousel généré, sur sa couverture&nbsp;: «&nbsp;À la rencontre de Sophie Arnaud&nbsp;», tirée du portrait. On le fait glisser&nbsp;; un toucher l'ouvre en plein écran. La couverture n'a pas de filet&nbsp;: un seul orange, «&nbsp;Appeler&nbsp;».</p>
   </figcaption>
 </figure>
 <figure class="cadre m-0" id="f-vc">
@@ -4968,8 +4963,7 @@ carrousel généré est dans «&nbsp;Son portrait&nbsp;», après le texte, comm
 <div class="pb-[96px]">
 <section class="bg-neutre-100" aria-labelledby="vc-portrait">
   <div class="px-5 py-8">
-    <h2 id="vc-portrait" class="ff text-nom text-teal-900">Son portrait</h2>
-<div class="filet h-[3px] w-16 rounded-full mt-2.5 mb-5"></div>
+    <h2 id="vc-portrait" class="ff mb-5 text-nom text-teal-900">Son portrait</h2>
     <p class="text-[19px] leading-relaxed text-neutre-900">Installée allée du Bois Vert depuis 2021, j'accompagne surtout des adultes fatigués, des femmes en période de transition et des étudiants en fin d'année. La première séance dure une heure et demie : on fait le point sur l'alimentation, le sommeil, la digestion et le stress, sans jugement. Je vous remets ensuite un programme simple, adapté à votre quotidien et à votre budget. Le suivi se fait chaque mois, au cabinet ou en visio, et vous pouvez m'écrire entre deux séances.</p>
     <p class="mt-4 text-[16px] text-neutre-700">Texte écrit par Sophie elle-même.</p>
     <div class="mt-6 max-w-[420px]" data-carousel>
@@ -5106,7 +5100,7 @@ carrousel généré est dans «&nbsp;Son portrait&nbsp;», après le texte, comm
   </div></div>
   <figcaption class="mt-4 px-1">
     <p class="flex items-baseline gap-2.5"><span class="code tnum">vc</span><span class="ff text-[20px] leading-tight text-teal-900">Aperçu · 3 / 4 — page 5</span></p>
-    <p class="mt-1.5 text-[16px] leading-snug text-neutre-800">Le carrousel glissé jusqu'à «&nbsp;Les entrepreneurs de la Cartoucherie &amp; moi&nbsp;». Colly n'apparaît pas dans le formulaire&nbsp;: elle est ajoutée sur la page publiée. Orange&nbsp;: deux filets, «&nbsp;Appeler&nbsp;».</p>
+    <p class="mt-1.5 text-[16px] leading-snug text-neutre-800">Le carrousel glissé jusqu'à «&nbsp;Les entrepreneurs de la Cartoucherie &amp; moi&nbsp;». Colly n'apparaît pas dans le formulaire&nbsp;: elle est ajoutée sur la page publiée. Orange&nbsp;: le filet de la page, «&nbsp;Appeler&nbsp;».</p>
   </figcaption>
 </figure>
 <figure class="cadre m-0" id="f-vd">
@@ -5123,8 +5117,7 @@ carrousel généré est dans «&nbsp;Son portrait&nbsp;», après le texte, comm
 </div>
 <div class="pb-[96px]">
 <section class="px-5 py-8" aria-labelledby="vd-serv">
-  <h2 id="vd-serv" class="ff text-nom text-teal-900">Ce qu'elle propose</h2>
-<div class="filet h-[3px] w-16 rounded-full mt-2.5 mb-5"></div>
+  <h2 id="vd-serv" class="ff mb-5 text-nom text-teal-900">Ce qu'elle propose</h2>
   <ul class="grid gap-3 list-none p-0 m-0">
   <li class="flex items-center gap-3.5 rounded-[16px] bg-neutre-100 px-4 py-4 min-h-[64px]">
     <span class="pastille w-9 h-9 bg-white text-sauge-700 shrink-0"><svg class="w-[18px] h-[18px]" aria-hidden="true"><use href="#c-sante"/></svg></span>
@@ -5140,8 +5133,7 @@ carrousel généré est dans «&nbsp;Son portrait&nbsp;», après le texte, comm
   </li>
   </ul>
 </section><section class="px-5 pb-8" aria-labelledby="vd-ou">
-  <h2 id="vd-ou" class="ff text-nom text-teal-900">Où la trouver</h2>
-<div class="filet h-[3px] w-16 rounded-full mt-2.5 mb-5"></div>
+  <h2 id="vd-ou" class="ff mb-5 text-nom text-teal-900">Où la trouver</h2>
   <div class="carte rounded-[20px] bg-white p-5 flex items-start gap-4">
     <span class="pastille pastille--teal w-11 h-11 bg-teal-50 text-teal-700 shrink-0 mt-0.5"><svg class="w-5 h-5" aria-hidden="true"><use href="#i-pin"/></svg></span>
     <div class="min-w-0">
@@ -5636,7 +5628,6 @@ carrousel généré est dans «&nbsp;Son portrait&nbsp;», après le texte, comm
   <div class="max-w-[76ch]">
     <p class="text-etiquette font-semibold uppercase text-sauge-800">5 · Après l'envoi</p>
     <h2 id="apres-t" class="ff mt-1.5 text-nom text-teal-900">«&nbsp;Merci&nbsp;! Adrien relit votre fiche&nbsp;»</h2>
-    <div class="filet h-[3px] w-16 rounded-full mt-2.5"></div>
     <div class="mt-4 grid gap-3 text-corps text-neutre-800">
 <p>L'espace, juste après l'envoi&nbsp;: l'état en attente, ce qui va se passer, et le rappel «&nbsp;fiche Google&nbsp;»,
 puisque Sophie a répondu «&nbsp;Je n'en ai pas&nbsp;». C'est le seul endroit de l'espace où Colly apparaît.</p></div>
