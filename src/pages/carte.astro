@@ -181,11 +181,10 @@ const pins = members.filter(isPinned).map((m) => ({
     </div>
 
     <div class="feuille relative mt-6 lg:mt-0">
-      <h2 id="t-proches" class="ff min-w-0 break-words text-nom text-teal-900">
+      <h2 id="t-proches" class="mb-5 ff min-w-0 break-words text-nom text-teal-900">
         <span data-from-hall>{COPY.mapFromHall}</span>
         <span data-from-you hidden>{COPY.mapFromYou}</span>
       </h2>
-      <div class="filet h-[3px] w-16 rounded-full mt-2.5 mb-5" />
       <ol data-sheet aria-labelledby="t-proches" class="flex flex-col gap-3 list-none p-0 m-0">
         {
           withAddress.map((m) => (
@@ -202,8 +201,7 @@ const pins = members.filter(isPinned).map((m) => ({
     withoutAddress.length > 0 && (
       <section class="mt-10 bg-neutre-100" aria-labelledby="t-chezvous">
         <div class="mx-auto max-w-[1160px] px-5 py-8">
-          <h2 id="t-chezvous" class="ff text-nom text-teal-900">{COPY.mapTheyComeToYou}</h2>
-          <div class="filet h-[3px] w-16 rounded-full mt-2.5 mb-4" />
+          <h2 id="t-chezvous" class="mb-4 ff text-nom text-teal-900">{COPY.mapTheyComeToYou}</h2>
           <ul class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4 list-none p-0 m-0">
             {withoutAddress.map((m) => (
               <li>

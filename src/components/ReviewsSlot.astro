@@ -48,7 +48,7 @@ const { slug, rating, reviewCount, genre, googleReviews } = Astro.props;
 
 <section id="avis" class="bg-neutre-100" aria-labelledby="reviews-title">
   <div class="mx-auto max-w-[1160px] px-5 py-8">
-    <div class="flex flex-wrap items-center gap-x-1">
+    <div class="mb-4 flex flex-wrap items-center gap-x-1">
       <h2 id="reviews-title" class="ff text-nom text-teal-900">{COPY.reviewsTitle}</h2>
       <Toggletip id="reviews-help" label={COPY.reviewsHelp}>
         <p>{COPY.reviewsHow}</p>
@@ -57,7 +57,6 @@ const { slug, rating, reviewCount, genre, googleReviews } = Astro.props;
         </p>
       </Toggletip>
     </div>
-    <div class="filet mt-2.5 mb-4 h-[3px] w-16 rounded-full"></div>
 
     <div
       data-reviews-slot
