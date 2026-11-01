@@ -382,6 +382,31 @@
       "nbAvis": 14,
       "surCarte": true,
       "genre": "h"
+    },
+    {
+      "slug": "sacha-morel",
+      "nom": "Sacha Morel",
+      "metier": "Céramiste",
+      "accroche": "Je tourne des bols et des tasses en grès, et j'apprends le tour à qui veut, le samedi matin.",
+      "bio": "J'ai appris le tour à Albi, dans l'atelier de ma grand-mère. À la Cartoucherie, je tourne des bols, des tasses et des assiettes en grès, pour tous les jours. Le samedi matin, j'ouvre l'atelier à quatre débutants au plus.",
+      "categories": [
+        "art-culture"
+      ],
+      "services": [
+        "Bols et tasses sur commande",
+        "Cours d'initiation au tour"
+      ],
+      "adresse": "5 allée du Bois Vert, 31300 Toulouse",
+      "distance": "430 m",
+      "tel": "06 39 98 00 52",
+      "email": "sacha.morel@example.fr",
+      "site": null,
+      "instagram": null,
+      "photo": "https://randomuser.me/api/portraits/women/79.jpg",
+      "note": 0,
+      "nbAvis": 0,
+      "surCarte": true,
+      "genre": "n"
     }
   ],
   "avis": [
