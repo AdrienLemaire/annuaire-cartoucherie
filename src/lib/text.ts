@@ -20,3 +20,15 @@ export function slugify(s: string): string {
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-+|-+$/g, "");
 }
+
+/** Letters in the longest word. A hyphen is a legal break, so it ends a word. */
+export function longestWord(s: string): number {
+  return Math.max(0, ...s.split(/[\s-]+/u).map((word) => [...word].length));
+}
+
+/** The inline style `.mots-entiers` reads: « Julien Marty » never becomes « Julie|n ». */
+export function wordFit(s: string, taille?: string, lettre?: number): string {
+  return [taille && `--taille:${taille}`, lettre && `--lettre:${lettre}`, `--mot:${longestWord(s)}`]
+    .filter(Boolean)
+    .join(";");
+}

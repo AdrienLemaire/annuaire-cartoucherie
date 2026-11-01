@@ -37,6 +37,7 @@
 // only ever toggles each block's own `hidden`; the group-level `hidden` here
 // is a second, independent gate on top, so its state survives being hidden
 // as a group and reappears correctly once the query is cleared.
+import { wordFit } from "../lib/text";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import CollyPanel from "../components/CollyPanel.astro";
 import Icon from "../components/Icon.astro";
@@ -79,8 +80,12 @@ const emptyChips = groupsEmptyCategories(members.length) ? [] : empty;
     </div>
   </Fragment>
 
-  <section class="mx-auto max-w-[1160px] px-5 pt-7" aria-labelledby="t-annuaire">
-    <h1 id="t-annuaire" class="ff text-nom text-teal-900 scroll-mt-[140px]">
+  <section class="@container mx-auto max-w-[1160px] px-5 pt-7" aria-labelledby="t-annuaire">
+    <h1
+      id="t-annuaire"
+      class="ff text-nom mots-entiers text-teal-900 scroll-mt-[140px]"
+      style={wordFit(COPY.directoryTitle, "var(--text-nom)")}
+    >
       {COPY.directoryTitle}
     </h1>
 

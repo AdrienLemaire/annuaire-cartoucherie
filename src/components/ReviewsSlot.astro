@@ -31,6 +31,7 @@
  * and the member's Google reviews stay a link out (Google's terms forbid
  * showing them here), kept apart from the neighbourhood's own.
  */
+import { wordFit } from "../lib/text";
 import Icon from "./Icon.astro";
 import Toggletip from "./Toggletip.astro";
 import { COPY } from "../lib/copy";
@@ -48,8 +49,8 @@ const { slug, rating, reviewCount, genre, googleReviews } = Astro.props;
 
 <section id="avis" class="bg-neutre-100" aria-labelledby="reviews-title">
   <div class="mx-auto max-w-[1160px] px-5 py-8">
-    <div class="mb-4 flex flex-wrap items-center gap-x-1">
-      <h2 id="reviews-title" class="ff text-nom text-teal-900">{COPY.reviewsTitle}</h2>
+    <div class="@container mb-4 flex flex-wrap items-center gap-x-1">
+      <h2 id="reviews-title" class="ff text-nom text-teal-900 mots-entiers" style={wordFit(COPY.reviewsTitle, "var(--text-nom)")}>{COPY.reviewsTitle}</h2>
       <Toggletip id="reviews-help" label={COPY.reviewsHelp}>
         <p>{COPY.reviewsHow}</p>
         <p class="mt-3">

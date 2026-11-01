@@ -5,6 +5,8 @@
 // both are named below, each with exactly the properties true of the code
 // that ships them (src/client/analytics.ts, public/sw.js) — see
 // task-13-report.md for the file:line check against a built dist/.
+import { breakableParts } from "../lib/contact";
+import { wordFit } from "../lib/text";
 import TextPage from "../layouts/TextPage.astro";
 import { COPY } from "../lib/copy";
 
@@ -12,7 +14,7 @@ const title = `${COPY.footerPrivacy} — ${COPY.brandEyebrow} ${COPY.brandName}`
 ---
 
 <TextPage title={title} description={COPY.privacyDescription} heading={COPY.footerPrivacy}>
-  <h2 class="ff text-nom text-teal-900">{COPY.privacyDoesTitle}</h2>
+  <h2 class="ff text-nom text-teal-900 mots-entiers" style={wordFit(COPY.privacyDoesTitle, "var(--text-nom)")}>{COPY.privacyDoesTitle}</h2>
   <ul class="list-disc space-y-2 pl-5">
     <li>{COPY.privacyDoesBrowsing}</li>
     <li>{COPY.privacyDoesOffline}</li>
@@ -21,7 +23,7 @@ const title = `${COPY.footerPrivacy} — ${COPY.brandEyebrow} ${COPY.brandName}`
     <li>{COPY.privacyDoesAnalytics}</li>
   </ul>
 
-  <h2 class="ff text-nom text-teal-900">{COPY.privacyDoesNotTitle}</h2>
+  <h2 class="ff text-nom text-teal-900 mots-entiers" style={wordFit(COPY.privacyDoesNotTitle, "var(--text-nom)")}>{COPY.privacyDoesNotTitle}</h2>
   <ul class="list-disc space-y-2 pl-5">
     <li>{COPY.privacyDoesNotCookie}</li>
     <li>{COPY.privacyDoesNotAccount}</li>
@@ -32,7 +34,12 @@ const title = `${COPY.footerPrivacy} — ${COPY.brandEyebrow} ${COPY.brandName}`
   <p class="break-words">
     {COPY.privacyContact}{" "}
     <a class="text-teal-700 underline underline-offset-4" href={`mailto:${COPY.contactEmail}`}>
-      {COPY.contactEmail}
+      {breakableParts(COPY.contactEmail).map((part) => (
+        <>
+          {part}
+          <wbr />
+        </>
+      ))}
     </a>
   </p>
 </TextPage>

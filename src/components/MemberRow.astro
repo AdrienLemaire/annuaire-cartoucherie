@@ -19,6 +19,7 @@
 // renders — the two variants' markup diverges completely below the rating line,
 // and the variant="annuaire" branch is untouched, byte-for-byte, from before this
 // prop existed.
+import { wordFit } from "../lib/text";
 import CategoryChip from "./CategoryChip.astro";
 import Icon from "./Icon.astro";
 import { COPY } from "../lib/copy";
@@ -49,7 +50,7 @@ const telHref = member.tel ? formatTelHref(member.tel) : null;
 {
   variant === "carte" ? (
     <article
-      class="carte carte-lien rangee relative flex min-h-[124px] rounded-[20px] bg-white overflow-hidden"
+      class="carte carte-lien rangee relative flex flex-wrap min-h-[124px] rounded-[20px] bg-white overflow-hidden"
       data-m={member.slug}
     >
       <img
@@ -63,13 +64,13 @@ const telHref = member.tel ? formatTelHref(member.tel) : null;
         class="w-[92px] h-[124px] shrink-0 self-start object-cover"
         style="object-position:50% 25%"
       />
-      <div class="flex-1 min-w-0 py-3.5 pl-3.5 pr-1 flex flex-col justify-center gap-0.5">
-        <h3 class="ff text-[20px] leading-tight text-teal-900">
+      <div class="@container flex-1 min-w-[min(7.5rem,100%)] py-3.5 pl-3.5 pr-1 flex flex-col justify-center gap-0.5">
+        <h3 class="ff text-[20px] leading-tight mots-entiers text-teal-900" style={wordFit(member.nom, "20px")}>
           <a href={`/membre/${member.slug}`} class="before:absolute before:inset-0 before:content-['']">
             {member.nom}
           </a>
         </h3>
-        <p class="text-[16px] text-neutre-800 leading-snug">{member.metier}</p>
+        <p class="text-[16px] text-neutre-800 leading-snug mots-entiers" style={wordFit(member.metier, "16px", 0.56)}>{member.metier}</p>
         <p class="flex flex-wrap items-center gap-x-3 gap-y-1 text-[16px] text-neutre-700 mt-0.5">
           {member.nbAvis > 0 && (
             <span class="inline-flex items-center gap-1">
@@ -102,7 +103,7 @@ const telHref = member.tel ? formatTelHref(member.tel) : null;
     </article>
   ) : (
     <article class="carte carte-lien rounded-[20px] bg-white overflow-hidden">
-      <div class="relative flex min-h-[152px]">
+      <div class="relative flex flex-wrap min-h-[152px]">
         <img
           src={`/portraits/${member.photo}`}
           alt={COPY.portraitAlt(member.nom)}
@@ -113,13 +114,13 @@ const telHref = member.tel ? formatTelHref(member.tel) : null;
           decoding="async"
           class="w-[116px] shrink-0 self-stretch object-cover"
         />
-        <div class="flex-1 min-w-0 py-4 px-4 flex flex-col justify-center gap-1">
-          <h3 class="ff text-[20px] leading-tight text-teal-900">
+        <div class="@container flex-1 min-w-[min(7.5rem,100%)] py-4 px-4 flex flex-col justify-center gap-1">
+          <h3 class="ff text-[20px] leading-tight mots-entiers text-teal-900" style={wordFit(member.nom, "20px")}>
             <a href={`/membre/${member.slug}`} class="before:absolute before:inset-0 before:content-['']">
               {member.nom}
             </a>
           </h3>
-          <p class="text-corps text-neutre-800 leading-snug">{member.metier}</p>
+          <p class="text-corps text-neutre-800 leading-snug mots-entiers" style={wordFit(member.metier, "var(--text-corps)", 0.56)}>{member.metier}</p>
           <p class="flex flex-wrap items-center gap-x-3 gap-y-1 text-[16px] text-neutre-700 mt-0.5">
             {member.nbAvis > 0 && (
               <span class="inline-flex items-center gap-1">

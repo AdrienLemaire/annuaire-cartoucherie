@@ -8,3 +8,8 @@ import { COPY } from "./copy";
 export function mailtoHref(subject: string): string {
   return `mailto:${COPY.contactEmail}?subject=${encodeURIComponent(subject)}`;
 }
+
+/** Where an e-mail, a URL or a handle may wrap: before « @ » and « . », after « _ ». */
+export function breakableParts(s: string): string[] {
+  return s.split(/(?=[@.])|(?<=_)/u).filter(Boolean);
+}

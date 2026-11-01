@@ -11,6 +11,7 @@
 // own suggest link, same copy, same mailto: builder. Carries the same
 // search form as /annuaire, in the same header slot: one system, not two —
 // the search is never a mechanism this page's own filtering rivals.
+import { wordFit } from "../../lib/text";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import Icon from "../../components/Icon.astro";
 import MemberRow from "../../components/MemberRow.astro";
@@ -48,8 +49,8 @@ const count = formatMemberCount(category.count, category.genders);
     </div>
   </Fragment>
 
-  <div class="mx-auto max-w-[1160px] px-5 py-7">
-    <h1 class="ff text-nom text-teal-900">{category.besoin}</h1>
+  <div class="@container mx-auto max-w-[1160px] px-5 py-7">
+    <h1 class="ff text-nom text-teal-900 mots-entiers" style={wordFit(category.besoin, "var(--text-nom)")}>{category.besoin}</h1>
 
     <SearchResults class="mt-6 grid grid-cols-1 gap-3 mx-auto max-w-[620px] min-[940px]:max-w-none min-[940px]:grid-cols-2" />
 

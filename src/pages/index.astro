@@ -14,6 +14,7 @@
 // behaviour is Task 12's, not yours." src/client/live-search.ts mounts into
 // [data-results] below the search bar and hides [data-browse] (the "…ou
 // choisissez la fin" needs index) while a query is active.
+import { wordFit } from "../lib/text";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import SearchBar from "../components/SearchBar.astro";
 import SearchResults from "../components/SearchResults.astro";
@@ -47,7 +48,8 @@ const voisinsCount = formatMemberCount(
   <section class="mx-auto max-w-[1160px] px-5 pt-8" aria-labelledby="t-cherche">
     <h1
       id="t-cherche"
-      class="ff break-words text-[clamp(3rem,13vw,4.5rem)] leading-[0.9] tracking-[-0.032em] text-teal-900"
+      class="ff text-[clamp(3rem,13vw,4.5rem)] mots-entiers leading-[0.9] tracking-[-0.032em] text-teal-900"
+      style={wordFit(COPY.homeTitle, "clamp(3rem,13vw,4.5rem)")}
     >
       {COPY.homeTitle}
     </h1>
@@ -75,11 +77,15 @@ const voisinsCount = formatMemberCount(
     </nav>
   </div>
 
-  <section class="mx-auto max-w-[1160px] px-5 mt-10" aria-labelledby="t-voisins">
-    <h2 id="t-voisins" class="ff text-nom text-teal-900">
+  <section class="@container mx-auto max-w-[1160px] px-5 mt-10" aria-labelledby="t-voisins">
+    <h2
+      id="t-voisins"
+      class="ff text-nom mots-entiers text-teal-900"
+      style={wordFit(COPY.homeNeighbours, "var(--text-nom)")}
+    >
       {COPY.homeNeighbours}
     </h2>
-    <ul class="mt-5 mx-auto grid grid-cols-2 gap-3 max-w-[356px] min-[720px]:grid-cols-3 min-[720px]:max-w-[540px] min-[1000px]:grid-cols-6 min-[1000px]:max-w-[1092px] list-none p-0 m-0">
+    <ul class="mt-5 mx-auto grid grid-cols-[repeat(auto-fit,minmax(min(8rem,100%),1fr))] gap-3 max-w-[356px] min-[720px]:grid-cols-3 min-[720px]:max-w-[540px] min-[1000px]:grid-cols-6 min-[1000px]:max-w-[1092px] list-none p-0 m-0">
       {featured.map((m, i) => (
         <li class="flex">
           <MemberCard member={m} priority={i === 0} categories={categories} />
