@@ -189,7 +189,7 @@ const pins = members.filter(isPinned).map((m) => ({
       <ol data-sheet aria-labelledby="t-proches" class="flex flex-col gap-3 list-none p-0 m-0">
         {
           withAddress.map((m) => (
-            <li data-slug={m.slug} data-lat={m.lat} data-lng={m.lng}>
+            <li data-slug={m.slug} data-lat={isPinned(m) ? m.lat : undefined} data-lng={isPinned(m) ? m.lng : undefined}>
               <MemberRow member={m} variant="carte" />
             </li>
           ))

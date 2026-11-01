@@ -78,10 +78,10 @@ export type RankedRow = { slug: string; metres: number | null };
 /**
  * The sheet's new order once a visitor grants a position. memberSchema
  * permits a real distance with null coordinates (a member whose address was
- * never geocoded); such a row cannot be measured against `from`, so it is
- * left in its current relative position — still visible, with a null
- * `metres` telling the caller not to touch its displayed text — rather than
- * ranked on a NaN distance or hidden outright. Pure and DOM-free so this
+ * never geocoded), and an off-map member's row carries none; such a row cannot
+ * be measured against `from`, so it goes last, in its current relative order —
+ * still visible, with a null `metres` telling the caller not to touch its
+ * displayed text — rather than ranked on a NaN distance or hidden outright. Pure and DOM-free so this
  * decision is unit-tested without a browser; src/client/geolocate.ts only
  * reads the coordinates off the DOM and applies the order this returns.
  */
@@ -91,5 +91,5 @@ export function reorderFromPoint(rows: SheetRow[], from: { lat: number; lng: num
     .filter((r): r is SheetRow & { lat: number; lng: number } => r.lat !== null && r.lng !== null)
     .map((r) => ({ slug: r.slug, metres: haversine(from, { lat: r.lat, lng: r.lng }) }))
     .sort((a, b) => a.metres - b.metres);
-  return [...unrankable.map((r) => ({ slug: r.slug, metres: null })), ...ranked];
+  return [...ranked, ...unrankable.map((r) => ({ slug: r.slug, metres: null }))];
 }

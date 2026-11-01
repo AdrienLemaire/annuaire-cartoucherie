@@ -22,7 +22,7 @@ function readCoord(value: string | undefined): number | null {
 function reorder(from: { lat: number; lng: number }): void {
   const sheet = document.querySelector("[data-sheet]");
   if (!sheet) return;
-  const elements = [...sheet.querySelectorAll<HTMLElement>("[data-lat]")];
+  const elements = [...sheet.querySelectorAll<HTMLElement>("[data-slug]")];
   const bySlug = new Map(elements.map((el) => [el.dataset.slug ?? "", el]));
   const rows: SheetRow[] = elements.map((el) => ({
     slug: el.dataset.slug ?? "",
@@ -34,10 +34,9 @@ function reorder(from: { lat: number; lng: number }): void {
     const row = bySlug.get(slug);
     if (!row) return;
     sheet.append(row);
-    // metres is null for a row memberSchema allows to carry a real distance
-    // but no coordinates (task-10-report.md, finding 2): reorderFromPoint
-    // already left it in place, and its displayed distance is left alone too
-    // rather than being overwritten with a broken number.
+    // metres is null for a row off the map, or with a real distance but no
+    // coordinates: reorderFromPoint ranks it last, and its displayed distance
+    // is left alone rather than overwritten with a broken number.
     if (metres === null) return;
     const dist = row.querySelector<HTMLElement>(".dist");
     if (dist) dist.textContent = formatDistance(metres);
