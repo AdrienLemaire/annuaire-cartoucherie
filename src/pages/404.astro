@@ -15,6 +15,7 @@
 // (verified: `npm run build` still emits it at the site root, not under a
 // /404/ directory) — see the go-live sequence for the post-deploy check that
 // Cloudflare's Workers asset server actually serves it for an unmatched path.
+import { wordFit } from "../lib/text";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import CollyPanel from "../components/CollyPanel.astro";
 import SearchBar from "../components/SearchBar.astro";
@@ -27,8 +28,8 @@ import { COPY } from "../lib/copy";
   description={COPY.notFoundDescription}
   header={{ href: "/annuaire", label: COPY.headerBackDirectory, srOnly: COPY.headerBackDirectorySr }}
 >
-  <div class="mx-auto max-w-[560px] px-5 py-10">
-    <h1 class="ff break-words text-nom text-teal-900">{COPY.notFoundTitle}</h1>
+  <div class="@container mx-auto max-w-[560px] px-5 py-10">
+    <h1 class="ff text-nom text-teal-900 mots-entiers" style={wordFit(COPY.notFoundTitle, "var(--text-nom)")}>{COPY.notFoundTitle}</h1>
 
     <div data-browse class="mt-6">
       <CollyPanel pose="triste" title={COPY.notFoundCollyTitle} />

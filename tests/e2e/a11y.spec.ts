@@ -31,6 +31,31 @@ for (const path of PAGES) {
 
   // The only no-horizontal-overflow assertion in the suite. At 200 % text zoom,
   // because that is the case that actually breaks and the one older residents hit.
+  test(`${path} never splits a word across two lines at 200 % text zoom`, async ({ page }) => {
+    await page.goto(path);
+    await page.addStyleTag({ content: "html{font-size:200%}" });
+    const split = await page.evaluate(() => {
+      const words: string[] = [];
+      const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+      for (let node = walker.nextNode(); node; node = walker.nextNode()) {
+        // Long-form prose hyphenates on purpose, with a visible hyphen. Names and
+        // headings never do (.mots-entiers), so they stay under this test.
+        if (node.parentElement && getComputedStyle(node.parentElement).hyphens === "auto") continue;
+        for (const match of (node.textContent ?? "").matchAll(/[\p{L}\p{N}@._'’-]{2,}/gu)) {
+          const range = document.createRange();
+          range.setStart(node, match.index);
+          range.setEnd(node, match.index + match[0].length);
+          const rects = [...range.getClientRects()].filter((r) => r.width > 0);
+          const lines = new Set(rects.map((r) => Math.round(r.top)));
+          // A break at a hyphen is French typography, not a defect.
+          if (lines.size > 1 && !match[0].includes("-")) words.push(match[0]);
+        }
+      }
+      return words;
+    });
+    expect(split).toEqual([]);
+  });
+
   test(`${path} holds at 200 % text zoom without overflowing sideways`, async ({ page }) => {
     await page.goto(path);
     await page.addStyleTag({ content: "html{font-size:200%}" });

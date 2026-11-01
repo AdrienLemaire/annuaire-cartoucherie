@@ -92,9 +92,13 @@ export function formatMemberCount(count: number, genders: Gender[]): string {
   return `${n} ${noun}`;
 }
 
-/** « Appeler Camille » is warmer than « Appeler ». The schema has no first name. */
+/**
+ * « Appeler Camille » is warmer than « Appeler ». The schema has no first name, so
+ * only two words give one: « Appeler Jean » would be wrong for Jean Marc Dupont.
+ */
 export function firstName(fullName: string): string {
-  return fullName.trim().split(" ")[0];
+  const words = fullName.trim().split(/\s+/);
+  return words.length === 2 ? words[0] : words.join(" ");
 }
 
 /** The stable public URL of a profile — what the printed QR code encodes. */

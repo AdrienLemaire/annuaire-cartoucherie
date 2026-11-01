@@ -26,8 +26,8 @@ export const memberSchema = z.object({
   genre: genderSchema,
   accroche: z.string().min(1),
   bio: z.string().min(1),
-  categories: z.array(z.string().regex(SLUG)).min(1),
-  services: z.array(z.string()),
+  categories: z.array(z.string().regex(SLUG)).min(1).max(2),
+  services: z.array(z.string().trim().min(1).max(75)).min(1).max(6),
   adresse: z.string(),
   // « — » means "no address to go to": it drives the card shape. See hasAddress.
   distance: z.string().regex(/^(—|\d+ m|\d+(,\d)? km)$/, "distance: « 120 m », « 1,2 km » or « — »"),
@@ -35,8 +35,14 @@ export const memberSchema = z.object({
   lng: z.number().nullable(),
   tel: z.string().regex(/^0\d( \d\d){4}$/, "tel: « 06 12 34 56 78 »").nullable(),
   email: z.email().nullable(),
-  site: z.string().nullable(),
-  instagram: z.string().nullable(),
+  site: z
+    .string()
+    .regex(/^[a-z0-9.-]+\.[a-z]{2,}(\/\S*)?$/i, "site: host and path, no https://")
+    .nullable(),
+  instagram: z
+    .string()
+    .regex(/^[A-Za-z0-9._]{1,30}$/, "instagram: the handle, not a URL")
+    .nullable(),
   // The name after linkedin.com/in/. Defaults to null so rows written before
   // the field existed stay valid.
   linkedin: z

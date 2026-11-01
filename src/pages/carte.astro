@@ -43,6 +43,7 @@
 //     reasons, not new ones added for this. Total cost: ~0.3 KB gzip of JS,
 //     of 40 KB budgeted (task-15-report.md); the plan pin itself still works
 //     with JavaScript disabled.
+import { wordFit } from "../lib/text";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Icon from "../components/Icon.astro";
 import Toggletip from "../components/Toggletip.astro";
@@ -82,8 +83,13 @@ const pins = members.filter(isPinned).map((m) => ({
   description={COPY.mapDescription}
   header={{ href: "/annuaire", label: COPY.headerBackDirectory, srOnly: COPY.headerBackDirectorySr }}
 >
-  <div class="mx-auto max-w-[1160px] px-5 pt-6">
-    <h1 class="ff text-nom sm:text-grand text-teal-900">{COPY.mapTitle}</h1>
+  <div class="@container mx-auto max-w-[1160px] px-5 pt-6">
+    <h1
+      class="ff text-nom sm:text-grand mots-entiers [--taille:var(--text-nom)] sm:[--taille:var(--text-grand)] text-teal-900"
+      style={wordFit(COPY.mapTitle)}
+    >
+      {COPY.mapTitle}
+    </h1>
     <p class="mt-2.5 text-corps text-neutre-800 max-w-[62ch]">
       {COPY.mapIntroAddress(addressParts.count, addressParts.noun)}
       {withoutAddress.length > 0 && ` ${COPY.mapIntroItinerant(withoutAddress.length)}`}
@@ -180,16 +186,19 @@ const pins = members.filter(isPinned).map((m) => ({
       </p>
     </div>
 
-    <div class="feuille relative mt-6 lg:mt-0">
-      <h2 id="t-proches" class="ff min-w-0 break-words text-nom text-teal-900">
+    <div class="@container feuille relative mt-6 lg:mt-0">
+      <h2
+        id="t-proches"
+        class="mb-5 ff min-w-0 text-nom mots-entiers text-teal-900"
+        style={wordFit(`${COPY.mapFromHall} ${COPY.mapFromYou}`, "var(--text-nom)")}
+      >
         <span data-from-hall>{COPY.mapFromHall}</span>
         <span data-from-you hidden>{COPY.mapFromYou}</span>
       </h2>
-      <div class="filet h-[3px] w-16 rounded-full mt-2.5 mb-5" />
       <ol data-sheet aria-labelledby="t-proches" class="flex flex-col gap-3 list-none p-0 m-0">
         {
           withAddress.map((m) => (
-            <li data-slug={m.slug} data-lat={m.lat} data-lng={m.lng}>
+            <li data-slug={m.slug} data-lat={isPinned(m) ? m.lat : undefined} data-lng={isPinned(m) ? m.lng : undefined}>
               <MemberRow member={m} variant="carte" />
             </li>
           ))
@@ -201,9 +210,8 @@ const pins = members.filter(isPinned).map((m) => ({
   {
     withoutAddress.length > 0 && (
       <section class="mt-10 bg-neutre-100" aria-labelledby="t-chezvous">
-        <div class="mx-auto max-w-[1160px] px-5 py-8">
-          <h2 id="t-chezvous" class="ff text-nom text-teal-900">{COPY.mapTheyComeToYou}</h2>
-          <div class="filet h-[3px] w-16 rounded-full mt-2.5 mb-4" />
+        <div class="@container mx-auto max-w-[1160px] px-5 py-8">
+          <h2 id="t-chezvous" class="mb-4 ff text-nom text-teal-900 mots-entiers" style={wordFit(COPY.mapTheyComeToYou, "var(--text-nom)")}>{COPY.mapTheyComeToYou}</h2>
           <ul class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4 list-none p-0 m-0">
             {withoutAddress.map((m) => (
               <li>

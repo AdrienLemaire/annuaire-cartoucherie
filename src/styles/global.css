@@ -270,11 +270,8 @@ body{ font-family:var(--font-sans); font-size:17px; line-height:1.55; color:var(
    weight 600 (see the @font-face comment). If a later change asks .ff for
    any other weight, this stops the browser from faking it with a
    synthetic bold; regenerate the instanced .woff2 files for the real
-   weight instead of letting a mismatch render silently.
-   overflow-wrap:break-word — at 200 % text zoom on a phone, one heading word
-   (« L'annuaire ») is wider than its column; it breaks rather than pushing
-   the page sideways. Nothing that fits is ever touched. */
-.ff{ font-family:var(--font-display); font-weight:600; font-synthesis-weight:none; letter-spacing:-0.015em; overflow-wrap:break-word; }
+   weight instead of letting a mismatch render silently. */
+.ff{ font-family:var(--font-display); font-weight:600; font-synthesis-weight:none; letter-spacing:-0.015em; }
 
 /* un seul anneau de focus, partout, sans exception (couleurs.md §7) */
 :where(a,button,input,textarea,select,summary,[tabindex]):focus-visible{
@@ -329,6 +326,16 @@ body{ font-family:var(--font-sans); font-size:17px; line-height:1.55; color:var(
 
 /* l'arche de la Halle : demi-cercle en haut, base droite */
 .arche{ border-radius:999px 999px 22px 22px; }
+
+/* Whole words: a name, a métier or a heading never breaks mid-word and is never
+   truncated. At 200 % text size on a phone, « L'annuaire » is wider than its
+   column, so the size follows the container and the longest word, whose letter
+   count the build writes in --mot (wordFit, src/lib/text.ts). --lettre is the
+   width of a wide letter in em (0.68 Literata 600, 0.56 Source Sans); --taille
+   the normal size. At 100 %, nothing changes. overflow-wrap stays as a net for a
+   word that would not fit even so. */
+.mots-entiers{ font-size:min(var(--taille, var(--text-grand)), calc(100cqi / (var(--lettre, 0.68) * var(--mot, 8))));
+               overflow-wrap:break-word; hyphens:manual; }
 
 /* la pastille de catégorie */
 .chip{ background:var(--color-sauge-100); color:var(--color-sauge-800); }

@@ -5,6 +5,7 @@
 // lists are copied from it, not approximated; deviations from task-9-brief.md's
 // own sample code are called out below and in task-9-report.md, per the
 // fidelity rule (task-9-brief.md, "The fidelity rule").
+import { wordFit } from "../../lib/text";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import CallButton from "../../components/CallButton.astro";
 import CategoryChip from "../../components/CategoryChip.astro";
@@ -12,7 +13,7 @@ import Icon from "../../components/Icon.astro";
 import PortraitCarousel from "../../components/PortraitCarousel.astro";
 import QrCard from "../../components/QrCard.astro";
 import ReviewsSlot from "../../components/ReviewsSlot.astro";
-import { mailtoHref } from "../../lib/contact";
+import { breakableParts, mailtoHref } from "../../lib/contact";
 import { COPY } from "../../lib/copy";
 import { loadCategories, loadMembers } from "../../lib/collections";
 import { agree } from "../../lib/gender";
@@ -85,9 +86,9 @@ const primaryIcon = chips[0]?.icon;
     </div>
     <div class="relative mx-auto -mt-8 max-w-[1160px] px-5">
       <div class="carte flex items-start justify-between gap-8 rounded-[24px] bg-white p-5 sm:p-7">
-        <div class="min-w-0">
-          <h1 id="nom-membre" class="ff break-words text-grand text-teal-900">{member.nom}</h1>
-          <p class="mt-1.5 text-[20px] text-neutre-800">{member.metier}</p>
+        <div class="@container min-w-0 flex-1">
+          <h1 id="nom-membre" class="ff text-grand text-teal-900 mots-entiers" style={wordFit(member.nom, "var(--text-grand)")}>{member.nom}</h1>
+          <p class="mt-1.5 text-[20px] leading-snug mots-entiers text-neutre-800" style={wordFit(member.metier, "20px", 0.56)}>{member.metier}</p>
           {
             chips.length > 0 && (
               <p class="mt-3 flex flex-wrap gap-2">
@@ -151,10 +152,9 @@ const primaryIcon = chips[0]?.icon;
     </div>
   </section>
 
-  <section class="mx-auto max-w-[1160px] px-5 py-8" aria-labelledby="t-contact">
-    <h2 id="t-contact" class="ff text-nom text-teal-900">{COPY.profileContact(article)}</h2>
-    <div class="filet mt-2.5 mb-5 h-[3px] w-16 rounded-full"></div>
-    <ul class="m-0 grid grid-cols-1 list-none gap-2.5 p-0 sm:grid-cols-2">
+  <section class="@container mx-auto max-w-[1160px] px-5 py-8" aria-labelledby="t-contact">
+    <h2 id="t-contact" class="mb-5 ff text-nom text-teal-900 mots-entiers" style={wordFit(COPY.profileContact(article), "var(--text-nom)")}>{COPY.profileContact(article)}</h2>
+    <ul class="m-0 grid grid-cols-[minmax(0,1fr)] list-none gap-2.5 p-0 sm:grid-cols-2">
       {
         // A native <details>, so the reveal needs no script. The sticky
         // « Appeler » bar dials without it; this is for reading the number out
@@ -189,14 +189,21 @@ const primaryIcon = chips[0]?.icon;
           <li>
             <a
               href={c.href}
-              class="carte carte-lien flex h-full min-h-[64px] items-center gap-3.5 rounded-[16px] bg-white px-4 py-3"
+              class="carte carte-lien flex h-full min-h-[64px] flex-wrap items-center gap-x-3.5 gap-y-2 rounded-[16px] bg-white px-4 py-3"
             >
               <span class="pastille pastille--teal h-10 w-10 shrink-0 bg-teal-50 text-teal-700">
                 <Icon name={c.icon} class="h-5 w-5" />
               </span>
-              <span class="min-w-0">
+              <span class="min-w-[min(12rem,100%)] flex-1">
                 <span class="block text-[16px] text-neutre-700">{c.label}</span>
-                <span class="block break-words text-corps font-semibold text-teal-800">{c.text}</span>
+                <span class="block break-words text-corps font-semibold text-teal-800">
+                  {breakableParts(c.text).map((part) => (
+                    <>
+                      {part}
+                      <wbr />
+                    </>
+                  ))}
+                </span>
               </span>
             </a>
           </li>
@@ -206,36 +213,33 @@ const primaryIcon = chips[0]?.icon;
   </section>
 
   <section class="bg-neutre-100" aria-labelledby="t-portrait">
-    <div class="mx-auto max-w-[1160px] px-5 py-8">
-      <h2 id="t-portrait" class="ff text-nom text-teal-900">{COPY.profilePortrait}</h2>
-      <div class="filet mt-2.5 mb-5 h-[3px] w-16 rounded-full"></div>
+    <div class="@container mx-auto max-w-[1160px] px-5 py-8">
+      <h2 id="t-portrait" class="mb-5 ff text-nom text-teal-900 mots-entiers" style={wordFit(COPY.profilePortrait, "var(--text-nom)")}>{COPY.profilePortrait}</h2>
       <p class="max-w-[62ch] text-[19px] leading-relaxed text-neutre-900">{member.bio}</p>
       {member.carrousel.length > 0 && <PortraitCarousel slides={member.carrousel} />}
     </div>
   </section>
 
-  <section class="mx-auto max-w-[1160px] px-5 py-8" aria-labelledby="t-services">
-    <h2 id="t-services" class="ff text-nom text-teal-900">{COPY.profileOffers(pronoun)}</h2>
-    <div class="filet mt-2.5 mb-5 h-[3px] w-16 rounded-full"></div>
-    <ul class="m-0 grid grid-cols-1 list-none gap-3 p-0 sm:grid-cols-3">
+  <section class="@container mx-auto max-w-[1160px] px-5 py-8" aria-labelledby="t-services">
+    <h2 id="t-services" class="mb-5 ff text-nom text-teal-900 mots-entiers" style={wordFit(COPY.profileOffers(pronoun), "var(--text-nom)")}>{COPY.profileOffers(pronoun)}</h2>
+    <ul class="m-0 grid grid-cols-[minmax(0,1fr)] list-none gap-3 p-0 sm:grid-cols-3">
       {
         member.services.map((service) => (
-          <li class="flex min-h-[64px] items-center gap-3.5 rounded-[16px] bg-neutre-100 px-4 py-4">
+          <li class="@container flex min-h-[64px] flex-wrap items-center gap-x-3.5 gap-y-2 rounded-[16px] bg-neutre-100 px-4 py-4">
             {primaryIcon && (
               <span class="pastille h-9 w-9 shrink-0 bg-white text-sauge-700">
                 <Icon raw={primaryIcon} class="h-[18px] w-[18px]" />
               </span>
             )}
-            <span class="min-w-0 break-words text-corps font-semibold text-teal-900">{service}</span>
+            <span class="min-w-[min(12rem,100%)] flex-1 mots-entiers text-corps font-semibold text-teal-900" style={wordFit(service, "var(--text-corps)", 0.56)}>{service}</span>
           </li>
         ))
       }
     </ul>
   </section>
 
-  <section class="mx-auto max-w-[1160px] px-5 pb-8" aria-labelledby="t-ou">
-    <h2 id="t-ou" class="ff text-nom text-teal-900">{COPY.profileWhere(article)}</h2>
-    <div class="filet mt-2.5 mb-5 h-[3px] w-16 rounded-full"></div>
+  <section class="@container mx-auto max-w-[1160px] px-5 pb-8" aria-labelledby="t-ou">
+    <h2 id="t-ou" class="mb-5 ff text-nom text-teal-900 mots-entiers" style={wordFit(COPY.profileWhere(article), "var(--text-nom)")}>{COPY.profileWhere(article)}</h2>
     <div class="carte flex items-start gap-4 rounded-[20px] bg-white p-5">
       <span class="pastille pastille--teal mt-0.5 h-[44px] w-[44px] shrink-0 bg-teal-50 text-teal-700">
         <Icon name="pin" class="h-5 w-5" />

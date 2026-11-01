@@ -4,6 +4,8 @@
 // sourced, never invented (task-11 brief): editor, publication director and
 // contact address come from Adrien; the host is the contracting entity named in
 // Cloudflare's self-serve terms (cloudflare.com/terms, §20).
+import { breakableParts } from "../lib/contact";
+import { wordFit } from "../lib/text";
 import TextPage from "../layouts/TextPage.astro";
 import { COPY } from "../lib/copy";
 
@@ -11,19 +13,24 @@ const title = `${COPY.footerLegal} — ${COPY.brandEyebrow} ${COPY.brandName}`;
 ---
 
 <TextPage title={title} description={COPY.legalDescription} heading={COPY.footerLegal}>
-  <h2 class="ff text-nom text-teal-900">{COPY.legalEditorTitle}</h2>
+  <h2 class="ff text-nom text-teal-900 mots-entiers" style={wordFit(COPY.legalEditorTitle, "var(--text-nom)")}>{COPY.legalEditorTitle}</h2>
   <p>{COPY.legalAuthor}</p>
 
-  <h2 class="ff text-nom text-teal-900">{COPY.legalContactTitle}</h2>
+  <h2 class="ff text-nom text-teal-900 mots-entiers" style={wordFit(COPY.legalContactTitle, "var(--text-nom)")}>{COPY.legalContactTitle}</h2>
   <p class="break-words">
     <a class="text-teal-700 underline underline-offset-4" href={`mailto:${COPY.contactEmail}`}>
-      {COPY.contactEmail}
+      {breakableParts(COPY.contactEmail).map((part) => (
+        <>
+          {part}
+          <wbr />
+        </>
+      ))}
     </a>
   </p>
 
-  <h2 class="ff text-nom text-teal-900">{COPY.legalHostTitle}</h2>
+  <h2 class="ff text-nom text-teal-900 mots-entiers" style={wordFit(COPY.legalHostTitle, "var(--text-nom)")}>{COPY.legalHostTitle}</h2>
   <p>{COPY.legalHost}</p>
 
-  <h2 class="ff text-nom text-teal-900">{COPY.legalIpTitle}</h2>
+  <h2 class="ff text-nom text-teal-900 mots-entiers" style={wordFit(COPY.legalIpTitle, "var(--text-nom)")}>{COPY.legalIpTitle}</h2>
   <p>{COPY.legalIpText}</p>
 </TextPage>

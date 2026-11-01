@@ -83,6 +83,16 @@ test("States each of the three address cases instead of flattening them", async 
 // and a selected one is not.
 const WHITE = "rgb(255, 255, 255)";
 
+test("A member who is not on the map leaves no coordinates in the page", async ({ page }) => {
+  const hidden = members.find((m) => !m.surCarte && m.lat !== null);
+  if (!hidden) throw new Error("fixture: no off-map member with coordinates");
+  for (const path of ["/carte", "/", `/membre/${hidden.slug}`, "/recherche.json"]) {
+    const response = await page.request.get(path);
+    expect(response.ok(), path).toBe(true);
+    expect(await response.text(), path).not.toContain(String(hidden.lat));
+  }
+});
+
 test("A pin and its sheet row highlight each other, and the highlight moves", async ({ page }) => {
   const [first, second] = members.filter(isPinned);
 

@@ -9,6 +9,7 @@
 // hidden") renders greyed with no link and a mailto: to offer a name —
 // the one place a visitor can suggest a neighbour. While the directory is
 // small (groupsEmptyCategories), the empty ones share a single closing line.
+import { wordFit } from "../lib/text";
 import { COPY } from "../lib/copy";
 import { mailtoHref } from "../lib/contact";
 import { formatMemberCount, groupsEmptyCategories } from "../lib/members";
@@ -30,8 +31,8 @@ const listed = categories.filter((c) => !grouped.includes(c));
         {c.count === 0 ? (
           <div class="flex items-start gap-3 px-5 py-1.5 min-h-[56px]">
             <span class="tnum mt-1 w-6 shrink-0 text-[16px] font-bold text-neutre-600 before:content-[counter(besoin,decimal-leading-zero)]" />
-            <span class="min-w-0 flex-1">
-              <span class="ff block text-besoin text-neutre-600">{c.besoin}</span>
+            <span class="@container min-w-0 flex-1">
+              <span class="ff block text-besoin mots-entiers text-neutre-600" style={wordFit(c.besoin, "var(--text-besoin)")}>{c.besoin}</span>
               <span class="mt-0.5 block text-[16px] leading-[1.3] text-neutre-700">
                 {c.nom} · <span class="font-semibold text-neutre-800">{formatMemberCount(c.count, c.genders)}</span> —{" "}
                 <a
@@ -46,8 +47,8 @@ const listed = categories.filter((c) => !grouped.includes(c));
         ) : (
           <a class="besoin flex items-start gap-3 px-5 py-1.5 min-h-[56px]" href={`/categorie/${c.slug}`}>
             <span class="num tnum mt-1 w-6 shrink-0 text-[16px] font-bold text-neutre-600 before:content-[counter(besoin,decimal-leading-zero)]" />
-            <span class="min-w-0 flex-1">
-              <span class="ff block break-words text-besoin text-teal-800">{c.besoin}</span>
+            <span class="@container min-w-0 flex-1">
+              <span class="ff block text-besoin mots-entiers text-teal-800" style={wordFit(c.besoin, "var(--text-besoin)")}>{c.besoin}</span>
               <span class="mt-0.5 block text-[16px] leading-[1.15] text-neutre-700">
                 {c.motsCles.slice(0, 3).join(", ")} · <span class="font-semibold text-neutre-800">{formatMemberCount(c.count, c.genders)}</span>
               </span>

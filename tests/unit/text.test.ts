@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { normalize, slugify } from "../../src/lib/text";
+import { longestWord, normalize, slugify } from "../../src/lib/text";
 
 describe("Text normalisation", () => {
   // French. Someone types "electricien" and someone else typed « Électricien ».
@@ -9,5 +9,14 @@ describe("Text normalisation", () => {
     expect(normalize("  Bien-Être ")).toBe("bien-etre");
     expect(slugify("Camille Roussel")).toBe("camille-roussel");
     expect(slugify("Santé & bien-être")).toBe("sante-bien-etre");
+  });
+});
+
+describe("longestWord", () => {
+  it.each([
+    ["Julien Marty", 6],
+    ["Menuisier-ébéniste", 9],
+  ])("Counts the letters that must fit on one line in « %s »", (text, letters) => {
+    expect(longestWord(text)).toBe(letters);
   });
 });

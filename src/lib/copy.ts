@@ -42,7 +42,8 @@ export const COPY = {
   // address beats a second, fabricated one live on the site.
   contactEmail: "lemaire.adrien@gmail.com",
 
-  homeTitle: "Je cherche…",
+  // The word joiner keeps « … » on the line of its word at any text size.
+  homeTitle: "Je cherche\u2060…",
   homeIntro: "Les voisines et voisins qui habitent ou travaillent à la Cartoucherie.",
   // The collective the directory grew out of, credited without taking the name.
   homeBy: "Porté par les Entrepreneurs de la Cartoucherie",

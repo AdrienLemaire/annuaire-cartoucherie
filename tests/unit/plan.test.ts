@@ -6,7 +6,7 @@ import { MAP_BOUNDS, projectOnMap, reorderFromPoint } from "../../src/lib/plan";
 // committed fixture happens not to contain. Constructed here instead of
 // editing that fixture (task-10-report.md, finding 2).
 describe("reorderFromPoint", () => {
-  it("Ranks members with coordinates and leaves one without in place", () => {
+  it("Ranks members with coordinates and puts one without last", () => {
     const from = { lat: 43.6006, lng: 1.4108 };
     const rows = [
       { slug: "far", lat: 43.61, lng: 1.42 },
@@ -18,8 +18,8 @@ describe("reorderFromPoint", () => {
 
     // The uncoordinated row keeps a null distance rather than NaN, and is
     // never mixed into the ranking.
-    expect(result[0]).toEqual({ slug: "no-coords", metres: null });
-    const ranked = result.slice(1);
+    expect(result.at(-1)).toEqual({ slug: "no-coords", metres: null });
+    const ranked = result.slice(0, -1);
     expect(ranked.map((r) => r.slug)).toEqual(["near", "far"]);
     expect(ranked.every((r) => Number.isFinite(r.metres))).toBe(true);
   });

@@ -30,6 +30,7 @@
 // rendered `member.accroche`, which no mockup specimen of this exact card
 // does (styleguide.html:1085-1108, index.html's own "Vos voisins" disc
 // tile) — removed rather than kept, per "mockups win".
+import { wordFit } from "../lib/text";
 import Icon from "./Icon.astro";
 import { COPY } from "../lib/copy";
 import { agree } from "../lib/gender";
@@ -67,10 +68,10 @@ const homeIcon = fixed ? undefined : homeServiceIcon(member, categories);
           decoding="async"
           class="w-full h-[150px] object-cover"
         />
-        <div class="p-4">
-          <h3 class="ff break-words mt-2.5 text-[25px] leading-[1.05] text-teal-900">{member.nom}</h3>
-          <p class="break-words mt-1 text-corps font-semibold text-neutre-900">{member.metier}</p>
-          <p class="break-words mt-1.5 text-[16px] leading-snug text-neutre-700">{member.accroche}</p>
+        <div class="@container p-4">
+          <h3 class="ff mt-2.5 text-[25px] leading-[1.05] mots-entiers text-teal-900" style={wordFit(member.nom, "25px")}>{member.nom}</h3>
+          <p class="mt-1 text-corps font-semibold mots-entiers text-neutre-900" style={wordFit(member.metier, "var(--text-corps)", 0.56)}>{member.metier}</p>
+          <p class="mt-1.5 text-[16px] leading-snug text-neutre-700">{member.accroche}</p>
           <p class="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1 text-[16px] text-neutre-700">
             {member.nbAvis > 0 && (
               <span class="inline-flex items-center gap-1">
@@ -98,8 +99,10 @@ const homeIcon = fixed ? undefined : homeServiceIcon(member, categories);
           class="w-[124px] h-[124px] rounded-full object-cover shadow-carte"
           style="object-position:50% 22%; box-shadow: 0 0 0 3px #fff, var(--shadow-carte);"
         />
-        <h3 class="ff break-words mt-3.5 text-[21px] leading-tight text-teal-900">{member.nom}</h3>
-        <p class="break-words mt-0.5 text-corps text-neutre-900">{member.metier}</p>
+        <div class="@container w-full">
+          <h3 class="ff mt-3.5 text-[21px] leading-tight mots-entiers text-teal-900" style={wordFit(member.nom, "21px")}>{member.nom}</h3>
+          <p class="mt-0.5 text-corps mots-entiers text-neutre-900" style={wordFit(member.metier, "var(--text-corps)", 0.56)}>{member.metier}</p>
+        </div>
         <p class="mt-2 inline-flex items-center gap-1.5 text-[16px] font-semibold text-teal-800">
           {homeIcon && <Icon raw={homeIcon} class="w-4 h-4 shrink-0 text-teal-600" />}
           {COPY.comesToYou(agree(member.genre, "elle"))}
