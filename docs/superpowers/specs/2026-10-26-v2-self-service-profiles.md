@@ -55,7 +55,12 @@ The visitor's experience does not change: the public site stays static, cookie-f
 | Carousel                       | Generated from « Votre histoire »; Sandra's kept for the 6 existing profiles |
 | Gender                         | elle, il or iel                                                              |
 | Favourite places               | OpenStreetMap snapshot, or a pin Adrien approves                             |
-| After « Supprimer ma fiche »   | The account stays, without a profile                                         |
+| After « Supprimer ma fiche »   | The account closes; signing in again starts a new one                        |
+| Identification data on delete  | The owner chooses: erased now (preselected), or kept one year, then erased   |
+| Address of an off-map member   | Still printed in full on the profile; only the map point is hidden           |
+| Staging after the migration    | Fictional profiles only; it no longer previews the real neighbours           |
+| Places switch with no places   | Hidden until a published member has named one                                |
+| Sender address                 | `annuaire@cartoucherie.fyi`                                                  |
 | Editing while pending          | Keeps its place in the queue; Adrien sees the latest version                 |
 | Failed content deploy          | « Mise en ligne en cours… » stays; Adrien gets an email                      |
 | Deleting a profile             | Also sends a one-line confirmation email                                     |
@@ -178,9 +183,10 @@ at 0 until reviews exist.
   never printed in CI logs (the repository is public), and errors name a row number only, as
   `sync-content` does today. The D1 API token is read-only.
 - **Hiding and deleting.** `hidden` (Adrien) and « Supprimer ma fiche » (the owner) both remove
-  the profile from the next export at once. Deletion then erases the profile and its images.
-  † Whether a minimal identification record must be kept for a year (LCEN, décret 2021-1362)
-  is checked before launch.
+  the profile from the next export at once. Deletion then erases the profile and its images
+  and closes the account. The owner chooses what happens to their name, email and phone: erased
+  at once (preselected), or kept for one year in a separate record, used only to answer a
+  judicial request, then erased. Nothing else is kept. † See §16.
 - **Slugs.** Frozen at first publication. Changing a name never moves the URL, because printed
   QR codes carry it.
 
@@ -269,7 +275,8 @@ What this spec adds:
 - **`surCarte: false`** must also leave out `data-lat` and `data-lng` from `/carte`'s HTML.
   Today the coordinates stay in the page.
 - **`/confidentialite`** rewritten: account data, the art. 13 notice, retention (inactive
-  accounts deleted after 2 years, after a warning), and the right to delete.
+  accounts deleted after 2 years, after a warning; the optional one-year record), and the right
+  to delete.
 - **`/mentions-legales`**: corrections no longer go only « sur simple demande ».
 - **Schema hardening** (fields doc §5): categories checked against `categories.json`, non-empty
   services, `site` and `instagram` validated, `firstName()` no longer guessed from `nom`.
@@ -336,13 +343,15 @@ New components go into `styleguide.html` first.
   invited.
 - Public pages: still no cookie, same Lighthouse thresholds, same budgets.
 - `/confidentialite` and the consent records are in place, and the † retention question is
-  answered.
+  settled.
 - Nothing about a real person in the public repository or in a public CI log.
 
 ## 16. Open items
 
-- † LCEN retention of an identification record after deletion: check décret 2021-1362 on
-  Légifrance.
+- † LCEN retention. Décret 2021-1362 binds access providers and hosts: account data for one year
+  after the account closes. Whether the directory counts as a host for its members' profiles is
+  not settled, and a legal duty could not be waived by a member's choice. If it applies, the
+  « erase now » option goes and the record is always kept. Check before launch.
 - Confirm on a real phone where a Google Maps share link redirects.
 - Decide whether LinkedIn handles with accents are decoded or the rule is widened.
 - The DSFR form patterns could not be read (403): review them by hand before the form mockups.

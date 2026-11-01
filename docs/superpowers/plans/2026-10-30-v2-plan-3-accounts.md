@@ -46,7 +46,7 @@ Workers Free stops a Worker that keeps exceeding 10 ms of CPU; the budget is hal
 
 ### Two environments, two databases
 
-Production and staging each get their own D1 (v2 spec §3: staging holds fictional data only). After the migration (Task 20), staging no longer shows the real neighbours: see « Open questions ».
+Production and staging each get their own D1 (v2 spec §3: staging holds fictional data only). After the migration (Task 20), staging no longer shows the real neighbours (v2 spec §3).
 
 ### Tests
 
@@ -61,6 +61,8 @@ Decisions owed a test, listed up front:
 | The geocoder's answer is accepted only as a house number in 31300 with score ≥ 0.7 | 9    |
 | A point outside `MAP_BOUNDS` is saved without a pin and flagged, never exported    | 9    |
 | A slug is frozen at first publication                                              | 13   |
+| Nothing survives a delete unless the owner chose the one-year record               | 8    |
+| A kept record and an inactive account are each removed on their exact date         | 19   |
 | Approving a profile leaves its unreviewed places pending                           | 14   |
 | The export ships only published profiles and approved places                       | 16   |
 | The form's preview says what the public page will say                              | 11   |
@@ -133,10 +135,10 @@ Not code. Each item is a click-path or a command for Adrien; the agent prepares 
 
 - [ ] D1: `npx wrangler d1 create cartoucherie` and `npx wrangler d1 create cartoucherie-staging`; paste the two `database_id`s.
 - [ ] Turnstile: one widget, hostnames `www.cartoucherie.fyi`, `staging.cartoucherie.fyi`, `localhost`; site key and secret.
-- [ ] Brevo: account under the association's or Adrien's name, sender `annuaire@cartoucherie.fyi`, API key; SPF and DKIM records added to `cartoucherie.fyi` in Cloudflare DNS, verified in Brevo.
+- [ ] Brevo: account under the name Adrien chooses (his or the association's), sender `annuaire@cartoucherie.fyi`, API key; SPF and DKIM records added to `cartoucherie.fyi` in Cloudflare DNS, verified in Brevo.
 - [ ] GitHub: a fine-grained token on this repository only, permission **Actions: read and write**, nothing else; a read-only Cloudflare API token for D1 (CI export).
 - [ ] Secrets, per environment: Worker (`wrangler secret put` …): `BREVO_API_KEY`, `TURNSTILE_SECRET`, `GITHUB_DISPATCH_TOKEN`. GitHub Environments `production` and `staging`: `D1_READ_TOKEN`, and the vars `D1_DATABASE_ID`, `TURNSTILE_SITE_KEY`.
-- [ ] The answer to the LCEN question (v2 spec §16 †) before launch, not before coding.
+- [ ] The LCEN check (v2 spec §16 †) before launch, not before coding: it can remove the « erase now » option.
 
 ### Task 2: The Worker skeleton and its guard
 
@@ -163,7 +165,16 @@ CREATE TABLE users (
   email TEXT NOT NULL UNIQUE COLLATE NOCASE,
   role TEXT NOT NULL DEFAULT 'member' CHECK (role IN ('member', 'admin')),
   created_at TEXT NOT NULL DEFAULT (datetime('now')),
-  last_seen_at TEXT
+  last_seen_at TEXT,
+  warned_at TEXT                          -- inactivity warning sent
+);
+CREATE TABLE identification_records (     -- only when the owner chose to keep them, no user link
+  id TEXT PRIMARY KEY,
+  nom TEXT NOT NULL,
+  email TEXT NOT NULL,
+  phone TEXT,
+  closed_at TEXT NOT NULL,
+  expires_at TEXT NOT NULL                -- closed_at + 1 year
 );
 CREATE TABLE sign_in_tokens (
   hash TEXT PRIMARY KEY,
@@ -351,7 +362,7 @@ The whole-input rules — at least one of `tel` or `email` (decision 2), `adress
 - [ ] `GET /api/profile` → the owner's profile (`data`, `status`, `flags`, image ids) or `null`.
 - [ ] `PUT /api/profile/:step` → parse with `stepSchema(step)`, normalise, merge into `data`, `updated_at = now`. A `published` profile is re-validated whole with `memberInputSchema` before it is saved, then dispatches a content deploy (Task 17). A `pending` profile keeps its place in the queue (decision: `submitted_at` unchanged).
 - [ ] `POST /api/profile/submit` `{ turnstile, consents }` → full parse; Turnstile; consents all true (fields doc §4); a suggested slug from `slugify(nom)`, made unique with `-2`, `-3`; `status = 'pending'`, `submitted_at = now`; e-mail Adrien (« Une fiche attend votre relecture », no member data in the e-mail beyond the name).
-- [ ] `DELETE /api/profile` `{ confirm: true }` → delete the profile and its images (cascade), keep the account (decision), one-line confirmation e-mail, dispatch a content deploy if it was published.
+- [ ] `DELETE /api/profile` `{ confirm: true, keepIdentification: boolean }` → in one D1 batch: an `identification_records` row only if `keepIdentification` is true, delete the profile and its images (cascade), delete the user and its sessions, unless the user is an admin. Clear the cookie, send the one-line confirmation e-mail saying which option was taken, dispatch a content deploy if it was published. `deletionStatements(profile, user, keep, now)` is pure, tested: no record without the choice, `expires_at` one year on, no profile content in the record.
 - [ ] Verify with `curl` against `wrangler dev` for each status transition; commit `feat: save, submit and delete a profile`.
 
 ### Task 9: Address and map point
@@ -418,7 +429,7 @@ The form draws the card and the profile header from the draft (v2 spec §5). Ast
 
 - [ ] **Step 1: Failing test** for `nextSlug(current, nom, publishedAt, taken)`: before publication it follows the name (and stays unique); once `publishedAt` is set it never changes, whatever the name becomes (v2 spec §7: printed QR codes).
 - [ ] **Step 2: Status banners:** « En attente de relecture », « Refusée » with the reason and « Corriger et renvoyer », « En ligne », « Mise en ligne en cours… ». The last one: `version.json` (emitted at build: `{ exportedAt }`) is older than the profile's `updated_at`. A failed deploy keeps it showing (decision) and Adrien is e-mailed by the workflow (Task 17).
-- [ ] **Step 3:** The edit list with « Votre histoire » and « Mes lieux favoris »; one-step edit screens; the Google reminder until a link is set, dismissable; « Supprimer ma fiche » with `b-v2-supprimer`'s red `.detruire` button and confirmation.
+- [ ] **Step 3:** The edit list with « Votre histoire » and « Mes lieux favoris »; one-step edit screens; the Google reminder until a link is set, dismissable; « Supprimer ma fiche » with `b-v2-supprimer`'s red `.detruire` button, confirmation and the coordinates choice, « Tout effacer maintenant » preselected.
 - [ ] **Step 4: Verify** every frame of `espace.html`; commit `feat: add the member space`.
 
 ---
@@ -485,7 +496,7 @@ The form draws the card and the profile header from the draft (v2 spec §5). Ast
 
 **Files:** `src/pages/confidentialite.astro`, `src/pages/mentions-legales.astro`, `src/lib/copy.ts`.
 
-- [ ] `/confidentialite`: keep « what the site does / does not » for visitors, true as built; add the accounts section — data collected (fields doc §4), purpose and lawful basis (art. 6(1)(b)), controller (Adrien), retention (profile as long as the account; inactive accounts deleted after 2 years with a warning first), the one strictly necessary cookie on `/api` only, Turnstile on two pages, Brevo as processor, rights and how to exercise them, deletion in `/espace`.
+- [ ] `/confidentialite`: keep « what the site does / does not » for visitors, true as built; add the accounts section — data collected (fields doc §4), purpose and lawful basis (art. 6(1)(b)), controller (Adrien), retention (profile as long as the account; inactive accounts deleted after 2 years with a warning first, nothing kept; name, e-mail and phone for one year after deletion only if the person chose it, on consent under art. 6(1)(a), erased earlier on request to Adrien), the one strictly necessary cookie on `/api` only, Turnstile on two pages, Brevo as processor, rights and how to exercise them, deletion in `/espace`.
 - [ ] `/mentions-legales`: corrections by the member in `/espace`, or by e-mail.
 - [ ] Adrien reads both aloud before merge. Commit `docs: describe accounts on the privacy page`.
 
@@ -493,8 +504,8 @@ The form draws the card and the profile header from the draft (v2 spec §5). Ast
 
 **Shape:** TDD for the dates.
 
-- [ ] A Worker Cron Trigger, monthly: e-mail accounts whose `last_seen_at` is 23 months old; delete accounts (and their profiles) at 24 months. `last_seen_at` is set on each session check, at most once a day. Pure function `retentionActions(users, now)` tested at the boundaries.
-- [ ] Commit `feat: warn and delete inactive accounts`.
+- [ ] A Worker Cron Trigger, daily: e-mail accounts whose `last_seen_at` is 23 months old and `warned_at` is empty, then set it; delete accounts (and their profiles) at 24 months, keeping no record; delete `identification_records` past `expires_at`. `last_seen_at` is set on each session check, at most once a day, and clears `warned_at`. Pure function `retentionActions(users, records, now)` tested at the boundaries.
+- [ ] Commit `feat: expire inactive accounts and kept records`.
 
 ### Task 20: Migrating the 6 profiles
 
@@ -551,9 +562,3 @@ Referenced as F1–F11 above. Checked against the installed `node_modules/wrangl
 - **F9** Workers Free: 10 ms CPU per request, 100 k requests per day, 50 subrequests per request; `crypto.subtle.digest("SHA-256")` and `crypto.getRandomValues` available. <https://developers.cloudflare.com/workers/platform/limits/>
 - **F10** Brevo: `POST https://api.brevo.com/v3/smtp/email`, header `api-key`. Free plan 300 e-mails a day (brevo.com; the help-centre page was not reachable). <https://developers.brevo.com/reference/sendtransacemail>
 - **F11** Géoplateforme: `q`, `autocomplete` (`1`/`0`), `index`, `limit` (≤ 50), `postcode`, `type` (`housenumber`…); features carry `score`, `type`, `postcode`, `label`. 50 requests per second per IP; free; no key needed in a live test. <https://data.geopf.fr/geocodage/openapi.yaml>
-
-## Open questions for Adrien
-
-1. **Staging after the migration.** Staging's D1 holds fictional profiles only, so staging stops being a preview of the real directory. Accept that (recommended: it removes real people from a second public copy), or import the real profiles into staging too?
-2. **Who sends e-mails.** The sender address `annuaire@cartoucherie.fyi` and the Brevo account holder (you, or the association).
-3. **LCEN identification record** (v2 spec §16 †): needed before launch, not before coding.

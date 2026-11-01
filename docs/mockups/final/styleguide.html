@@ -5249,7 +5249,8 @@ textarea.champ{ field-sizing: content; resize: vertical; }
     <code class="font-mono text-[15px] text-teal-800">rouge-600</code>, la paire <code class="font-mono text-[15px] text-teal-800">error</code>
     du thème (5,63:1). Il ne vit que sur l'écran de confirmation, jamais dans l'espace lui-même&nbsp;: là,
     «&nbsp;Supprimer ma fiche&nbsp;» est un simple lien. L'écran dit ce qui sera effacé, en liste, que c'est immédiat et
-    définitif, et que les QR codes imprimés ne mèneront plus nulle part. «&nbsp;Non, la garder&nbsp;» a la même taille&nbsp;:
+    définitif, et que les QR codes imprimés ne mèneront plus nulle part. Il demande aussi ce que deviennent
+    les coordonnées&nbsp;: «&nbsp;Tout effacer maintenant&nbsp;», coché d'office, ou «&nbsp;Les garder un an&nbsp;». «&nbsp;Non, la garder&nbsp;» a la même taille&nbsp;:
     on ne cache pas la sortie. Pas d'orange sur cet écran.
   </p>
 
@@ -5279,8 +5280,28 @@ textarea.champ{ field-sizing: content; resize: vertical; }
             <li class="flex gap-2.5"><svg class="w-4 h-4 mt-1.5 shrink-0 text-rouge-700" aria-hidden="true"><use href="#i-fermer"/></svg>votre photo et vos pages «&nbsp;Votre histoire&nbsp;»</li>
             <li class="flex gap-2.5"><svg class="w-4 h-4 mt-1.5 shrink-0 text-rouge-700" aria-hidden="true"><use href="#i-fermer"/></svg>votre point sur le plan du quartier</li>
             <li class="flex gap-2.5"><svg class="w-4 h-4 mt-1.5 shrink-0 text-rouge-700" aria-hidden="true"><use href="#i-fermer"/></svg>votre page publique, celle de vos QR codes</li>
+            <li class="flex gap-2.5"><svg class="w-4 h-4 mt-1.5 shrink-0 text-rouge-700" aria-hidden="true"><use href="#i-fermer"/></svg>votre compte</li>
           </ul>
         </div>
+        <fieldset class="mt-5 min-w-0 border-0 p-0 m-0">
+          <legend class="text-corps font-semibold text-teal-950 mb-3">Et vos coordonnées&nbsp;?</legend>
+          <div class="grid grid-cols-[minmax(0,1fr)] gap-3">
+            <label class="choix flex flex-wrap items-center gap-x-3.5 gap-y-2">
+              <input type="radio" name="v2-effacement" value="effacer" class="rond" checked>
+              <span class="min-w-[min(8rem,100%)] flex-1">
+                <span class="block text-corps font-semibold text-teal-900">Tout effacer maintenant</span>
+                <span class="block text-[16px] leading-snug text-neutre-700">Votre nom, votre e-mail et votre téléphone aussi.</span>
+              </span>
+            </label>
+            <label class="choix flex flex-wrap items-center gap-x-3.5 gap-y-2">
+              <input type="radio" name="v2-effacement" value="garder" class="rond">
+              <span class="min-w-[min(8rem,100%)] flex-1">
+                <span class="block text-corps font-semibold text-teal-900">Les garder un an</span>
+                <span class="block text-[16px] leading-snug text-neutre-700">Seulement pour répondre à une demande de la justice, puis effacés.</span>
+              </span>
+            </label>
+          </div>
+        </fieldset>
         <p class="mt-5 text-corps text-neutre-900"><strong class="font-semibold">C'est immédiat et définitif.</strong>
           Personne ne pourra la récupérer, pas même Adrien.</p>
         <p class="mt-2 text-[16px] leading-snug text-neutre-700">Elle disparaît d'ici quelques minutes&nbsp;; vos QR codes imprimés ne mèneront plus nulle part.</p>

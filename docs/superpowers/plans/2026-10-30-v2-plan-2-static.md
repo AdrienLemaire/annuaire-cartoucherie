@@ -159,7 +159,7 @@ test("A member who is not on the map leaves no coordinates in the page", async (
 - [ ] **Step 4: Run green**, then the whole carte spec.
 - [ ] **Step 5: Commit** `fix: keep off-map members' coordinates out of /carte`.
 
-The address text on a `surCarte: false` profile is a product question, not this bug: listed in « Open questions ».
+The address text on a `surCarte: false` profile stays printed in full (v2 spec §3): only the coordinates go.
 
 ### Task 2: Names and e-mails never split mid-word at 200 %
 
@@ -381,7 +381,7 @@ Plan 3 adds real client JS to `/espace` and `/admin`. Today's budget sums every 
   - A place a member owns is that member's pin with the sauge corner; its sheet shows their portrait and « Voir sa fiche » (frame 4).
   - Tapping a place opens `PlaceSheet` below the map and scrolls to it (frames 3, 6).
   - `?lieu=<id>`: only that place and its fans (frame 5). `?lieux=<member>`: only that member's places, their pin selected, « Les lieux favoris de <prénom> » (frame 5 bis). `firstName` from Task 3.
-  - Nobody named a place yet: the status line of frame 7.
+  - Nobody named a place yet: the switch is not rendered at all (v2 spec §3). Frame 7's status line stays for the case where the switch is shown and a filter leaves nothing.
   - Without JavaScript: the layer is a list of places under the map, each a link to `?lieu=`. The page stays usable.
 - [ ] **Step 4: Profile link:** « Ses lieux favoris, sur la carte » under the carousel, to `/carte?lieux=<slug>#plan`, only when the member has places.
 - [ ] **Step 5: e2e** (one test, the decision « the layer is off until asked »): `/carte` shows no place marker; after the switch, the fixture's places appear; `?lieux=sophie-arnaud` shows exactly her places.
@@ -401,8 +401,3 @@ Plan 3 adds real client JS to `/espace` and `/admin`. Today's budget sums every 
 - A warm build renders no slide twice; build time and slide sizes recorded.
 - The real profiles build unchanged at every merge, verified by Adrien.
 - Budgets, Lighthouse and axe gates unchanged and green.
-
-## Open questions for Adrien
-
-1. **Address of an off-map member.** `surCarte: false` now hides the coordinates. The profile still prints the street address. Should it print only the street, or nothing, for a home address? Plan 3's form asks « Je reçois à une adresse » / « Je me déplace »; this matters for the 6 existing profiles now.
-2. **Places layer for visitors on the 6 real profiles.** Until Plan 3 ships, no real member has favourite places, so the switch would show an empty layer in production. Ship the switch hidden until at least one real member has places? Recommended: yes, hidden when the set is empty (frame 7 stays for the case where it is shown).

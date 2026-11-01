@@ -1731,8 +1731,9 @@ textarea.champ{ field-sizing: content; resize: vertical; }
     <h2 class="ff mt-1 text-nom text-teal-900">«&nbsp;Supprimer ma fiche&nbsp;»</h2>
     <p class="mt-2 text-corps text-neutre-800 max-w-[70ch]">
       Le bloc «&nbsp;Supprimer sa fiche&nbsp;», tel quel. Un écran à part, pas une fenêtre&nbsp;: on y arrive par le lien en bas
-      de l'espace, on en sort par «&nbsp;Non, la garder&nbsp;». Le bouton rouge est le seul de tout le produit. Le compte reste,
-      sans fiche, et un e-mail d'une ligne confirme la suppression.
+      de l'espace, on en sort par «&nbsp;Non, la garder&nbsp;». Le bouton rouge est le seul de tout le produit. Le compte se ferme
+      avec la fiche, et un e-mail d'une ligne confirme la suppression. La personne choisit&nbsp;: tout effacer, coché d'office, ou
+      garder son nom, son e-mail et son téléphone un an. Le reste est effacé dans les deux cas.
       L'effacement dans la base est immédiat&nbsp;; la page publique tombe au déploiement suivant, quelques minutes plus tard.
       Les deux sont dits.
     </p>
@@ -1787,8 +1788,28 @@ textarea.champ{ field-sizing: content; resize: vertical; }
               <li class="flex gap-2.5"><svg class="w-4 h-4 mt-1.5 shrink-0 text-rouge-700" aria-hidden="true"><use href="#i-fermer"/></svg>votre photo et vos pages «&nbsp;Votre histoire&nbsp;»</li>
               <li class="flex gap-2.5"><svg class="w-4 h-4 mt-1.5 shrink-0 text-rouge-700" aria-hidden="true"><use href="#i-fermer"/></svg>votre point sur le plan du quartier</li>
               <li class="flex gap-2.5"><svg class="w-4 h-4 mt-1.5 shrink-0 text-rouge-700" aria-hidden="true"><use href="#i-fermer"/></svg>votre page publique, celle de vos QR codes</li>
+              <li class="flex gap-2.5"><svg class="w-4 h-4 mt-1.5 shrink-0 text-rouge-700" aria-hidden="true"><use href="#i-fermer"/></svg>votre compte</li>
             </ul>
           </div>
+          <fieldset class="mt-5 min-w-0 border-0 p-0 m-0">
+            <legend class="text-corps font-semibold text-teal-950 mb-3">Et vos coordonnées&nbsp;?</legend>
+            <div class="grid grid-cols-[minmax(0,1fr)] gap-3">
+              <label class="choix flex flex-wrap items-center gap-x-3.5 gap-y-2">
+                <input type="radio" name="effacement" value="effacer" class="rond" checked>
+                <span class="min-w-[min(8rem,100%)] flex-1">
+                  <span class="block text-corps font-semibold text-teal-900">Tout effacer maintenant</span>
+                  <span class="block text-[16px] leading-snug text-neutre-700">Votre nom, votre e-mail et votre téléphone aussi.</span>
+                </span>
+              </label>
+              <label class="choix flex flex-wrap items-center gap-x-3.5 gap-y-2">
+                <input type="radio" name="effacement" value="garder" class="rond">
+                <span class="min-w-[min(8rem,100%)] flex-1">
+                  <span class="block text-corps font-semibold text-teal-900">Les garder un an</span>
+                  <span class="block text-[16px] leading-snug text-neutre-700">Seulement pour répondre à une demande de la justice, puis effacés.</span>
+                </span>
+              </label>
+            </div>
+          </fieldset>
           <p class="mt-5 text-corps text-neutre-900"><strong class="font-semibold">C'est immédiat et définitif.</strong>
             Personne ne pourra la récupérer, pas même Adrien.</p>
           <p class="mt-2 text-[16px] leading-snug text-neutre-700">Elle disparaît d'ici quelques minutes&nbsp;; vos QR codes imprimés ne mèneront plus nulle part.</p>
@@ -1829,13 +1850,12 @@ textarea.champ{ field-sizing: content; resize: vertical; }
         <div class="@container px-5 pt-10 pb-12">
           <span class="pastille pastille--teal w-14 h-14 bg-white text-teal-700" aria-hidden="true"><svg class="w-7 h-7"><use href="#i-coche"/></svg></span>
           <h1 class="ff mt-6 text-nom mots-entiers text-teal-900" tabindex="-1" style="--taille:var(--text-nom); --mot:9">Votre fiche est supprimée</h1>
-          <p class="mt-3 text-corps text-neutre-900">Elle est effacée, avec votre photo et vos pages «&nbsp;Votre histoire&nbsp;». Elle quitte l'annuaire et le plan d'ici quelques minutes. Un e-mail vous le confirme.</p>
+          <p class="mt-3 text-corps text-neutre-900">Elle est effacée, avec votre photo et vos pages «&nbsp;Votre histoire&nbsp;». Elle quitte l'annuaire et le plan d'ici quelques minutes. Votre compte est fermé. Un e-mail vous le confirme.</p>
           <p class="mt-3 text-[16px] leading-snug text-neutre-700">Vous pourrez en créer une autre quand vous voudrez&nbsp;; Adrien la relira avant de la publier.</p>
           <div class="mt-7 flex flex-col items-start gap-3">
             <a href="../final/index.html" class="inline-flex items-center gap-2 min-h-[48px] px-5 rounded-full text-corps font-semibold text-white bg-teal-700 hover:bg-teal-600">
               Retour à l'annuaire<svg class="w-4 h-4" aria-hidden="true"><use href="#i-chev"/></svg>
             </a>
-            <a href="#etat-6" class="inline-flex items-center min-h-[44px] text-[16px] font-semibold text-teal-700 underline underline-offset-4 decoration-teal-300 hover:decoration-teal-600">Se déconnecter</a>
           </div>
         </div>
       </div>
