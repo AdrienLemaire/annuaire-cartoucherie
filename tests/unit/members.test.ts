@@ -1,5 +1,6 @@
 import { describe, it, expect } from "vitest";
 import {
+  firstName,
   formatDistance, formatMemberCount, formatNote, hasAddress, memberUrl, sortByCountDesc, sortByDistance, withCounts,
 } from "../../src/lib/members";
 import type { Category } from "../../src/content/schemas";
@@ -83,6 +84,17 @@ describe("Member helpers", () => {
   it("Formats a distance the way the fixture's own field does", () => {
     expect(formatDistance(63)).toBe("60 m");
     expect(formatDistance(1234)).toBe("1,2 km");
+  });
+});
+
+describe("First names", () => {
+  it.each([
+    ["Camille Roussel", "Camille"],
+    ["Jean-Marc Dupont", "Jean-Marc"],
+    ["Jean Marc Dupont", "Jean Marc Dupont"],
+    ["Inès", "Inès"],
+  ])("Takes a first name from « %s » only when it is unambiguous", (nom, expected) => {
+    expect(firstName(nom)).toBe(expected);
   });
 });
 
