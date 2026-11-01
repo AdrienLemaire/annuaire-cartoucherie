@@ -38,6 +38,9 @@ for (const path of PAGES) {
       const words: string[] = [];
       const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
       for (let node = walker.nextNode(); node; node = walker.nextNode()) {
+        // Long-form prose hyphenates on purpose, with a visible hyphen. Names and
+        // headings never do (.mots-entiers), so they stay under this test.
+        if (node.parentElement && getComputedStyle(node.parentElement).hyphens === "auto") continue;
         for (const match of (node.textContent ?? "").matchAll(/[\p{L}\p{N}@._'’-]{2,}/gu)) {
           const range = document.createRange();
           range.setStart(node, match.index);
