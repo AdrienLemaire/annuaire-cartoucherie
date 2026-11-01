@@ -26,6 +26,8 @@ const seen = new Set();
 // world-readable. These fields are already public on the live site, so this
 // is log hygiene rather than a new exposure — but a row index is just as
 // actionable for fixing tests/fixtures/members.json or the private source.
+const { categories } = JSON.parse(readFileSync("src/content/categories.json", "utf-8"));
+const knownCategories = new Set(categories.map((c) => c.slug));
 membres.forEach((m, i) => {
   const row = `row ${i + 1} of ${membres.length}`;
   if (!/^[a-z0-9-]+$/.test(m.slug ?? "")) {
@@ -37,6 +39,10 @@ membres.forEach((m, i) => {
     process.exit(1);
   }
   seen.add(m.slug);
+  if ((m.categories ?? []).some((slug) => !knownCategories.has(slug))) {
+    console.error(`sync-content: ${row} names a category missing from categories.json.`);
+    process.exit(1);
+  }
   if (!existsSync(join(portraitsFrom, m.photo))) {
     console.error(`sync-content: ${row} names a missing portrait.`);
     process.exit(1);
